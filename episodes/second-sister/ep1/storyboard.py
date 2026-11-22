@@ -241,9 +241,9 @@ def cemetery_bg():
             if RR.random() < .4: o += flower5(x + 8 * k, yy + 2, k * .9, "#e8d8f0")
     o += cypress(70, 540, 150) + cypress(470, 530, 170) + cypress(505, 520, 120, "#465248", "#323c36")
     o += haze(470, 60, "#d4c0dc", .25)
-    # stepping-stone path winding to the front
-    for i, (x, y, w) in enumerate(((270, 590, 24), (262, 620, 30), (276, 656, 36), (258, 700, 44), (280, 752, 54), (256, 812, 64), (284, 884, 78))):
-        o += f'<ellipse cx="{x}" cy="{y}" rx="{w}" ry="{w * .32:.0f}" fill="#9a94a6"/><ellipse cx="{x - w * .15:.0f}" cy="{y - w * .06:.0f}" rx="{w * .7:.0f}" ry="{w * .18:.0f}" fill="#b4aec0"/>'
+    # worn grass-and-earth trail instead of paving
+    o += '<path d="M 262,560 C 250,640 300,700 268,780 C 240,850 300,900 290,960 L 230,960 C 236,900 190,850 220,780 C 250,700 220,640 248,560 Z" fill="#7a6a54" opacity=".55"/>'
+    o += '<path d="M 262,560 C 250,640 300,700 268,780 C 240,850 300,900 290,960" stroke="#5a7050" stroke-width="6" fill="none" opacity=".6"/>' 
     # family plot with a little iron railing, lamp post lit at dusk, wreath on the cross
     o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="560" width="2.5" height="22" fill="#2a2630"/>' for x in range(372, 452, 8)) + '<rect x="370" y="562" width="84" height="2.5" fill="#2a2630"/><rect x="370" y="574" width="84" height="2" fill="#2a2630"/></g>'
     o += lamppost(170, 640, 190)
@@ -565,7 +565,7 @@ PANELS = {
       ("263-264", "police", (130, 700, 420), "ภาพปานกลาง", "static", "คาทารีนาขอให้จบเงียบ ๆ"),
       ("265-269", "body_sheet", F_, "ภาพปานกลาง", "in", "ร่างป้าแดงใต้ผ้าขาว มาเรียมทรุด อักเนสยืนข้างหลัง")],
  18: [("270-276", "thana_night", F_, "ภาพปานกลาง", "static", "ธนากลับมาคนเดียว ยื่นถุงหลักฐาน กุญแจหอระฆังหายจากพวง"),
-      ("272-274", "tag", F_, "แทรกใกล้", "in", "ป้ายชื่อ 'มาร์ธา' ใหม่เอี่ยม"),
+      ("272-274", "tag", F_, "แทรกใกล้", "in", "ผ้าเช็ดหน้าปักชื่อ Martha ด้วยลายมือ ผ้าสะอาด ด้ายใหม่"),
       ("277-281", "chapel_night", F_, "ภาพกว้าง", "in", "เมฆไขประตูข้างโบสถ์ นั่งแถวหน้า กระซิบ 'มาร์ธา…'"),
       ("282-285", "chapel_night", (270, 560, 600), "ภาพกว้าง จากหลังแท่นบูชา", "static", "เทียนดับ เงียบ 2 วิ เสียงเด็กจากความมืด 'ค่ะ'"),
       ("286-287", "question", F_, "การ์ดคำถาม", "static", "A/B แล้วต่อฉากโลโก้ปิดท้าย")],
@@ -711,7 +711,7 @@ ol {{ list-style:none; margin:8px 0 0; padding:0; display:grid; gap:8px; }}
 li {{ font-size:12.5px; line-height:1.55; border-left:3px solid var(--line); padding-left:8px; }}
 .n {{ font-weight:700; }} .vis {{ color:var(--muted); }} .aud {{ color:var(--ink); }}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Noto+Serif+Thai:wght@500;700&family=Dancing+Script:wght@600;700&display=swap">
 {DEFS}
 <div class="wrap">
 <header>

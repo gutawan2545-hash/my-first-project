@@ -230,7 +230,6 @@ def sisters_building():
                 o += f'<circle cx="{x + 18}" cy="{y + 58}" r="60" fill="url(#lg_ffe6c4)" opacity=".8"/><path d="M {x + 10},{y + 86} L {x + 11},{y + 50} C {x + 11},{y + 42} {x + 25},{y + 42} {x + 25},{y + 50} L {x + 26},{y + 86} Z" fill="#7a5a48" opacity=".6"/>'
     # ground-floor arcade walkway
     o += "".join(f'<path d="M {x},800 L {x},716 Q {x + 26},686 {x + 52},716 L {x + 52},800 Z" fill="#0e0a14"/><rect x="{x + 52}" y="700" width="12" height="100" fill="#d8d4e8"/>' for x in range(46, 500, 64))
-    o += plaster_wear(60, 340, 380, 120, 21) + plaster_wear(60, 500, 380, 110, 22) + plaster_wear(60, 650, 380, 100, 23)
     # tree shadows thrown on the façade by the moon (upper left)
     o += '<g opacity=".38" fill="#0a0814"><path d="M 300,330 C 340,360 380,350 420,400 C 440,430 470,440 500,430 L 500,470 C 460,470 430,450 400,420 C 370,390 330,390 300,350 Z"/><path d="M 360,500 C 390,520 430,540 470,530 L 470,546 C 430,556 390,540 356,516 Z"/><circle cx="440" cy="380" r="40"/><circle cx="480" cy="520" r="30"/></g>'
     # big rain tree silhouette on the right
@@ -609,3 +608,192 @@ INS2["tag"] = ('<rect width="540" height="960" fill="#1e1c24"/><ellipse cx="270"
   '<text x="4" y="36" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="18" font-weight="700" fill="#a8302e">มาร์ธา</text>'
   '<path d="M 124,-20 l 10,-4 l -4,10 l 12,0" stroke="#e8e0cc" stroke-width="1.6" fill="none"/>'   # loose thread end
   '</g>' + note(130, 800, "ป้ายชื่อผ้าปักด้ายแดง ใหม่เอี่ยม ไม่มีรอยไหม้ ในถุงหลักฐาน"))
+
+
+# ======================= ROUND 3 FIXES (only what was asked) =======================
+ST["sisters_ext"] = sisters_building()   # rebuilt without stains or cracks; age comes from light and shadow
+
+# ---- engraved Thai lettering on stone ----
+def carved(x, y, text, size, anchor="middle", weight=700):
+    f = f'font-family="Noto Serif Thai, serif" font-size="{size}" font-weight="{weight}" text-anchor="{anchor}" letter-spacing="1.5"'
+    return (f'<text x="{x + 1.1:.1f}" y="{y + 1.3:.1f}" {f} fill="#eeeaf4" opacity=".55">{text}</text>'   # light catching the lower lip of the groove
+            f'<text x="{x:.1f}" y="{y:.1f}" {f} fill="#4a4456">{text}</text>'                              # the cut itself
+            f'<text x="{x - .6:.1f}" y="{y - .7:.1f}" {f} fill="#2e2a38" opacity=".55">{text}</text>')      # shadow inside the top of the groove
+
+def big_stone(x, y, w, h, shape, lines=(), k=1.0, seed=1):
+    """Large, thick Western headstone standing on the earth: face, side thickness, top, plinth, contact shadow, moss."""
+    w, h = w * k, h * k; t = 9 * k
+    r = _rr.Random(seed)
+    face, side, top_, edge = "#c4bece", "#8a8496", "#dcd6e4", "#a8a2b4"
+    if shape == "round":
+        f = f"M {x - w / 2:.1f},{y:.1f} L {x - w / 2:.1f},{y - h + w / 2:.1f} A {w / 2:.1f},{w / 2:.1f} 0 0 1 {x + w / 2:.1f},{y - h + w / 2:.1f} L {x + w / 2:.1f},{y:.1f} Z"
+    elif shape == "ogee":
+        f = f"M {x - w / 2:.1f},{y:.1f} L {x - w / 2:.1f},{y - h * .78:.1f} C {x - w / 2:.1f},{y - h * .95:.1f} {x - w * .1:.1f},{y - h * .9:.1f} {x:.1f},{y - h:.1f} C {x + w * .1:.1f},{y - h * .9:.1f} {x + w / 2:.1f},{y - h * .95:.1f} {x + w / 2:.1f},{y - h * .78:.1f} L {x + w / 2:.1f},{y:.1f} Z"
+    else:  # gable
+        f = f"M {x - w / 2:.1f},{y:.1f} L {x - w / 2:.1f},{y - h * .82:.1f} L {x:.1f},{y - h:.1f} L {x + w / 2:.1f},{y - h * .82:.1f} L {x + w / 2:.1f},{y:.1f} Z"
+    o = f'<ellipse cx="{x + w * .25:.1f}" cy="{y + 4 * k:.1f}" rx="{w * .85:.1f}" ry="{7 * k:.1f}" fill="#120e18" opacity=".55" filter="url(#lsoft)"/>'   # contact shadow
+    o += f'<path d="{f}" fill="{side}" transform="translate({t:.1f},{-t * .5:.1f})"/>'   # thickness (back slab)
+    o += f'<path d="{f}" fill="{face}"/>'
+    o += f'<path d="{f}" fill="none" stroke="{top_}" stroke-width="{2.2 * k:.1f}" stroke-dasharray="{w * 1.4:.0f} 2000"/>'   # lit top edge
+    o += f'<path d="M {x - w / 2 + 6 * k:.1f},{y:.1f} L {x - w / 2 + 6 * k:.1f},{y - h * .6:.1f}" stroke="{edge}" stroke-width="{1.4 * k:.1f}" opacity=".6"/>'
+    o += f'<rect x="{x - w / 2 - 8 * k:.1f}" y="{y - 4 * k:.1f}" width="{w + 16 * k + t:.1f}" height="{12 * k:.1f}" fill="#9a94a6"/><rect x="{x - w / 2 - 8 * k:.1f}" y="{y - 4 * k:.1f}" width="{w + 16 * k + t:.1f}" height="{3 * k:.1f}" fill="#d0cad8"/>'   # plinth
+    # carved cross near the top
+    cy = y - h * .74
+    o += f'<path d="M {x:.1f},{cy - 12 * k:.1f} L {x:.1f},{cy + 12 * k:.1f} M {x - 8 * k:.1f},{cy - 4 * k:.1f} L {x + 8 * k:.1f},{cy - 4 * k:.1f}" stroke="#4a4456" stroke-width="{3 * k:.1f}"/><path d="M {x + 1 * k:.1f},{cy - 11 * k:.1f} L {x + 1 * k:.1f},{cy + 13 * k:.1f}" stroke="#eeeaf4" stroke-width="{1 * k:.1f}" opacity=".5"/>'
+    yy = y - h * .46
+    for (txt, size) in lines:
+        o += carved(x, yy, txt, size * k); yy += size * k * 1.55
+    # moss and lichen, a small chip on the edge
+    o += f'<path d="M {x - w / 2:.1f},{y - 2:.1f} C {x - w * .3:.1f},{y - 16 * k:.1f} {x - w * .1:.1f},{y - 4 * k:.1f} {x + w * .05:.1f},{y - 12 * k:.1f} L {x + w * .1:.1f},{y:.1f} Z" fill="#5e7a54" opacity=".8"/>'
+    o += "".join(f'<ellipse cx="{x + r.uniform(-w * .4, w * .4):.1f}" cy="{y - r.uniform(h * .1, h * .9):.1f}" rx="{r.uniform(3, 7) * k:.1f}" ry="{r.uniform(2, 4) * k:.1f}" fill="#8a9a6a" opacity=".45"/>' for _ in range(3))
+    o += f'<path d="M {x + w / 2:.1f},{y - h * .55:.1f} l {-6 * k:.1f},{4 * k:.1f} l {6 * k:.1f},{5 * k:.1f} Z" fill="{side}"/>'
+    return o
+
+def child_graves3():
+    o = big_stone(130, 912, 92, 150, "round", (("มาร์ธา", 21), ("๒๕๔๐ – ๒๕๔๙", 12)), seed=1)
+    o += big_stone(275, 930, 98, 138, "ogee", (("นภา", 21), ("๑๔ ธันวาคม ๒๕๔๙", 11)), seed=2)
+    o += big_stone(420, 912, 86, 128, "gable", (), seed=3)   # the nameless grave: only a carved cross
+    # offerings stay as they were
+    o += '<g transform="translate(176,918)"><circle cx="0" cy="-10" r="9" fill="#a88a6a"/><circle cx="-6" cy="-18" r="3.5" fill="#a88a6a"/><circle cx="6" cy="-18" r="3.5" fill="#a88a6a"/><ellipse cx="0" cy="4" rx="11" ry="9" fill="#9a7a5a"/></g>'
+    o += '<g transform="translate(316,940)"><rect x="-12" y="-8" width="24" height="9" rx="3" fill="#5a7aa8"/><rect x="-7" y="-14" width="14" height="7" rx="2" fill="#7a9ac8"/><circle cx="-7" cy="2" r="3.5" fill="#2a2a30"/><circle cx="7" cy="2" r="3.5" fill="#2a2a30"/></g>'
+    for (x, y) in ((92, 918), (236, 936), (380, 918), (462, 920)):
+        o += f'<rect x="{x - 5}" y="{y - 12}" width="10" height="13" rx="2" fill="#c8d0e0" opacity=".7"/><rect x="{x - 2}" y="{y - 10}" width="4" height="7" fill="#efe8da"/><circle cx="{x}" cy="{y - 13}" r="10" fill="url(#lg_ffe6c4)" opacity=".8" style="mix-blend-mode:screen"/>'
+    o += '<path d="M 424,868 c 6,-4 10,0 6,4 c 6,2 4,8 -2,6 l -2,10 l -2,-10 c -6,2 -8,-4 -2,-6 c -4,-4 0,-8 6,-4 Z" fill="#f2eee8"/>'   # white ribbon on the nameless stone
+    return o
+
+def tree_natural(x, base, h=620, flip=1):
+    """Old cemetery tree: flared roots, tapering trunk, forked limbs, twigs, layered canopy with a dark underside."""
+    s_ = flip
+    o = f'<g transform="translate({x},{base}) scale({s_},1)">'
+    o += '<path d="M -70,0 C -40,-10 -30,-30 -24,-60 C -18,-160 -30,-260 -10,-360 L 26,-360 C 34,-260 26,-160 34,-60 C 40,-30 56,-10 90,0 Z" fill="#3e3236"/>'
+    o += '<path d="M -70,0 C -40,-10 -30,-30 -24,-60 C -18,-160 -30,-260 -10,-360 L 2,-360 C -10,-260 -2,-160 -4,-60 C -6,-30 -20,-10 -40,0 Z" fill="#54464a"/>'
+    o += "".join(f'<path d="M {bx},{by} C {bx + 4},{by - 30} {bx - 3},{by - 60} {bx + 2},{by - 90}" stroke="#2e2428" stroke-width="2" fill="none" opacity=".7"/>' for bx, by in ((-8, -40), (8, -80), (16, -150), (-2, -220), (12, -280)))   # bark
+    # limbs forking out of the trunk
+    o += '<path d="M -6,-340 C -40,-400 -110,-430 -180,-440 L -176,-428 C -110,-416 -46,-386 -14,-326 Z" fill="#3e3236"/>'
+    o += '<path d="M 18,-350 C 60,-420 140,-460 260,-470 L 258,-458 C 144,-446 70,-406 30,-338 Z" fill="#3e3236"/>'
+    o += '<path d="M 6,-360 C 4,-440 20,-520 50,-580 L 60,-574 C 34,-514 20,-440 22,-356 Z" fill="#3e3236"/>'
+    o += '<path d="M 120,-440 C 150,-470 170,-500 176,-530 M 200,-460 C 230,-470 260,-480 300,-478 M -110,-420 C -140,-450 -150,-480 -146,-510" stroke="#3e3236" stroke-width="5" fill="none"/>'
+    # canopy: back (dark), mid, front (lit) leaf masses
+    for (cx, cy, r, c1, c2, c3) in ((-160, -470, 80, "#344430", "#2c3a28", "#222e20"), (60, -580, 110, "#344430", "#2c3a28", "#222e20"), (240, -500, 90, "#344430", "#2c3a28", "#222e20"),
+                                     (-90, -500, 90, "#4e6446", "#40543a", "#33452e"), (150, -540, 100, "#4e6446", "#40543a", "#33452e"), (10, -470, 80, "#4e6446", "#40543a", "#33452e"),
+                                     (-150, -440, 60, "#6a8258", "#5a7048", "#4a5e3c"), (80, -500, 70, "#6a8258", "#5a7048", "#4a5e3c"), (260, -470, 60, "#6a8258", "#5a7048", "#4a5e3c")):
+        o += clump(cx, cy, r, c1, c2, c3)
+    o += "".join(f'<path d="M {px},{py} C {px + 3},{py + 20} {px - 3},{py + 44} {px + 1},{py + 64}" stroke="#5a6a4e" stroke-width="1.6" fill="none" opacity=".75"/>' for px, py in ((-120, -420), (-60, -440), (40, -430), (120, -460), (200, -440)))   # hanging moss
+    o += '<path d="M -70,0 C -90,4 -110,2 -130,8 M 90,0 C 110,4 130,6 150,12" stroke="#3e3236" stroke-width="6" fill="none"/>'   # surface roots
+    return o + '</g>'
+
+def cemetery_extra2():
+    o = tree_natural(30, 700, flip=1)
+    # big stone headstones of varied height and shape in the midground (no paving, standing in grass)
+    for (x, y, w, h, sh, sd) in ((360, 660, 60, 92, "gable", 11), (440, 690, 66, 110, "round", 12), (510, 700, 58, 88, "ogee", 13), (390, 750, 70, 118, "round", 14)):
+        o += big_stone(x, y, w, h, sh, (), k=.9, seed=sd)
+    o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="{790 + (x - 380) * .1:.0f}" width="5" height="170" fill="#2a2226"/><path d="M {x - 4},{790 + (x - 380) * .1:.0f} L {x + 2.5},{774 + (x - 380) * .1:.0f} L {x + 9},{790 + (x - 380) * .1:.0f} Z" fill="#2a2226"/>' for x in range(380, 560, 20)) + '<path d="M 376,820 L 560,838 M 376,920 L 560,938" stroke="#2a2226" stroke-width="5"/></g>'
+    o += "".join(tuft(RR.uniform(300, 540), RR.uniform(700, 800), 1.3) for _ in range(10))
+    o += haze(560, 90, "#d8cce0", .35) + haze(860, 100, "#d8cce0", .3)
+    return o
+
+ST["cemetery"] = cemetery_bg() + cemetery_extra2() + C("rosa_point", 160, 780, .85) + C("mek", 400, 790, .88) + child_graves3()
+ST["cemetery_wide"] = cemetery_bg() + cemetery_extra2() + child_graves3() + C("rosa", 380, 700, .6) + C("mek_back", 250, 960, 1.05)
+
+# ---- piano: original front-facing Mariam, keyboard clearly separate in the foreground ----
+def keyboard_fg(y=712):
+    """Seen from the piano's side: keys run toward her, black keys nearest us, dark key slip and cheek blocks frame them."""
+    o = f'<path d="M 96,{y - 6} L 444,{y - 6} L 452,{y + 40} L 88,{y + 40} Z" fill="#1a1216"/>'   # dark wood behind the keys = clean edge against her white robe
+    o += f'<path d="M 104,{y} L 436,{y} L 442,{y + 34} L 98,{y + 34} Z" fill="#f4f0e6"/>'
+    o += "".join(f'<path d="M {104 + k * 15.1:.1f},{y} L {98 + k * 15.4:.1f},{y + 34}" stroke="#a8a294" stroke-width="1"/>' for k in range(1, 22))
+    o += "".join(f'<path d="M {106 + k * 15.1:.1f},{y + 14} L {115 + k * 15.1:.1f},{y + 14} L {115 + k * 15.3:.1f},{y + 34} L {104 + k * 15.3:.1f},{y + 34} Z" fill="#141014"/>' for k in range(22) if k % 7 not in (2, 6))
+    o += f'<path d="M 80,{y + 34} L 460,{y + 34} L 470,{y + 90} L 70,{y + 90} Z" fill="#2a1c20"/><path d="M 80,{y + 34} L 460,{y + 34} L 462,{y + 42} L 78,{y + 42} Z" fill="#4a3236"/>'   # key slip
+    o += f'<rect x="70" y="{y - 20}" width="34" height="110" fill="#2a1c20"/><rect x="436" y="{y - 20}" width="34" height="110" fill="#22161a"/>'   # cheek blocks
+    o += f'<path d="M 104,{y - 6} L 436,{y - 6}" stroke="#c8b07a" stroke-width="1.4" opacity=".6"/>'
+    return o
+def hands_on_keys(xl, xr, y):
+    o = ""
+    for x, col, scar in ((xl, "#f6dcc4", False), (xr, "#e4b89c", True)):
+        o += f'<path d="M {x - 12},{y - 4} C {x - 12},{y - 14} {x + 12},{y - 14} {x + 12},{y - 4} L {x + 13},{y + 8} L {x - 13},{y + 8} Z" fill="{col}"/>'
+        o += "".join(f'<rect x="{x - 12 + i * 6:.0f}" y="{y + 4}" width="4.6" height="9" rx="2.2" fill="{col}"/>' for i in range(4))
+        if scar: o += f'<path d="M {x - 6},{y - 8} C {x},{y - 11} {x + 6},{y - 8} {x + 5},{y - 3} C {x},{y - 1} {x - 5},{y - 3} {x - 6},{y - 8} Z" fill="#d98f86" opacity=".85"/>'
+    return o
+_mu = music_room() + C("agnes", 506, 610, .6, .8)
+_mu += C("mariam_piano", 270, 880, .95)
+_mu += keyboard_fg(712) + hands_on_keys(242, 298, 716)
+_mu += '<rect x="160" y="600" width="6" height="22" fill="#efe8da"/><path d="M 163,588 C 160,594 160,597 163,599 C 166,597 166,594 163,588 Z" fill="#fff6e6"/><circle cx="163" cy="594" r="30" fill="url(#lg_ffe6c4)" opacity=".8"/>'   # candle at the end of the keyboard
+ST["music"] = _mu
+
+# ---- veranda: lawn between the veranda and the old wing; the building stands on the ground ----
+def veranda2():
+    o = night_sky((420, 140), seed=9)
+    o += '<path d="M 0,500 L 540,500 L 540,620 L 0,620 Z" fill="#2c3a34"/>'                       # far lawn up to the horizon
+    o += "".join(clump(x, y, r, "#22303a", "#1c2832", "#16202a") for x, y, r in ((40, 470, 70), (140, 488, 46), (470, 470, 80), (540, 480, 60)))   # trees at the edge of the lawn
+    o += f'<g opacity=".88">{old_wing(220, 395, .5)}</g>'                                           # old wing, base on the lawn
+    o += '<polygon points="220,505 340,505 300,532 170,532" fill="#0a0e14" opacity=".45" filter="url(#lsoft)"/>'   # its shadow on the grass (moon upper right)
+    o += haze(470, 50, "#9aa0c8", .35)                                                             # distance haze softens it
+    o += '<path d="M 0,540 L 540,540" stroke="#34443c" stroke-width="2" opacity=".6"/>' + "".join(f'<path d="M {x},{y} l -2,-8 M {x + 3},{y} l 1,-10 M {x + 6},{y} l 3,-7" stroke="#3e5048" stroke-width="1.4"/>' for x, y in ((60, 560), (180, 576), (300, 566), (420, 580), (500, 556)))
+    o += '<path d="M 250,505 C 240,540 300,560 270,620" stroke="#4a5650" stroke-width="10" fill="none" opacity=".6"/>'   # garden path leading to the old wing
+    o += '<g transform="translate(380,520)"><rect x="-2" y="-40" width="4" height="40" fill="#1a1e24"/><circle cx="0" cy="-44" r="4" fill="#3a3e48"/></g>'   # unlit garden lamp
+    o += "".join(clump(x, 600, 36, "#30443a", "#283a30", "#203026") for x in (80, 200, 460))       # shrubs just beyond the balustrade
+    # the veranda itself, unchanged
+    o += '<path d="M 0,120 L 70,150 L 70,960 L 0,960 Z" fill="#c8bca8"/><path d="M 10,520 L 54,530 L 54,800 L 10,800 Z" fill="#f2d8a8"/><path d="M 10,520 L 54,530 L 54,800 L 10,800 Z" fill="none" stroke="#5a4234" stroke-width="5"/>'
+    o += '<polygon points="54,800 54,530 260,900 120,960" fill="#fff0d0" opacity=".12" filter="url(#lhaze)"/>'
+    o += '<path d="M 0,90 L 540,120 L 540,150 L 0,124 Z" fill="#5a4234"/><path d="M 0,124 L 540,150 L 540,160 L 0,134 Z" fill="#3e2c22"/>'
+    o += '<path d="M 0,700 L 540,700 L 540,960 L 0,960 Z" fill="#9a7a6a"/>' + "".join(f'<path d="M {270 + (x - 270) * .3:.0f},700 L {x},960" stroke="#8a6a5a" stroke-width="1.6"/>' for x in range(-300, 860, 60)) + "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#8a6a5a" stroke-width="1.6"/>' for y in (730, 770, 830, 910))
+    for x in (110, 520):
+        o += f'<rect x="{x - 12}" y="150" width="24" height="550" fill="#e4dcd0"/><rect x="{x - 12}" y="150" width="8" height="550" fill="#f4ece2"/><rect x="{x - 18}" y="150" width="36" height="14" fill="#efe4d8"/><rect x="{x - 16}" y="686" width="32" height="14" fill="#d8ccc0"/>'
+    o += '<rect x="70" y="590" width="470" height="12" fill="#e4dcd0"/>' + "".join(f'<path d="M {x},602 C {x - 5},616 {x + 5},632 {x},646 L {x},690" stroke="#d8ccc0" stroke-width="7"/>' for x in range(90, 540, 22)) + '<rect x="70" y="690" width="470" height="10" fill="#c8bcb0"/>'
+    o += '<path d="M 300,150 L 300,220" stroke="#2a2024" stroke-width="2"/><g transform="translate(300,232)"><path d="M -18,0 L 18,0 L 12,18 L -12,18 Z" fill="#8a604a"/>' + "".join(f'<path d="M {dx},6 C {dx * 2},20 {dx * 2.4},40 {dx * 2.2},60" stroke="#3e5a3e" stroke-width="3" fill="none"/>' for dx in (-10, -4, 4, 10)) + '</g>'
+    return o
+ST["veranda"] = ST["veranda"].replace(veranda(), veranda2())
+
+# ---- burnt rag doll: cloth girl, yarn braids, button eyes, stitches; the right half charred ----
+def ragdoll():
+    o = '<g>'
+    o += '<ellipse cx="4" cy="104" rx="70" ry="10" fill="#0a080c" opacity=".55" filter="url(#lsoft)"/>'
+    # legs + arms (cloth tubes with stitch lines)
+    o += '<path d="M -22,70 L -12,70 L -14,104 L -26,104 Z" fill="#e8dcc8"/><path d="M 10,70 L 22,70 L 26,102 L 12,102 Z" fill="#2a1e1a"/>'
+    o += '<path d="M -34,8 C -52,20 -58,40 -54,58 L -44,58 C -46,42 -40,28 -28,18 Z" fill="#e8dcc8"/><path d="M 34,8 C 50,22 54,40 50,54 L 42,54 C 44,40 38,26 28,18 Z" fill="#3a2a22"/>'
+    o += '<path d="M -50,40 l 6,2 M -51,48 l 6,2 M -24,80 l 8,0 M -24,90 l 8,0" stroke="#8a7a68" stroke-width="1.4"/>'
+    # old-fashioned dress with collar and small print; the right side scorched with a ragged edge
+    o += '<path d="M -30,0 L 30,0 L 44,76 L -44,76 Z" fill="#9a6a7a"/><path d="M -30,0 L -8,0 L -16,76 L -44,76 Z" fill="#aa7a8a"/>'
+    o += "".join(f'<circle cx="{dx}" cy="{dy}" r="1.6" fill="#e8d0d8"/>' for dx, dy in ((-24, 20), (-14, 40), (-30, 58), (-6, 64), (-20, 70)))
+    o += '<path d="M -18,0 C -12,10 12,10 18,0 L 14,-4 L -14,-4 Z" fill="#f0e8dc"/>'
+    o += '<path d="M 4,0 L 30,0 L 44,76 L 12,76 L 16,62 L 6,54 L 14,40 L 4,30 L 10,16 Z" fill="#1e1614"/><path d="M 4,0 L 10,16 L 4,30 L 14,40 L 6,54 L 16,62 L 12,76" stroke="#8a4a2a" stroke-width="2" fill="none" opacity=".8"/>'
+    o += '<path d="M 10,30 c 4,-3 8,0 6,4 M 22,56 c 4,-3 8,1 5,5" stroke="#3a2a22" stroke-width="2" fill="none"/>'   # holes burnt through
+    # head: cloth face with a seam down the middle, stitched mouth, button eyes; right half blackened
+    o += '<circle cx="0" cy="-28" r="26" fill="#efe2cc"/>'
+    o += '<path d="M 0,-54 A 26,26 0 0 1 0,-2 C 6,-10 2,-18 8,-26 C 2,-34 6,-44 0,-54 Z" fill="#241a16"/><path d="M 0,-54 C 6,-44 2,-34 8,-26 C 2,-18 6,-10 0,-2" stroke="#9a5a32" stroke-width="2" fill="none" opacity=".8"/>'
+    o += '<path d="M -2,-52 L -2,-4" stroke="#a8988a" stroke-width="1" stroke-dasharray="3 2"/>'
+    o += '<circle cx="-11" cy="-32" r="5" fill="#2a2228"/><circle cx="-11" cy="-32" r="5" fill="none" stroke="#5a5260" stroke-width="1"/><path d="M -13,-34 l 4,4 M -9,-34 l -4,4" stroke="#8a828e" stroke-width="1"/>'
+    o += '<ellipse cx="12" cy="-31" rx="5.5" ry="4" fill="#3a3238" transform="rotate(20 12 -31)"/><path d="M 8,-29 C 11,-27 15,-28 17,-31" stroke="#6a5a52" stroke-width="1.4" fill="none"/>'   # melted button
+    o += '<path d="M -14,-16 l 4,2 l 4,-2 l 4,2 l 4,-2" stroke="#7a4a4a" stroke-width="1.4" fill="none"/><path d="M -12,-18 l 0,4 M -6,-18 l 0,4 M 0,-18 l 0,4" stroke="#7a4a4a" stroke-width="1"/>'
+    o += '<ellipse cx="-16" cy="-22" rx="5" ry="2.6" fill="#e8a0a0" opacity=".5"/>'
+    # yarn hair: two braids on the unburnt side, a singed curled stub on the burnt side
+    o += '<path d="M -26,-36 C -30,-58 -6,-62 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 C -8,-52 -18,-50 -26,-36 Z" fill="#7a4a2a"/><path d="M 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 Z" fill="#2a1a12"/>'
+    o += "".join(f'<path d="M {-22 + k * 4},-56 C {-24 + k * 4},-52 {-24 + k * 4},-46 {-22 + k * 4},-42" stroke="#9a6a3a" stroke-width="1.2" fill="none"/>' for k in range(5))
+    o += '<g>' + "".join(f'<ellipse cx="-30" cy="{-30 + k * 9}" rx="5" ry="5.5" fill="{"#7a4a2a" if k % 2 else "#8a5a32"}"/>' for k in range(6)) + '<path d="M -34,24 l 4,10 M -30,24 l 0,12 M -26,24 l -3,10" stroke="#8a5a32" stroke-width="1.6"/><rect x="-35" y="18" width="10" height="5" fill="#c84848"/></g>'
+    o += '<path d="M 26,-36 C 34,-34 36,-28 32,-24 C 38,-22 36,-14 30,-16 C 34,-10 28,-6 26,-12" stroke="#1a120e" stroke-width="4" fill="none"/><path d="M 28,-30 c 3,-2 6,0 4,3 M 30,-18 c 3,-2 5,1 3,3" stroke="#5a3a22" stroke-width="1.4" fill="none"/>'
+    o += '<path d="M 6,-8 C 12,-14 20,-10 26,-16" stroke="#6a6060" stroke-width="1" fill="none" opacity=".6"/>'   # soot smudge
+    return o + '</g>'
+INS2["doll"] = ('<rect width="540" height="960" fill="#3a3448"/><rect y="640" width="540" height="320" fill="#4a4250"/><rect y="640" width="540" height="10" fill="#5a5060"/>'
+                '<polygon points="380,0 540,0 540,700 300,700" fill="#d8d0e8" opacity=".08" filter="url(#lhaze)"/>'
+                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าโบราณ ไหม้ครึ่งตัว เปียไหมพรม ตากระดุม"))
+ST["steps"] = ST["steps"].replace(ST["steps"][ST["steps"].index('<g transform="translate(270,820) scale(1.8)">'):ST["steps"].index('</g>', ST["steps"].index('<g transform="translate(270,820) scale(1.8)">')) + 4], '<g transform="translate(300,880) scale(.5)">' + ragdoll() + '</g>')
+
+# ---- final scene: embroidered handkerchief "Martha" (replaces the name tag) ----
+INS2["tag"] = ('<rect width="540" height="960" fill="#1e1c24"/><ellipse cx="270" cy="460" rx="270" ry="250" fill="url(#lg_fff0dc)" opacity=".4"/>'
+  '<linearGradient id="hkShade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbf6ea"/><stop offset=".55" stop-color="#efe6d2"/><stop offset="1" stop-color="#d8cbb0"/></linearGradient>'
+  '<g transform="translate(270,470) rotate(-6)">'
+  '<ellipse cx="14" cy="200" rx="230" ry="26" fill="#0a080c" opacity=".5" filter="url(#lsoft)"/>'
+  # cloth draped and folded: main square with soft folds, a turned-back corner
+  '<path d="M -200,-150 C -120,-170 80,-176 196,-150 C 214,-60 210,60 200,150 C 90,176 -110,172 -204,150 C -216,60 -214,-60 -200,-150 Z" fill="url(#hkShade)"/>'
+  '<path d="M -200,-150 C -120,-170 80,-176 196,-150 C 214,-60 210,60 200,150 C 90,176 -110,172 -204,150 C -216,60 -214,-60 -200,-150 Z" fill="none" stroke="#e8dcc4" stroke-width="12" stroke-dasharray="6 5"/>'   # lace / scalloped hem
+  '<path d="M -200,-150 C -120,-170 80,-176 196,-150 C 214,-60 210,60 200,150 C 90,176 -110,172 -204,150 C -216,60 -214,-60 -200,-150 Z" fill="none" stroke="#c8b898" stroke-width="1.6" stroke-dasharray="2 3" transform="scale(.9)"/>'   # hand-stitched hem line
+  '<path d="M -150,-140 C -100,-40 -120,60 -160,150" stroke="#d8ccb2" stroke-width="10" fill="none" opacity=".7"/><path d="M -146,-140 C -96,-40 -116,60 -156,150" stroke="#fffaf0" stroke-width="3" fill="none" opacity=".8"/>'
+  '<path d="M 60,-160 C 90,-60 110,60 90,160" stroke="#d4c6aa" stroke-width="12" fill="none" opacity=".6"/><path d="M 66,-160 C 96,-60 116,60 96,160" stroke="#fffaf0" stroke-width="3" fill="none" opacity=".7"/>'
+  '<path d="M 196,150 L 120,150 C 140,120 170,96 200,80 Z" fill="#e2d6bc"/><path d="M 120,150 C 140,120 170,96 200,80" stroke="#c8b898" stroke-width="2" fill="none"/>'   # folded-over corner
+  '<circle cx="-120" cy="90" r="22" fill="#c8a868" opacity=".18"/><circle cx="150" cy="-100" r="14" fill="#b8985a" opacity=".2"/>'   # age spots
+  # embroidered name: cursive, satin-stitch look (thick thread + stitch texture + highlight)
+  '<text x="-6" y="18" text-anchor="middle" font-family="Dancing Script, cursive" font-size="96" font-weight="700" fill="#7a2a2a">Martha</text>'
+  '<text x="-6" y="18" text-anchor="middle" font-family="Dancing Script, cursive" font-size="96" font-weight="700" fill="none" stroke="#5a1a1c" stroke-width="1.4" stroke-dasharray="1.6 1.4"/>'
+  '<text x="-7.5" y="16.5" text-anchor="middle" font-family="Dancing Script, cursive" font-size="96" font-weight="700" fill="none" stroke="#c87a72" stroke-width=".8" opacity=".6" stroke-dasharray="3 3"/>'
+  '<path d="M 112,30 c 10,2 16,8 24,4 c 6,-3 10,4 16,2" stroke="#7a2a2a" stroke-width="1.6" fill="none"/>'   # loose thread tail
+  '<g transform="translate(-140,-96)">' + "".join(f'<ellipse cx="0" cy="-6" rx="3.4" ry="6" fill="#9a5a5a" transform="rotate({a})"/>' for a in (0, 72, 144, 216, 288)) + '<circle r="2.4" fill="#c8a868"/><path d="M 0,6 C 2,16 8,22 14,24" stroke="#5a7050" stroke-width="2" fill="none"/></g>'   # tiny embroidered flower
+  '</g>' + note(140, 820, "ผ้าเช็ดหน้าปักชื่อ Martha ด้วยลายมือ ด้ายใหม่ ไม่มีรอยไหม้"))
