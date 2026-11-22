@@ -614,8 +614,9 @@ INS2["tag"] = ('<rect width="540" height="960" fill="#1e1c24"/><ellipse cx="270"
 ST["sisters_ext"] = sisters_building()   # rebuilt without stains or cracks; age comes from light and shadow
 
 # ---- engraved Thai lettering on stone ----
-def carved(x, y, text, size, anchor="middle", weight=700):
-    f = f'font-family="Noto Serif Thai, serif" font-size="{size}" font-weight="{weight}" text-anchor="{anchor}" letter-spacing="1.5"'
+def carved(x, y, text, size, anchor="middle", weight=700, latin=False):
+    fam = "Georgia, 'Times New Roman', serif" if latin else "Noto Serif Thai, serif"
+    f = f'font-family="{fam}" font-size="{size}" font-weight="{weight}" text-anchor="{anchor}" letter-spacing="{1.2 if latin else 1.5}"'
     return (f'<text x="{x + 1.1:.1f}" y="{y + 1.3:.1f}" {f} fill="#eeeaf4" opacity=".55">{text}</text>'   # light catching the lower lip of the groove
             f'<text x="{x:.1f}" y="{y:.1f}" {f} fill="#4a4456">{text}</text>'                              # the cut itself
             f'<text x="{x - .6:.1f}" y="{y - .7:.1f}" {f} fill="#2e2a38" opacity=".55">{text}</text>')      # shadow inside the top of the groove
@@ -641,8 +642,9 @@ def big_stone(x, y, w, h, shape, lines=(), k=1.0, seed=1):
     cy = y - h * .74
     o += f'<path d="M {x:.1f},{cy - 12 * k:.1f} L {x:.1f},{cy + 12 * k:.1f} M {x - 8 * k:.1f},{cy - 4 * k:.1f} L {x + 8 * k:.1f},{cy - 4 * k:.1f}" stroke="#4a4456" stroke-width="{3 * k:.1f}"/><path d="M {x + 1 * k:.1f},{cy - 11 * k:.1f} L {x + 1 * k:.1f},{cy + 13 * k:.1f}" stroke="#eeeaf4" stroke-width="{1 * k:.1f}" opacity=".5"/>'
     yy = y - h * .46
-    for (txt, size) in lines:
-        o += carved(x, yy, txt, size * k); yy += size * k * 1.55
+    for ln in lines:
+        txt, size = ln[0], ln[1]; latin = len(ln) > 2 and ln[2]
+        o += carved(x, yy, txt, size * k, weight=600 if latin else 700, latin=latin); yy += size * k * 1.6
     # moss and lichen, a small chip on the edge
     o += f'<path d="M {x - w / 2:.1f},{y - 2:.1f} C {x - w * .3:.1f},{y - 16 * k:.1f} {x - w * .1:.1f},{y - 4 * k:.1f} {x + w * .05:.1f},{y - 12 * k:.1f} L {x + w * .1:.1f},{y:.1f} Z" fill="#5e7a54" opacity=".8"/>'
     o += "".join(f'<ellipse cx="{x + r.uniform(-w * .4, w * .4):.1f}" cy="{y - r.uniform(h * .1, h * .9):.1f}" rx="{r.uniform(3, 7) * k:.1f}" ry="{r.uniform(2, 4) * k:.1f}" fill="#8a9a6a" opacity=".45"/>' for _ in range(3))
@@ -650,8 +652,8 @@ def big_stone(x, y, w, h, shape, lines=(), k=1.0, seed=1):
     return o
 
 def child_graves3():
-    o = big_stone(130, 912, 92, 150, "round", (("มาร์ธา", 21), ("๒๕๔๐ – ๒๕๔๙", 12)), seed=1)
-    o += big_stone(275, 930, 98, 138, "ogee", (("นภา", 21), ("๑๔ ธันวาคม ๒๕๔๙", 11)), seed=2)
+    o = big_stone(130, 912, 92, 150, "round", (("มาร์ธา", 21), ("1997 – 2006", 11, True), ("REST IN PEACE", 6, True)), seed=1)
+    o += big_stone(275, 930, 98, 138, "ogee", (("นภา", 21), ("DEC 14, 2006", 11, True), ("REST IN PEACE", 6, True)), seed=2)
     o += big_stone(420, 912, 86, 128, "gable", (), seed=3)   # the nameless grave: only a carved cross
     # offerings stay as they were
     o += '<g transform="translate(176,918)"><circle cx="0" cy="-10" r="9" fill="#a88a6a"/><circle cx="-6" cy="-18" r="3.5" fill="#a88a6a"/><circle cx="6" cy="-18" r="3.5" fill="#a88a6a"/><ellipse cx="0" cy="4" rx="11" ry="9" fill="#9a7a5a"/></g>'
