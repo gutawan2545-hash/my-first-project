@@ -247,6 +247,136 @@ A('<path d="M 300,590 C 320,560 400,556 452,566 L 470,620 C 430,640 340,640 296,
 for (cx2, cy2, h) in ((118, 790, 14), (130, 798, 9), (106, 800, 6)):
     A(f'<ellipse cx="{cx2}" cy="{cy2 + 2}" rx="8" ry="2.5" fill="#e6e0d4" opacity=".8"/><rect x="{cx2 - 3}" y="{cy2 - h}" width="6" height="{h}" fill="#efe8da"/><path d="M {cx2 - 3},{cy2 - h + 3} q 2,4 0,7" stroke="#d8d0c0" stroke-width="1.2" fill="none"/>')
 
+
+# =================== FULL PROP PASS ===================
+def wallpt(side, t, f):
+    xs = lx if side < 0 else rx
+    return xs(t), lerp(top(t), bot(t), f)
+def S(t): return 1 - t * .82   # object scale at depth t
+
+# faded fresco on the vault: angels and clouds, mostly flaked away
+for (fx, fy, fs) in ((200, 60, 1.0), (340, 70, .9), (270, 150, .55)):
+    A(f'<g transform="translate({fx},{fy}) scale({fs})" opacity=".35"><ellipse cx="0" cy="0" rx="46" ry="16" fill="#8a8498"/><ellipse cx="-20" cy="-6" rx="22" ry="12" fill="#9a94a8"/>'
+      f'<circle cx="8" cy="-14" r="7" fill="#c8b8b0"/><path d="M 2,-8 C -14,-30 -30,-24 -34,-12 C -22,-16 -10,-12 2,-8 Z M 14,-8 C 30,-30 46,-24 50,-12 C 38,-16 26,-12 14,-8 Z" fill="#d6d0dc"/>'
+      f'<path d="M -30,8 C -10,14 20,12 40,4" stroke="#5a5466" stroke-width="2" fill="none" stroke-dasharray="6 4"/></g>')
+
+# memorial marble tablets on the dado, both walls
+for side in (-1, 1):
+    for v in (.12, .3, .48, .66):
+        t = proj(v); x, y = wallpt(side, t, .87); sc = S(t)
+        w, h = 20 * sc + 3, 14 * sc + 2; sk = -side * w * .25
+        A(f'<path d="M {x-w/2:.1f},{y-h/2+sk:.1f} L {x+w/2:.1f},{y-h/2-sk:.1f} L {x+w/2:.1f},{y+h/2-sk:.1f} L {x-w/2:.1f},{y+h/2+sk:.1f} Z" fill="#e6e0e8"/>'
+          f'<path d="M {x-w*.35:.1f},{y-h*.1+sk*.6:.1f} L {x+w*.35:.1f},{y-h*.1-sk*.6:.1f} M {x-w*.3:.1f},{y+h*.18+sk*.5:.1f} L {x+w*.3:.1f},{y+h*.18-sk*.5:.1f}" stroke="#8a8494" stroke-width="{.6+sc*.6:.1f}"/>')
+
+# oil paintings of saints in heavy gilt frames, high on the walls
+for side in (-1, 1):
+    for v in (.26, .62):
+        t = proj(v); x, y = wallpt(side, t, .24); sc = S(t)
+        w, h = 34 * sc + 5, 44 * sc + 6; sk = -side * w * .26
+        A(f'<path d="M {x-w/2:.1f},{y-h/2+sk:.1f} L {x+w/2:.1f},{y-h/2-sk:.1f} L {x+w/2:.1f},{y+h/2-sk:.1f} L {x-w/2:.1f},{y+h/2+sk:.1f} Z" fill="#8a7444"/>'
+          f'<path d="M {x-w*.4:.1f},{y-h*.4+sk*.8:.1f} L {x+w*.4:.1f},{y-h*.4-sk*.8:.1f} L {x+w*.4:.1f},{y+h*.4-sk*.8:.1f} L {x-w*.4:.1f},{y+h*.4+sk*.8:.1f} Z" fill="#2a2228"/>'
+          f'<ellipse cx="{x:.1f}" cy="{y-h*.14:.1f}" rx="{w*.12:.1f}" ry="{h*.1:.1f}" fill="#b89c84" opacity=".8"/><circle cx="{x:.1f}" cy="{y-h*.18:.1f}" r="{w*.2:.1f}" fill="none" stroke="#b8a46e" stroke-width="{sc+.3:.1f}" opacity=".7"/>'
+          f'<path d="M {x-w*.18:.1f},{y+h*.36:.1f} L {x-w*.1:.1f},{y:.1f} L {x+w*.1:.1f},{y:.1f} L {x+w*.18:.1f},{y+h*.36:.1f} Z" fill="#4a3a5a"/>'
+          f'<path d="M {x-w/2:.1f},{y-h/2+sk:.1f} L {x+w/2:.1f},{y-h/2-sk:.1f}" stroke="#d8c48c" stroke-width="{sc*1.2+.4:.1f}"/></g>'.replace('</g>', ''))
+
+# wall sconces on the pilasters (unlit, wax drips)
+for side in (-1, 1):
+    for v in (.08, .26, .44, .62, .8):
+        t = proj(v); x, y = wallpt(side, t, .55); sc = S(t)
+        A(f'<path d="M {x:.1f},{y:.1f} q {-side*8*sc:.1f},{2*sc:.1f} {-side*12*sc:.1f},{-6*sc:.1f}" stroke="#7a6a42" stroke-width="{1.6*sc+.4:.1f}" fill="none"/>'
+          f'<rect x="{x - side*12*sc - 2*sc:.1f}" y="{y - 14*sc:.1f}" width="{4*sc+.5:.1f}" height="{8*sc+1:.1f}" fill="#e8e0d0"/>')
+
+# second and third chandeliers receding
+for (t, cyy) in ((proj(.22), 120), (proj(.78), 300)):
+    sc = S(t)
+    A(f'<path d="M 270,-10 L 270,{cyy - 28*sc:.0f}" stroke="#2a2630" stroke-width="{1.6*sc+.4:.1f}"/>'
+      f'<g transform="translate(270,{cyy}) scale({sc*1.3:.2f})"><ellipse cx="0" cy="0" rx="46" ry="9" fill="none" stroke="#6a5c40" stroke-width="3"/><ellipse cx="0" cy="-22" rx="26" ry="5" fill="none" stroke="#6a5c40" stroke-width="2.4"/>'
+      + "".join(f'<rect x="{x - 2}" y="-20" width="4" height="8" fill="#d8d0c0"/><path d="M {x},4 L {x},{14 + abs(x) % 9}" stroke="#c8c4d8" stroke-width="1" opacity=".7"/>' for x in (-40, -20, 0, 20, 40)) + '</g>')
+
+# communion rail with balusters, gap in the middle
+ry_ = BW[3] - 2
+A(f'<rect x="{BW[0]-6}" y="{ry_-20}" width="{(BW[1]-BW[0])/2 - 14}" height="4" fill="#e6e0e8"/><rect x="{270+20}" y="{ry_-20}" width="{(BW[1]-BW[0])/2 - 14}" height="4" fill="#cfc9d4"/>')
+for x in list(range(BW[0]-2, 252, 6)) + list(range(292, BW[1]+4, 6)):
+    A(f'<path d="M {x},{ry_-16} C {x-2},{ry_-12} {x+2},{ry_-8} {x},{ry_-4} L {x},{ry_}" stroke="#d6d0dc" stroke-width="2.4"/>')
+A(f'<rect x="{BW[0]-8}" y="{ry_}" width="{BW[1]-BW[0]+16}" height="3" fill="#8a8494"/>')
+
+# altar dressing: lace cloth edge, tabernacle, missal stand, tall candles
+ay2 = BW[3] - 44
+A(f'<path d="M {270-64},{ay2+2} L {270+64},{ay2+2} L {270+64},{ay2+12} ' + " ".join(f"Q {270+64-k*8-4},{ay2+16} {270+64-(k+1)*8},{ay2+12}" for k in range(16)) + ' Z" fill="#f4f0ea"/>')
+A(f'<rect x="{270-11}" y="{ay2-26}" width="22" height="20" fill="#a8944e"/><path d="M {270-13},{ay2-26} L 270,{ay2-36} L {270+13},{ay2-26} Z" fill="#b8a45e"/><rect x="{270-4}" y="{ay2-22}" width="8" height="12" fill="#6a5a30"/>')
+A(f'<path d="M {270+26},{ay2-6} L {270+44},{ay2-6} L {270+40},{ay2-14} L {270+30},{ay2-14} Z" fill="#7a6a42"/><path d="M {270+29},{ay2-15} L {270+41},{ay2-15} L {270+42},{ay2-21} L {270+28},{ay2-21} Z" fill="#efe8da"/>')
+# lectern left of the altar with an open book, bishop chair right
+A(f'<g transform="translate({BW[0]+8},{BW[3]-2})"><rect x="-2" y="-34" width="4" height="34" fill="#5a4234"/><path d="M -10,-34 L 10,-34 L 12,-42 L -12,-42 Z" fill="#6a4c3a"/><path d="M -10,-42 L 0,-46 L 10,-42 L 0,-40 Z" fill="#f2ece0"/><rect x="-8" y="-1" width="16" height="3" fill="#3a2a22"/></g>')
+A(f'<g transform="translate({BW[1]-10},{BW[3]-2})"><rect x="-10" y="-40" width="20" height="40" fill="#5a3a34"/><rect x="-10" y="-40" width="20" height="6" fill="#a8944e"/><rect x="-8" y="-24" width="16" height="10" fill="#6c3a3e"/></g>')
+
+# confessional booth on the right wall (rule 2 lives here)
+t0, t1 = proj(.36), proj(.5)
+xa, xb = rx(t0), rx(t1)
+yat, yab = lerp(top(t0), bot(t0), .4), lerp(top(t0), bot(t0), .985)
+ybt, ybb = lerp(top(t1), bot(t1), .4), lerp(top(t1), bot(t1), .985)
+dx = (xb - xa)
+A(f'<path d="M {xa:.1f},{yat:.1f} L {xb:.1f},{ybt:.1f} L {xb:.1f},{ybb:.1f} L {xa:.1f},{yab:.1f} Z" fill="#3a2622"/>'
+  f'<path d="M {xa:.1f},{yat:.1f} L {xb:.1f},{ybt:.1f} L {xb:.1f},{ybt+8:.1f} L {xa:.1f},{yat+12:.1f} Z" fill="#6a4a3a"/>')
+for k, col in ((0, "#6a2a32"), (1, "#2a1a1c"), (2, "#5a2228")):
+    u0, u1 = .08 + k * .31, .31 + k * .31
+    x0_, x1_ = xa + dx * u0, xa + dx * u1
+    y0t, y1t = lerp(yat, ybt, u0) + 16, lerp(yat, ybt, u1) + 14
+    y0b, y1b = lerp(yab, ybb, u0) - 4, lerp(yab, ybb, u1) - 4
+    A(f'<path d="M {x0_:.1f},{y0t:.1f} L {x1_:.1f},{y1t:.1f} L {x1_:.1f},{y1b:.1f} L {x0_:.1f},{y0b:.1f} Z" fill="{col}"/>')
+    if k != 1:
+        A(f'<path d="M {x0_ + (x1_-x0_)*.3:.1f},{y0t+2:.1f} L {x0_ + (x1_-x0_)*.3:.1f},{y0b:.1f} M {x0_ + (x1_-x0_)*.65:.1f},{y0t+2:.1f} L {x0_ + (x1_-x0_)*.65:.1f},{y0b:.1f}" stroke="#3a1418" stroke-width="1.6"/>')
+A(f'<path d="M {xa+dx*.5:.1f},{lerp(yat,ybt,.5)-14:.1f} L {xa+dx*.5:.1f},{lerp(yat,ybt,.5)-2:.1f} M {xa+dx*.5-5:.1f},{lerp(yat,ybt,.5)-9:.1f} L {xa+dx*.5+5:.1f},{lerp(yat,ybt,.5)-9:.1f}" stroke="#a8944e" stroke-width="2"/>')
+
+# advent wreath on a stand, left of the aisle (one candle lit: first week of Advent)
+wx_, wy_ = 150, 610
+A(f'<g transform="translate({wx_},{wy_})"><rect x="-2" y="0" width="4" height="40" fill="#3a2a26"/><rect x="-12" y="38" width="24" height="4" fill="#2a1e1c"/>'
+  '<ellipse cx="0" cy="0" rx="24" ry="7" fill="#2e3a2e"/><ellipse cx="0" cy="-2" rx="20" ry="5" fill="#3e4c3a"/>'
+  + "".join(f'<rect x="{x - 2}" y="{y - 16}" width="4" height="14" fill="{c}"/>' for x, y, c in ((-16, 0, "#6a4a7a"), (-5, -4, "#6a4a7a"), (6, -4, "#c89aa8"), (16, 0, "#6a4a7a")))
+  + '<path d="M -16,-22 C -18,-19 -18,-17 -16,-16 C -14,-17 -14,-19 -16,-22 Z" fill="#fff4dc"/>'
+  '<path d="M -22,2 l -3,6 M 22,2 l 3,6 M -8,6 l -1,6" stroke="#5a2a32" stroke-width="2"/></g>')
+A(f'<ellipse cx="{wx_-16}" cy="{wy_-20}" rx="30" ry="30" fill="url(#glowW)" opacity=".7" style="mix-blend-mode:screen"/>')
+
+# renovation for the 100th anniversary: scaffold, ladder, paint tins, dust sheet, rolled banner
+A('<g opacity=".95">'
+  '<path d="M 20,300 L 26,300 L 26,760 L 20,760 Z M 88,330 L 94,330 L 94,700 L 88,700 Z" fill="#5a5660"/>'
+  '<path d="M 20,420 L 94,430 L 94,436 L 20,426 Z M 20,560 L 94,566 L 94,572 L 20,566 Z" fill="#6a6670"/>'
+  '<path d="M 20,420 L 94,566 M 94,430 L 20,566" stroke="#4a4650" stroke-width="2.4"/>'
+  '<path d="M 14,414 L 104,426 L 104,436 L 14,424 Z" fill="#7a5a40"/>'
+  '<path d="M 22,436 L 100,446 L 98,520 C 80,512 60,526 40,516 C 32,512 26,518 22,514 Z" fill="#e8e2ea" opacity=".9"/>'
+  '<text x="60" y="476" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="9" font-weight="700" fill="#6a2a32" transform="rotate(7 60 476)">๑๐๐ ปี</text>'
+  '<text x="60" y="490" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="6.5" fill="#6a2a32" transform="rotate(7 60 490)">เซนต์เวโรนิกา</text>'
+  '</g>')
+A('<g transform="translate(118,720) rotate(-14)"><rect x="-3" y="-150" width="5" height="160" fill="#6a5040"/><rect x="25" y="-150" width="5" height="160" fill="#5a4234"/>'
+  + "".join(f'<rect x="-3" y="{y}" width="33" height="4" fill="#7a5c48"/>' for y in range(-140, 0, 22)) + '</g>')
+for (px_, py_, c) in ((60, 770, "#8a8494"), (80, 778, "#a8a2b0")):
+    A(f'<g transform="translate({px_},{py_})"><path d="M -10,-18 L 10,-18 L 9,0 L -9,0 Z" fill="{c}"/><ellipse cx="0" cy="-18" rx="10" ry="3" fill="#e8e2ea"/><path d="M -9,-14 q 3,6 0,10" stroke="#e8e2ea" stroke-width="2" fill="none"/><ellipse cx="0" cy="1" rx="11" ry="3" fill="#0a080c" opacity=".4"/></g>')
+
+# stacked Christmas crates by the right wall
+for (cx3, cy3, w3, h3, lab) in ((470, 720, 60, 40, "คริสต์มาส"), (480, 680, 48, 40, "ฉากประสูติ"), (462, 760, 70, 44, "")):
+    A(f'<g><rect x="{cx3-w3/2}" y="{cy3-h3}" width="{w3}" height="{h3}" fill="#8a6a4a"/><rect x="{cx3-w3/2}" y="{cy3-h3}" width="{w3*.35}" height="{h3}" fill="#9e7c58"/><rect x="{cx3+w3*.2}" y="{cy3-h3}" width="{w3*.3}" height="{h3}" fill="#6e5238"/>'
+      f'<path d="M {cx3-w3/2},{cy3-h3*.5} L {cx3+w3/2},{cy3-h3*.5}" stroke="#5a4230" stroke-width="2"/>'
+      + (f'<rect x="{cx3-20}" y="{cy3-h3+6}" width="40" height="12" fill="#efe6d4"/><text x="{cx3}" y="{cy3-h3+15}" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="7" fill="#3a2a22">{lab}</text>' if lab else '')
+      + '</g>')
+A('<path d="M 446,640 C 452,630 470,628 476,640 L 474,650 L 448,650 Z" fill="#3e4c3a"/><circle cx="452" cy="636" r="2" fill="#a8484e"/><circle cx="466" cy="632" r="2" fill="#b8a46e"/>')
+
+# worn wine-red carpet runner down the aisle, with gold edge and bald patches
+A(f'<path d="M 252,{BW[3]+4} L 288,{BW[3]+4} L 352,960 L 188,960 Z" fill="#4e2430"/>'
+  f'<path d="M 252,{BW[3]+4} L 256,{BW[3]+4} L 198,960 L 188,960 Z M 284,{BW[3]+4} L 288,{BW[3]+4} L 352,960 L 342,960 Z" fill="#8a7444" opacity=".8"/>'
+  '<path d="M 250,700 C 262,690 286,694 290,706 C 284,716 258,716 250,700 Z M 236,860 C 250,846 286,850 294,866 C 284,880 244,878 236,860 Z" fill="#6a3a44" opacity=".8"/>'
+  f'<path d="M 270,{BW[3]+4} L 270,960" stroke="#3a1a22" stroke-width="1" opacity=".5"/>')
+
+# things left on the floor: a dropped rosary, scattered hymn sheets, a child's white hair ribbon, small wet footprints
+A('<path d="M 300,880 c 10,-6 20,-2 18,6 c -2,8 -14,10 -22,6 c -6,-3 -2,-10 4,-12" fill="none" stroke="#3a2a22" stroke-width="2" stroke-dasharray="2 1.6"/><path d="M 318,888 l 6,10 m -3,-6 l 6,-2" stroke="#3a2a22" stroke-width="1.6"/>')
+for (hx, hy, r) in ((160, 900, -12), (420, 860, 18), (396, 880, -6)):
+    A(f'<g transform="translate({hx},{hy}) rotate({r})"><rect x="-14" y="-9" width="28" height="18" fill="#efe8da"/><path d="M -10,-4 L 10,-4 M -10,0 L 8,0 M -10,4 L 10,4" stroke="#9a9080" stroke-width="1"/></g>')
+A('<path d="M 222,742 c 6,-4 10,0 6,4 c 6,2 4,8 -2,6 l -2,10 l -2,-10 c -6,2 -8,-4 -2,-6 c -4,-4 0,-8 6,-4 Z" fill="#f2eee8" opacity=".9"/>')
+for (fx2, fy2, sc2, rot) in ((236, 800, .9, 8), (214, 770, .8, -6), (232, 744, .7, 8), (216, 724, .62, -6)):
+    A(f'<g transform="translate({fx2},{fy2}) scale({sc2}) rotate({rot})" opacity=".5"><ellipse rx="4.5" ry="8" fill="#2a3048"/><circle cx="-2.5" cy="-10" r="1.4" fill="#2a3048"/><circle cx="0" cy="-11" r="1.4" fill="#2a3048"/><circle cx="2.5" cy="-10" r="1.3" fill="#2a3048"/></g>')
+
+# pew clutter: prayer cards, a hand fan, an umbrella hooked on a pew end
+A('<g transform="translate(110,650)"><path d="M 0,0 L 18,-4 L 20,4 Z" fill="#e8d8c8"/><path d="M 30,-2 l 10,-12 l 4,2 l -10,12 Z" fill="#6a5a8a"/></g>')
+A('<path d="M 430,600 L 432,660 C 432,666 440,666 440,660" stroke="#1e1a22" stroke-width="2.4" fill="none"/><path d="M 422,604 C 426,592 440,592 444,604 Z" fill="#2a2a3a"/>')
+
 # ---------- light: moon beams from the left windows, candle rack at the altar ----------
 A('<polygon points="20,250 110,300 470,960 250,960" fill="url(#beamC2)" filter="url(#haze)" style="mix-blend-mode:screen"/>')
 A('<polygon points="140,330 190,360 420,780 330,800" fill="url(#beamC2)" filter="url(#haze)" opacity=".7" style="mix-blend-mode:screen"/>')
@@ -293,6 +423,7 @@ FG = ('<g filter="url(#fgBlur)">'
       '<path d="M 486,980 L 500,-20 L 512,-20 L 498,980 Z" fill="#e8e2ea"/>'
       '<path d="M 524,-20 L 560,-20 L 560,980 L 520,980 Z" fill="#8e8898"/>'
       '<path d="M 478,240 L 568,232 L 568,256 L 478,262 Z" fill="#e8e2ea"/>'
+      '<path d="M 420,880 C 420,850 520,850 520,880 C 520,900 490,910 470,910 C 450,910 420,900 420,880 Z" fill="#d6d0dc"/><ellipse cx="470" cy="872" rx="44" ry="10" fill="#5a6488"/><path d="M 456,910 L 484,910 L 490,980 L 450,980 Z" fill="#b6b0be"/>'
       '</g>'
       '<g filter="url(#bokeh)">'
       '<circle cx="40" cy="790" r="9" fill="#fff0dc" opacity=".8"/><circle cx="62" cy="780" r="7" fill="#ffe8cc" opacity=".7"/><circle cx="24" cy="772" r="6" fill="#fff4e6" opacity=".6"/>'
@@ -366,7 +497,7 @@ p {{ max-width:560px; margin:0; font-size:13px; color:var(--muted); line-height:
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Inter:wght@500&display=swap">
 {DEFS}
-<h1>โบสถ์น้อย · เฟรมทดสอบ ฉบับ 3<span>โบสถ์ขาววิจิตรแบบวังเก่า · ตัวละครเต็มตัว</span></h1>
+<h1>โบสถ์น้อย · เฟรมทดสอบ ฉบับ 4<span>โบสถ์ขาววิจิตรแบบวังเก่า · ตัวละครเต็มตัว</span></h1>
 <div class="frame" id="f">{FRAME}</div>
 <div class="bar"><span>9:16 TikTok</span><button id="bs" type="button" aria-pressed="true">ซับ</button><button id="bg" type="button" aria-pressed="false">พื้นที่ซับ</button></div>
 <p>เพดานโค้งมีซี่โครงและดอกประดับ เสาอิงหัวม้วน บัวคิ้วและลายฟันปลาใต้ชายคา หน้าต่างโค้งเรียงลึกเข้าไป แท่นบูชาหินอ่อนขาวขลิบทองซีด รูปปั้นในซุ้มคลุมผ้าขาว โคมระย้าไม่มีไฟและมีใยแมงมุม พื้นหินอ่อนลายตาราง ปูนลอก คราบชื้น รอยร้าว · มาเรียมยืนด้านหน้าในแสงจันทร์ อักเนสยืนไกลออกไปในทางเดิน มีแสงจากเทียนในมือเธอเพียงดวงเดียว</p>
