@@ -193,11 +193,11 @@ INS2["clock"] = ('<rect width="540" height="960" fill="#2e2638"/>' + "".join(f'<
   + "".join(f'<rect x="-1.2" y="-140" width="2.4" height="{12 if k % 5 == 0 else 6}" fill="#3a2a22" transform="rotate({k * 6})"/>' for k in range(60))
   + "".join(f'<text x="{112 * _m.sin(_m.radians(i * 30)):.0f}" y="{-112 * _m.cos(_m.radians(i * 30)) + 9:.0f}" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#2a1e1a">{n}</text>' for i, n in enumerate(["XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"]))
   + '<text x="0" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#6a5a44" letter-spacing="2">ST. VERONICA 1926</text>'
-  '<path d="M -6,8 L 0,-118 L 6,8 Z" fill="#1a1418"/><path d="M -8,6 L 82,-2 L 82,2 L -8,10 Z" fill="#1a1418"/><path d="M 0,26 L 0,-130" stroke="#8e1b24" stroke-width="1.6"/><circle r="9" fill="#1a1418"/><circle r="3" fill="#c8b07a"/>'
+  '<g id="clkHour"><path d="M -8,6 L 82,-2 L 82,2 L -8,10 Z" fill="#1a1418"/></g><g id="clkMin"><path d="M -6,8 L 0,-118 L 6,8 Z" fill="#1a1418"/></g><g id="clkSec"><path d="M 0,26 L 0,-130" stroke="#8e1b24" stroke-width="1.6"/></g><circle r="9" fill="#1a1418"/><circle r="3" fill="#c8b07a"/>'
   '<path d="M -120,-80 C -100,-110 -70,-130 -40,-138" stroke="#fff" stroke-width="5" opacity=".25" fill="none"/>'
   '<path d="M -150,-60 C -140,-30 -146,10 -136,40" stroke="#c8c4d0" stroke-width=".6" fill="none" opacity=".5"/><path d="M -168,-40 L -110,-20 M -168,-40 L -120,-60" stroke="#c8c4d0" stroke-width=".6" opacity=".4"/>'
   '</g>'
-  '<g transform="translate(270,610)"><rect x="-40" y="0" width="80" height="150" fill="#3a2418"/><rect x="-32" y="8" width="64" height="134" fill="#140e10"/><path d="M 0,10 L 6,110" stroke="#c8b07a" stroke-width="2"/><circle cx="6" cy="118" r="14" fill="#c8a868"/><circle cx="2" cy="114" r="5" fill="#f0dcaa"/></g>' +
+  '<g transform="translate(270,610)"><rect x="-40" y="0" width="80" height="150" fill="#3a2418"/><rect x="-32" y="8" width="64" height="134" fill="#140e10"/><g id="clkPend"><path d="M 0,10 L 0,110" stroke="#c8b07a" stroke-width="2"/><circle cx="0" cy="118" r="14" fill="#c8a868"/><circle cx="-4" cy="114" r="5" fill="#f0dcaa"/></g></g>' +
   note(170, 800, "02:59 → 03:00 เข็มยาวกระดิกไปที่ XII"))
 
 # ============================== 4. SISTERS' BUILDING AT NIGHT ==============================

@@ -191,7 +191,7 @@ def names_in(txt):
     return out
 def acting(rng, stage):
     a = ANIM.get(rng)
-    if not a: return [], []
+    if not a: return [], [], []
     have = stage_cids(stage)
     cry = []
     for part in a[0].split("/"):
@@ -208,7 +208,17 @@ def acting(rng, stage):
         after = act[m.end():m.end() + 14]
         mode = "out" if (after.startswith("จาก") or "กลับ" in after[:10] or re.match(r"ไป(\s|$)", after)) else "in"
         if cid in have and not any(w[0] == cid for w in walk): walk.append([cid, mode, m.group(0) == "วิ่ง"])
-    return walk, cry
+    gest = []
+    GK = [("โบกมือ", "wave"), ("ชี้", "point"), ("ยื่น", "raise"), ("ยกมือ", "raise"), ("ยก", "raise"), ("กอด", "hug"), ("ประคอง", "hug"),
+          ("พยักหน้า", "nod"), ("ส่ายหน้า", "shake"), ("สะดุ้ง", "tremble"), ("สั่น", "tremble"), ("ขยับมือ", "hands"), ("ประกอบคำพูด", "hands"),
+          ("ตบ", "raise"), ("หยิบ", "raise"), ("จับมือ", "raise"), ("ลูบ", "raise"), ("กำ", "fist")]
+    for txt in (act, a[0]):
+        for kw, typ in GK:
+            for m in re.finditer(kw, txt):
+                before = names_in(txt[:m.start()])
+                cid = before[-1][2] if before else (next(iter(have)) if len(have) == 1 else None)
+                if cid in have and not any(g[0] == cid and g[1] == typ for g in gest): gest.append([cid, typ])
+    return walk, cry, gest
 
 _vo_rep = os.path.join(HERE, "vo_ep1", "report.json")
 VO = json.load(open(_vo_rep))["lines"] if os.path.exists(_vo_rep) else {}
@@ -233,7 +243,7 @@ while n <= 287:
     seg = {"type": "html", "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
            "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, []), "day": sc in DAY_SCENES}
-    if seg["kind"] == "stage": seg["walk"], seg["cry"] = acting(rng, stage)
+    if seg["kind"] == "stage": seg["walk"], seg["cry"], seg["gest"] = acting(rng, stage)
     while n <= 287 and cover.get(n) == (sc, idx, cover[n][2]) and n not in ROSA_SHOTS:
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
@@ -290,6 +300,7 @@ function poseDefs(cidWanted) {        // pose defs (plain and _talk) belonging t
 function setActs(seg) {
   ACT.mods.forEach(([el, attr, v]) => v === null ? el.removeAttribute(attr) : el.setAttribute(attr, v)); ACT.mods = []; ACT.inst = [];
   const mod = (el, attr) => ACT.mods.push([el, attr, el.getAttribute(attr)]);
+  setBodies(seg, mod);
   (seg.cry || []).forEach(c => poseDefs(c).forEach(d => d.querySelectorAll('.cry').forEach(g => { mod(g, 'display'); g.setAttribute('display', 'inline'); })));
   const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
   (seg.walk || []).forEach(([c, mode, run]) => {
@@ -301,7 +312,7 @@ function setActs(seg) {
     const legs = [], arms = [];
     poseDefs(c).forEach(d => {
       d.querySelectorAll('[id$="-legL"],[id$="-legR"]').forEach(l => { mod(l, 'transform'); legs.push([l, l.id.endsWith('L') ? 1 : -1, (l.dataset.pivot || '0,182').split(',').map(Number)]); });
-      d.querySelectorAll('g[transform^="rotate("]').forEach(a => { const r = /rotate\(([-\d.]+) ([-\d.]+) ([-\d.]+)\)/.exec(a.getAttribute('transform')); if (r && Math.abs(+r[2]) === 42) { mod(a, 'transform'); arms.push([a, +r[1], +r[2], +r[3]]); } });
+      d.querySelectorAll('g[transform^="rotate("]').forEach(a => { const r = /rotate\(([-\d.]+) ([-\d.]+) ([-\d.]+)\)/.exec(a.getAttribute('transform')); if (r && Math.abs(+r[2]) >= 38 && Math.abs(+r[2]) <= 50) { mod(a, 'transform'); arms.push([a, +r[1], +r[2], +r[3]]); } });
     });
     const x = +m[1], y = +m[2], k = +m[3];
     ACT.inst.push({ tg, sh, x, y, k, mode, run, legs, arms, off: (x < 270 ? -1 : 1) * 140 });
@@ -317,8 +328,67 @@ function walkFrame(seg, t) {
     w.tg.setAttribute('transform', `translate(${(w.x + dx).toFixed(1)},${(w.y + bob).toFixed(1)}) scale(${w.k})`);
     if (w.sh) w.sh.setAttribute('transform', `translate(${dx.toFixed(1)},0)`);
     w.legs.forEach(([l, sg, [px, py]]) => l.setAttribute('transform', `rotate(${(sw * A * sg).toFixed(1)} ${px} ${py})`));
-    w.arms.forEach(([a, a0, px, py]) => a.setAttribute('transform', `rotate(${(a0 + (moving ? -sw * A * .7 * Math.sign(px) : 0)).toFixed(1)} ${px} ${py})`));
+    if (moving) w.arms.forEach(([a, a0, px, py]) => a.setAttribute('transform', `rotate(${(a0 - sw * A * .7 * Math.sign(px)).toFixed(1)} ${px} ${py})`));
   });
+}
+const BODY = { bases: [] };
+const LEFTY = { agnes: 1 };
+function setBodies(seg, mod) {
+  BODY.bases = [];
+  const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
+  const seen = new Set();
+  g.querySelectorAll('use').forEach((u, ui) => {
+    const h = (u.getAttribute('href') || '').slice(1).replace(/_talk$/, ''); if (!h.startsWith('sb_') || seen.has(h)) return; seen.add(h);
+    const cid = (POSE_CID[h] || '').replace('mek_back', 'mek'); if (!cid) return;
+    const defs = [$(h), $(h + '_talk')].filter(Boolean), arms = [], heads = [];
+    defs.forEach(d => {
+      d.querySelectorAll('g[transform^="rotate("]').forEach(a => { const r = /rotate\(([-\d.]+) ([-\d.]+) ([-\d.]+)\)/.exec(a.getAttribute('transform')); if (r && Math.abs(+r[2]) >= 38 && Math.abs(+r[2]) <= 50) { mod(a, 'transform'); arms.push([a, +r[1], +r[2], +r[3]]); } });
+      d.querySelectorAll('[id$="-head"]').forEach(hd => { mod(hd, 'transform'); heads.push([hd, (hd.dataset.pivot || '0,52').split(',').map(Number), hd.getAttribute('transform') || '']); });
+    });
+    const posed = h !== 'sb_' + POSE_CID[h];                       // pose already acts it out (e.g. sb_cat_point): keep only head work
+    const gest = (seg.gest || []).filter(x => x[0] === cid && (!posed || ['nod', 'shake', 'tremble'].includes(x[1]))).map(x => x[1]);
+    BODY.bases.push({ cid, arms, heads, gest, posed, ph: (h.length * 1.37 + ui) % 6.28 });
+  });
+}
+const sm = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+function bodyFrame(seg, t, gt, shot, talking) {
+  const D = Math.max(seg.dur, .1);
+  const hold = sm((t - .25) / .5) * sm((D * .82 - t) / .5);           // gesture comes in, holds, goes down before the cut
+  BODY.bases.forEach(b => {
+    const dom = LEFTY[b.cid] ? 1 : -1, spk = talking && shot.speaker === b.cid;
+    let head = 1.6 * Math.sin(gt * .6 + b.ph), nod = 0;
+    if (spk) head += 2.2 * Math.sin(gt * 2.1 + b.ph);
+    if (b.gest.includes('nod')) nod = 2.4 * Math.max(0, Math.sin(t * 5)) * sm(1 - (t - 2.2));
+    if (b.gest.includes('shake')) head += 7 * Math.sin(t * 15) * sm((1.6 - t) / .4);
+    if (b.gest.includes('tremble')) head += 1.2 * Math.sin(gt * 37);
+    b.heads.forEach(([hd, [px, py], o]) => hd.setAttribute('transform', `${o} translate(0,${nod.toFixed(2)}) rotate(${head.toFixed(2)} ${px} ${py})`));
+    b.arms.forEach(([a, a0, px, py]) => {
+      const out = -Math.sign(px), isDom = Math.sign(px) === dom;            // +out = hand swings away from the body
+      let ang = a0 + 1.8 * Math.sin(gt * 1.1 + b.ph + px);         // idle sway
+      if (spk || b.gest.includes('hands')) {                       // talking hands: the dominant hand comes up in beats
+        const beat = Math.max(0, Math.sin(gt * 2.4 + b.ph)) ** 2, held = Math.abs(a0) > 20, lift = held ? 5 * beat : (isDom ? 18 + 20 * beat : 6 * beat);
+        ang += out * lift * sm((t - shot.t0) / .4);
+      }
+      if (isDom && b.gest.includes('point')) ang = a0 * (1 - hold) + out * 100 * hold;
+      else if (isDom && b.gest.includes('wave')) ang = a0 * (1 - hold) + out * (150 + 16 * Math.sin(t * 15)) * hold;
+      else if (isDom && b.gest.includes('raise')) ang = a0 * (1 - hold) + out * 58 * hold;
+      if (b.gest.includes('hug')) ang = a0 * (1 - hold) + (-out) * 38 * hold;
+      if (b.gest.includes('fist') && isDom) ang = a0 * (1 - hold) + (-out) * 30 * hold;
+      if (b.gest.includes('tremble')) ang += 1.5 * Math.sin(gt * 41 + px);
+      a.setAttribute('transform', `rotate(${ang.toFixed(2)} ${px} ${py})`);
+    });
+  });
+}
+function clockFrame(seg, t) {
+  const m = $('clkMin'); if (!m || seg.stage !== 'clock') return;
+  const tick = seg.bells && seg.bells.length ? Math.max(.6, seg.bells[0][0] - .35) : seg.dur * .5;   // long hand reaches XII just before the bell
+  const toTick = tick - t, after = t >= tick;
+  const kick = after ? Math.exp(-(t - tick) * 9) * Math.cos((t - tick) * 40) * 1.6 : 0;
+  m.setAttribute('transform', `rotate(${(after ? kick : -6).toFixed(2)})`);
+  $('clkHour').setAttribute('transform', `rotate(${after ? 0 : -.5})`);
+  const sec = after ? Math.floor(t - tick) : 60 - Math.ceil(toTick);
+  $('clkSec').setAttribute('transform', `rotate(${(sec * 6) % 360})`);
+  $('clkPend').setAttribute('transform', `rotate(${(9 * Math.sin(t * Math.PI)).toFixed(2)} 0 10)`);
 }
 window.render = function (si, t) {
   const seg = TL.segments[si];
@@ -392,6 +462,8 @@ window.render = function (si, t) {
   if (prev && prev.scene !== seg.scene) fade = Math.max(fade, 1 - t / .35);
   if (next && next.scene !== seg.scene) fade = Math.max(fade, 1 - (seg.dur - t) / .35);
   $('fade').setAttribute('opacity', Math.max(0, Math.min(1, fade)).toFixed(3));
+  bodyFrame(seg, t, gt, shot, talking);
+  clockFrame(seg, t);
   walkFrame(seg, t);
   stage.setCurrentTime(gt);
 };
