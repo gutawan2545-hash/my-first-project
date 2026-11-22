@@ -189,6 +189,64 @@ for (x, y, sx) in ((0, 0, 1), (540, 0, -1)):
     A(f'<g transform="translate({x},{y}) scale({sx},1)" stroke="#c8c4d0" stroke-width=".7" fill="none" opacity=".35">'
       '<path d="M 0,0 L 90,40 M 0,0 L 60,80 M 0,0 L 20,100"/><path d="M 30,13 Q 26,24 20,27 Q 12,30 7,33 M 54,24 Q 46,44 36,54 Q 22,62 13,66 M 78,35 Q 66,62 52,72 Q 34,84 18,90"/></g>')
 
+
+# ---------- painted light washes over the architecture ----------
+# left wall: moon falls in from its own windows -> cool, brighter near the top of each bay
+A(f'<path d="M {lx(0):.0f},{top(0):.0f} L {lx(1):.0f},{top(1):.0f} L {lx(1):.0f},{bot(1):.0f} L {lx(0):.0f},{bot(0):.0f} Z" fill="url(#washL)" style="mix-blend-mode:soft-light"/>')
+# right wall: catches candle warmth near the altar end, dark near us
+A(f'<path d="M {rx(0):.0f},{top(0):.0f} L {rx(1):.0f},{top(1):.0f} L {rx(1):.0f},{bot(1):.0f} L {rx(0):.0f},{bot(0):.0f} Z" fill="url(#washR)" style="mix-blend-mode:soft-light"/>')
+# apse glows from the window + candles; ceiling falls off into darkness
+A(f'<rect x="{BW[0]}" y="{BW[2]}" width="{BW[1]-BW[0]}" height="{BW[3]-BW[2]}" fill="url(#washApse)" style="mix-blend-mode:soft-light"/>')
+A('<rect x="0" y="0" width="540" height="240" fill="url(#ceilDark)"/>')
+
+# ---------- inscription over the apse arch ----------
+A(f'<path id="arcTxt" d="M {BW[0]+22},{BW[2]+60} C {BW[0]+24},{BW[2]+6} {BW[1]-24},{BW[2]+6} {BW[1]-22},{BW[2]+60}" fill="none"/>')
+A('<text font-family="Georgia, serif" font-size="11" letter-spacing="3" fill="#b8a46e" opacity=".85"><textPath href="#arcTxt" startOffset="50%" text-anchor="middle">AVE MARIA GRATIA PLENA</textPath></text>')
+
+# ---------- stations of the cross: small gilt frames on the wall between bays ----------
+def station(side, t, f=.5, num=""):
+    xs = lx if side < 0 else rx
+    x, y = xs(t), lerp(top(t), bot(t), f)
+    w = 30 * (1 - t) + 6; h = w * 1.3
+    skew = -side * w * .28
+    A(f'<g><path d="M {x - w/2:.1f},{y - h/2 + skew:.1f} L {x + w/2:.1f},{y - h/2 - skew:.1f} L {x + w/2:.1f},{y + h/2 - skew:.1f} L {x - w/2:.1f},{y + h/2 + skew:.1f} Z" fill="#7a6a42"/>'
+      f'<path d="M {x - w*.36:.1f},{y - h*.36 + skew*.7:.1f} L {x + w*.36:.1f},{y - h*.36 - skew*.7:.1f} L {x + w*.36:.1f},{y + h*.36 - skew*.7:.1f} L {x - w*.36:.1f},{y + h*.36 + skew*.7:.1f} Z" fill="#2c2430"/>'
+      f'<path d="M {x:.1f},{y - h*.22:.1f} L {x:.1f},{y + h*.24:.1f} M {x - w*.16:.1f},{y - h*.08:.1f} L {x + w*.16:.1f},{y - h*.08:.1f}" stroke="#8a7a52" stroke-width="{w*.06+.4:.1f}"/>'
+      f'<path d="M {x - w/2:.1f},{y - h/2 + skew:.1f} L {x + w/2:.1f},{y - h/2 - skew:.1f}" stroke="#cdb880" stroke-width="{w*.06+.3:.1f}"/></g>')
+for i, v in enumerate((.17, .35, .53, .71)):
+    station(-1, proj(v), .5); station(1, proj(v), .5)
+
+# ---------- hanging sanctuary lamp (muted ruby) ----------
+A('<path d="M 300,-10 L 300,300" stroke="#2a2630" stroke-width="1"/><g transform="translate(300,306)"><path d="M -7,0 L 7,0 L 5,12 L -5,12 Z" fill="#6a5c40"/><ellipse cx="0" cy="6" rx="4" ry="5" fill="#a8484e" opacity=".9"/><ellipse cx="0" cy="6" rx="14" ry="14" fill="#c86a6e" opacity=".25" filter="url(#haze)"/></g>')
+
+# ---------- flowers by the altar: dried lilies, petals fallen ----------
+for vx in (BW[0] + 56, BW[1] - 56):
+    vy = BW[3] - 6
+    A(f'<path d="M {vx-7},{vy} L {vx+7},{vy} L {vx+5},{vy-16} L {vx-5},{vy-16} Z" fill="#d8d2dc"/><path d="M {vx-7},{vy} L {vx},{vy} L {vx},{vy-16} L {vx-5},{vy-16} Z" fill="#ece6ee"/>')
+    for k, (dx, dy) in enumerate(((-8, -40), (-2, -48), (6, -42), (10, -34), (-11, -30))):
+        A(f'<path d="M {vx},{vy-14} Q {vx+dx*.4},{vy+dy*.5} {vx+dx},{vy+dy}" stroke="#5a5a3e" stroke-width="1" fill="none"/>'
+          f'<path d="M {vx+dx},{vy+dy} l -4,-3 l 4,-2 l 4,2 Z" fill="#d9cfb8" transform="rotate({dx*6} {vx+dx} {vy+dy})"/>')
+petals = ""
+for k in range(14):
+    px = R.uniform(150, 400); py = R.uniform(530, 600)
+    petals += f'<ellipse cx="{px:.0f}" cy="{py:.0f}" rx="{1.4 + (py-520)/60:.1f}" ry="{.7 + (py-520)/120:.1f}" fill="#d9cfb8" opacity=".7" transform="rotate({R.uniform(0,180):.0f} {px:.0f} {py:.0f})"/>'
+A(petals)
+
+# ---------- floor: marble veins, window reflections, candle pool ----------
+A(f'<rect x="0" y="{BW[3]}" width="540" height="{960-BW[3]}" filter="url(#veins)" opacity=".18" style="mix-blend-mode:overlay"/>')
+for (x0r, x1r) in ((-40, 40), (60, 120), (130, 170)):
+    A(f'<path d="M {x0r},{960} L {x1r},{960} L {x1r*0.3+190:.0f},{BW[3]+20} L {x0r*0.3+190:.0f},{BW[3]+20} Z" fill="#c4ceff" opacity=".08" filter="url(#soft)"/>')
+A(f'<ellipse cx="{BW[1]-20}" cy="{BW[3]+30}" rx="120" ry="34" fill="url(#glowW)" opacity=".55" style="mix-blend-mode:screen"/>')
+
+# ---------- pew details: hymnals, kneelers, a dust sheet ----------
+for (bx, by, sc) in ((120, 640, 1.0), (400, 640, 1.0), (150, 590, .8), (380, 588, .8)):
+    A(f'<g transform="translate({bx},{by}) scale({sc})"><rect x="-10" y="-4" width="12" height="4" fill="#5a2a2e"/><rect x="-10" y="-4" width="12" height="1.2" fill="#e8e0d0"/><rect x="4" y="-3" width="10" height="3" fill="#2a3a5a"/></g>')
+A('<path d="M 300,590 C 320,560 400,556 452,566 L 470,620 C 430,640 340,640 296,626 Z" fill="#cfc9d4" opacity=".85"/><path d="M 300,590 C 330,600 360,604 380,600 L 386,632 C 350,634 320,632 296,626 Z" fill="#a8a2b0" opacity=".85"/>')
+
+# ---------- candle stubs + wax on the floor near Agnes's path ----------
+for (cx2, cy2, h) in ((118, 790, 14), (130, 798, 9), (106, 800, 6)):
+    A(f'<ellipse cx="{cx2}" cy="{cy2 + 2}" rx="8" ry="2.5" fill="#e6e0d4" opacity=".8"/><rect x="{cx2 - 3}" y="{cy2 - h}" width="6" height="{h}" fill="#efe8da"/><path d="M {cx2 - 3},{cy2 - h + 3} q 2,4 0,7" stroke="#d8d0c0" stroke-width="1.2" fill="none"/>')
+
 # ---------- light: moon beams from the left windows, candle rack at the altar ----------
 A('<polygon points="20,250 110,300 470,960 250,960" fill="url(#beamC2)" filter="url(#haze)" style="mix-blend-mode:screen"/>')
 A('<polygon points="140,330 190,360 420,780 330,800" fill="url(#beamC2)" filter="url(#haze)" opacity=".7" style="mix-blend-mode:screen"/>')
@@ -222,12 +280,33 @@ ma_k, ma_x, ma_feet = 1.26, 344, 944
 ma_y = ma_feet - 372 * ma_k
 MARIAM = (f'<ellipse cx="{ma_x + 14}" cy="{ma_feet + 4}" rx="70" ry="9" fill="#0a080c" opacity=".55"/>'
           f'<g filter="url(#drop)"><g style="filter:brightness(.9) saturate(.85)"><g transform="translate({ma_x},{ma_y:.0f}) scale({ma_k})"><use href="#fb-mariam"/></g></g></g>'
-          f'<ellipse cx="{ma_x - 40}" cy="{ma_y + 40:.0f}" rx="150" ry="150" fill="url(#glowC)" opacity=".35" style="mix-blend-mode:screen"/>')
+          f'<ellipse cx="{ma_x - 40}" cy="{ma_y + 40:.0f}" rx="150" ry="150" fill="url(#glowC)" opacity=".35" style="mix-blend-mode:screen"/>'
+          f'<g style="mix-blend-mode:screen" opacity=".5" filter="url(#rim)"><g transform="translate({ma_x - 3},{ma_y:.0f}) scale({ma_k})"><use href="#fb-mariam"/></g></g>')
+
+
+# ---------- foreground: out-of-focus pew end, candle cluster, column edge (depth layer) ----------
+FG = ('<g filter="url(#fgBlur)">'
+      '<path d="M -20,820 L 70,808 C 92,806 104,820 100,846 L 92,980 L -20,980 Z" fill="#20161a"/>'
+      '<path d="M -20,820 L 70,808 C 82,806 90,812 94,822 L -20,834 Z" fill="#4a3530"/>'
+      '<path d="M 6,826 C 20,818 50,816 64,822" stroke="#6a4c40" stroke-width="3" fill="none"/>'
+      '<path d="M 500,-20 L 560,-20 L 560,980 L 486,980 Z" fill="#cfc9d4"/>'
+      '<path d="M 486,980 L 500,-20 L 512,-20 L 498,980 Z" fill="#e8e2ea"/>'
+      '<path d="M 524,-20 L 560,-20 L 560,980 L 520,980 Z" fill="#8e8898"/>'
+      '<path d="M 478,240 L 568,232 L 568,256 L 478,262 Z" fill="#e8e2ea"/>'
+      '</g>'
+      '<g filter="url(#bokeh)">'
+      '<circle cx="40" cy="790" r="9" fill="#fff0dc" opacity=".8"/><circle cx="62" cy="780" r="7" fill="#ffe8cc" opacity=".7"/><circle cx="24" cy="772" r="6" fill="#fff4e6" opacity=".6"/>'
+      '<circle cx="512" cy="560" r="6" fill="#dfe4ff" opacity=".5"/><circle cx="520" cy="610" r="4" fill="#dfe4ff" opacity=".4"/>'
+      '</g>'
+      '<ellipse cx="48" cy="770" rx="90" ry="70" fill="url(#glowW)" opacity=".6" style="mix-blend-mode:screen"/>')
 
 FRAME = f'''<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="โบสถ์น้อยสีขาวตกแต่งวิจิตรแบบวังเก่า ตอนตีสาม แสงจันทร์ส่องผ่านหน้าต่างโค้ง ซิสเตอร์มาเรียมยืนเต็มตัวด้านหน้า ซิสเตอร์อักเนสยืนถือเทียนอยู่ไกลออกไปในทางเดิน">
 {BG}
 {AGNES}
 {MARIAM}
+{FG}
+<rect width="540" height="960" fill="url(#hazeBack)" style="mix-blend-mode:screen"/>
+<rect width="540" height="960" filter="url(#paint)" opacity=".22" style="mix-blend-mode:soft-light"/>
 <rect width="540" height="960" fill="url(#vig)"/>
 <rect width="540" height="960" filter="url(#grain)" opacity=".06" style="mix-blend-mode:screen"/>
 <rect width="540" height="960" filter="url(#grain)" opacity=".045" style="mix-blend-mode:overlay"/>
@@ -244,6 +323,17 @@ FRAME = f'''<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="
 </svg>'''
 
 DEFS = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{cf.DEFS}
+<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.5"/></filter>
+<filter id="fgBlur" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="5"/></filter>
+<filter id="paint" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="4" seed="3"/><feColorMatrix type="matrix" values="0 0 0 0 .55  0 0 0 0 .52  0 0 0 0 .62  0 0 0 1.4 -.25"/></filter>
+<filter id="veins" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"><feTurbulence type="turbulence" baseFrequency=".008 .03" numOctaves="3" seed="12"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  -1.4 0 0 0 1.1"/></filter>
+<filter id="rim" x="-10%" y="-10%" width="130%" height="120%"><feFlood flood-color="#c8d4ff"/><feComposite in2="SourceAlpha" operator="in" result="c"/><feOffset dx="-3" dy="0" in="SourceAlpha" result="o"/><feComposite in="c" in2="o" operator="out"/></filter>
+<linearGradient id="washL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a1830"/><stop offset=".5" stop-color="#c8d0ff"/><stop offset="1" stop-color="#9aa0d8"/></linearGradient>
+<linearGradient id="washR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#100e18"/><stop offset=".7" stop-color="#4a4258"/><stop offset="1" stop-color="#f0d8c8"/></linearGradient>
+<radialGradient id="washApse" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#f4eef8"/><stop offset="1" stop-color="#3a3448"/></radialGradient>
+<linearGradient id="ceilDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#08070c" stop-opacity=".85"/><stop offset="1" stop-color="#08070c" stop-opacity="0"/></linearGradient>
+<radialGradient id="hazeBack" cx="50%" cy="40%" r="30%"><stop offset="0" stop-color="#b4b0d0" stop-opacity=".16"/><stop offset="1" stop-color="#b4b0d0" stop-opacity="0"/></radialGradient>
 <filter id="haze" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>
 <filter id="moteFar" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="1"/></filter>
 <filter id="moteGlow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation=".6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -276,7 +366,7 @@ p {{ max-width:560px; margin:0; font-size:13px; color:var(--muted); line-height:
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Inter:wght@500&display=swap">
 {DEFS}
-<h1>โบสถ์น้อย · เฟรมทดสอบ ฉบับ 2<span>โบสถ์ขาววิจิตรแบบวังเก่า · ตัวละครเต็มตัว</span></h1>
+<h1>โบสถ์น้อย · เฟรมทดสอบ ฉบับ 3<span>โบสถ์ขาววิจิตรแบบวังเก่า · ตัวละครเต็มตัว</span></h1>
 <div class="frame" id="f">{FRAME}</div>
 <div class="bar"><span>9:16 TikTok</span><button id="bs" type="button" aria-pressed="true">ซับ</button><button id="bg" type="button" aria-pressed="false">พื้นที่ซับ</button></div>
 <p>เพดานโค้งมีซี่โครงและดอกประดับ เสาอิงหัวม้วน บัวคิ้วและลายฟันปลาใต้ชายคา หน้าต่างโค้งเรียงลึกเข้าไป แท่นบูชาหินอ่อนขาวขลิบทองซีด รูปปั้นในซุ้มคลุมผ้าขาว โคมระย้าไม่มีไฟและมีใยแมงมุม พื้นหินอ่อนลายตาราง ปูนลอก คราบชื้น รอยร้าว · มาเรียมยืนด้านหน้าในแสงจันทร์ อักเนสยืนไกลออกไปในทางเดิน มีแสงจากเทียนในมือเธอเพียงดวงเดียว</p>
