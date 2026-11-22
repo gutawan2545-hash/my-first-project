@@ -161,6 +161,7 @@ def L(key, dark=.5, tint="#06050c", holes=(), glows=(), beams=(), fog=(), motes=
     """dark: how much of the frame falls into darkness; holes: (x,y,r) where light keeps it open;
     glows: (x,y,r,color,op); beams: (points,color,op); fog: (y,h,op); motes: (x0,y0,x1,y1,n,color);
     shadows: cast-shadow polygons (points, op)."""
+    dark *= .6
     o = ""
     for pts, op in shadows:
         o += f'<polygon points="{pts}" fill="#05040a" opacity="{op}" filter="url(#lsoft)"/>'
@@ -170,15 +171,15 @@ def L(key, dark=.5, tint="#06050c", holes=(), glows=(), beams=(), fog=(), motes=
     o += '</mask>'
     o += f'<rect x="-200" y="-200" width="940" height="1360" fill="{tint}" opacity="{dark}" mask="url(#lm_{key})"/>'
     for (pts, col, op) in beams:
-        o += f'<polygon points="{pts}" fill="{col}" opacity="{op}" filter="url(#lhaze)" style="mix-blend-mode:screen"/>'
+        o += f'<polygon points="{pts}" fill="{col}" opacity="{op * .6:.2f}" filter="url(#lhaze)" style="mix-blend-mode:screen"/>'
     for (y, h, op) in fog:
-        o += f'<rect x="-100" y="{y}" width="740" height="{h}" fill="#c8ccdc" opacity="{op}" filter="url(#lhaze)"/>'
+        o += f'<rect x="-100" y="{y}" width="740" height="{h}" fill="#c8ccdc" opacity="{op * .55:.2f}" filter="url(#lhaze)"/>'
     for (x, y, r, col, op) in glows:
-        o += f'<circle cx="{x}" cy="{y}" r="{r}" fill="url(#lg_{col.strip("#")})" opacity="{op}" style="mix-blend-mode:screen"/>'
+        o += f'<circle cx="{x}" cy="{y}" r="{r}" fill="url(#lg_{col.strip("#")})" opacity="{op * .7:.2f}" style="mix-blend-mode:screen"/>'
         GLOWCOLS.add(col)
     if motes:
         x0, y0, x1, y1, n, col = motes
-        for i in range(n):
+        for i in range(max(4, n // 3)):
             x = _R.uniform(x0, x1); y = _R.uniform(y0, y1)
             if _R.random() < .6:
                 o += f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{_R.uniform(.8, 1.6):.1f}" fill="{col}" opacity="{_R.uniform(.45, .9):.2f}"/>'
@@ -188,42 +189,41 @@ def L(key, dark=.5, tint="#06050c", holes=(), glows=(), beams=(), fog=(), motes=
 GLOWCOLS = set()
 MOON, WARM, CANDLE, SCREEN, PHONE, SIREN = "#c4d0ff", "#fff0dc", "#ffe6c4", "#b4a8ff", "#cfe0ff", "#6a8cff"
 
-L("tower_fog", .45, holes=((270, 200, 160),), glows=((270, 190, 220, MOON, .5),), fog=((520, 160, .45), (640, 120, .35), (380, 90, .2)), motes=(40, 300, 500, 760, 26, "#e4e8ff"))
+L("tower_fog", .45, holes=((270, 200, 160),), glows=((270, 190, 220, MOON, .5),), fog=((560, 160, .45),), motes=(40, 300, 500, 760, 26, "#e4e8ff"))
 L("rosa_room", .62, holes=((150, 320, 150), (330, 560, 110), (285, 610, 40)),
   beams=(("40,160 260,160 520,920 200,940", MOON, .4),), glows=((285, 610, 50, "#9fdcff", .6), (150, 320, 200, MOON, .45)), motes=(150, 300, 470, 860, 26, "#dfe4ff"),
   shadows=(("330,900 380,900 520,960 440,960", .5),))
-L("rosa_bed", .7, holes=((300, 560, 130),), glows=((300, 600, 120, WARM, .7),), beams=(("296,600 312,600 380,700 250,700", WARM, .5),), motes=(220, 520, 400, 700, 14, "#fff4e0"))
+L("rosa_bed", .7, holes=((300, 560, 130),), glows=((300, 600, 120, WARM, .7),), motes=(220, 520, 400, 700, 14, "#fff4e0"))
 L("oldwing", .45, holes=((205, 405, 70),), glows=((205, 400, 110, CANDLE, .85),), motes=(120, 300, 300, 520, 14, "#fff0d8"))
-L("path_dawn", .25, holes=((270, 300, 280),), fog=((380, 200, .45), (560, 160, .25)), glows=((270, 120, 300, MOON, .35),), motes=(60, 300, 480, 760, 20, "#eef2ff"))
+L("path_dawn", .25, holes=((270, 300, 280),), fog=((400, 200, .45),), glows=((270, 120, 300, MOON, .35),), motes=(60, 300, 480, 760, 20, "#eef2ff"))
 L("refectory", .28, holes=((120, 230, 140), (420, 230, 140), (270, 560, 200)),
-  beams=(("60,140 180,140 340,760 170,780", WARM, .32), ("360,140 480,140 560,760 400,780", WARM, .32)), motes=(60, 160, 520, 760, 28, "#fff4e0"))
+   motes=(60, 160, 520, 760, 28, "#fff4e0"))
 L("condo", .58, holes=((420, 420, 180), (166, 640, 90)), glows=((520, 420, 300, SCREEN, .75), (166, 640, 110, PHONE, .7), (150, 250, 140, "#7f9cff", .3)), motes=(280, 300, 520, 700, 16, "#d8d0ff"))
 L("gate", .14, holes=((120, 180, 300),), glows=((80, 160, 320, WARM, .45),),
   shadows=(("140,920 200,920 420,980 300,980", .45), ("360,900 420,900 560,960 480,970", .45), ("150,640 190,640 260,690 200,700", .35)),
-  beams=(("-40,80 140,40 560,700 400,780", WARM, .18),), motes=(40, 120, 500, 700, 26, "#fff4e6"))
+  motes=None)
 L("guestroom", .38, holes=((275, 280, 200), (160, 560, 120)), beams=(("150,110 400,110 330,960 -40,960", WARM, .38),), motes=(60, 200, 420, 820, 22, "#fff0dc"),
   shadows=(("160,900 220,900 330,960 240,960", .4),))
-L("cemetery", .38, holes=((270, 300, 260),), fog=((480, 140, .4), (820, 120, .25)), glows=((270, 120, 280, WARM, .3),), motes=(40, 300, 500, 760, 18, "#f4eef8"))
-L("music", .42, holes=((180, 380, 180), (440, 380, 90)), glows=((180, 120, 260, WARM, .55),), beams=(("120,0 260,0 360,700 40,700", WARM, .3),), motes=(60, 150, 360, 600, 18, "#fff0dc"))
+L("cemetery", .38, holes=((270, 300, 260),), fog=((480, 140, .4),), glows=((270, 120, 280, WARM, .3),), motes=(40, 300, 500, 760, 18, "#f4eef8"))
+L("music", .42, holes=((180, 380, 180), (440, 380, 90)), glows=((180, 120, 260, WARM, .55),), motes=(60, 150, 360, 600, 18, "#fff0dc"))
 L("veranda", .66, holes=((270, 600, 170),), glows=((270, 610, 200, CANDLE, .9),), motes=(170, 460, 370, 640, 16, "#fff4e0"),
   shadows=(("140,860 200,860 120,960 40,960", .45), ("400,870 460,870 560,960 480,960", .45)))
-L("dawn_walk", .3, holes=((270, 400, 280),), fog=((400, 220, .5), (700, 140, .25)), glows=((300, 200, 300, MOON, .35),), motes=(40, 300, 500, 760, 20, "#eef2ff"))
+L("dawn_walk", .3, holes=((270, 400, 280),), fog=((420, 200, .45),), glows=((300, 200, 300, MOON, .35),), motes=(40, 300, 500, 760, 20, "#eef2ff"))
 L("mass", .45, holes=((270, 250, 170), (270, 500, 200)),
-  beams=(("190,200 350,200 470,960 90,960", "#b8a8ff", .32), ("250,200 300,200 330,960 210,960", "#ffd8c8", .18)), glows=((270, 220, 160, "#b8a8ff", .5),), motes=(120, 260, 440, 800, 26, "#e8e2ff"))
-L("garden", .2, holes=((200, 500, 220), (360, 520, 160)), beams=(("200,0 300,0 300,800 120,800", WARM, .3), ("380,0 430,0 470,800 360,800", WARM, .22)),
+  beams=(("190,200 350,200 470,960 90,960", "#b8a8ff", .32),), glows=((270, 220, 160, "#b8a8ff", .5),), motes=(120, 260, 440, 800, 26, "#e8e2ff"))
+L("garden", .2, holes=((200, 500, 220), (360, 520, 160)), 
   shadows=(("200,860 260,860 340,920 260,930", .4), ("360,860 420,860 500,920 420,930", .4)), motes=(100, 120, 460, 700, 22, "#fff4e0"))
 L("archive", .5, holes=((270, 170, 70), (290, 560, 170)), beams=(("230,140 310,140 460,960 120,960", WARM, .5),), glows=((270, 170, 110, "#e8ecff", .6),), motes=(130, 220, 440, 800, 38, "#fff0dc"))
-L("flash_dorm", .5, tint="#120a04", holes=((450, 560, 120), (270, 600, 260)), glows=((410, 650, 110, CANDLE, .75),), fog=((560, 300, .12),), motes=(150, 500, 520, 800, 16, "#fff0d8"))
-L("steps", .42, holes=((270, 420, 200), (270, 820, 100)), glows=((270, 160, 260, WARM, .3),), fog=((780, 120, .2),), motes=(80, 200, 460, 700, 14, "#f4eef8"))
-L("kitchen", .55, holes=((270, 300, 220), (200, 640, 160)), glows=((270, 145, 300, WARM, .85),), beams=(("262,140 278,140 460,960 80,960", WARM, .32),),
-  fog=((260, 160, .12),), motes=(120, 180, 420, 700, 24, "#fff4e0"), shadows=(("250,900 310,900 380,960 300,960", .4),))
+L("flash_dorm", .5, tint="#120a04", holes=((450, 560, 120), (270, 600, 260)), glows=((410, 650, 110, CANDLE, .75),), motes=(150, 500, 520, 800, 16, "#fff0d8"))
+L("steps", .42, holes=((270, 420, 200), (270, 820, 100)), motes=(80, 200, 460, 700, 14, "#f4eef8"))
+L("kitchen", .55, holes=((270, 300, 220), (200, 640, 160)), glows=((270, 145, 300, WARM, .85),), motes=(120, 180, 420, 700, 24, "#fff4e0"), shadows=(("250,900 310,900 380,960 300,960", .4),))
 L("call", .0, extra='<circle cx="460" cy="150" r="260" fill="url(#lg_b4a8ff)" opacity=".8" style="mix-blend-mode:screen"/><rect x="0" y="474" width="540" height="486" fill="#06050c" opacity=".45"/><circle cx="200" cy="700" r="140" fill="url(#lg_cfe0ff)" opacity=".7" style="mix-blend-mode:screen"/><circle cx="450" cy="874" r="80" fill="#06050c" opacity=".0"/>')
 GLOWCOLS.update({SCREEN, PHONE})
-L("dream", .3, tint="#1a1418", holes=((270, 240, 160),), glows=((270, 240, 200, "#f0f0ff", .55),), fog=((300, 500, .35), (600, 360, .3)), motes=(60, 200, 480, 860, 30, "#e8e8f0"))
-L("tower_night", .55, holes=((430, 110, 90), (380, 860, 150), (180, 640, 90)), glows=((430, 110, 160, MOON, .7), (214, 646, 60, WARM, .8)),
+L("dream", .3, tint="#1a1418", holes=((270, 240, 160),), glows=((270, 240, 200, "#f0f0ff", .55),), fog=((420, 420, .35),), motes=(60, 200, 480, 860, 30, "#e8e8f0"))
+L("tower_night", .55, holes=((430, 110, 90), (380, 860, 150), (180, 640, 90)), glows=((430, 110, 160, MOON, .7),),
   beams=(("206,646 222,638 520,850 470,940", WARM, .5),), motes=(200, 640, 520, 940, 20, "#fff4e0"))
-L("police", .25, holes=((270, 600, 260),), glows=((40, 300, 300, SIREN, .75), (520, 260, 220, SIREN, .5), (270, 100, 300, MOON, .3)), fog=((560, 140, .2),), motes=(40, 300, 500, 760, 14, "#e4e8ff"))
-L("thana_night", .6, holes=((270, 300, 180), (280, 600, 180)), glows=((270, 125, 220, WARM, .8),), beams=(("262,130 278,130 460,960 80,960", WARM, .28),), motes=(120, 160, 420, 640, 16, "#fff4e0"))
+L("police", .25, holes=((270, 600, 260),), glows=((40, 300, 300, SIREN, .75),), motes=(40, 300, 500, 760, 14, "#e4e8ff"))
+L("thana_night", .6, holes=((270, 300, 180), (280, 600, 180)), glows=((270, 125, 220, WARM, .8),), motes=(120, 160, 420, 640, 16, "#fff4e0"))
 L("chapel_night", .66, holes=((405, 210, 120), (250, 560, 110)), beams=(("330,180 480,180 300,960 0,960", MOON, .42),), glows=((405, 200, 150, "#b8a8ff", .5),),
   motes=(80, 300, 440, 800, 30, "#dfe4ff"), extra='<path d="M 440,760 C 432,730 452,700 440,670 C 432,650 448,630 440,610" stroke="#c8c4d0" stroke-width="2" fill="none" opacity=".5" filter="url(#lfar)"/>')
 
