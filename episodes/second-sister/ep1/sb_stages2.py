@@ -615,7 +615,7 @@ ST["sisters_ext"] = sisters_building()   # rebuilt without stains or cracks; age
 
 # ---- engraved Thai lettering on stone ----
 def carved(x, y, text, size, anchor="middle", weight=700, latin=False):
-    fam = "Georgia, 'Times New Roman', serif" if latin else "Noto Serif Thai, serif"
+    fam = "Georgia, 'Times New Roman', serif" if latin else "IBM Plex Sans Thai, sans-serif"
     f = f'font-family="{fam}" font-size="{size}" font-weight="{weight}" text-anchor="{anchor}" letter-spacing="{1.2 if latin else 1.5}"'
     return (f'<text x="{x + 1.1:.1f}" y="{y + 1.3:.1f}" {f} fill="#eeeaf4" opacity=".55">{text}</text>'   # light catching the lower lip of the groove
             f'<text x="{x:.1f}" y="{y:.1f}" {f} fill="#4a4456">{text}</text>'                              # the cut itself
