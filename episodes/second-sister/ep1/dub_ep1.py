@@ -13,7 +13,7 @@ import json, os, re, subprocess, sys, difflib, urllib.request, urllib.error, tim
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 API = "https://api.elevenlabs.io/v1"
-CEILING = 20000                      # user-approved credit ceiling for this episode
+CEILING = 32000                      # user-confirmed ceiling (raised from 20,000 for the emotion re-dub)
 OUT = os.path.join(HERE, "vo_ep1")
 VOICES = json.load(open(os.path.join(HERE, "..", "voices.json")))
 
