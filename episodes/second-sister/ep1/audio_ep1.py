@@ -68,7 +68,7 @@ def gain_at(layer, t): return float(ctrl[layer][min(nc - 1, int(t * CR))])
 def gain_curve(layer, t0, n): return np.interp(t0 + np.arange(n) / SR, np.arange(nc) / CR, ctrl[layer]).astype(np.float32)
 
 # two buses: music (organ, choir, piano, box) and effects (bells, hits, puff); music sits lower than the effects
-BUSES = {"music": [np.zeros(N, np.float32), np.zeros(N, np.float32)], "fx": [np.zeros(N, np.float32), np.zeros(N, np.float32)]}
+BUSES = {k: [np.zeros(N, np.float32), np.zeros(N, np.float32)] for k in ("music", "fx", "bell")}
 BUS = "music"
 def add(sig, t0, pan=0.0, vol=1.0):
     L, Rr = BUSES[BUS]
@@ -194,15 +194,24 @@ for s in segs:
     prev = s["mood"]
 
 # ---------------- church bells (louder, deep, three tolls) ----------------
-def bell(dur=8.0, f0=147.0):
+def bell(dur=9.0, f0=131.0):
+    """Big cast church bell: hum, prime, minor-third tierce, quint, nominal + upper partials, each as a slightly
+    detuned pair so the tone warbles like a real bell, plus a bright metallic strike at the start."""
     n = int(dur * SR); t = np.arange(n) / SR; s = np.zeros(n)
-    for ratio, amp, dec in [(.5, .7, .3), (1, 1, .45), (1.2, .6, .7), (1.5, .5, .8), (2, .45, 1.0), (2.5, .25, 1.5), (2.67, .3, 1.6), (3.0, .2, 2.0), (4.0, .12, 2.8)]:
-        s += amp * np.sin(2 * np.pi * f0 * ratio * t + ratio) * np.exp(-t * dec) * (1 + .08 * np.sin(2 * np.pi * 1.3 * t))
-    s *= np.minimum(1, t / .003)
-    clang = rng.standard_normal(int(.05 * SR)) * np.exp(-np.arange(int(.05 * SR)) / SR * 80)
-    s[:len(clang)] += .4 * clang
-    return (s / 2.6).astype(np.float32)
+    for ratio, amp, dec in [(.5, .9, .22), (1, 1, .35), (1.183, .8, .45), (1.506, .55, .6), (2, .75, .5), (2.514, .4, .9),
+                            (2.662, .45, 1.0), (3.011, .35, 1.3), (4.166, .25, 1.9), (5.433, .18, 2.6), (6.796, .12, 3.4)]:
+        f = f0 * ratio
+        s += amp * (np.sin(2 * np.pi * f * t + ratio) + np.sin(2 * np.pi * (f + .7 + ratio * .25) * t)) * .5 * np.exp(-t * dec)
+    strike = np.zeros(n); m = int(.25 * SR); tt = t[:m]
+    for f in (2793, 3317, 3951, 4699, 5588):
+        strike[:m] += np.sin(2 * np.pi * f * tt + f) * np.exp(-tt * 28)
+    strike[:m] += .5 * rng.standard_normal(m) * np.exp(-tt * 60)
+    s = s + .45 * strike
+    s *= np.minimum(1, t / .002)
+    s = np.tanh(1.8 * s / np.abs(s).max()) / np.tanh(1.8)   # dense, loud body
+    return s.astype(np.float32)
 BELL = bell()
+BUS = "bell"
 for s in segs:
     for b, cnt, bv in s.get("bells", []):
         for rep in range(cnt):
@@ -215,6 +224,7 @@ def stinger(dur=2.6):
         out += .12 * np.sign(np.sin(2 * np.pi * f * t + f)) * np.exp(-t * 2.2) * np.minimum(1, t / .01)
     return out.astype(np.float32)
 STING = stinger()
+BUS = "fx"
 for s in segs:
     for a in s.get("stingers", []):
         add(STING, s["t0"] + a, vol=.75)
@@ -239,14 +249,19 @@ def convolve(x, h, block=1 << 20):
         seg = x[i:i + block]
         y[i:i + nfft] += np.fft.irfft(np.fft.rfft(seg, nfft) * H, nfft)[:min(nfft, len(y) - i)].astype(np.float32)
     return y[:len(x)]
-MUSIC_LEVEL = .5   # user: music softer, effects at full level
-mL, mR = BUSES["music"]; fL, fR = BUSES["fx"]
-L, Rr = MUSIC_LEVEL * mL + fL, MUSIC_LEVEL * mR + fR
+# levels (user): bells very loud and clear, scares at full level, music clearly underneath
+def wet(bus, dry=.62, rev=.55):
+    l, r = BUSES[bus]; return dry * l + rev * convolve(l, ir(1)), dry * r + rev * convolve(r, ir(2))
+bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music")
 del BUSES
-wetL, wetR = convolve(L, ir(1)), convolve(Rr, ir(2))
-outL, outR = .62 * L + .55 * wetL, .62 * Rr + .55 * wetR
+bpk = max(np.abs(bl).max(), np.abs(br).max(), 1e-6)
+rest_pk = max(np.abs(ml).max(), np.abs(fl).max(), 1e-6)
+k = .95 / bpk                                    # bells reach full scale
+outL = bl * k + (fl * .80 + ml * .38) / rest_pk
+outR = br * k + (fr * .80 + mr * .38) / rest_pk
+outL, outR = np.tanh(outL * 1.1) / np.tanh(1.1), np.tanh(outR * 1.1) / np.tanh(1.1)
 peak = max(np.abs(outL).max(), np.abs(outR).max())
-scale = .89 / peak
+scale = .95 / peak
 pcm = (np.stack([outL, outR], 1) * scale * 32767).astype(np.int16)
 with wave.open(os.path.join(HERE, "music_ep1.wav"), "wb") as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())

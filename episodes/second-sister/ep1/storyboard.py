@@ -219,7 +219,7 @@ cf.F["mek_back"] = cf.figure("mek_back", "",
 pose("mek_back", "mek_back")
 
 def cemetery_bg():
-    o = sky("#4a4478", "#9a86b4", "#e8b8b4", clouds=((20, 120, 160, "#f4d0c4", .55), (260, 90, 220, "#f8dcd0", .5), (360, 190, 150, "#f0c8c0", .45), (60, 230, 120, "#e8c0c0", .35)))
+    o = sky("#8aa8e4", "#bcc2ec", "#efe0ee", clouds=((20, 120, 160, "#ffffff", .65), (260, 90, 220, "#ffffff", .6), (360, 190, 150, "#fbf4fb", .5), (60, 230, 120, "#f6eef8", .4)))
     # far: Bangkok towers, the church tower, tree line, all in lavender haze
     o += "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{420 - y}" fill="#8a7ea8" opacity=".55"/>' for x, y, w in ((0, 250, 46), (40, 290, 34), (470, 230, 60), (430, 300, 40)))
     o += f'<g opacity=".8">{church(330, 330, .5)}</g>'

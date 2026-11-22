@@ -157,6 +157,7 @@ for sc, panels in PANELS.items():
             if n in cover and (cover[n][2] <= b - a): continue
             cover[n] = (sc, idx, b - a)
 
+DAY_SCENES = {2, 5, 6, 7, 8, 11, 12, 13}     # scenes set in daylight: bright sky, no darkness overlay, lighter grade
 segments, T = [], 0.0
 silence_left = 0
 RED_SHOTS = {238, 247, 251, 253, 284}       # the big scares: subtitle turns red
@@ -171,7 +172,7 @@ while n <= 287:
     rng, stage, crop, size, mv, desc = PANELS[sc][idx]
     seg = {"type": "html", "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
-           "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, [])}
+           "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, []), "day": sc in DAY_SCENES}
     while n <= 287 and cover.get(n) == (sc, idx, cover[n][2]) and n not in ROSA_SHOTS:
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
@@ -227,8 +228,10 @@ window.render = function (si, t) {          // segment index, seconds into the s
     $('viewUse').setAttribute('href', src);
     const [cx, cy, h] = seg.crop || [270, 480, 960], w = h * 9 / 16;
     $('view').setAttribute('viewBox', `${cx - w / 2} ${cy - h / 2} ${w} ${h}`);
-    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : 'saturate(1.12) brightness(1.05) contrast(1.05)';
-    $('grade').style.display = seg.kind === 'exact' ? 'none' : ''; $('grain').style.display = seg.kind === 'exact' ? 'none' : '';
+    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : seg.day ? 'saturate(1.1) brightness(1.12) contrast(1.03)' : 'saturate(1.12) brightness(1.05) contrast(1.05)';
+    $('grade').style.display = seg.kind === 'exact' ? 'none' : '';
+    document.querySelectorAll('rect[mask^="url(#lm_"]').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
+    $('gMul').setAttribute('opacity', seg.day ? .16 : .42); $('gSoft').setAttribute('opacity', seg.day ? .05 : .14); $('gVig').setAttribute('opacity', seg.day ? .45 : 1); $('grain').style.display = seg.kind === 'exact' ? 'none' : '';
     $('chipText').textContent = seg.chip; $('chip').style.display = seg.chip ? '' : 'none';
     if (seg.chip) $('chipBox').setAttribute('width', 14 + seg.chip.length * 7.4);
   }
@@ -306,7 +309,7 @@ html = f'''<!doctype html><html><head><meta charset="utf-8"><title>EP1</title>
 </defs>
 <rect width="540" height="960" fill="#0a080c"/>
 <g id="cam"><g id="viewWrap"><svg id="view" x="0" y="0" width="540" height="960" viewBox="0 0 540 960" preserveAspectRatio="xMidYMid slice"><use id="viewUse" href="#st_tower_fog"/></svg></g></g>
-<g id="grade"><rect width="540" height="960" fill="#e2dcfa" opacity=".42" style="mix-blend-mode:multiply"/><rect width="540" height="960" fill="#6c64b0" opacity=".14" style="mix-blend-mode:soft-light"/><rect width="540" height="960" fill="url(#pvig)"/></g>
+<g id="grade"><rect id="gMul" width="540" height="960" fill="#e2dcfa" opacity=".42" style="mix-blend-mode:multiply"/><rect id="gSoft" width="540" height="960" fill="#6c64b0" opacity=".14" style="mix-blend-mode:soft-light"/><rect id="gVig" width="540" height="960" fill="url(#pvig)"/></g>
 <g id="grain" pointer-events="none"><rect width="540" height="960" filter="url(#grainF)" opacity=".2" style="mix-blend-mode:screen"/><rect width="540" height="960" filter="url(#grainF)" opacity=".12" style="mix-blend-mode:overlay"/></g>
 <g id="motes"></g>
 <g id="chip"><rect id="chipBox" x="24" y="28" width="134" height="30" rx="15" fill="#15121c" fill-opacity=".85" stroke="#8f74d8" stroke-width="1.4"/><text id="chipText" x="36" y="48" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" fill="#e6e0f4"></text></g>

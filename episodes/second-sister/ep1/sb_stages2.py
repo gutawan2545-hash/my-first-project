@@ -331,7 +331,7 @@ ST["call"] = call_screen()
 
 # ============================== 7. ARRIVAL: three people on one ground plane ==============================
 def gate_bg():
-    o = '<rect width="540" height="960" fill="#9a8aae"/>' + sky("#5a5288", "#a890b8", "#e8c4c0", clouds=((30, 120, 170, "#f4d4cc", .5), (300, 90, 200, "#f8dcd4", .45)))
+    o = '<rect width="540" height="960" fill="#9a8aae"/>' + sky("#86a8e6", "#b8c2ee", "#ece4f4", clouds=((30, 120, 170, "#ffffff", .7), (300, 90, 200, "#ffffff", .6)))
     o += "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{480 - y}" fill="#8a7ea8" opacity=".55"/>' for x, y, w in ((0, 260, 50), (470, 240, 60)))
     o += f'<g opacity=".95">{church(310, 410, .62)}</g>' + haze(400, 90, "#d8c4dc", .3)
     o += '<path d="M 0,560 L 540,560 L 540,960 L 0,960 Z" fill="#8a8494"/>' + "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#6e6878" stroke-width="1.4"/>' for y in (600, 660, 740, 840, 940)) + "".join(f'<path d="M {270 + (x - 270) * .25:.0f},560 L {x},960" stroke="#6e6878" stroke-width="1.2"/>' for x in range(-400, 940, 90))
