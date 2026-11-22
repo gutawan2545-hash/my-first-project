@@ -380,7 +380,9 @@ def L(key, dark=.5, tint="#120c16", holes=(), glows=(), beams=(), fog=(), motes=
     for (x, y, r, col, op) in glows:
         o += f'<circle cx="{x}" cy="{y}" r="{r}" fill="url(#lg_{col.strip("#")})" opacity="{op * .7:.2f}" style="mix-blend-mode:screen"/>'
         GLOWCOLS.add(col)
+    LIGHTS[key] = [(x, y, r) for (x, y, r) in holes] + [(x, y, r) for (x, y, r, c_, o_) in glows]
     if motes:
+        o += '<g class="lmotes">'
         x0, y0, x1, y1, n, col = motes
         for i in range(max(4, n // 3)):
             x = _R.uniform(x0, x1); y = _R.uniform(y0, y1)
@@ -388,8 +390,10 @@ def L(key, dark=.5, tint="#120c16", holes=(), glows=(), beams=(), fog=(), motes=
                 o += f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{_R.uniform(.8, 1.6):.1f}" fill="{col}" opacity="{_R.uniform(.45, .9):.2f}"/>'
             else:
                 o += f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{_R.uniform(1.6, 2.6):.1f}" fill="{col}" opacity="{_R.uniform(.2, .35):.2f}" filter="url(#lfar)"/>'
+        o += '</g>'
     ST[key] += o + extra
 GLOWCOLS = set()
+LIGHTS = {}
 MOON, WARM, CANDLE, SCREEN, PHONE, SIREN = "#c4d0ff", "#fff0dc", "#ffe6c4", "#b4a8ff", "#cfe0ff", "#6a8cff"
 
 L("tower_fog", .45, holes=((270, 200, 160),), glows=((270, 190, 220, MOON, .5),), fog=((560, 160, .45),), motes=(40, 300, 500, 760, 26, "#e4e8ff"))

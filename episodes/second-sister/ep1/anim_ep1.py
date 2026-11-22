@@ -65,6 +65,14 @@ def drift(m):
     return f'<rect {m.group(1)}><animateTransform attributeName="transform" type="translate" values="0,0;{R.uniform(12, 26):.0f},0;0,0" dur="{R.uniform(12, 20):.1f}s" repeatCount="indefinite"/></rect>'
 DEFS = re.sub(r'<rect ([^>]*filter="url\(#lhaze\)"[^>]*?)/>', drift, DEFS)
 
+COOL_LIGHT = {"#fff0dc": "#f2e8f8", "#ffe6c4": "#f6e0e6", "#fff4e0": "#eee9fb", "#fff4dc": "#f1ebfa", "#f4dca0": "#ecd8ea",
+              "#ffe9b0": "#efdcec", "#ffd27a": "#e9cfe6", "#fff1c8": "#f1e6f6", "#ffe8a8": "#eedaea"}
+def cool(svg):
+    for a, b in COOL_LIGHT.items(): svg = svg.replace(a, b).replace(a.upper(), b)
+    return svg
+DEFS = cool(DEFS)
+INS = {k: cool(v) for k, v in INS.items()}
+LIGHTS = NS["LIGHTS"]
 INS_DEFS = "".join(f'<g id="ins_{k}">{v}</g>' for k, v in INS.items())
 EXACT_DEFS = "".join(f'<g id="exact_{k}">{v}</g>' for k, v in INS_EXACT.items())
 # the approved frame stays pixel-identical; only its baked subtitle text is switched off so each shot shows its own line
@@ -160,7 +168,7 @@ while n <= 287:
     rng, stage, crop, size, mv, desc = PANELS[sc][idx]
     seg = {"type": "html", "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
-           "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": []}
+           "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, [])}
     while n <= 287 and cover.get(n) == (sc, idx, cover[n][2]) and n not in ROSA_SHOTS:
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
@@ -184,8 +192,15 @@ const stage = $('stage'); stage.pauseAnimations();
 let curSeg = -1, curShot = -1, curCard = -2, curStageKey = null;
 const SUB_Y = 770;
 const NS = 'http://www.w3.org/2000/svg';
-const motes = [...Array(16)].map((_, i) => ({ x: (i * 97) % 540, y: (i * 211) % 960, s: 6 + (i % 5) * 3, r: .7 + (i % 3) * .5, o: .25 + (i % 4) * .12, ph: i }));
-motes.forEach((m, i) => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('id', 'mote' + i); c.setAttribute('r', m.r); c.setAttribute('fill', '#f4f0ff'); $('motes').appendChild(c); });
+const MR = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+const motes = [...Array(12)].map((_, i) => ({ x: MR(i, 1) * 540, y: MR(i, 2) * 960, vy: 3 + MR(i, 3) * 5, vx: (MR(i, 4) - .5) * 3, r: .6 + MR(i, 5) * 1.1, far: MR(i, 6) < .35, ph: MR(i, 7) * 6.28 }));
+motes.forEach((m, i) => {
+  const g = document.createElementNS(NS, 'g'); g.setAttribute('id', 'mote' + i);
+  const halo = document.createElementNS(NS, 'circle'); halo.setAttribute('r', m.r * 4.5); halo.setAttribute('fill', '#f3eeff'); halo.setAttribute('filter', 'url(#moteHalo)'); halo.setAttribute('class', 'h');
+  const dot = document.createElementNS(NS, 'circle'); dot.setAttribute('r', m.far ? m.r * 1.6 : m.r); dot.setAttribute('fill', '#f7f4ff'); if (m.far) dot.setAttribute('filter', 'url(#moteBlur2)');
+  g.appendChild(halo); g.appendChild(dot); $('motes').appendChild(g);
+});
+document.querySelectorAll('.lmotes').forEach(e => e.setAttribute('display', 'none'));
 function setTalk(seg, shot) {
   const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
   g.querySelectorAll('use').forEach(u => {
@@ -203,8 +218,8 @@ window.render = function (si, t) {          // segment index, seconds into the s
     $('viewUse').setAttribute('href', src);
     const [cx, cy, h] = seg.crop || [270, 480, 960], w = h * 9 / 16;
     $('view').setAttribute('viewBox', `${cx - w / 2} ${cy - h / 2} ${w} ${h}`);
-    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : 'saturate(1.35) brightness(1.1) contrast(1.04)';
-    $('grade').style.display = seg.kind === 'exact' ? 'none' : '';
+    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : 'saturate(1.12) brightness(1.05) contrast(1.05)';
+    $('grade').style.display = seg.kind === 'exact' ? 'none' : ''; $('grain').style.display = seg.kind === 'exact' ? 'none' : '';
     $('chipText').textContent = seg.chip; $('chip').style.display = seg.chip ? '' : 'none';
     if (seg.chip) $('chipBox').setAttribute('width', 14 + seg.chip.length * 7.4);
   }
@@ -243,8 +258,19 @@ window.render = function (si, t) {          // segment index, seconds into the s
   $('cam').setAttribute('transform', `translate(${270 + tx},${480 + ty}) scale(${s.toFixed(4)}) translate(-270,-480)`);
   // dust
   const gt = seg.t0 + t;
-  motes.forEach((m, i) => { const c = $('mote' + i); c.setAttribute('cx', (m.x + Math.sin(gt * .3 + m.ph) * 12).toFixed(1)); c.setAttribute('cy', (((m.y - gt * m.s) % 960) + 960) % 960); c.setAttribute('opacity', (m.o * (.6 + .4 * Math.sin(gt * 1.3 + m.ph))).toFixed(2)); });
-  $('motes').style.display = seg.kind === 'stage' ? '' : 'none';
+  const [vcx, vcy, vh] = seg.crop || [270, 480, 960], vk = 960 / vh, vx0 = vcx - vh * 9 / 32, vy0 = vcy - vh / 2;
+  const L = (seg.lights || []).map(([x, y, r]) => [(x - vx0) * vk, (y - vy0) * vk, r * vk]);
+  motes.forEach((m, i) => {
+    const x = (((m.x + gt * m.vx + Math.sin(gt * .23 + m.ph) * 14) % 540) + 540) % 540;
+    const y = (((m.y - gt * m.vy + Math.sin(gt * .31 + m.ph) * 8) % 960) + 960) % 960;
+    let lit = 0; for (const [lx, ly, lr] of L) { const d2 = ((x - lx) ** 2 + (y - ly) ** 2) / (lr * lr); lit = Math.max(lit, Math.exp(-d2 * 1.6)); }
+    const tw = .75 + .25 * Math.sin(gt * 1.7 + m.ph * 3);
+    const g = $('mote' + i); g.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+    g.firstChild.setAttribute('opacity', (lit * .55 * tw).toFixed(3));
+    g.lastChild.setAttribute('opacity', ((m.far ? .12 : .16) + lit * (m.far ? .35 : .75) * tw).toFixed(3));
+  });
+  $('motes').style.display = (seg.kind === 'stage' && L.length) ? '' : 'none';
+  $('grainT').setAttribute('seed', Math.floor(gt * 24) % 997);
   // dip to black at scene changes
   const prev = TL.segments[si - 1], next = TL.segments[si + 1];
   let fade = 0;
@@ -264,12 +290,15 @@ html = f'''<!doctype html><html><head><meta charset="utf-8"><title>EP1</title>
 <svg id="stage" width="540" height="960" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">
 <defs>{DEFS_INNER}{INS_DEFS}{EXACT_DEFS}
 <filter id="subStroke2" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<filter id="moteBlur2" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".7"/></filter>
+<filter id="moteBlur2" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".9"/></filter>
+<filter id="moteHalo" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.4"/></filter>
+<filter id="grainF" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence id="grainT" type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="1" result="n"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.2 0 0 0 -0.9"/></filter>
 </defs>
 <rect width="540" height="960" fill="#0a080c"/>
 <g id="cam"><g id="viewWrap"><svg id="view" x="0" y="0" width="540" height="960" viewBox="0 0 540 960" preserveAspectRatio="xMidYMid slice"><use id="viewUse" href="#st_tower_fog"/></svg></g></g>
-<g id="grade"><rect width="540" height="960" fill="url(#pvig)"/><rect width="540" height="960" fill="#5a3a6a" opacity=".1" style="mix-blend-mode:soft-light"/></g>
-<g id="motes" filter="url(#moteBlur2)"></g>
+<g id="grade"><rect width="540" height="960" fill="#e2dcfa" opacity=".42" style="mix-blend-mode:multiply"/><rect width="540" height="960" fill="#6c64b0" opacity=".14" style="mix-blend-mode:soft-light"/><rect width="540" height="960" fill="url(#pvig)"/></g>
+<g id="grain" pointer-events="none"><rect width="540" height="960" filter="url(#grainF)" opacity=".2" style="mix-blend-mode:screen"/><rect width="540" height="960" filter="url(#grainF)" opacity=".12" style="mix-blend-mode:overlay"/></g>
+<g id="motes"></g>
 <g id="chip"><rect id="chipBox" x="24" y="28" width="134" height="30" rx="15" fill="#15121c" fill-opacity=".85" stroke="#8f74d8" stroke-width="1.4"/><text id="chipText" x="36" y="48" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" fill="#e6e0f4"></text></g>
 <g id="wm" transform="translate(500,44)" opacity=".8"><path d="M -14,0 C -8,-8 8,-8 14,0 C 8,8 -8,8 -14,0 Z" fill="none" stroke="#b18cff" stroke-width="1.6"/><circle r="3.6" fill="#b18cff"/></g>
 <g id="sub" filter="url(#subStroke2)"></g>
