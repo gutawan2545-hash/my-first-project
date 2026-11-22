@@ -1,0 +1,47 @@
+{
+ "used": 124,
+ "results": {
+  "T1": {
+   "best": {
+    "path": "el/T1_v2_t1.mp3",
+    "take": 1,
+    "dur": 7.47,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/T1_v2_t1.mp3",
+     "take": 1,
+     "dur": 7.47,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[curious] เจม ลองดูยอดเงินแต่ละคืนสิ... เอาแค่ตัวเลขหลักสุดท้าย อ่านให้ฟังหน่อย เริ่มจากคืนแรกนะ",
+   "tone": "จดจ่อ เรียกเจมเบา ๆ",
+   "who": "ตะวัน"
+  },
+  "J4": {
+   "best": {
+    "path": "el/J4_v2_t1.mp3",
+    "take": 1,
+    "dur": 2.69,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J4_v2_t1.mp3",
+     "take": 1,
+     "dur": 2.69,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[whispers] ลองโทรไปอีกรอบไหม",
+   "tone": "กระซิบ",
+   "who": "เจม"
+  }
+ }
+}

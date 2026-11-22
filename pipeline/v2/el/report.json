@@ -1,0 +1,236 @@
+{
+ "used": 593,
+ "results": {
+  "J1": {
+   "best": {
+    "path": "el/J1_t1.mp3",
+    "take": 1,
+    "dur": 4.99,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J1_t1.mp3",
+     "take": 1,
+     "dur": 4.99,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[curious] ถ้ามีคนโอนเงินเข้าบัญชีคุณตอนตีสี่ทุกคืน... คุณจะยังคิดว่าเขาโอนผิดไหมครับ?",
+   "tone": "ชวนสงสัย ถามคนดูตรง ๆ",
+   "who": "เจม"
+  },
+  "J2": {
+   "best": {
+    "path": "el/J2_t1.mp3",
+    "take": 1,
+    "dur": 5.33,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J2_t1.mp3",
+     "take": 1,
+     "dur": 5.33,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[tired] สามร้อยสามสิบสามบาททุกคืน ผมแจ้งธนาคารไปแล้ว... แต่เงินก็ยังเข้า",
+   "tone": "เหนื่อย ๆ ปนสงสัย",
+   "who": "เจม"
+  },
+  "J2b": {
+   "best": {
+    "path": "el/J2b_t1.mp3",
+    "take": 1,
+    "dur": 4.13,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J2b_t1.mp3",
+     "take": 1,
+     "dur": 4.13,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[quietly] แฟนผมเลื่อนดูยอดย้อนหลัง แล้วก็... หยุดนิ่ง",
+   "tone": "เบาลง เริ่มแปลก ๆ",
+   "who": "เจม"
+  },
+  "T1": {
+   "best": {
+    "path": "el/T1_t1.mp3",
+    "take": 1,
+    "dur": 5.33,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/T1_t1.mp3",
+     "take": 1,
+     "dur": 5.33,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[curious] เจม ดูตรงสตางค์สิ... อ่านตัวสุดท้ายให้ฟังหน่อย เริ่มจากคืนแรกนะ",
+   "tone": "จดจ่อ เรียกเจมเบา ๆ",
+   "who": "ตะวัน"
+  },
+  "J3a": {
+   "best": {
+    "path": "el/J3a_t1.mp3",
+    "take": 1,
+    "dur": 1.57,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J3a_t1.mp3",
+     "take": 1,
+     "dur": 1.57,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[hesitant] ศูนย์...",
+   "tone": "ลังเล อ่านช้า ๆ",
+   "who": "เจม"
+  },
+  "J3b": {
+   "best": {
+    "path": "el/J3b_t1.mp3",
+    "take": 1,
+    "dur": 1.15,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J3b_t1.mp3",
+     "take": 1,
+     "dur": 1.15,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[hesitant] แปด...",
+   "tone": "ลังเล อ่านช้า ๆ",
+   "who": "เจม"
+  },
+  "T2a": {
+   "best": {
+    "path": "el/T2a_t1.mp3",
+    "take": 1,
+    "dur": 1.15,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/T2a_t1.mp3",
+     "take": 1,
+     "dur": 1.15,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[softly] เดี๋ยวนะ...",
+   "tone": "ชะงัก",
+   "who": "ตะวัน"
+  },
+  "T2b": {
+   "best": {
+    "path": "el/T2b_t1.mp3",
+    "take": 1,
+    "dur": 2.93,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/T2b_t1.mp3",
+     "take": 1,
+     "dur": 2.93,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[nervous] นี่มันเบอร์มือถือ",
+   "tone": "เพิ่งนึกออก เสียงสั่นนิด ๆ",
+   "who": "ตะวัน"
+  },
+  "J4": {
+   "best": {
+    "path": "el/J4_t1.mp3",
+    "take": 1,
+    "dur": 1.23,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J4_t1.mp3",
+     "take": 1,
+     "dur": 1.23,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[whispers] ลองโทรอีกทีดิ",
+   "tone": "กระซิบ",
+   "who": "เจม"
+  },
+  "J6": {
+   "best": {
+    "path": "el/J6_t1.mp3",
+    "take": 1,
+    "dur": 5.41,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J6_t1.mp3",
+     "take": 1,
+     "dur": 5.41,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[nervous] และเสียงเรียกเข้านั้น... เป็นเพลงเดียวกับมือถือเครื่องเก่าของผม ที่หายไปตั้งแต่ปีก่อน",
+   "tone": "ตื่นกลัว ช้าลง",
+   "who": "เจม"
+  },
+  "J5": {
+   "best": {
+    "path": "el/J5_t1.mp3",
+    "take": 1,
+    "dur": 6.19,
+    "heard": null,
+    "score": null
+   },
+   "takes": [
+    {
+     "path": "el/J5_t1.mp3",
+     "take": 1,
+     "dur": 6.19,
+     "heard": null,
+     "score": null
+    }
+   ],
+   "text": "[serious] ถ้าเป็นคุณ จะเปิดประตูไปดูว่าใครอยู่ข้างใน หรือพาแฟนกับแมวออกจากบ้านก่อน... คอมเมนต์บอกผมหน่อยครับ",
+   "tone": "กลับมาเสียงปกติ ถามคนดู",
+   "who": "เจม"
+  }
+ }
+}

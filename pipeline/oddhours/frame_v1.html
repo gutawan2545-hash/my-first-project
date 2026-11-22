@@ -1,0 +1,393 @@
+<title>Odd Hours เฟรมทดสอบ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one 9:16 frame centered on a dark stage, a single guide toggle under it. Single dark look by choice. */
+:root {
+  --stage: #0d0f14;
+  --ink: #c9cbd6;
+  --muted: #7d8191;
+  --line: #2a2e3a;
+  --font: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--stage); color: var(--ink); }
+body {
+  font-family: var(--font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.frame {
+  width: min(100%, 460px, calc((100vh - 110px) * 0.5625));
+  min-width: 260px;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  position: relative;
+  box-shadow: 0 0 0 1px var(--line), 0 20px 50px rgba(0,0,0,.5);
+}
+.frame svg { display: block; width: 100%; height: 100%; }
+#guide { display: none; }
+.frame.show-guide #guide { display: inline; }
+.bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; font-size: 13px; color: var(--muted); }
+button {
+  font: inherit; font-size: 13px; color: var(--ink); background: transparent;
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer;
+}
+button:hover { border-color: var(--muted); }
+button:focus-visible { outline: 2px solid #8f86ff; outline-offset: 2px; }
+button[aria-pressed="true"] { border-color: #8f86ff; color: #fff; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
+
+<div class="frame" id="frame">
+<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="เฟรมทดสอบ: ทางเดินชั้นสองตอนตีสี่ เจมส์เล่นเกมในห้องแสงจอสีฟ้าม่วง ตะวันทำงานออกแบบในห้องแสงโคมสีอำพัน แมวส้มนอนขดข้างโต๊ะเกม">
+<defs>
+  <clipPath id="openL"><rect x="36" y="150" width="202" height="550"/></clipPath>
+  <clipPath id="openR"><rect x="302" y="150" width="202" height="550"/></clipPath>
+  <clipPath id="face"><path d="M -32,-14 C -32,-46 32,-46 32,-14 L 31,6 C 29,22 13,37 0,40 C -13,37 -29,22 -31,6 Z"/></clipPath>
+  <clipPath id="eyeJL"><path d="M -21,-2 C -18,-7 -8,-7 -5,-2 C -8,1 -18,1 -21,-2 Z"/></clipPath>
+  <clipPath id="eyeJR"><path d="M 21,-2 C 18,-7 8,-7 5,-2 C 8,1 18,1 21,-2 Z"/></clipPath>
+  <clipPath id="eyeTL"><path d="M -21,-1 C -18,-7.5 -8,-7.5 -5,-1 C -8,3 -18,3 -21,-1 Z"/></clipPath>
+  <clipPath id="eyeTR"><path d="M 21,-1 C 18,-7.5 8,-7.5 5,-1 C 8,3 18,3 21,-1 Z"/></clipPath>
+</defs>
+
+<!-- ============ CORRIDOR SHELL ============ -->
+<rect x="0" y="0" width="540" height="700" fill="#191d26"/>
+<rect x="0" y="0" width="540" height="44" fill="#12151c"/>
+<rect x="0" y="44" width="540" height="5" fill="#232835"/>
+<!-- wall block shading: far edges a step darker -->
+<path d="M0,49 L60,49 L60,700 L0,700 Z" fill="#161a22"/>
+<path d="M480,49 L540,49 L540,700 L480,700 Z" fill="#161a22"/>
+
+<!-- ============ JAMES ROOM (left) ============ -->
+<g clip-path="url(#openL)">
+  <rect x="36" y="150" width="202" height="370" fill="#1e1c3e"/>
+  <!-- wall lit by monitor: two steps -->
+  <path d="M36,150 L150,150 L196,520 L36,520 Z" fill="#29275a"/>
+  <path d="M36,318 L134,322 L150,446 L36,456 Z" fill="#3b3884"/>
+  <!-- LED strip near ceiling -->
+  <rect x="36" y="166" width="202" height="3" fill="#9a86ff"/>
+  <path d="M36,169 L238,169 L238,184 L36,180 Z" fill="#2f2c66"/>
+  <!-- poster -->
+  <rect x="188" y="196" width="42" height="56" fill="#121027"/>
+  <path d="M209,208 L224,236 L194,236 Z" fill="none" stroke="#ff6fb4" stroke-width="2"/>
+  <circle cx="209" cy="228" r="5" fill="#6fd6ff"/>
+  <!-- room floor -->
+  <rect x="36" y="514" width="202" height="186" fill="#18162f"/>
+  <path d="M36,514 L176,514 L238,640 L238,700 L36,700 Z" fill="#232050"/>
+  <path d="M36,520 L120,520 L150,600 L36,610 Z" fill="#2d2a63"/>
+  <g stroke="#120f26" stroke-width="1.5">
+    <line x1="80" y1="514" x2="40" y2="700"/><line x1="122" y1="514" x2="104" y2="700"/>
+    <line x1="164" y1="514" x2="170" y2="700"/><line x1="206" y1="514" x2="236" y2="700"/>
+  </g>
+  <rect x="36" y="508" width="202" height="7" fill="#141229"/>
+  <!-- open door leaf against left wall -->
+  <path d="M36,150 L60,168 L60,682 L36,700 Z" fill="#2b2858"/>
+  <path d="M56,171 L60,168 L60,682 L56,684 Z" fill="#6e68d8"/>
+  <circle cx="54" cy="430" r="2.5" fill="#8d86ff"/>
+  <path d="M36,334 L118,326 L122,440 L36,448 Z" fill="#4a46a4"/>
+</g>
+
+<!-- gaming chair -->
+<path d="M96,268 C96,236 184,236 184,268 L192,442 L88,442 Z" fill="#15132b"/>
+<path d="M96,268 C96,250 104,242 112,240 L112,442 L88,442 Z" fill="#221f45"/>
+<rect x="103" y="270" width="6" height="172" fill="#6a52e0"/>
+<rect x="171" y="270" width="6" height="172" fill="#3a2d86"/>
+
+<!-- James torso -->
+<path d="M131,322 L149,322 L149,356 L131,356 Z" fill="#bfa2c7"/>
+<path d="M96,374 C98,358 112,351 126,349 L154,349 C168,351 182,358 184,374 L192,442 L88,442 Z" fill="#2c376d"/>
+<path d="M96,374 C98,360 108,353 118,351 C110,372 107,402 109,442 L88,442 Z" fill="#4655a3"/>
+<path d="M160,351 C176,355 184,363 184,374 L192,442 L168,442 C170,410 167,380 160,351 Z" fill="#1b2248"/>
+<path d="M127,349 C131,360 149,360 153,349" fill="none" stroke="#1a2147" stroke-width="4"/>
+<!-- arms -->
+<path d="M96,374 C90,380 86,394 86,406 L103,408 C103,396 104,386 107,378 Z" fill="#4655a3"/>
+<path d="M87,405 L102,407 L129,439 L116,449 Z" fill="#e4c4d6"/>
+<path d="M87,405 L94,406 L120,446 L116,449 Z" fill="#f4e2ef"/>
+<path d="M184,374 C190,380 194,394 194,406 L177,408 C177,396 176,386 173,378 Z" fill="#1b2248"/>
+<path d="M193,405 L178,407 L158,439 L171,449 Z" fill="#9d7fb0"/>
+
+<!-- James head -->
+<g transform="translate(140,300)">
+  <!-- under-chin shadow on neck -->
+  <path d="M -9,28 L 9,28 L 9,46 Q 0,41 -9,48 Z" fill="#7b6496"/>
+  <path d="M -32,-14 C -32,-46 32,-46 32,-14 L 31,6 C 29,22 13,37 0,40 C -13,37 -29,22 -31,6 Z" fill="#e4c4d6"/>
+  <g clip-path="url(#face)">
+    <!-- far cheek (away from monitor) -->
+    <path d="M 16,-34 C 30,-28 34,-14 32,4 C 30,22 14,37 0,40 C 11,32 19,20 20,4 C 21,-10 19,-22 16,-34 Z" fill="#b294bf"/>
+    <path d="M 26,-24 L 34,-24 L 34,10 C 32,6 30,0 28,-8 Z" fill="#8a70a4"/>
+    <!-- temples -->
+    <path d="M -34,-24 L -24,-24 L -27,-8 L -34,-6 Z" fill="#c9a8c9"/>
+    <path d="M 34,-26 L 22,-26 L 25,-6 L 34,-4 Z" fill="#8a70a4"/>
+    <!-- rim light from screen -->
+    <path d="M -33,-12 C -33,-30 -28,-38 -22,-41 C -28,-32 -29,-20 -29,-10 L -28,6 C -27,18 -21,28 -15,34 C -23,30 -29,20 -31,6 Z" fill="#f8ecf6"/>
+    <!-- nose side -->
+    <path d="M 2,3 L 6.5,15 L 1,17 Z" fill="#a88ab8"/>
+  </g>
+  <!-- brows: focused, inner ends low -->
+  <path d="M -23,-15 L -7,-13 L -7,-9.5 L -22,-11 Z" fill="#15141e"/>
+  <path d="M 23,-15 L 7,-13 L 7,-9.5 L 22,-11 Z" fill="#15141e"/>
+  <!-- eyes looking down-left at the screen -->
+  <path d="M -21,-2 C -18,-7 -8,-7 -5,-2 C -8,1 -18,1 -21,-2 Z" fill="#f3eaf6"/>
+  <path d="M 21,-2 C 18,-7 8,-7 5,-2 C 8,1 18,1 21,-2 Z" fill="#d8c8e2"/>
+  <g clip-path="url(#eyeJL)"><circle cx="-15.5" cy="-1" r="4.2" fill="#241b26"/><circle cx="-17" cy="-2.6" r="1.3" fill="#d9d4ff"/></g>
+  <g clip-path="url(#eyeJR)"><circle cx="10.5" cy="-1" r="4.2" fill="#241b26"/><circle cx="9" cy="-2.6" r="1.3" fill="#d9d4ff"/></g>
+  <path d="M -22,-2 C -18,-8 -8,-8 -4,-2.5 L -5,-1.5 C -9,-5.6 -17,-5.6 -21,-0.5 Z" fill="#15141e"/>
+  <path d="M 22,-2 C 18,-8 8,-8 4,-2.5 L 5,-1.5 C 9,-5.6 17,-5.6 21,-0.5 Z" fill="#15141e"/>
+  <path d="M -19,1.6 C -15,3 -10,3 -6,1" fill="none" stroke="#9b7aa8" stroke-width="1"/>
+  <path d="M 19,1.6 C 15,3 10,3 6,1" fill="none" stroke="#7c6290" stroke-width="1"/>
+  <!-- mouth: pressed, concentrating -->
+  <path d="M -7,24 Q 0,25.5 7,23" fill="none" stroke="#6b4560" stroke-width="2" stroke-linecap="round"/>
+  <path d="M -4,27.5 Q 0,29 4,27.5" fill="none" stroke="#c4a2c4" stroke-width="1.4" stroke-linecap="round"/>
+  <!-- hair -->
+  <path d="M -34,-8 C -38,-48 -14,-59 2,-59 C 24,-59 39,-46 34,-8 L 30,-21 L 24,-25 L 19,-18 L 13,-29 L 5,-22 L -3,-31 L -10,-22 L -17,-29 L -22,-20 L -29,-23 Z" fill="#14131c"/>
+  <path d="M -27,-44 C -19,-54 -6,-57 5,-55 C -6,-50 -16,-45 -22,-34 Z" fill="#3a3870"/>
+  <path d="M -30,-30 L -22,-36 L -24,-24 Z" fill="#2a2952"/>
+  <!-- headphones -->
+  <path d="M -38,-4 C -43,-64 43,-64 38,-4" fill="none" stroke="#1b1929" stroke-width="7"/>
+  <path d="M -38,-14 C -40,-46 -20,-60 0,-61" fill="none" stroke="#5a54b0" stroke-width="2"/>
+  <rect x="-45" y="-14" width="15" height="34" rx="6" fill="#3a3672"/>
+  <rect x="-45" y="-14" width="6" height="34" rx="3" fill="#7d74e6"/>
+  <rect x="30" y="-14" width="15" height="34" rx="6" fill="#16142a"/>
+  <circle cx="37.5" cy="12" r="1.8" fill="#b18cff"/>
+</g>
+
+<!-- James desk -->
+<path d="M38,372 L82,366 L84,430 L40,436 Z" fill="#100e1f"/>
+<path d="M81,366 L84,366 L86,430 L83,430 Z" fill="#cbbfff"/>
+<rect x="58" y="432" width="9" height="8" fill="#0c0b18"/>
+<path d="M38,438 L216,438 L220,458 L34,458 Z" fill="#363262"/>
+<path d="M38,438 L120,438 L112,458 L34,458 Z" fill="#4a458c"/>
+<rect x="34" y="458" width="186" height="16" fill="#1a1834"/>
+<rect x="44" y="474" width="8" height="62" fill="#131128"/>
+<rect x="204" y="474" width="8" height="62" fill="#100e22"/>
+<!-- keyboard, mouse, clock -->
+<rect x="106" y="440" width="62" height="8" rx="1.5" fill="#14122a"/>
+<rect x="108" y="446" width="20" height="1.6" fill="#ff5fa2"/>
+<rect x="128" y="446" width="20" height="1.6" fill="#8a7bff"/>
+<rect x="148" y="446" width="18" height="1.6" fill="#3fd0ff"/>
+<ellipse cx="177" cy="446" rx="6" ry="3.5" fill="#14122a"/>
+<rect x="186" y="422" width="26" height="15" rx="2" fill="#0f0d1e"/>
+<text x="199" y="433" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#56d8ff">04:02</text>
+<!-- hands -->
+<ellipse cx="121" cy="445" rx="9" ry="5" fill="#f1dcea"/>
+<ellipse cx="172" cy="445" rx="8" ry="5" fill="#a284b4"/>
+
+<!-- orange cat curled beside the desk -->
+<ellipse cx="208" cy="562" rx="34" ry="6" fill="#100e22"/>
+<path d="M178,556 C172,532 196,522 216,524 C236,526 244,540 240,556 Z" fill="#cf7a36"/>
+<path d="M180,552 C176,536 192,526 206,525 C196,532 190,542 192,556 Z" fill="#f1a35a"/>
+<path d="M226,527 C238,532 243,544 240,556 L224,556 C228,546 228,536 226,527 Z" fill="#8a4e52"/>
+<path d="M206,526 L210,540 M218,526 L219,538 M228,530 L225,541" stroke="#a65a30" stroke-width="2.4" fill="none"/>
+<!-- tail wrapping front -->
+<path d="M240,552 C238,562 210,564 192,560 C200,556 222,557 234,550 Z" fill="#cf7a36"/>
+<path d="M200,560 C210,562 224,561 232,556" stroke="#a65a30" stroke-width="2" fill="none"/>
+<!-- head tucked on paws -->
+<circle cx="186" cy="547" r="12" fill="#e08c44"/>
+<path d="M175,540 L176,528 L184,536 Z" fill="#e08c44"/>
+<path d="M188,535 L194,525 L197,538 Z" fill="#cf7a36"/>
+<path d="M176.5,538 L177,531 L181,535.5 Z" fill="#f4a9a0"/>
+<path d="M174,544 C176,540 182,538 186,539 C180,541 177,546 177,552 Z" fill="#f6b56e"/>
+<path d="M179,548 Q182,550 185,548 M189,548 Q192,550 195,548" stroke="#4a2a22" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<ellipse cx="185" cy="558" rx="9" ry="3.5" fill="#f2c08a"/>
+
+<!-- ============ TAWAN ROOM (right) ============ -->
+<g clip-path="url(#openR)">
+  <rect x="302" y="150" width="202" height="370" fill="#35221b"/>
+  <path d="M376,150 L504,150 L504,520 L336,520 Z" fill="#553422"/>
+  <path d="M444,214 L504,190 L504,520 L380,520 C400,420 430,330 444,214 Z" fill="#7a4a2a"/>
+  <!-- corkboard -->
+  <rect x="428" y="188" width="66" height="54" fill="#3e2617"/>
+  <rect x="431" y="191" width="60" height="48" fill="#8a5a32"/>
+  <path d="M436,196 L460,194 L462,222 L438,224 Z" fill="#efe2cc"/>
+  <path d="M441,204 C446,200 452,206 456,202 M441,212 L455,211 M441,217 L451,216" stroke="#9b7d60" stroke-width="1.2" fill="none"/>
+  <rect x="466" y="198" width="7" height="7" fill="#e5735f"/>
+  <rect x="475" y="198" width="7" height="7" fill="#f2c15a"/>
+  <rect x="466" y="207" width="7" height="7" fill="#6ea6a0"/>
+  <rect x="475" y="207" width="7" height="7" fill="#e9d6bc"/>
+  <path d="M468,220 L488,218 L489,234 L469,236 Z" fill="#d9c3a3"/>
+  <circle cx="448" cy="196" r="1.6" fill="#e5735f"/>
+  <!-- room floor -->
+  <rect x="302" y="514" width="202" height="186" fill="#26170f"/>
+  <path d="M352,514 L504,514 L504,700 L330,700 Z" fill="#3e2716"/>
+  <path d="M410,520 L504,520 L504,640 L388,610 Z" fill="#5a381f"/>
+  <g stroke="#1c110b" stroke-width="1.5">
+    <line x1="334" y1="514" x2="304" y2="700"/><line x1="376" y1="514" x2="370" y2="700"/>
+    <line x1="418" y1="514" x2="436" y2="700"/><line x1="460" y1="514" x2="502" y2="700"/>
+  </g>
+  <rect x="302" y="508" width="202" height="7" fill="#22140d"/>
+  <!-- open door leaf against right wall -->
+  <path d="M504,150 L480,168 L480,682 L504,700 Z" fill="#5a3822"/>
+  <path d="M484,171 L480,168 L480,682 L484,684 Z" fill="#e0954c"/>
+  <circle cx="486" cy="430" r="2.5" fill="#ffc77a"/>
+</g>
+
+<!-- Tawan chair + back hair -->
+<path d="M362,372 C362,360 444,360 444,372 L450,442 L356,442 Z" fill="#24160f"/>
+<g transform="translate(403,302)">
+  <path d="M -40,-10 C -46,-50 -20,-62 0,-62 C 22,-62 46,-50 42,-10 C 44,20 50,40 46,64 C 52,82 44,100 50,124 C 42,130 34,128 28,124 C 30,94 22,64 18,40 L -18,40 C -22,64 -30,94 -28,124 C -34,128 -44,130 -50,124 C -44,100 -52,82 -46,64 C -50,40 -44,20 -40,-10 Z" fill="#17121a"/>
+  <path d="M 42,-10 C 44,20 50,40 46,64 C 52,82 44,100 50,124 C 46,127 42,128 38,127 C 42,104 38,88 42,70 C 44,46 40,22 36,-8 Z" fill="#3d2a24"/>
+</g>
+
+<!-- Tawan torso (cream knit) -->
+<path d="M394,324 L412,324 L412,358 L394,358 Z" fill="#c98a64"/>
+<path d="M359,376 C361,360 375,353 389,351 L417,351 C431,353 445,360 447,376 L455,442 L351,442 Z" fill="#ead6b6"/>
+<path d="M359,376 C361,362 371,355 381,353 C374,374 372,404 374,442 L351,442 Z" fill="#bf9a72"/>
+<path d="M425,353 C437,357 445,364 447,376 L455,442 L436,442 C438,410 434,380 425,353 Z" fill="#fff3dc"/>
+<path d="M389,351 C392,364 414,364 417,351 Z" fill="#e3a77e"/>
+<path d="M389,351 C392,364 414,364 417,351" fill="none" stroke="#d7bf98" stroke-width="3"/>
+<!-- sleeves and hands toward the tablet -->
+<path d="M359,376 C352,386 348,406 350,422 L372,446 L386,438 L368,412 C366,398 368,388 372,380 Z" fill="#bf9a72"/>
+<path d="M447,376 C454,386 458,406 456,422 L432,446 L418,438 L438,412 C440,398 438,388 434,380 Z" fill="#f7e8cc"/>
+<path d="M447,376 C454,386 458,406 456,422 L450,428 C452,410 450,392 444,380 Z" fill="#fff8e8"/>
+
+<!-- Tawan head -->
+<g transform="translate(403,302)">
+  <path d="M -9,28 L 9,28 L 9,46 Q 0,41 -9,48 Z" fill="#9a5a40"/>
+  <path d="M -32,-14 C -32,-46 32,-46 32,-14 L 31,6 C 29,22 13,37 0,40 C -13,37 -29,22 -31,6 Z" fill="#f8d2ab"/>
+  <g clip-path="url(#face)">
+    <!-- far cheek (away from lamp) -->
+    <path d="M -16,-34 C -30,-28 -34,-14 -32,4 C -30,22 -14,37 0,40 C -11,32 -19,20 -20,4 C -21,-10 -19,-22 -16,-34 Z" fill="#dea07a"/>
+    <path d="M -26,-24 L -34,-24 L -34,10 C -32,6 -30,0 -28,-8 Z" fill="#b8704f"/>
+    <path d="M 34,-24 L 24,-24 L 27,-8 L 34,-6 Z" fill="#eebc92"/>
+    <!-- lamp rim -->
+    <path d="M 33,-12 C 33,-30 28,-38 22,-41 C 28,-32 29,-20 29,-10 L 28,6 C 27,18 21,28 15,34 C 23,30 29,20 31,6 Z" fill="#fff0d6"/>
+    <path d="M -2,3 L -6.5,15 L -1,17 Z" fill="#d4936c"/>
+  </g>
+  <!-- blush -->
+  <ellipse cx="-18" cy="12" rx="6.5" ry="3.6" fill="#ec8a84" opacity=".6"/>
+  <ellipse cx="18" cy="12" rx="6.5" ry="3.6" fill="#f09088" opacity=".55"/>
+  <!-- brows -->
+  <path d="M -22,-13 C -17,-17 -10,-17 -5,-14" fill="none" stroke="#3a2420" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 5,-14 C 10,-17 17,-17 22,-13" fill="none" stroke="#3a2420" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- creases -->
+  <path d="M -20,-7 C -16,-10.5 -9,-10.5 -6,-7.5" fill="none" stroke="#b97a5c" stroke-width="1.1"/>
+  <path d="M 20,-7 C 16,-10.5 9,-10.5 6,-7.5" fill="none" stroke="#c98a68" stroke-width="1.1"/>
+  <!-- eyes: sweet, half-lidded, glancing toward James's room -->
+  <path d="M -21,-1 C -18,-7.5 -8,-7.5 -5,-1 C -8,3 -18,3 -21,-1 Z" fill="#f6ece2"/>
+  <path d="M 21,-1 C 18,-7.5 8,-7.5 5,-1 C 8,3 18,3 21,-1 Z" fill="#fdf5ea"/>
+  <g clip-path="url(#eyeTL)"><circle cx="-16" cy="0" r="4.8" fill="#3f2219"/><circle cx="-16" cy="0" r="2.2" fill="#1a0e0c"/><circle cx="-14.2" cy="-1.8" r="1.4" fill="#fff"/><circle cx="-17.6" cy="1.6" r=".7" fill="#ffd9a8"/></g>
+  <g clip-path="url(#eyeTR)"><circle cx="10" cy="0" r="4.8" fill="#3f2219"/><circle cx="10" cy="0" r="2.2" fill="#1a0e0c"/><circle cx="11.8" cy="-1.8" r="1.4" fill="#fff"/><circle cx="8.4" cy="1.6" r=".7" fill="#ffd9a8"/></g>
+  <!-- heavy upper lids + lash flicks -->
+  <path d="M -22,0 C -19,-8.5 -8,-8.5 -4,-2 L -5,-1 C -9,-5 -17,-5 -21,1 Z" fill="#1a1118"/>
+  <path d="M -20.5,-1.5 L -26,-5.5 L -24.5,-2.5 L -27,-2 L -21.5,0.5 Z" fill="#1a1118"/>
+  <path d="M -17,-5.5 L -19,-9 M -13,-6.5 L -14,-10" stroke="#1a1118" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M 22,0 C 19,-8.5 8,-8.5 4,-2 L 5,-1 C 9,-5 17,-5 21,1 Z" fill="#1a1118"/>
+  <path d="M 20.5,-1.5 L 26,-5.5 L 24.5,-2.5 L 27,-2 L 21.5,0.5 Z" fill="#1a1118"/>
+  <path d="M 17,-5.5 L 19,-9 M 13,-6.5 L 14,-10" stroke="#1a1118" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M -19,2.4 C -15,4 -10,4 -6,2" fill="none" stroke="#a9675a" stroke-width="1"/>
+  <path d="M 19,2.4 C 15,4 10,4 6,2" fill="none" stroke="#b97868" stroke-width="1"/>
+  <!-- small closed smile -->
+  <path d="M -7,22 Q 0,26 7,21" fill="none" stroke="#a24a46" stroke-width="2" stroke-linecap="round"/>
+  <path d="M -3.5,25.5 Q 0,27.5 3.5,25.3" fill="none" stroke="#e79a8a" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- fringe / top -->
+  <path d="M -36,-6 C -41,-50 -12,-61 4,-61 C 28,-61 43,-46 36,-6 C 33,-22 27,-32 15,-35 C 19,-28 19,-22 17,-17 C 9,-30 -6,-33 -15,-28 C -24,-25 -31,-17 -36,-6 Z" fill="#17121a"/>
+  <path d="M 4,-61 C 28,-61 43,-46 36,-6 C 34,-24 28,-38 16,-46 C 14,-52 10,-58 4,-61 Z" fill="#3d2a24"/>
+  <path d="M -24,-46 C -16,-54 -6,-57 2,-58 C -8,-52 -18,-46 -22,-40 Z" fill="#2a1e22"/>
+  <!-- front locks over shoulders, soft waves -->
+  <path d="M -32,-18 C -38,8 -33,28 -40,48 C -46,68 -35,84 -42,106 C -34,102 -27,90 -30,76 C -26,60 -23,44 -26,26 C -27,8 -24,-6 -22,-16 Z" fill="#17121a"/>
+  <path d="M 32,-18 C 38,8 33,28 40,48 C 46,68 35,84 42,106 C 34,102 27,90 30,76 C 26,60 23,44 26,26 C 27,8 24,-6 22,-16 Z" fill="#17121a"/>
+  <path d="M 33,-10 C 38,12 34,30 40,48 C 44,62 38,76 40,92 C 36,80 38,66 35,54 C 31,40 34,22 31,4 Z" fill="#4a3228"/>
+</g>
+
+<!-- Tawan desk -->
+<path d="M324,438 L500,438 L504,458 L320,458 Z" fill="#7a4c2c"/>
+<path d="M400,438 L500,438 L504,458 L394,458 Z" fill="#a8703e"/>
+<rect x="320" y="458" width="184" height="16" fill="#3a2317"/>
+<rect x="330" y="474" width="8" height="62" fill="#2a1810"/>
+<rect x="488" y="474" width="8" height="62" fill="#3a2214"/>
+<!-- laptop back, shadow side -->
+<path d="M328,402 L364,398 L366,438 L326,440 Z" fill="#6d5849"/>
+<path d="M362,398 L364,398 L366,438 L364,438 Z" fill="#c9ad92"/>
+<!-- pen display flat on desk -->
+<path d="M378,440 L434,440 L438,455 L374,455 Z" fill="#221a20"/>
+<path d="M382,442 L430,442 L433,453 L378,453 Z" fill="#efdcbf"/>
+<path d="M388,449 C396,444 404,451 412,446 C418,443 424,448 428,446" fill="none" stroke="#7c6450" stroke-width="1"/>
+<!-- hands + stylus -->
+<ellipse cx="381" cy="445" rx="8" ry="5" fill="#d99a72"/>
+<path d="M436,428 L418,452" stroke="#2a2a33" stroke-width="2.4" stroke-linecap="round"/>
+<ellipse cx="426" cy="443" rx="8" ry="5.5" fill="#ffd9b0"/>
+<!-- desk lamp -->
+<path d="M352,440 L470,440 L480,366 L454,354 Z" fill="#ffc06a" opacity=".16"/>
+<ellipse cx="490" cy="438" rx="12" ry="3.5" fill="#1e140d"/>
+<path d="M489,436 L497,374 L501,375 L493,437 Z" fill="#2b1d14"/>
+<path d="M497,374 L478,350 L481,347 L501,372 Z" fill="#2b1d14"/>
+<path d="M462,334 L490,346 L480,366 L454,354 Z" fill="#3a2718"/>
+<path d="M476,340 L490,346 L480,366 L472,362 Z" fill="#5a3e24"/>
+<path d="M454,354 L480,366 L476,370 L452,359 Z" fill="#fff0c2"/>
+
+<!-- ============ DOOR CASINGS + JAMBS ============ -->
+<!-- left door casing -->
+<path d="M24,136 L250,136 L250,700 L238,700 L238,150 L36,150 L36,700 L24,700 Z" fill="#2b231f"/>
+<path d="M36,150 L238,150 L238,153 L36,153 Z" fill="#4c47a0"/>
+<path d="M235,150 L238,150 L238,700 L235,700 Z" fill="#3c3884"/>
+<path d="M36,150 L46,156 L46,694 L36,700 Z" fill="#5a55bc"/>
+<path d="M36,150 L238,150 L234,156 L46,156 Z" fill="#3e3a82"/>
+<!-- right door casing -->
+<path d="M290,136 L516,136 L516,700 L504,700 L504,150 L302,150 L302,700 L290,700 Z" fill="#2b231f"/>
+<path d="M302,150 L504,150 L504,153 L302,153 Z" fill="#a8693a"/>
+<path d="M302,150 L305,150 L305,700 L302,700 Z" fill="#8a5630"/>
+<path d="M504,150 L494,156 L494,694 L504,700 Z" fill="#c47c3e"/>
+<path d="M302,150 L504,150 L494,156 L306,156 Z" fill="#7c4b29"/>
+<!-- casing bevel catching each room's light -->
+<rect x="24" y="136" width="226" height="2" fill="#2f2c58"/>
+<rect x="290" y="136" width="226" height="2" fill="#5a3a24"/>
+<!-- corridor strip between doors: the darkest wall -->
+<rect x="250" y="136" width="40" height="564" fill="#13161d"/>
+<rect x="257" y="292" width="26" height="34" fill="#2b231f"/>
+<rect x="260" y="295" width="20" height="28" fill="#2a2f3b"/>
+<circle cx="266" cy="306" r="3" fill="#1a1d26"/><circle cx="274" cy="305" r="3" fill="#1a1d26"/>
+<path d="M261,323 C262,313 270,312 270,323 Z M270,323 C270,312 279,312 279,323 Z" fill="#1a1d26"/>
+<!-- baseboards -->
+<rect x="0" y="688" width="24" height="12" fill="#101318"/>
+<rect x="250" y="688" width="40" height="12" fill="#0e1015"/>
+<rect x="516" y="688" width="24" height="12" fill="#101318"/>
+
+<!-- ============ CORRIDOR FLOOR ============ -->
+<rect x="0" y="700" width="540" height="260" fill="#1d1817"/>
+<!-- light pools: blue-violet from James, amber from Tawan; middle stays dark -->
+<path d="M28,700 L246,700 L250,960 L-60,960 Z" fill="#2c2948"/>
+<path d="M50,700 L200,700 L190,960 L-20,960 Z" fill="#3a3570"/>
+<path d="M294,700 L512,700 L600,960 L292,960 Z" fill="#4a2f1d"/>
+<path d="M340,700 L490,700 L560,960 L350,960 Z" fill="#6e4524"/>
+<!-- thresholds -->
+<rect x="36" y="700" width="202" height="8" fill="#5853b0"/>
+<rect x="302" y="700" width="202" height="8" fill="#c7843f"/>
+<!-- plank seams toward the vanishing point -->
+<g stroke="#000" stroke-opacity=".38" stroke-width="1.5">
+  <line x1="30" y1="708" x2="-139" y2="960"/><line x1="78" y1="708" x2="-57" y2="960"/>
+  <line x1="126" y1="708" x2="25" y2="960"/><line x1="174" y1="708" x2="107" y2="960"/>
+  <line x1="222" y1="708" x2="188" y2="960"/><line x1="270" y1="708" x2="270" y2="960"/>
+  <line x1="318" y1="708" x2="352" y2="960"/><line x1="366" y1="708" x2="433" y2="960"/>
+  <line x1="414" y1="708" x2="515" y2="960"/><line x1="462" y1="708" x2="597" y2="960"/>
+  <line x1="510" y1="708" x2="679" y2="960"/>
+  <line x1="60" y1="760" x2="78" y2="760"/><line x1="160" y1="760" x2="178" y2="760"/>
+  <line x1="345" y1="760" x2="365" y2="760"/><line x1="440" y1="760" x2="462" y2="760"/>
+  <line x1="20" y1="840" x2="50" y2="840"/><line x1="210" y1="840" x2="236" y2="840"/>
+  <line x1="300" y1="840" x2="330" y2="840"/><line x1="490" y1="840" x2="520" y2="840"/>
+  <line x1="100" y1="920" x2="140" y2="920"/><line x1="390" y1="920" x2="430" y2="920"/>
+</g>
+
+<!-- subtitle safe zone guide (hidden by default) -->
+<g id="guide">
+  <rect x="24" y="576" width="492" height="144" fill="none" stroke="#fff" stroke-opacity=".7" stroke-dasharray="6 5" stroke-width="1.5"/>
+  <text x="270" y="652" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="15" fill="#fff" fill-opacity=".75">พื้นที่ซับ</text>
+</g>
+</svg>
+</div>
+
+<div class="bar">
+  <span>เฟรมทดสอบ 9:16 · ยังไม่มีซับ</span>
+  <button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button>
+</div>
+
+<script>
+const btn = document.getElementById('toggle');
+const frame = document.getElementById('frame');
+btn.addEventListener('click', () => {
+  const on = frame.classList.toggle('show-guide');
+  btn.setAttribute('aria-pressed', String(on));
+  btn.textContent = on ? 'ซ่อนพื้นที่ซับ' : 'แสดงพื้นที่ซับ';
+});
+</script>

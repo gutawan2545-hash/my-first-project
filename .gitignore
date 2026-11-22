@@ -1,0 +1,19 @@
+# rendered frames and big intermediate files
+pipeline/v2/fr/
+pipeline/v2/ofr/
+pipeline/v2/pv*/
+pipeline/v2/stills/
+pipeline/v2/body*.mp4
+pipeline/v2/*.npy
+pipeline/sb/_tmp.html
+episodes/**/body*.mp4
+# old test renders (keep only the latest final + outro in git)
+episodes/ep-4am-transfer/clip_draft.mp4
+episodes/ep-4am-transfer/clip_anim.mp4
+episodes/ep-4am-transfer/v2/ep01_v2_preview.mp4
+episodes/ep-4am-transfer/v2/ep01_final_v3.mp4
+episodes/ep-4am-transfer/v2/ep01_final_v4.mp4
+episodes/ep-4am-transfer/v2/ep01_final_v5.mp4
+episodes/ep-4am-transfer/v2/ep01_final_v6.mp4
+episodes/ep-4am-transfer/v2/mix.wav
+pipeline/v2/outro.wav

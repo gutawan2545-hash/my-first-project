@@ -1,0 +1,26 @@
+{
+ "slots": {
+  "margin_left": 48,
+  "margin_right": 48,
+  "logo": [
+   70,
+   66
+  ],
+  "episode_y": 152,
+  "title1_y": 232,
+  "title2_y": 306,
+  "title_size": 62,
+  "episode_size": 22,
+  "rule_y": 338,
+  "rule_h": 36,
+  "rule_size": 17
+ },
+ "episode": {
+  "episode": "ตอนที่ 1",
+  "title1": "เงินเข้าบัญชี",
+  "title2_before": "ทุกคืนตอน",
+  "title2_hl": "ตีสี่",
+  "title2_after": "",
+  "rule": "กฎข้อที่ 1 • อย่าเพิ่งใช้เงิน"
+ }
+}
