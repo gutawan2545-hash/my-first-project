@@ -105,12 +105,14 @@ def cap(veil="#1a1520", hi="#3a3142"):
     <path d="M -34,-14 C -22,-22 22,-22 34,-14" fill="none" stroke="#bdb3a5" stroke-width="1.2"/>
     <path d="M -44,-24 C -46,-66 -22,-78 0,-78 C 22,-78 46,-66 44,-24 L 37,-20 C 35,-40 20,-48 0,-48 C -20,-48 -35,-40 -37,-20 Z" fill="{veil}"/>
     <path d="M -38,-50 C -30,-66 -16,-73 -2,-74 C -16,-68 -28,-58 -33,-42 Z" fill="{hi}"/>'''
-def habit_body(robe=("#e6e0d5","#f6f1e8","#bfb6a9"), veil="#1a1520", vhi="#2c2532", vlo="#120e16"):
+def habit_body(robe=("#e6e0d5","#f6f1e8","#bfb6a9"), **_):
     m, l, d = robe
     return f'''
     <path d="M -16,54 C -30,56 -44,62 -50,74 L -58,260 L 58,260 L 50,74 C 44,62 30,56 16,54 Z" fill="{m}"/>
     <path d="M -50,74 C -44,62 -30,56 -18,55 C -26,90 -28,150 -28,260 L -58,260 Z" fill="{l}"/>
-    <path d="M 22,56 C 36,59 46,65 50,74 L 58,260 L 30,260 C 30,150 30,96 22,56 Z" fill="{d}"/>
+    <path d="M 22,56 C 36,59 46,65 50,74 L 58,260 L 30,260 C 30,150 30,96 22,56 Z" fill="{d}"/>'''
+def habit_over(vhi="#2c2532", vlo="#120e16"):
+    return f'''
     <path d="M -44,-26 L -54,62 L -64,138 L -50,134 L -42,64 L -37,-20 Z" fill="{vhi}"/>
     <path d="M 44,-26 L 54,62 L 64,138 L 50,134 L 42,64 L 37,-20 Z" fill="{vlo}"/>
     <path d="M -28,42 C -18,54 18,54 28,42 L 40,66 C 26,76 -26,76 -40,66 Z" fill="#f3eee6"/>
@@ -134,6 +136,11 @@ SK_TWIN  = ("#f6dcc4", "#e4b89c", "#c99478", "#ecc9ae", "#fff0e2")
 
 HAIR = "#1a1619"; HAIR_HI = "#3a3238"
 
+def hs(svg, k=0.82):
+    """Shrink a head (and anything attached to it) around the collar line so the neck still meets the body."""
+    return f'<g transform="translate(0,{50*(1-k):.1f}) scale({k})">{svg}</g>'
+
+
 cards = []
 
 # ===== 1. MEK =====
@@ -143,9 +150,9 @@ mek_front = f'''<path d="M -37,-6 C -42,-38 -28,-60 -4,-62 C 22,-64 42,-46 37,-6
   <path d="M 15,-29 L 22,-40 L 20,-24 Z M -9,-11 L -2,-30 L -3,-14 Z" fill="#2b2428"/>'''
 mek_extra = '<path d="M -15,23 C -9,35 9,35 15,23 C 12,32 6,37 0,38 C -6,37 -12,32 -15,23 Z" fill="#b98262" opacity=".28"/><path d="M -6,18 Q 0,17 6,18" fill="none" stroke="#b98262" stroke-width="1" opacity=".5"/>'
 mek_head = head("mek", FACE, SK_MEK,
-    eyes_double("mek", iris="#2e1f18", r=4.3, tired=True, two=False),
-    brow("M -23,-12 L -7,-12.6", "#1e1719", 2.8),
-    mouth("M -6,23.4 L 6,23.4", "#a8705e", 1.9, "M -3,26.4 Q 0,27.4 3,26.4", "#d9a08a"),
+    eyes_double("mek", iris="#2e1f18", r=4.4, tired=False, two=True),
+    brow("M -23,-12.4 C -18,-13.6 -11,-13.8 -7,-12.8", "#1e1719", 2.4),
+    mouth("M -6,23.4 Q 0,24.6 6,23", "#a8705e", 1.9, "M -3,26.4 Q 0,27.4 3,26.4", "#d9a08a"),
     extra=mek_extra, back=mek_back, front=mek_front)
 mek_body = '''
   <path d="M -16,52 C -32,54 -46,60 -52,74 L -58,260 L 58,260 L 52,74 C 46,60 32,54 16,52 Z" fill="#5d6f8a"/>
@@ -162,7 +169,7 @@ mek_body = '''
   <rect x="25" y="156" width="8" height="4" fill="#45454c"/>'''
 cards.append(("mek", "เมฆ", "31 ปี · ผู้เล่าเรื่อง · ช่างภาพ อดีตเด็กกำพร้าที่นี่",
   "ผิวสองสีอมพีช · ผมดำยุ่งยาวระคิ้ว ปอยใหญ่ปัดข้าง ยาวคลุมต้นคอ · ตาสองชั้นหนังตาหนัก ดูเหนื่อย มีถุงใต้ตาจาง ๆ · คิ้วหนาตรง · หนวดเคราเขียวจาง ๆ ที่คาง · แจ็กเก็ตยีนส์ซีดทับเสื้อยืดขาว กล้องฟิล์มสะพายข้าง · ไม่ใส่แว่น ไม่ใส่หูฟัง (ให้ต่างจากเจมส์ชัด)",
-  mek_body + mek_head, [("#eec4a2","ผิว"),("#d9a27e","ผิวเงา"),("#1a1619","ผม"),("#5d6f8a","แจ็กเก็ต"),("#e8e4dc","เสื้อยืด"),("#a8705e","ปาก")]))
+  mek_body + hs(mek_head), [("#eec4a2","ผิว"),("#d9a27e","ผิวเงา"),("#1a1619","ผม"),("#5d6f8a","แจ็กเก็ต"),("#e8e4dc","เสื้อยืด"),("#a8705e","ปาก")]))
 
 # ===== 2. PA DAENG =====
 dg_back = '<path d="M -40,-10 C -46,-46 -26,-64 0,-64 C 26,-64 46,-46 40,-10 L 38,8 L -38,8 Z" fill="#a9a4a6"/>'
@@ -190,7 +197,7 @@ dg_body = '''
   <path d="M 40,206 l -3,16 l 4,0 l 1,-5 l 3,0 l 0,-3 l -3,0 Z M 48,207 l 2,14 l 4,-1 l -1,-5 Z" fill="#c9ad66"/>'''
 cards.append(("daeng", "ป้าแดง", "67 ปี · แม่ครัวใหญ่ ผู้ตายใน EP1",
   "ผิวคล้ำอุ่นกว่าทุกคน · หน้ากลมเต็ม แก้มอิ่ม · ผมหงอกสั้นดัดลอนเป็นก้อน · ตาเล็กมีตีนกา ร่องแก้มลึก · ยิ้มกว้างใจดี · เสื้อลายดอกเล็กสีแดงเลือดหมู ผ้ากันเปื้อนสีฟ้าเทา · พวงกุญแจใหญ่ทองเหลืองที่เอว (สำคัญในเรื่อง)",
-  dg_body + dg_head, [("#e3b088","ผิว"),("#c98f69","ผิวเงา"),("#b9b4b6","ผม"),("#8a3a3e","เสื้อ"),("#8fa3b0","ผ้ากันเปื้อน"),("#b49a5a","กุญแจ")]))
+  dg_body + hs(dg_head), [("#e3b088","ผิว"),("#c98f69","ผิวเงา"),("#b9b4b6","ผม"),("#8a3a3e","เสื้อ"),("#8fa3b0","ผ้ากันเปื้อน"),("#b49a5a","กุญแจ")]))
 
 # ===== 3. MOTHER CATARINA =====
 cat_extra = '''<g fill="none" stroke="#141216" stroke-width="2.6"><rect x="-23" y="-8" width="18" height="12" rx="2"/><rect x="5" y="-8" width="18" height="12" rx="2"/></g>
@@ -202,12 +209,12 @@ cat_head = nun_head("cat", SK_CAT,
     brow("M -23,-12.5 L -6,-11", "#2a2024", 2.4),
     mouth("M -7,24 L 7,24", "#93605e", 1.9, "M -3,26.6 L 3,26.6", "#c99a8e"),
     extra=cat_extra)
-cat_body = habit_back() + habit_body() + '''
+cat_body = hs(habit_back()) + habit_body() + '''
   <path d="M -1.6,74 L 1.6,74 L 1.6,108 L -1.6,108 Z M -9,82 L 9,82 L 9,85.5 L -9,85.5 Z" fill="#9a8a5a"/>
   <rect x="-40" y="150" width="34" height="44" rx="2" fill="#3b3f4a" transform="rotate(-6 -23 172)"/><rect x="-40" y="150" width="8" height="44" fill="#535866" transform="rotate(-6 -23 172)"/>'''
 cards.append(("cat", "มาเธอร์คาทารีนา", "55 ปี · อธิการิณีคนปัจจุบัน",
   "หน้ายาวเรียว ผิวขาวเหลือง · แว่นกรอบดำเหลี่ยมหนา · ตาชั้นเดียวแคบ คิ้วตรงต่ำ · ปากตรงเป็นเส้น ไม่ยิ้ม · ร่องข้างจมูกชัด · ชุดซิสเตอร์เต็มยศ กางเขนทองเหลืองที่อก ถือแฟ้มเอกสารสีเข้มเสมอ",
-  cat_body + cat_head, [("#f1d3bd","ผิว"),("#dcb19a","ผิวเงา"),("#141216","แว่น"),("#93605e","ปาก"),("#9a8a5a","กางเขน")]))
+  cat_body + hs(habit_over() + cat_head), [("#f1d3bd","ผิว"),("#dcb19a","ผิวเงา"),("#141216","แว่น"),("#93605e","ปาก"),("#9a8a5a","กางเขน")]))
 
 # ===== 4. MOTHER LUCIA =====
 luc_extra = '''<path d="M -26,4 C -24,14 -20,22 -14,27 M 26,4 C 24,14 20,22 14,27" fill="none" stroke="#bd9583" stroke-width="1.2" opacity=".8"/>
@@ -218,7 +225,7 @@ luc_head = nun_head("luc", SK_LUC,
     brow("M -22,-13 C -17,-15.5 -11,-15.5 -6,-13.5", "#a8a0a4", 1.8),
     mouth("M -6,23 Q 0,25.4 6,23", "#a27a78", 1.6),
     extra=luc_extra, blush=.25)
-luc_body = '''<path d="M -78,40 L -70,40 L -66,260 L -76,260 Z M 70,40 L 78,40 L 76,260 L 66,260 Z" fill="#3a3238"/><rect x="-78" y="36" width="156" height="10" rx="4" fill="#4a4248"/>''' + habit_back() + habit_body() + '''
+luc_body = '''<path d="M -78,40 L -70,40 L -66,260 L -76,260 Z M 70,40 L 78,40 L 76,260 L 66,260 Z" fill="#3a3238"/><rect x="-78" y="36" width="156" height="10" rx="4" fill="#4a4248"/>''' + hs(habit_back()) + habit_body() + '''
   <path d="M -54,70 C -40,60 -24,58 -10,60 L -18,260 L -60,260 Z" fill="#8c8a94"/>
   <path d="M -54,70 C -46,64 -36,61 -26,60 L -34,260 L -60,260 Z" fill="#a6a4ae"/>
   <path d="M 54,70 C 40,60 24,58 10,60 L 18,260 L 60,260 Z" fill="#6c6a74"/>
@@ -228,7 +235,7 @@ luc_body = '''<path d="M -78,40 L -70,40 L -66,260 L -76,260 Z M 70,40 L 78,40 L
   <path d="M 16,128 C 12,122 2,122 0,128 L 0,142 C 2,148 12,148 16,142 Z" fill="#d9b5a2"/>'''
 cards.append(("luc", "มาเธอร์ลูเซีย", "76 ปี · อธิการิณีในคืนไฟไหม้ ผู้เขียนกฎ 7 ข้อ · สมองเสื่อม",
   "ผิวซีดบาง ริ้วรอยลึกรอบปากและแก้ม · คิ้วจางสีเทา · **ตาโตใสสีเทาอมฟ้าผิดปกติ** เวลาจำเรื่องเก่าได้ (จุดที่ทำให้หลอน) · ยิ้มบางเหมือนคุยกับเด็ก · คลุมเสื้อไหมพรมสีเทาทับชุดซิสเตอร์ นั่งรถเข็นสีเข้ม กำลูกประคำไม้",
-  luc_body + luc_head, [("#efd6c6","ผิว"),("#d9b5a2","ผิวเงา"),("#47566a","ตา"),("#8c8a94","เสื้อไหมพรม"),("#3a3238","รถเข็น")]))
+  luc_body + hs(habit_over() + luc_head), [("#efd6c6","ผิว"),("#d9b5a2","ผิวเงา"),("#47566a","ตา"),("#8c8a94","เสื้อไหมพรม"),("#3a3238","รถเข็น")]))
 
 # ===== 5. SISTER ROSA (novice: white veil) =====
 rosa_extra = '<g fill="#c78f6e" opacity=".45"><circle cx="-20" cy="7" r=".9"/><circle cx="-16" cy="9" r=".8"/><circle cx="-22" cy="10" r=".7"/><circle cx="20" cy="7" r=".9"/><circle cx="16" cy="9" r=".8"/><circle cx="22" cy="10" r=".7"/></g>'
@@ -237,7 +244,7 @@ rosa_head = head("rosa", FACE_ROUND, SK_ROSA,
     brow("M -22,-13 C -17,-15 -11,-17 -6,-18.5", "#3a2622", 2.1),
     '<ellipse cx="0" cy="24" rx="4" ry="3.2" fill="#8e4a4c"/><ellipse cx="0" cy="25.4" rx="2.4" ry="1.4" fill="#d27e7e"/>',
     extra=rosa_extra, back=wimple(), front=cap("#f4f0e8", "#ffffff"), neck=False, blush=.55)
-rosa_body = habit_back("#e9e4da") + habit_body(veil="#e9e4da", vhi="#f7f3ec", vlo="#c7bfb2") + '''
+rosa_body = hs(habit_back("#e9e4da")) + habit_body() + '''
   <path d="M -16,118 C -12,112 -2,112 2,118 L 3,134 C -2,140 -12,140 -16,134 Z" fill="#f5d3b4"/>
   <path d="M 16,118 C 12,112 2,112 0,118 L 0,134 C 2,140 12,140 16,134 Z" fill="#e2b08f"/>
   <path d="M -50,76 C -60,96 -60,118 -52,134 L -14,138 L -10,120 L -36,112 C -38,100 -40,88 -44,80 Z" fill="#f6f1e8"/>
@@ -245,7 +252,7 @@ rosa_body = habit_back("#e9e4da") + habit_body(veil="#e9e4da", vhi="#f7f3ec", vl
   <path d="M -6,132 C -10,150 -4,164 0,170 C 4,164 10,150 6,132" fill="none" stroke="#6a4a3a" stroke-width="2.2" stroke-dasharray="2.2 1.6" stroke-linecap="round"/>'''
 cards.append(("rosa", "ซิสเตอร์โรซา", "22 ปี · ซิสเตอร์ฝึกหัด ขี้กลัว ช่างพูด",
   "หน้ากลม แก้มป่อง ฝ้ากระจาง ๆ ที่แก้ม · ตาสองชั้นโตกลม ขนตางอน คิ้วยกสูงตลอด (ตกใจง่าย) · ปากเปิดเล็ก ๆ เหมือนกำลังจะพูด · **ผ้าคลุมศีรษะสีขาว** เพราะยังเป็นซิสเตอร์ฝึกหัด ทำให้แยกจากซิสเตอร์คนอื่นได้ทันที · กำลูกประคำ",
-  rosa_body + rosa_head, [("#f5d3b4","ผิว"),("#e2b08f","ผิวเงา"),("#e9e4da","ผ้าคลุมขาว"),("#8e4a4c","ปาก")]))
+  hs(habit_back("#e9e4da")) + habit_body() + hs(habit_over("#f7f3ec", "#c7bfb2")) + rosa_body.split(habit_body(),1)[1] + hs(rosa_head), [("#f5d3b4","ผิว"),("#e2b08f","ผิวเงา"),("#e9e4da","ผ้าคลุมขาว"),("#8e4a4c","ปาก")]))
 
 # ===== 6. FATHER JOSEPH =====
 jos_back = '<path d="M -34,-8 C -38,-42 -22,-58 0,-59 C 22,-58 38,-42 34,-8 L 32,4 L -32,4 Z" fill="#232025"/>'
@@ -269,7 +276,7 @@ jos_body = '''
   <path d="M -34,150 L 34,150 L 36,160 L -36,160 Z" fill="#1d1a20"/>'''
 cards.append(("jos", "คุณพ่อยอแซฟ", "45 ปี · บาทหลวงประจำโบสถ์ รู้ความลับจากคำสารภาพ",
   "สูง หน้ายาว ผิวสองสี · ผมดำสั้นเรียบ แซมเทาที่ขมับ · ตาสองชั้นเศร้า หนังตาหนัก คิ้วตกที่หาง · ปากโค้งลงนิด ๆ · ชุดบาทหลวงสีขาว คอปกโรมันดำ คาดเอวดำ · มือสั่นเวลาโกหก (ใช้ในฉาก)",
-  jos_body + jos_head, [("#ebc6a6","ผิว"),("#d4a585","ผิวเงา"),("#232025","ผม"),("#ece8e0","ชุดบาทหลวง"),("#16141a","คอปก")]))
+  jos_body + hs(jos_head), [("#ebc6a6","ผิว"),("#d4a585","ผิวเงา"),("#232025","ผม"),("#ece8e0","ชุดบาทหลวง"),("#16141a","คอปก")]))
 
 # ===== 7. POLICE CAPTAIN THANA =====
 th_back = '<path d="M -35,-10 C -38,-44 -22,-58 0,-58 C 22,-58 38,-44 35,-10 Z" fill="#1c1a1d"/>'
@@ -298,7 +305,7 @@ th_body = '''
   <path d="M -54,64 L -40,61 M 54,64 L 40,61" stroke="#c8b07a" stroke-width="1.6"/>'''
 cards.append(("thana", "ร.ต.อ.ธนา", "40 ปี · ตำรวจ สน.บางกอกน้อย",
   "ผิวคล้ำ หน้าเหลี่ยมกรามกว้าง · ผมสั้นเกรียนรองทรง · ตาชั้นเดียวง่วง มีถุงใต้ตาชัด · คิ้วหนาเข้ม · หนวดเคราเขียวครึ้ม · ชุดตำรวจสีกากี กระดุมทอง ป้ายสีเล็ก ๆ ที่อก (ลดรายละเอียดเครื่องหมายจริง) · พูดน้อย หน้าเหนื่อยแต่ยุติธรรม",
-  th_body + th_head, [("#d9a37c","ผิว"),("#bf875f","ผิวเงา"),("#1c1a1d","ผม"),("#8a6c4c","ชุดกากี"),("#c8b07a","กระดุม")]))
+  th_body + hs(th_head), [("#d9a37c","ผิว"),("#bf875f","ผิวเงา"),("#1c1a1d","ผม"),("#8a6c4c","ชุดกากี"),("#c8b07a","กระดุม")]))
 
 # ===== 8. KIDS (2549 flashback lineup) =====
 def nightgown(col=("#ece6da","#f8f4ec","#c9c1b3"), tag=None, w=46, h=200):
@@ -322,6 +329,7 @@ twinA = head("twinA", FACE_KID, SK_TWIN, eyes_double("twinA", iris="#1e1416", y=
     brow("M -21,-9.5 L -6,-10", "#3a2a26", 2),
     mouth("M -5,23 L 5,23", "#a8706e", 1.8), back=bob_back, front=bob_front, kid=True, blush=.3)
 # Martha: heavy lid over the top of the eye, flat stare
+MARTHA_LID = '<path d="M -22,-1 C -18,-6 -8,-6 -4,-1 L -5,0 C -9,-3.2 -17,-3.2 -21,0.4 Z M 22,-1 C 18,-6 8,-6 4,-1 L 5,0 C 9,-3.2 17,-3.2 21,0.4 Z" fill="#1b1316" transform="translate(0,3.6)"/>'
 twinA = twinA.replace('</g>', '', 0)
 pla_back = f'<path d="M -36,-6 C -40,-42 -22,-60 0,-60 C 22,-60 40,-42 36,-6 Z" fill="{HAIR}"/><path d="M -36,-8 C -48,-4 -54,10 -50,24 C -46,14 -42,6 -36,2 Z M 36,-8 C 48,-4 54,10 50,24 C 46,14 42,6 36,2 Z" fill="{HAIR}"/>'
 pla_front = f'''<path d="M -36,-6 C -40,-42 -22,-60 0,-60 C 22,-60 40,-42 36,-6 L 30,-14 L 24,-20 L 14,-16 L 4,-22 L -6,-16 L -16,-22 L -26,-16 L -32,-12 Z" fill="{HAIR}"/>
@@ -330,15 +338,15 @@ pla_front = f'''<path d="M -36,-6 C -40,-42 -22,-60 0,-60 C 22,-60 40,-42 36,-6 
   <g transform="translate(22,-30) rotate(-18)"><path d="M -9,0 C -6,-5 4,-5 7,0 C 4,5 -6,5 -9,0 Z" fill="#f29a4a"/><path d="M 6,0 L 12,-4 L 12,4 Z" fill="#e07a34"/><circle cx="-5" cy="-0.6" r="1.1" fill="#2a1a14"/><path d="M -1,-3 L 1,3" stroke="#e07a34" stroke-width="1"/></g>'''
 pla = head("pla", FACE_KID, SK_PLA, eyes_double("pla", iris="#3e2418", y=3, r=5.2, big=True),
     brow("M -21,-9 C -16,-12 -10,-12 -6,-10.5", "#2e1f1c", 2),
-    '<path d="M -8,21 Q 0,30 8,21 Z" fill="#7a3a3a"/><rect x="-3.6" y="21" width="3" height="3" fill="#fff8f0"/><rect x="1" y="21" width="3" height="3" fill="#fff8f0"/>',
+    '<path d="M -5,21.6 Q 0,26.4 5,21.6 Q 0,23.2 -5,21.6 Z" fill="#c4645f"/><path d="M -5,21.6 Q 0,23.2 5,21.6" fill="none" stroke="#9a4a48" stroke-width="1.2" stroke-linecap="round"/>',
     back=pla_back, front=pla_front, kid=True, blush=.6)
 mk_back = f'<path d="M -35,-8 C -38,-42 -22,-58 0,-58 C 22,-58 38,-42 35,-8 Z" fill="{HAIR}"/>'
 mk_front = f'''<path d="M -35,-6 C -40,-40 -24,-58 0,-58 C 24,-58 40,-40 35,-6 L 31,-12 L 27,-20 L 20,-14 L 14,-22 L 6,-15 L -2,-23 L -10,-15 L -18,-22 L -24,-14 L -30,-18 L -32,-8 Z" fill="{HAIR}"/>
   <path d="M 6,-58 L 10,-66 L 14,-57 Z M -8,-58 L -10,-65 L -2,-58 Z" fill="{HAIR}"/>
   <path d="M -26,-42 C -18,-52 -6,-56 4,-56 C -6,-51 -14,-45 -20,-37 Z" fill="{HAIR_HI}"/>'''
-mkid = head("mkid", FACE_KID, SK_KIDM, eyes_double("mkid", iris="#2e1f18", y=3, r=4.6, big=False, two=False),
-    brow("M -21,-8 L -6,-5.6", "#1e1719", 2.6),
-    mouth("M -6,24 Q 0,22 6,24", "#a8705e", 1.9),
+mkid = head("mkid", FACE_KID, SK_KIDM, eyes_double("mkid", iris="#2e1f18", y=3, r=4.8, big=True, two=True),
+    brow("M -21,-9 C -16,-10.5 -10,-10.5 -6,-9", "#1e1719", 2.3),
+    mouth("M -4.5,23.6 Q 0,25.6 4.5,23.6", "#a8705e", 1.8),
     extra='<rect x="18" y="-26" width="9" height="5" rx="1" fill="#e8d6b8" transform="rotate(20 22 -24)"/>',
     back=mk_back, front=mk_front, kid=True, blush=.4)
 
@@ -361,12 +369,12 @@ kids_svg = f'''
     <ellipse cx="44" cy="124" rx="5" ry="6" fill="#e4b89c"/>
     <rect x="-46" y="74" width="5" height="24" fill="#f1ebdd"/><path d="M -43.5,66 C -46,70 -46,73 -43.5,75 C -41,73 -41,70 -43.5,66 Z" fill="#fff4dc"/>
     <ellipse cx="-42" cy="104" rx="6" ry="6" fill="#f6dcc4"/>
-    {twinA}
-    <path d="M -22,-1 C -18,-6 -8,-6 -4,-1 L -5,0 C -9,-3.2 -17,-3.2 -21,0.4 Z M 22,-1 C 18,-6 8,-6 4,-1 L 5,0 C 9,-3.2 17,-3.2 21,0.4 Z" fill="#1b1316" transform="translate(0,3.6)"/>
+    {twinA + MARTHA_LID}
+    <!-- C -18,-6 -8,-6 -4,-1 L -5,0 C -9,-3.2 -17,-3.2 -21,0.4 Z M 22,-1 C 18,-6 8,-6 4,-1 L 5,0 C 9,-3.2 17,-3.2 21,0.4 Z" fill="#1b1316" transform="translate(0,3.6)"/> -->
   </g>'''
 
 # ---------- page ----------
-def card(cid, name, sub, desc, art, chips, vb="-88 -92 176 236"):
+def card(cid, name, sub, desc, art, chips, vb="-84 -76 168 228"):
     ch = "".join(f'<span><i style="background:{c}"></i>{t}</span>' for c, t in chips)
     return f'''<figure>
   <svg viewBox="{vb}" role="img" aria-label="{name}"><rect x="-110" y="-110" width="220" height="380" fill="#1b1f2b"/>{art}</svg>
