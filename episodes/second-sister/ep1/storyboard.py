@@ -362,7 +362,7 @@ def L(key, dark=.5, tint="#120c16", holes=(), glows=(), beams=(), fog=(), motes=
     """dark: how much of the frame falls into darkness; holes: (x,y,r) where light keeps it open;
     glows: (x,y,r,color,op); beams: (points,color,op); fog: (y,h,op); motes: (x0,y0,x1,y1,n,color);
     shadows: cast-shadow polygons (points, op)."""
-    dark *= .6
+    dark *= .42
     o = ""
     for pts, op in shadows:
         o += f'<polygon points="{pts}" fill="#05040a" opacity="{op}" filter="url(#lsoft)"/>'
@@ -601,7 +601,7 @@ def panel_svg(stage, crop, mv):
         vb = "0 0 540 960"
     return (f'<svg viewBox="0 0 540 960" role="img"><svg x="0" y="0" width="540" height="960" viewBox="{vb}" preserveAspectRatio="xMidYMid slice">'
             f'<g class="bw">{body}</g></svg>'
-            f'<rect width="540" height="960" fill="url(#pvig)"/><rect class="grade" width="540" height="960" fill="#3a2640" opacity=".22" style="mix-blend-mode:multiply"/>'
+            f'<rect width="540" height="960" fill="url(#pvig)"/><rect class="grade" width="540" height="960" fill="#5a3a6a" opacity=".1" style="mix-blend-mode:soft-light"/>'
             f'<rect x="1" y="1" width="538" height="958" fill="none" stroke="#000" stroke-width="2"/>'
             f'<rect x="24" y="576" width="492" height="144" fill="none" stroke="#5aa0ff" stroke-width="2" stroke-dasharray="8 6" opacity=".7"/>'
             f'{move_overlay(mv)}</svg>')
@@ -629,7 +629,7 @@ DEFS = (f'<svg width="0" height="0" style="position:absolute" aria-hidden="true"
         + "".join(f'<g id="st_{k}">{v}</g>' for k, v in ST.items())
         + '<filter id="drop" x="-20%" y="-20%" width="150%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="6" dy="8"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
         + '<filter id="dof" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation="0"/></filter><filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>'
-        + '<radialGradient id="pvig" cx="50%" cy="45%" r="72%"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".7"/></radialGradient>'
+        + '<radialGradient id="pvig" cx="50%" cy="45%" r="72%"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".42"/></radialGradient>'
         + '<filter id="lhole" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="40"/></filter><filter id="lhaze" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter><filter id="lsoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter><filter id="lfar" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="1.2"/></filter>'
         + ''.join(f'<radialGradient id="lg_{c.strip("#")}"><stop offset="0" stop-color="{c}" stop-opacity=".75"/><stop offset=".4" stop-color="{c}" stop-opacity=".25"/><stop offset="1" stop-color="{c}" stop-opacity="0"/></radialGradient>' for c in GLOWCOLS)
         + '</defs></svg>')
@@ -655,9 +655,9 @@ section h2 span {{ font-size:13px; color:var(--muted); font-weight:400; }}
 @media (max-width:560px) {{ .grid {{ grid-template-columns:1fr; }} }}
 .panel {{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; display:grid; gap:10px; align-content:start; min-width:0; }}
 .pic svg {{ display:block; width:100%; height:auto; aspect-ratio:9/16; background:#ddd; }}
-.bw {{ filter:grayscale(1) contrast(1.08) brightness(1.12); }}
-body.mood .bw {{ filter:saturate(.85) brightness(.98); }}
-.grade {{ display:none; }} body.mood .grade {{ display:inline; }}
+.bw {{ filter:saturate(1.35) brightness(1.1) contrast(1.04); }}
+body.gray .bw {{ filter:grayscale(1) contrast(1.08) brightness(1.12); }}
+body.gray .grade {{ display:none; }}
 .bar {{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; font-size:13px; color:var(--muted); }}
 button {{ font:inherit; font-size:13px; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer; }}
 button:hover {{ border-color:var(--muted); }} button:focus-visible {{ outline:2px solid var(--blue); outline-offset:2px; }}
@@ -677,15 +677,15 @@ li {{ font-size:12.5px; line-height:1.55; border-left:3px solid var(--line); pad
 <header>
   <h1>แม่ชีคนที่สอง EP1 · สตอรี่บอร์ด</h1>
   <p>18 ฉาก · {sum(len(v) for v in PANELS.values())} ภาพหลัก · ครอบคลุมทั้ง 287 ช็อตของบท (กด "ทุกช็อตในช่วงนี้" ใต้ภาพเพื่อดูภาพและเสียงของทุกช็อต) · ความยาวรวมประมาณ {total / 60:.0f} นาที (คิดจากความยาวบทพากย์)</p>
-  <p>ภาพเป็นโทนเทาแบบสตอรี่บอร์ด บอกมุมกล้อง ขนาดภาพ ตำแหน่งตัวละคร และแสงเงาของแต่ละฉาก (ความมืดเปิดเฉพาะจุดที่แสงจริงตก ลำแสง ฝุ่น หมอก เงาตก) กดปุ่ม "สีบรรยากาศ" เพื่อดูโทนสี</p>
+  <p>ภาพสีสด บอกมุมกล้อง ขนาดภาพ ตำแหน่งตัวละคร และแสงเงาของแต่ละฉาก กดปุ่ม "โทนเทา" เพื่อดูแบบสตอรี่บอร์ดดั้งเดิม</p>
   <div class="legend"><span><i></i>ลูกศรแดง = การเคลื่อนกล้อง</span><span><i class="b"></i>กรอบประฟ้า = พื้นที่ซับ (60–75% ของความสูง)</span></div>
-  <div class="bar"><span>มุมมอง</span><button id="bm" type="button" aria-pressed="false">สีบรรยากาศ</button><span>กดเพื่อดูโทนสีของแต่ละฉาก กดอีกครั้งกลับเป็นโทนเทา</span></div>
+  <div class="bar"><span>มุมมอง</span><button id="bm" type="button" aria-pressed="false">โทนเทา</button><span>กดเพื่อดูแบบสตอรี่บอร์ดโทนเทา กดอีกครั้งกลับเป็นภาพสี</span></div>
 </header>
 {"".join(sections)}
 </div>
 <script>
 const bm = document.getElementById('bm');
-bm.addEventListener('click', () => {{ const on = bm.getAttribute('aria-pressed') !== 'true'; bm.setAttribute('aria-pressed', String(on)); document.body.classList.toggle('mood', on); }});
+bm.addEventListener('click', () => {{ const on = bm.getAttribute('aria-pressed') !== 'true'; bm.setAttribute('aria-pressed', String(on)); document.body.classList.toggle('gray', on); }});
 </script>'''
 open(os.path.join(HERE, "storyboard.html"), "w").write(html)
 print("wrote storyboard.html", len(html) // 1024, "KB,", sum(len(v) for v in PANELS.values()), "panels,", f"{total / 60:.1f} min")
