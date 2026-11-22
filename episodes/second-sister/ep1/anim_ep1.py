@@ -232,7 +232,7 @@ window.render = function (si, t) {          // segment index, seconds into the s
     $('grade').style.display = seg.kind === 'exact' ? 'none' : '';
     document.querySelectorAll('rect[mask^="url(#lm_"]').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
     document.querySelectorAll('.lglow').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
-    $('gMul').setAttribute('opacity', seg.day ? .16 : .42); $('gSoft').setAttribute('opacity', seg.day ? .05 : .14); $('gVig').setAttribute('opacity', seg.day ? .45 : 1); $('grain').style.display = seg.kind === 'exact' ? 'none' : '';
+    $('gMul').setAttribute('opacity', seg.day ? .16 : .42); $('gSoft').setAttribute('opacity', seg.day ? .05 : .14); $('gVig').setAttribute('opacity', seg.day ? .45 : 1); $('grain').style.display = 'none';  // grain off (user: file too heavy)
     $('chipText').textContent = seg.chip; $('chip').style.display = seg.chip ? '' : 'none';
     if (seg.chip) $('chipBox').setAttribute('width', 14 + seg.chip.length * 7.4);
   }
@@ -284,7 +284,7 @@ window.render = function (si, t) {          // segment index, seconds into the s
     g.lastChild.setAttribute('opacity', ((m.far ? .12 : .16) + lit * (m.far ? .35 : .75) * tw).toFixed(3));
   });
   $('motes').style.display = (seg.kind === 'stage' && L.length) ? '' : 'none';
-  $('grainT').setAttribute('seed', Math.floor(gt * 24) % 997);
+  // grain off: no per-frame seed
   // dip to black at scene changes
   const prev = TL.segments[si - 1], next = TL.segments[si + 1];
   let fade = 0;
