@@ -25,6 +25,7 @@ ROWS = NS["ROWS"]
 
 WHO = {"เล่า": "mek", "เมฆ": "mek", "โรซา": "rosa", "เจมส์": "james", "ป้าแดง": "daeng", "คาทารีนา": "cat",
        "มาเรียม": "mariam", "อักเนส": "agnes", "ลูเซีย": "luc", "ยอแซฟ": "jos", "ธนา": "thana"}
+PRON = {"คอนแวนต์": "คอนแวน"}      # words the TTS misreads -> spelling that sounds right
 # stage directions in brackets -> v3 audio tags
 TAGS = [("กระซิบ", "[whispers]"), ("สะอื้น", "[crying]"), ("ร้องไห้", "[crying]"), ("ตะโกน", "[shouting]"), ("กรีด", "[screams]"),
         ("หอบ", "[panting]"), ("กลั้นหายใจ", "[nervously]"), ("สั่น", "[shaky voice]"), ("งัวเงีย", "[sleepy]"), ("หัวเราะ", "[laughs]")]
@@ -47,6 +48,7 @@ def plan():
         clean = re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", "", text).replace("**", "")).strip()
         clean = re.sub(r"(?<!\*)\*[^*]+\*(?!\*)", "", clean).strip()     # drop *sfx*
         if not clean: continue
+        for w, say in PRON.items(): clean = clean.replace(w, say)   # spoken spelling only; subtitles keep the script
         out.append({"key": f"s{n:03d}", "n": n, "cid": cid, "narration": base == "เล่า", "text": (tag + " " + clean).strip(), "plain": clean})
     return out
 

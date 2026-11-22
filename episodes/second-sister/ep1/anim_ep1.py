@@ -222,6 +222,8 @@ def acting(rng, stage):
 
 _vo_rep = os.path.join(HERE, "vo_ep1", "report.json")
 VO = json.load(open(_vo_rep))["lines"] if os.path.exists(_vo_rep) else {}
+VO_TEMPO = .9                                   # user: voices a bit slower (pitch kept, ffmpeg atempo)
+for _v in VO.values(): _v["dur"] = round(_v["dur"] / VO_TEMPO, 2)
 VO_LEAD = .15                                   # voice starts this long after the cut
 DAY_SCENES = {2, 5, 6, 7, 8, 11, 12, 13}     # scenes set in daylight: bright sky, no darkness overlay, lighter grade
 segments, T = [], 0.0
@@ -263,7 +265,7 @@ while n <= 287:
     segments.append(seg)
 
 OUTRO = 2.6
-timeline = {"fps": 24, "total": round(T, 2), "outro": OUTRO, "segments": segments}
+timeline = {"fps": 24, "total": round(T, 2), "outro": OUTRO, "vo_tempo": VO_TEMPO, "segments": segments}
 json.dump(timeline, open(os.path.join(HERE, "ep1_timeline.json"), "w"), ensure_ascii=False, indent=1)
 
 # ---------------- 4. player page ----------------

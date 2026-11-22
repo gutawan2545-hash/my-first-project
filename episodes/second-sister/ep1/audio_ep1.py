@@ -261,7 +261,7 @@ for sg in TL["segments"]:
     for at, _, f in items:
         fp = os.path.join(HERE, f)
         if not os.path.exists(fp): continue
-        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", fp, "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"], capture_output=True).stdout
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", fp, "-af", f"atempo={TL.get('vo_tempo', 1)}", "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"], capture_output=True).stdout
         x = np.frombuffer(raw, np.float32).copy()
         if not len(x): continue
         rms = np.sqrt(np.mean(x[np.abs(x) > .01] ** 2)) if (np.abs(x) > .01).any() else 1
