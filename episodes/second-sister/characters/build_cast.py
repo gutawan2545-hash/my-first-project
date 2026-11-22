@@ -335,7 +335,7 @@ pla_back = f'<path d="M -36,-6 C -40,-42 -22,-60 0,-60 C 22,-60 40,-42 36,-6 Z" 
 pla_front = f'''<path d="M -36,-6 C -40,-42 -22,-60 0,-60 C 22,-60 40,-42 36,-6 L 30,-14 L 24,-20 L 14,-16 L 4,-22 L -6,-16 L -16,-22 L -26,-16 L -32,-12 Z" fill="{HAIR}"/>
   <path d="M -28,-40 C -20,-52 -8,-57 2,-57 C -8,-52 -16,-46 -22,-36 Z" fill="{HAIR_HI}"/>
   <circle cx="-36" cy="-8" r="3.4" fill="#e0795f"/><circle cx="36" cy="-8" r="3.4" fill="#e0795f"/>
-  <g transform="translate(22,-30) rotate(-18)"><path d="M -9,0 C -6,-5 4,-5 7,0 C 4,5 -6,5 -9,0 Z" fill="#f29a4a"/><path d="M 6,0 L 12,-4 L 12,4 Z" fill="#e07a34"/><circle cx="-5" cy="-0.6" r="1.1" fill="#2a1a14"/><path d="M -1,-3 L 1,3" stroke="#e07a34" stroke-width="1"/></g>'''
+  <g transform="translate(22,-30) rotate(-14)"><path d="M -4,-9 A 9.5,9.5 0 1 0 7,6 A 7.5,7.5 0 1 1 -4,-9 Z" fill="#f2d36a"/><path d="M -4,-9 A 9.5,9.5 0 0 0 -8,2 A 7.5,7.5 0 0 1 -4,-9 Z" fill="#fff0b8"/><circle cx="6" cy="-6" r="1.3" fill="#fff6d0"/></g></g>'''
 pla = head("pla", FACE_KID, SK_PLA, eyes_double("pla", iris="#3e2418", y=3, r=5.2, big=True),
     brow("M -21,-9 C -16,-12 -10,-12 -6,-10.5", "#2e1f1c", 2),
     '<path d="M -5,21.6 Q 0,26.4 5,21.6 Q 0,23.2 -5,21.6 Z" fill="#c4645f"/><path d="M -5,21.6 Q 0,23.2 5,21.6" fill="none" stroke="#9a4a48" stroke-width="1.2" stroke-linecap="round"/>',
@@ -355,7 +355,7 @@ kids_svg = f'''
     <path d="M -40,64 L -48,120 L -40,124 L -32,82 Z" fill="#f8f4ec"/><path d="M 40,64 L 48,120 L 40,124 L 32,82 Z" fill="#c9c1b3"/>
     <ellipse cx="-44" cy="126" rx="5" ry="6" fill="#efc6a3"/><ellipse cx="44" cy="126" rx="5" ry="6" fill="#dba680"/>
     {mkid}</g>
-  <g transform="translate(196,162) scale(1.0)">{nightgown(col=("#f3e4e0","#fdf3f0","#d8c4bf"), tag="ปลา", w=44)}
+  <g transform="translate(196,162) scale(1.0)">{nightgown(col=("#f3e4e0","#fdf3f0","#d8c4bf"), tag="จันทร์", w=44)}
     <path d="M -40,64 L -48,118 L -40,122 L -32,82 Z" fill="#fdf3f0"/><path d="M 40,64 L 48,118 L 40,122 L 32,82 Z" fill="#d8c4bf"/>
     <ellipse cx="-44" cy="124" rx="5" ry="6" fill="#f2cdab"/><ellipse cx="44" cy="124" rx="5" ry="6" fill="#dfaa86"/>
     {pla}</g>
@@ -388,7 +388,7 @@ kids = f'''<figure class="wide">
   <rect y="300" width="520" height="30" fill="#161a24"/>{kids_svg}</svg>
   <figcaption><b>เด็กในหอ ปี 2549</b> <span class="sub">ใช้ในฉากย้อนอดีต · โทนซีดและเกรนหนาตอนอยู่ในฉาก</span><br>
   <b>เมฆตอนเด็ก (11)</b> ผอม ผมสั้นชี้ ๆ ทำหน้าบึ้ง คิ้วขมวด พลาสเตอร์ที่หน้าผาก ·
-  <b>ลูกปลา (8)</b> ตัวเล็กสุด ผมแกละสองข้าง ยางรัดผมสีส้ม <b>กิ๊บรูปปลาสีส้ม</b> (ของสำคัญที่สุดในเรื่อง) ยิ้มฟันหลอ ชุดนอนสีชมพูอ่อน ·
+  <b>จันทร์เจ้า (8)</b> ตัวเล็กสุด ผมแกละสองข้าง ยางรัดผมสีส้ม <b>กิ๊บรูปพระจันทร์สีเหลืองนวล</b> (ของสำคัญที่สุดในเรื่อง) ยิ้มหวาน ชุดนอนสีชมพูอ่อน ·
   <b>มาเรียมตอนเด็ก (9)</b> ผมบ็อบหน้าม้าตรง ตาสองประกาย ยิ้มหวาน กอดตุ๊กตา ถนัดขวา ·
   <b>มาร์ธาตอนเด็ก (9)</b> หน้าเหมือนมาเรียมทุกอย่าง แต่หนังตาบนปิดครึ่งตา ประกายจุดเดียว ปากตรง ไม่ยิ้ม <b>ถือเทียนมือซ้าย</b> ·
   เด็กทุกคนใส่ชุดนอนของหอ มีป้ายชื่อผ้าปักตัวแดงที่อก (ป้ายแบบเดียวกับที่อยู่ในมือป้าแดง)<br>
@@ -430,6 +430,7 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
 {kids}
   </div>
 </div>'''
-out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cast.html")
-open(out, "w").write(html)
-print("wrote", out)
+if __name__ == "__main__":
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cast_halfbody.html")
+    open(out, "w").write(html)
+    print("wrote", out)

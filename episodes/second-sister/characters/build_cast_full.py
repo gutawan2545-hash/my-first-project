@@ -1,0 +1,297 @@
+#!/usr/bin/env python3
+"""Full-body cast for 'The Second Sister', split into animatable parts.
+
+Every character is one <g id="fb-{cid}"> made of child groups:
+  {cid}-legL, {cid}-legR   pivot at the hip   (data-pivot="x,y")
+  {cid}-body               torso / robe
+  {cid}-armL, {cid}-armR   pivot at the shoulder
+  {cid}-head               pivot at the neck
+Local coordinates: face centre = (0,0), feet on y≈372 (adults), y≈300 (children).
+Heads come from build_cast.py (approved faces) and nuns-test-frame.html (Mariam, Agnes).
+Writes cast.html (the sheet) and is imported by scene builders.
+"""
+import os, sys, importlib.util
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+spec = importlib.util.spec_from_file_location("bc", os.path.join(HERE, "build_cast.py"))
+bc = importlib.util.module_from_spec(spec); spec.loader.exec_module(bc)
+hs = bc.hs
+
+nuns = open(os.path.join(HERE, "..", "frames", "nuns-test-frame.html")).read()
+NUN_DEFS = nuns[nuns.index('<clipPath id="face">'):nuns.index('<filter id="dof"')]
+def _nun_head(gid, end_marker):
+    g0 = nuns.index(f'<g id="{gid}">')
+    g1 = nuns.index(end_marker, g0)
+    grp = nuns[g0:g1]
+    h0 = grp.index('<!-- head -->')
+    head = grp[h0:]
+    head = head[:head.rstrip().rfind('</g>')]
+    return head
+MARIAM_HEAD = _nun_head("mariam", "<!-- ===== SISTER AGNES")
+AGNES_HEAD = _nun_head("agnes", '<filter id="dof"')
+
+# ---------------- part builders ----------------
+HIP, KNEE, ANKLE = 182, 280, 358
+
+def part(pid, body, pivot=None):
+    pv = f' data-pivot="{pivot[0]},{pivot[1]}"' if pivot else ""
+    return f'<g id="{pid}"{pv}>{body}</g>'
+
+def leg(cid, side, pants, shoe, sole="#1e1a1e", skin=None, pants_to=ANKLE, hip=HIP, knee=KNEE, ankle=ANKLE, w=(13, 10, 8)):
+    """side -1 = viewer-left (lit), +1 = viewer-right."""
+    s = side; xc = s * 16
+    m, l, d = pants
+    col = m if s < 0 else d
+    hi = l if s < 0 else m
+    out = ""
+    if skin:   # bare shin below the hem
+        out += f'<path d="M {xc-w[1]+1},{knee} L {xc+w[1]-1},{knee} L {xc+w[2]},{ankle} L {xc-w[2]},{ankle} Z" fill="{skin[0] if s < 0 else skin[1]}"/>'
+    if pants_to > hip:
+        pk = min(pants_to, knee)
+        out += f'<path d="M {xc-w[0]},{hip} L {xc+w[0]},{hip} L {xc+w[1]},{pk} L {xc-w[1]},{pk} Z" fill="{col}"/>'
+        if pants_to > knee:
+            out += f'<path d="M {xc-w[1]},{knee-1} L {xc+w[1]},{knee-1} L {xc+w[2]},{pants_to} L {xc-w[2]},{pants_to} Z" fill="{col}"/>'
+        edge = xc - w[0] if s < 0 else xc + w[0] - 5
+        edge2 = xc - w[2] if s < 0 else xc + w[2] - 4
+        out += f'<path d="M {edge},{hip} L {edge+5},{hip} L {edge2+4},{pants_to} L {edge2},{pants_to} Z" fill="{hi}"/>'
+    # shoe, front view
+    a = ankle
+    out += f'<path d="M {xc-w[2]-1},{a-3} L {xc+w[2]+1},{a-3} C {xc+w[2]+5},{a+4} {xc+w[2]+4},{a+11} {xc+w[2]+1},{a+13} L {xc-w[2]-1},{a+13} C {xc-w[2]-4},{a+11} {xc-w[2]-5},{a+4} {xc-w[2]-1},{a-3} Z" fill="{shoe}"/>'
+    out += f'<rect x="{xc-w[2]-2}" y="{a+11}" width="{2*w[2]+4}" height="4" rx="2" fill="{sole}"/>'
+    return part(f"{cid}-leg{'L' if s < 0 else 'R'}", out, (xc, hip))
+
+def arm(cid, side, sleeve, skin, short=False, sh=(42, 66), el=(48, 146), wr=(50, 214), wide=False, hand_extra=""):
+    s = side
+    sx, sy = s * sh[0], sh[1]; ex, ey = s * el[0], el[1]; wx, wy = s * wr[0], wr[1]
+    m, l, d = sleeve
+    col = l if s < 0 else d
+    sk = skin[0] if s < 0 else skin[1]
+    out = ""
+    # skin under everything (forearm), sleeve on top
+    out += f'<path d="M {sx-8},{sy} L {sx+8},{sy} L {ex+7},{ey} L {wx+6},{wy} L {wx-6},{wy} L {ex-7},{ey} Z" fill="{sk}"/>'
+    if short:
+        out += f'<path d="M {sx-10},{sy-2} L {sx+10},{sy-2} L {s*46+9},{112} L {s*46-9},{112} Z" fill="{col}"/>'
+    else:
+        cuff = 12 if wide else 8
+        out += f'<path d="M {sx-10},{sy-2} L {sx+10},{sy-2} L {ex+8},{ey} L {wx+cuff},{wy} L {wx-cuff},{wy} L {ex-8},{ey} Z" fill="{col}"/>'
+        out += f'<path d="M {wx-cuff},{wy-6} L {wx+cuff},{wy-6} L {wx+cuff},{wy} L {wx-cuff},{wy} Z" fill="{m}"/>'
+    out += f'<ellipse cx="{wx}" cy="{wy+10}" rx="7" ry="10" fill="{sk}"/>'
+    out += f'<path d="M {wx-7},{wy+8} C {wx-7},{wy+14} {wx-5},{wy+19} {wx-2},{wy+20}" fill="none" stroke="{skin[1]}" stroke-width="1.2" opacity=".6"/>'
+    out += hand_extra
+    return part(f"{cid}-arm{'L' if s < 0 else 'R'}", out, (sx, sy))
+
+def torso_basic(cols, top=52, waist=150, hip=HIP + 6, sw=40, ww=34, hw=38):
+    m, l, d = cols
+    return (f'<path d="M -14,{top} C -26,{top+2} -{sw-4},{top+6} -{sw},{top+16} L -{ww},{waist} L -{hw},{hip} L {hw},{hip} L {ww},{waist} L {sw},{top+16} C {sw-4},{top+6} 26,{top+2} 14,{top} Z" fill="{m}"/>'
+            f'<path d="M -{sw},{top+16} C -{sw-4},{top+6} -26,{top+2} -16,{top+1} C -22,{top+50} -24,{hip-40} -22,{hip} L -{hw},{hip} L -{ww},{waist} Z" fill="{l}"/>'
+            f'<path d="M 18,{top+2} C 28,{top+4} {sw-4},{top+8} {sw},{top+16} L {ww},{waist} L {hw},{hip} L 24,{hip} C 26,{hip-40} 24,{top+50} 18,{top+2} Z" fill="{d}"/>')
+
+def robe(cols, top=52, hem=358, flare=50):
+    m, l, d = cols
+    return (f'<path d="M -14,{top} C -26,{top+2} -36,{top+6} -40,{top+16} L -36,150 L -{flare},{hem} L {flare},{hem} L 36,150 L 40,{top+16} C 36,{top+6} 26,{top+2} 14,{top} Z" fill="{m}"/>'
+            f'<path d="M -40,{top+16} C -36,{top+6} -26,{top+2} -16,{top+1} C -22,120 -24,240 -24,{hem} L -{flare},{hem} L -36,150 Z" fill="{l}"/>'
+            f'<path d="M 18,{top+2} C 28,{top+4} 36,{top+8} 40,{top+16} L 36,150 L {flare},{hem} L 26,{hem} C 26,240 26,120 18,{top+2} Z" fill="{d}"/>'
+            f'<path d="M -6,200 L -8,{hem} M 8,210 L 10,{hem}" stroke="{d}" stroke-width="1.4" opacity=".6"/>')
+
+def figure(cid, parts_back, legs, body, arms, head, front=""):
+    return f'<g id="fb-{cid}">{parts_back}{legs}{part(cid + "-body", body)}{arms}{part(cid + "-head", head, (0, 52))}{front}</g>'
+
+HABIT = ("#e6e0d5", "#f6f1e8", "#bfb6a9")
+SHOE_BLACK = "#1d1a20"
+
+def nun(cid, head, skin, veil="#1a1520", vhi="#2c2532", vlo="#120e16", hand_extra_R="", robe_cols=HABIT):
+    back = hs(bc.habit_back(veil))
+    legs = leg(cid, -1, robe_cols, SHOE_BLACK, pants_to=0) + leg(cid, 1, robe_cols, SHOE_BLACK, pants_to=0)
+    body = robe(robe_cols)
+    arms = (arm(cid, -1, robe_cols, skin, wide=True) + arm(cid, 1, robe_cols, skin, wide=True, hand_extra=hand_extra_R))
+    top = hs(bc.habit_over(vhi, vlo) + head)
+    return figure(cid, back, legs, body, arms, top)
+
+# ---------------- characters ----------------
+F = {}
+
+# Mek
+MEK_SKIN = ("#eec4a2", "#d9a27e")
+mek_torso = (torso_basic(("#e8e4dc", "#f4f1ea", "#c9c3b8"), ww=32, hw=36)
+  + '<path d="M -40,68 C -36,58 -26,54 -16,53 L -12,130 L -16,200 L -40,200 L -38,150 Z" fill="#7889a6"/>'
+  + '<path d="M 40,68 C 36,58 26,54 16,53 L 12,130 L 16,200 L 40,200 L 38,150 Z" fill="#45546c"/>'
+  + '<path d="M -40,68 L -38,150 L -40,200 L -30,200 L -30,80 Z" fill="#8a9ab6"/>'
+  + '<path d="M -16,53 L -12,130 L -16,200 M 16,53 L 12,130 L 16,200" fill="none" stroke="#3b4860" stroke-width="2.2"/>'
+  + '<rect x="-34" y="100" width="12" height="12" fill="#4c5c76"/>'
+  + '<path d="M -36,186 L 36,186 L 36,192 L -36,192 Z" fill="#2a2a30" opacity=".0"/>'
+  + '<path d="M -30,62 L 30,176" stroke="#2a2420" stroke-width="4"/>'
+  + '<rect x="18" y="168" width="28" height="18" rx="3" fill="#2b2b30"/><circle cx="32" cy="178" r="6.5" fill="#16161a"/><circle cx="32" cy="178" r="3.6" fill="#3a4a66"/><circle cx="30.6" cy="176.6" r="1.1" fill="#cfd8ec"/>')
+F["mek"] = figure("mek", "",
+  leg("mek", -1, ("#2e3448", "#3e4660", "#232838"), "#e8e4dc", "#8a8690") + leg("mek", 1, ("#2e3448", "#3e4660", "#232838"), "#d4d0c8", "#7a7680"),
+  mek_torso,
+  arm("mek", -1, ("#5d6f8a", "#7889a6", "#45546c"), MEK_SKIN) + arm("mek", 1, ("#5d6f8a", "#7889a6", "#45546c"), MEK_SKIN),
+  hs(bc.mek_head))
+
+# Pa Daeng
+DG_SKIN = ("#e3b088", "#c98f69")
+dg_torso = (torso_basic(("#8a3a3e", "#a54a4e", "#6c2b30"), sw=42, ww=38, hw=42)
+  + '<path d="M -40,186 L 40,186 L 34,350 L -34,350 Z" fill="#4a3a4a"/><path d="M -40,186 L -22,186 L -20,350 L -34,350 Z" fill="#5c4a5c"/><path d="M 22,186 L 40,186 L 34,350 L 22,350 Z" fill="#3a2c3a"/>'
+  + '<g stroke="#7a6a5a" stroke-width="1.4" opacity=".5"><path d="M -36,220 L 36,220 M -35,260 L 35,260 M -34,300 L 34,300"/></g>'
+  + '<path d="M -32,86 L 32,86 L 38,290 L -38,290 Z" fill="#8fa3b0"/><path d="M -32,86 L -14,86 L -16,290 L -38,290 Z" fill="#a9bbc6"/><path d="M 16,86 L 32,86 L 38,290 L 20,290 Z" fill="#748894"/>'
+  + '<path d="M -32,86 C -30,70 -24,62 -14,56 M 32,86 C 30,70 24,62 14,56" fill="none" stroke="#8fa3b0" stroke-width="4"/>'
+  + '<rect x="-18" y="170" width="36" height="24" fill="#748894"/>'
+  + '<g transform="translate(40,196)"><circle r="8" fill="none" stroke="#b49a5a" stroke-width="2.4"/><path d="M -3,6 l -3,15 l 4,0 l 1,-5 l 3,0 Z M 4,7 l 2,13 l 4,-1 l -1,-5 Z" fill="#c9ad66"/></g>')
+F["daeng"] = figure("daeng", "",
+  leg("daeng", -1, ("#4a3a4a",) * 3, "#6a4a3a", "#3a2a22", skin=DG_SKIN, pants_to=0) + leg("daeng", 1, ("#4a3a4a",) * 3, "#5a3e30", "#3a2a22", skin=DG_SKIN, pants_to=0),
+  dg_torso,
+  arm("daeng", -1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(44, 66), el=(50, 146), wr=(52, 212)) + arm("daeng", 1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(44, 66), el=(50, 146), wr=(52, 212)),
+  hs(bc.dg_head))
+
+# Mother Catarina (with folder in her right hand = viewer-left)
+CAT_SKIN = ("#f1d3bd", "#dcb19a")
+F["cat"] = nun("cat", bc.cat_head, CAT_SKIN)
+F["cat"] = F["cat"].replace(f'<g id="cat-armL"', '<g id="cat-armL"', 1)
+CAT_CROSS = '<path d="M -1.6,74 L 1.6,74 L 1.6,108 L -1.6,108 Z M -9,82 L 9,82 L 9,85.5 L -9,85.5 Z" fill="#9a8a5a"/>'
+F["cat"] = F["cat"].replace('<g id="cat-armL"', f'<g id="cat-cross">{CAT_CROSS}</g><g id="cat-armL"', 1)
+
+# Sister Rosa (white veil)
+ROSA_SKIN = ("#f5d3b4", "#e2b08f")
+F["rosa"] = nun("rosa", bc.rosa_head, ROSA_SKIN, veil="#e9e4da", vhi="#f7f3ec", vlo="#c7bfb2")
+
+# Sister Mariam (scar on her left hand = viewer-right)
+MAR_SKIN = ("#f6dcc4", "#e4b89c")
+SCAR = '<path d="M 46,222 C 50,220 54,222 54,227 C 52,231 48,230 46,227 Z M 49,231 C 51,231 53,233 52,235 C 50,236 48,234 49,231 Z" fill="#d98f86" opacity=".8"/>'
+F["mariam"] = nun("mariam", MARIAM_HEAD, MAR_SKIN, hand_extra_R=SCAR)
+
+# Sister Agnes: pale; same habit
+AG_SKIN = ("#f0e4dc", "#d5c2b8")
+F["agnes"] = nun("agnes", AGNES_HEAD, AG_SKIN)
+
+# Father Joseph
+JOS_SKIN = ("#ebc6a6", "#d4a585")
+jos_body = (robe(("#ece8e0", "#faf7f1", "#c4bdb2"), flare=44)
+  + '<rect x="-13" y="52" width="26" height="9" rx="2" fill="#16141a"/><rect x="-4" y="54" width="8" height="5" fill="#f4f1ea"/>'
+  + ''.join(f'<circle cx="0" cy="{y}" r="1.8" fill="#bcb4a8"/>' for y in range(80, 350, 18))
+  + '<path d="M -36,150 L 36,150 L 37,160 L -37,160 Z" fill="#1d1a20"/><path d="M 20,160 L 28,160 L 30,250 L 22,250 Z" fill="#1d1a20"/>')
+F["jos"] = figure("jos", "",
+  leg("jos", -1, ("#ece8e0",) * 3, SHOE_BLACK, pants_to=0) + leg("jos", 1, ("#ece8e0",) * 3, SHOE_BLACK, pants_to=0),
+  jos_body,
+  arm("jos", -1, ("#ece8e0", "#faf7f1", "#c4bdb2"), JOS_SKIN) + arm("jos", 1, ("#ece8e0", "#faf7f1", "#c4bdb2"), JOS_SKIN),
+  hs(bc.jos_head))
+
+# Captain Thana
+TH_SKIN = ("#d9a37c", "#bf875f")
+th_torso = (torso_basic(("#8a6c4c", "#a3845f", "#6c5238"), sw=42, ww=36, hw=38)
+  + '<path d="M -16,52 L 0,72 L 16,52 L 22,58 L 0,84 L -22,58 Z" fill="#7a5e42"/><path d="M 0,72 L 0,180" stroke="#6c5238" stroke-width="1.6"/>'
+  + ''.join(f'<circle cx="0" cy="{y}" r="2" fill="#c8b07a"/>' for y in (100, 125, 150))
+  + '<rect x="-34" y="92" width="22" height="18" rx="2" fill="#7a5e42"/><rect x="12" y="92" width="22" height="18" rx="2" fill="#5e4630"/>'
+  + '<rect x="-32" y="82" width="18" height="5" fill="#2a3a6a"/><rect x="-32" y="82" width="6" height="5" fill="#b33a3a"/><rect x="-20" y="82" width="6" height="5" fill="#e8e0d0"/>'
+  + '<path d="M 18,82 L 28,82 L 26,89 L 23,92 L 20,89 Z" fill="#c8b07a"/>'
+  + '<rect x="-38" y="172" width="76" height="10" fill="#1e1a1a"/><rect x="-6" y="172" width="12" height="10" fill="#c8b07a"/>'
+  + '<path d="M -44,60 L -30,56 L -30,64 L -44,68 Z M 44,60 L 30,56 L 30,64 L 44,68 Z" fill="#5e4630"/>')
+F["thana"] = figure("thana", "",
+  leg("thana", -1, ("#7a5e42", "#8e7050", "#5e4630"), "#141214", "#0a0a0c") + leg("thana", 1, ("#7a5e42", "#8e7050", "#5e4630"), "#141214", "#0a0a0c"),
+  th_torso,
+  arm("thana", -1, ("#8a6c4c", "#a3845f", "#6c5238"), TH_SKIN) + arm("thana", 1, ("#8a6c4c", "#a3845f", "#6c5238"), TH_SKIN),
+  hs(bc.th_head))
+
+# Mother Lucia: seated in a wheelchair (front view)
+LUC_SKIN = ("#efd6c6", "#d9b5a2")
+chair_back = ('<path d="M -62,40 L -54,40 L -52,250 L -60,250 Z M 54,40 L 62,40 L 60,250 L 52,250 Z" fill="#3a3238"/><rect x="-62" y="36" width="124" height="8" rx="4" fill="#4a4248"/>'
+  '<rect x="-56" y="70" width="112" height="120" fill="#2a2428"/>')
+chair_front = ('<ellipse cx="-66" cy="250" rx="10" ry="62" fill="#1e1a1e"/><ellipse cx="-66" cy="250" rx="5" ry="52" fill="#3a3238"/>'
+  '<ellipse cx="66" cy="250" rx="10" ry="62" fill="#141216"/><ellipse cx="66" cy="250" rx="5" ry="52" fill="#2a2428"/>'
+  '<rect x="-56" y="200" width="112" height="10" fill="#3a3238"/><rect x="-40" y="330" width="80" height="6" fill="#4a4248"/>'
+  '<circle cx="-34" cy="344" r="6" fill="#1e1a1e"/><circle cx="34" cy="344" r="6" fill="#1e1a1e"/>')
+luc_body = (robe(HABIT, hem=210, flare=44)
+  + '<path d="M -44,200 L 44,200 L 40,236 L -40,236 Z" fill="#d8d2c6"/>'  # lap / knees seen from the front
+  + '<path d="M -40,236 L -6,236 L -8,324 L -36,324 Z" fill="#f2ede4"/><path d="M 6,236 L 40,236 L 36,324 L 8,324 Z" fill="#bfb6a9"/>'
+  + '<path d="M -54,70 C -40,60 -24,58 -10,60 L -16,206 L -50,206 Z" fill="#a6a4ae"/><path d="M 54,70 C 40,60 24,58 10,60 L 16,206 L 50,206 Z" fill="#6c6a74"/>'
+  + '<path d="M -10,190 C -12,210 -4,222 0,226 C 4,222 12,210 10,190" fill="none" stroke="#4a3328" stroke-width="2.6" stroke-dasharray="2.6 1.6" stroke-linecap="round"/>'
+  + '<rect x="-1.4" y="226" width="2.8" height="14" fill="#3a2a22"/><rect x="-5" y="230" width="10" height="2.8" fill="#3a2a22"/>')
+luc_arms = (part("luc-armL", '<path d="M -46,68 L -30,68 L -22,150 L -8,186 L -18,196 L -38,156 Z" fill="#a6a4ae"/><ellipse cx="-10" cy="190" rx="9" ry="7" fill="#efd6c6"/>', (-42, 66))
+  + part("luc-armR", '<path d="M 46,68 L 30,68 L 22,150 L 8,186 L 18,196 L 38,156 Z" fill="#6c6a74"/><ellipse cx="10" cy="190" rx="9" ry="7" fill="#d9b5a2"/>', (42, 66)))
+luc_legs = (part("luc-legL", f'<path d="M -34,324 L -10,324 L -10,336 L -34,336 Z" fill="{SHOE_BLACK}"/>', (-20, 236))
+  + part("luc-legR", f'<path d="M 10,324 L 34,324 L 34,336 L 10,336 Z" fill="{SHOE_BLACK}"/>', (20, 236)))
+F["luc"] = figure("luc", chair_back + hs(bc.habit_back()), luc_legs, luc_body, luc_arms, hs(bc.habit_over() + bc.luc_head), chair_front)
+
+# ---------------- children (2549 flashback) ----------------
+KH, KK, KA = 140, 214, 286  # hip, knee, ankle for kids
+def kid(cid, head, skin, gown, tag, hand_extra_L="", hand_extra_R=""):
+    m, l, d = gown
+    legs = (leg(cid, -1, gown, skin[0], "#c9a088", skin=skin, pants_to=0, hip=KH, knee=KK, ankle=KA, w=(11, 8, 7))
+            + leg(cid, 1, gown, skin[1], "#b98a72", skin=skin, pants_to=0, hip=KH, knee=KK, ankle=KA, w=(11, 8, 7)))
+    body = (f'<path d="M -12,46 C -22,48 -30,52 -34,62 L -42,250 L 42,250 L 34,62 C 30,52 22,48 12,46 Z" fill="{m}"/>'
+            f'<path d="M -34,62 C -30,52 -22,48 -14,47 C -18,90 -20,170 -20,250 L -42,250 Z" fill="{l}"/>'
+            f'<path d="M 18,48 C 26,51 32,56 34,62 L 42,250 L 22,250 C 22,170 22,96 18,48 Z" fill="{d}"/>'
+            f'<path d="M -12,46 C -8,54 8,54 12,46" fill="none" stroke="{d}" stroke-width="3"/>'
+            f'<rect x="-18" y="72" width="28" height="11" rx="1.5" fill="#fbf8f2"/><text x="-4" y="80.5" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="7" font-weight="700" fill="#b33a3a">{tag}</text>')
+    arms = (arm(cid, -1, gown, skin, sh=(32, 58), el=(38, 112), wr=(40, 164), hand_extra=hand_extra_L)
+            + arm(cid, 1, gown, skin, sh=(32, 58), el=(38, 112), wr=(40, 164), hand_extra=hand_extra_R))
+    return figure(cid, "", legs, body, arms, head)
+
+KID_GOWN = ("#ece6da", "#f8f4ec", "#c9c1b3")
+F["mkid"] = kid("mkid", bc.mkid, ("#efc6a3", "#dba680"), KID_GOWN, "เมฆ")
+F["jan"] = kid("jan", bc.pla, ("#f2cdab", "#dfaa86"), ("#f3e4e0", "#fdf3f0", "#d8c4bf"), "จันทร์")
+DOLL = '<g transform="translate(46,170)"><path d="M -6,0 L 6,0 L 8,16 L -8,16 Z" fill="#e7b7c0"/><circle cx="0" cy="-5" r="6" fill="#f1cfd4"/><path d="M -6,-7 C -6,-13 6,-13 6,-7 Z" fill="#6a4a3a"/></g>'
+F["twinM"] = kid("twinM", bc.twinM, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาเรียม", hand_extra_R=DOLL)
+CANDLE = '<g transform="translate(-40,150)"><rect x="-2.5" y="-24" width="5" height="22" fill="#f1ebdd"/><path d="M 0,-34 C -3,-30 -3,-27 0,-25 C 3,-27 3,-30 0,-34 Z" fill="#fff4dc"/></g>'
+F["twinA"] = kid("twinA", bc.twinA + bc.MARTHA_LID, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาร์ธา", hand_extra_L=CANDLE)
+
+DEFS = NUN_DEFS + "".join(F.values())
+
+# ---------------- sheet ----------------
+ADULTS = [
+ ("mek", "เมฆ", "31 · ผู้เล่าเรื่อง", "แจ็กเก็ตยีนส์ซีด เสื้อยืดขาว กางเกงยีนส์เข้ม รองเท้าผ้าใบขาว กล้องฟิล์มสะพายข้าง"),
+ ("mariam", "ซิสเตอร์มาเรียม", "29 · แฝดที่รอด", "ชุดซิสเตอร์ยาวถึงข้อเท้า รองเท้าหนังดำ แผลไฟไหม้ที่หลังมือซ้าย"),
+ ("agnes", "ซิสเตอร์อักเนส", "29 · ห้องพยาบาล (มาร์ธา)", "ผิวซีดจนเกือบเทา ยิ้มหลอน มือก็ซีด เป็นคนจริง ไม่ใช่วิญญาณ"),
+ ("daeng", "ป้าแดง", "67 · แม่ครัว", "เสื้อลายดอกแขนสั้น ผ้าถุงสีม่วงเข้ม ผ้ากันเปื้อนยาวถึงเข่า รองเท้าแตะ พวงกุญแจที่เอว"),
+ ("cat", "มาเธอร์คาทารีนา", "55 · อธิการิณี", "ชุดซิสเตอร์เต็มยศ กางเขนทองเหลือง"),
+ ("rosa", "ซิสเตอร์โรซา", "22 · ซิสเตอร์ฝึกหัด", "ผ้าคลุมศีรษะสีขาว"),
+ ("jos", "คุณพ่อยอแซฟ", "45 · บาทหลวง", "ชุดบาทหลวงขาวยาวถึงข้อเท้า คาดเอวดำ รองเท้าดำ"),
+ ("thana", "ร.ต.อ.ธนา", "40 · ตำรวจ", "เสื้อกากีเหน็บในกางเกง เข็มขัดดำ กางเกงกากีเข้ม รองเท้าบูตดำ"),
+ ("luc", "มาเธอร์ลูเซีย", "76 · นั่งรถเข็น", "นั่งรถเข็นตลอด มือวางบนตัก กำลูกประคำ เท้าวางบนที่พักเท้า"),
+]
+KIDS = [("mkid", "เมฆตอนเด็ก", "11"), ("jan", "จันทร์เจ้า", "8 · กิ๊บรูปพระจันทร์"), ("twinM", "มาเรียมตอนเด็ก", "9 · กอดตุ๊กตา"), ("twinA", "มาร์ธาตอนเด็ก", "9 · ถือเทียนมือซ้าย")]
+
+def adult_card(cid, name, sub, desc):
+    return (f'<figure><svg viewBox="-80 -70 160 450" role="img" aria-label="{name}"><rect x="-80" y="-70" width="160" height="450" fill="#1b1f2b"/>'
+            f'<ellipse cx="0" cy="374" rx="52" ry="7" fill="#10131b"/><use href="#fb-{cid}"/></svg>'
+            f'<figcaption><b>{name}</b> <span class="sub">{sub}</span><br>{desc}</figcaption></figure>')
+
+kid_svg = '<svg viewBox="0 0 560 470" role="img" aria-label="เด็กในหอปี 2549"><rect width="560" height="470" fill="#1b1f2b"/><rect y="432" width="560" height="38" fill="#161a24"/>'
+for i, (cid, k) in enumerate([("mkid", 1.18), ("jan", 1.0), ("twinM", 1.1), ("twinA", 1.1)]):
+    x = 75 + i * 137
+    y = 430 - 302 * k
+    kid_svg += f'<ellipse cx="{x}" cy="432" rx="40" ry="6" fill="#10131b"/><g transform="translate({x},{y:.0f}) scale({k})"><use href="#fb-{cid}"/></g>'
+kid_svg += '</svg>'
+
+html = f'''<title>แม่ชีคนที่สอง ตัวละครเต็มตัว</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: responsive grid of full-body cards (5 / 3 / 2 columns) plus one wide card for the children. Single dark look by choice, matching the other character sheets. */
+:root {{ --stage:#0d0f14; --ink:#d4d6e0; --muted:#80849a; --line:#2a2e3a;
+  --font:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif; color-scheme:dark; }}
+html,body {{ background:var(--stage); color:var(--ink); margin:0; }}
+body {{ font-family:var(--font); padding:24px max(16px, env(safe-area-inset-right,0px)) 40px max(16px, env(safe-area-inset-left,0px)); }}
+.wrap {{ max-width:1100px; margin:0 auto; display:grid; gap:18px; }}
+h1 {{ font-size:18px; font-weight:500; margin:0; }} h1 span {{ color:var(--muted); font-weight:400; margin-left:8px; font-size:14px; }}
+p.note {{ margin:0; font-size:13px; color:var(--muted); line-height:1.6; }}
+.grid {{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; }}
+@media (max-width:900px) {{ .grid {{ grid-template-columns:repeat(3,minmax(0,1fr)); }} }}
+@media (max-width:520px) {{ .grid {{ grid-template-columns:repeat(2,minmax(0,1fr)); }} }}
+figure {{ margin:0; min-width:0; display:grid; gap:8px; align-content:start; }}
+figure.wide {{ grid-column:1 / -1; }}
+figure svg {{ display:block; width:100%; height:auto; border-radius:6px; box-shadow:0 0 0 1px var(--line); }}
+figcaption {{ font-size:12.5px; color:var(--muted); line-height:1.6; }} figcaption b {{ color:var(--ink); font-weight:500; }}
+.sub {{ font-size:12px; }}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&display=swap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}</defs></svg>
+<div class="wrap">
+  <h1>แม่ชีคนที่สอง · ตัวละครเต็มตัว<span>หน้าตรง แสงจากซ้าย · แยกชิ้นขา แขน ตัว หัว ไว้ทำแอนิเมชัน</span></h1>
+  <p class="note">ทุกตัวแยกเป็นชิ้น: ขาซ้าย ขาขวา (หมุนที่สะโพก) · ตัว · แขนซ้าย แขนขวา (หมุนที่หัวไหล่) · หัว (หมุนที่คอ) ชิ้นละกลุ่ม พร้อมจุดหมุนในไฟล์ เพื่อให้เดิน โบกมือ หันหน้าได้ตอนทำคลิป</p>
+  <div class="grid">
+{"".join(adult_card(*a) for a in ADULTS)}
+    <figure class="wide">{kid_svg}<figcaption><b>เด็กในหอ ปี 2549</b> · เมฆตอนเด็ก (11) · จันทร์เจ้า (8) ผมแกละ <b>กิ๊บรูปพระจันทร์</b> ชุดนอนชมพูอ่อน · มาเรียมตอนเด็ก (9) กอดตุ๊กตา · มาร์ธาตอนเด็ก (9) ถือเทียนมือซ้าย · เด็กทุกคนเท้าเปล่า ชุดนอนยาวครึ่งแข้ง มีป้ายชื่อผ้าปักตัวแดง</figcaption></figure>
+  </div>
+</div>'''
+
+if __name__ == "__main__":
+    open(os.path.join(HERE, "cast.html"), "w").write(html)
+    print("wrote cast.html", len(html) // 1024, "KB")

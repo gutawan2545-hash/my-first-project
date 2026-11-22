@@ -325,14 +325,14 @@ S.append(("ฉาก 10 · คืนแรก", "ตีห้า มาเรี
 
 # 11. Garden: Mother Lucia
 spoon = '<g transform="translate(30,96) rotate(-30)"><rect x="-1.2" y="-22" width="2.4" height="22" fill="#c8c8d0"/><ellipse cx="0" cy="-24" rx="4" ry="5" fill="#d8d8e0"/></g>'
-S.append(("ฉาก 11 · มาเธอร์ลูเซีย", "'น้องปลาเขาฝากบอกว่าคิดถึงนะ เขารออยู่ตรงนั้น'", frame(
+S.append(("ฉาก 11 · มาเธอร์ลูเซีย", "'น้องจันทร์เขาฝากบอกว่าคิดถึงนะ เขารออยู่ตรงนั้น'", frame(
   '<rect width="540" height="960" fill="#3a4250"/>'
   '<g filter="url(#dof2)"><circle cx="120" cy="140" r="170" fill="#2a3a30"/><circle cx="380" cy="100" r="190" fill="#24342c"/><rect x="250" y="160" width="30" height="420" fill="#2a2024"/>'
   '<path d="M 0,520 L 540,520 L 540,960 L 0,960 Z" fill="#3a4a3a"/></g>'
   '<path d="M 0,560 L 540,560 L 540,960 L 0,960 Z" fill="#344234"/>'
   + fig("c-luc", 190, 470, 1.55, .9) + fig("agnesNC", 360, 440, 1.4, .92, .9, spoon) +
   beam("200,0 360,0 300,700 120,700", "beamW", .5) + motes(100, 120, 420, 560, 16, "#fff4e0", 17),
-  "21 พ.ย. · 06:45", "น้องปลาเขาฝากบอกว่าคิดถึงนะ|เขารออยู่ตรงนั้น", "Little Pla says she misses you. She's waiting there.", "ลูเซียในสวน")))
+  "21 พ.ย. · 06:45", "น้องจันทร์เขาฝากบอกว่าคิดถึงนะ|เขารออยู่ตรงนั้น", "Little Jan says she misses you. She's waiting there.", "ลูเซียในสวน")))
 
 # 12. Archive
 S.append(("ฉาก 12 · ห้องเก็บเอกสาร", "อัลบั้มปี 2549 หน้าของมาร์ธาถูกขูดออกทุกใบ", frame(
