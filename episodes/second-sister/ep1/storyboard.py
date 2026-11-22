@@ -162,6 +162,199 @@ ST["chapel_night"] = ('<rect width="540" height="960" fill="#2a2630"/>' + staine
     C("mek", 250, 760, .7, .7) + '<path d="M -20,800 L 560,800 L 560,960 L -20,960 Z" fill="#0e0c10"/>' + candle(440, 790, glow=False) + '<polygon points="330,180 480,180 300,960 0,960" fill="#c8d4ff" opacity=".12"/>')
 
 
+
+# ================= detailed exteriors: cemetery + garden (layered depth, haze, painted sky) =================
+import random as _rr
+RR = _rr.Random(7)
+def sky(top, mid, low, clouds=()):
+    o = f'<linearGradient id="sk{top[1:]}{low[1:]}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{top}"/><stop offset=".6" stop-color="{mid}"/><stop offset="1" stop-color="{low}"/></linearGradient>'
+    o += f'<rect width="540" height="960" fill="url(#sk{top[1:]}{low[1:]})"/>'
+    for (x, y, w, c, op) in clouds:
+        o += f'<path d="M {x},{y} C {x + w * .2},{y - 10} {x + w * .5},{y - 14} {x + w * .7},{y - 6} C {x + w * .85},{y - 12} {x + w},{y - 4} {x + w},{y + 4} L {x},{y + 4} Z" fill="{c}" opacity="{op}"/>'
+        o += f'<rect x="{x + w * .1:.0f}" y="{y + 3}" width="{w * .8:.0f}" height="3" rx="1.5" fill="{c}" opacity="{op * .7:.2f}"/>'
+    return o
+def haze(y, h, col, op):
+    return f'<rect x="-20" y="{y}" width="580" height="{h}" fill="{col}" opacity="{op}" filter="url(#lhaze)"/>'
+def clump(x, y, r, c1, c2, c3):
+    return (f'<ellipse cx="{x}" cy="{y}" rx="{r}" ry="{r * .75:.0f}" fill="{c2}"/><ellipse cx="{x - r * .35:.0f}" cy="{y - r * .25:.0f}" rx="{r * .6:.0f}" ry="{r * .45:.0f}" fill="{c1}"/>'
+            f'<ellipse cx="{x + r * .4:.0f}" cy="{y + r * .2:.0f}" rx="{r * .55:.0f}" ry="{r * .4:.0f}" fill="{c3}"/>')
+def cypress(x, y, h, c1="#3e4a44", c2="#2c3632"):
+    return f'<path d="M {x},{y - h} C {x + h * .16},{y - h * .7} {x + h * .14},{y - h * .2} {x + h * .1},{y} L {x - h * .1},{y} C {x - h * .14},{y - h * .2} {x - h * .16},{y - h * .7} {x},{y - h} Z" fill="{c2}"/><path d="M {x},{y - h} C {x - h * .16},{y - h * .7} {x - h * .14},{y - h * .2} {x - h * .1},{y} L {x},{y} Z" fill="{c1}"/>'
+def headstone(x, y, k, kind, shade="#b8b2c0", lit="#dcd6e4", dark="#8a8494"):
+    sh = f'<path d="M {x + 10 * k},{y} L {x + 60 * k},{y + 10 * k} L {x + 40 * k},{y + 14 * k} L {x - 6 * k},{y + 4 * k} Z" fill="#20182a" opacity=".35"/>'  # long shadow to the right
+    if kind == "arch":
+        g = f'<path d="M {x - 14 * k},{y} L {x - 14 * k},{y - 30 * k} C {x - 14 * k},{y - 46 * k} {x + 14 * k},{y - 46 * k} {x + 14 * k},{y - 30 * k} L {x + 14 * k},{y} Z" fill="{shade}"/><path d="M {x - 14 * k},{y} L {x - 14 * k},{y - 30 * k} C {x - 14 * k},{y - 40 * k} {x - 6 * k},{y - 44 * k} {x},{y - 45 * k} L {x - 2 * k},{y} Z" fill="{lit}"/><path d="M {x - 6 * k},{y - 26 * k} L {x + 6 * k},{y - 26 * k} M {x - 7 * k},{y - 18 * k} L {x + 7 * k},{y - 18 * k}" stroke="{dark}" stroke-width="{1.2 * k:.1f}"/>'
+    elif kind == "cross":
+        g = f'<rect x="{x - 3 * k}" y="{y - 50 * k}" width="{6 * k}" height="{50 * k}" fill="{shade}"/><rect x="{x - 14 * k}" y="{y - 38 * k}" width="{28 * k}" height="{6 * k}" fill="{shade}"/><rect x="{x - 3 * k}" y="{y - 50 * k}" width="{3 * k}" height="{50 * k}" fill="{lit}"/><rect x="{x - 10 * k}" y="{y - 2 * k}" width="{20 * k}" height="{6 * k}" fill="{dark}"/>'
+    elif kind == "celtic":
+        g = f'<rect x="{x - 3 * k}" y="{y - 56 * k}" width="{6 * k}" height="{56 * k}" fill="{shade}"/><rect x="{x - 15 * k}" y="{y - 44 * k}" width="{30 * k}" height="{6 * k}" fill="{shade}"/><circle cx="{x}" cy="{y - 41 * k}" r="{9 * k:.1f}" fill="none" stroke="{shade}" stroke-width="{3 * k:.1f}"/><rect x="{x - 3 * k}" y="{y - 56 * k}" width="{3 * k}" height="{56 * k}" fill="{lit}"/>'
+    elif kind == "obelisk":
+        g = f'<path d="M {x - 8 * k},{y} L {x - 5 * k},{y - 64 * k} L {x},{y - 72 * k} L {x + 5 * k},{y - 64 * k} L {x + 8 * k},{y} Z" fill="{shade}"/><path d="M {x - 8 * k},{y} L {x - 5 * k},{y - 64 * k} L {x},{y - 72 * k} L {x},{y} Z" fill="{lit}"/><rect x="{x - 12 * k}" y="{y - 4 * k}" width="{24 * k}" height="{6 * k}" fill="{dark}"/>'
+    else:  # angel
+        g = (f'<rect x="{x - 12 * k}" y="{y - 20 * k}" width="{24 * k}" height="{20 * k}" fill="{dark}"/><path d="M {x - 9 * k},{y - 20 * k} L {x - 6 * k},{y - 58 * k} L {x + 6 * k},{y - 58 * k} L {x + 9 * k},{y - 20 * k} Z" fill="{shade}"/>'
+             f'<circle cx="{x}" cy="{y - 64 * k}" r="{6 * k:.1f}" fill="{lit}"/><path d="M {x - 5 * k},{y - 54 * k} C {x - 26 * k},{y - 66 * k} {x - 28 * k},{y - 40 * k} {x - 8 * k},{y - 34 * k} Z M {x + 5 * k},{y - 54 * k} C {x + 26 * k},{y - 66 * k} {x + 28 * k},{y - 40 * k} {x + 8 * k},{y - 34 * k} Z" fill="{lit}"/>'
+             f'<path d="M {x - 4 * k},{y - 44 * k} L {x + 4 * k},{y - 44 * k} L {x + 2 * k},{y - 36 * k} L {x - 2 * k},{y - 36 * k} Z" fill="{dark}"/>')
+    return sh + g
+def lamppost(x, y, h, lit=True):
+    o = f'<rect x="{x - 3}" y="{y - h}" width="6" height="{h}" fill="#2a2630"/><rect x="{x - 8}" y="{y - 6}" width="16" height="6" fill="#2a2630"/><path d="M {x - 12},{y - h} L {x + 12},{y - h} L {x + 8},{y - h - 26} L {x - 8},{y - h - 26} Z" fill="{"#fff1d6" if lit else "#4a4652"}"/><path d="M {x - 14},{y - h - 26} L {x + 14},{y - h - 26} L {x},{y - h - 38} Z" fill="#2a2630"/>'
+    if lit:
+        o += f'<circle cx="{x}" cy="{y - h - 13}" r="70" fill="url(#lg_fff0dc)" opacity=".7" style="mix-blend-mode:screen"/>'
+        GLOWCOLS.add("#fff0dc") if "GLOWCOLS" in globals() else None
+    return o
+def tuft(x, y, k=1, c="#4e6a48"):
+    return f'<path d="M {x},{y} l {-4 * k},{-14 * k} M {x + 3 * k},{y} l {1 * k},{-18 * k} M {x + 6 * k},{y} l {5 * k},{-13 * k} M {x - 3 * k},{y} l {-8 * k},{-9 * k}" stroke="{c}" stroke-width="{1.8 * k:.1f}" stroke-linecap="round"/>'
+def flower5(x, y, k=1, c="#f6f0e6", ctr="#f2d880"):
+    return f'<g transform="translate({x},{y}) scale({k})">' + "".join(f'<ellipse cx="0" cy="-3" rx="2.2" ry="3.6" fill="{c}" transform="rotate({a})"/>' for a in (0, 72, 144, 216, 288)) + f'<circle r="1.4" fill="{ctr}"/></g>'
+
+# --- back view of Mek (he looks into the scene, like the reference) ---
+mek_back_head = ('<g transform="translate(0,9) scale(.82)"><rect x="-8" y="16" width="16" height="40" fill="#d9a27e"/>'
+                 '<ellipse cx="-31" cy="2" rx="5" ry="8" fill="#e2b393"/><ellipse cx="31" cy="2" rx="5" ry="8" fill="#c99272"/>'
+                 '<path d="M -36,-6 C -42,-44 -24,-64 0,-65 C 24,-64 42,-44 36,-6 L 34,16 C 22,26 -22,26 -34,16 Z" fill="#1a1619"/>'
+                 '<path d="M -30,-40 C -22,-56 -8,-62 4,-62 C -8,-56 -18,-48 -24,-34 Z" fill="#3a3238"/><path d="M -10,8 L -6,22 M 4,10 L 6,22 M 16,6 L 18,18" stroke="#2b2428" stroke-width="2"/></g>')
+cf.F["mek_back"] = cf.figure("mek_back", "",
+    cf.leg("mek_back", -1, ("#2e3448", "#3e4660", "#232838"), "#e8e4dc", "#8a8690") + cf.leg("mek_back", 1, ("#2e3448", "#3e4660", "#232838"), "#d4d0c8", "#7a7680"),
+    cf.torso_basic(("#5d6f8a", "#7889a6", "#45546c"), hip=200) + '<path d="M -30,120 L 30,120 M 0,60 L 0,200" stroke="#45546c" stroke-width="2"/><path d="M -30,62 L 30,176" stroke="#2a2420" stroke-width="4"/>',
+    cf.arm("mek_back", -1, ("#5d6f8a", "#7889a6", "#45546c"), ("#eec4a2", "#d9a27e")) + cf.arm("mek_back", 1, ("#5d6f8a", "#7889a6", "#45546c"), ("#eec4a2", "#d9a27e")),
+    mek_back_head)
+pose("mek_back", "mek_back")
+
+def cemetery_bg():
+    o = sky("#4a4478", "#9a86b4", "#e8b8b4", clouds=((20, 120, 160, "#f4d0c4", .55), (260, 90, 220, "#f8dcd0", .5), (360, 190, 150, "#f0c8c0", .45), (60, 230, 120, "#e8c0c0", .35)))
+    # far: Bangkok towers, the church tower, tree line, all in lavender haze
+    o += "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{420 - y}" fill="#8a7ea8" opacity=".55"/>' for x, y, w in ((0, 250, 46), (40, 290, 34), (470, 230, 60), (430, 300, 40)))
+    o += f'<g opacity=".8">{church(330, 330, .5)}</g>'
+    o += "".join(clump(x, 400, r, "#8a88a4", "#7a7896", "#6a6888") for x, r in ((40, 60), (130, 50), (220, 44), (430, 56), (520, 64)))
+    o += haze(330, 120, "#c8b4d4", .55)
+    # mid: lawn with mowing stripes in perspective
+    o += '<path d="M 0,420 L 540,420 L 540,960 L 0,960 Z" fill="#5a6e5a"/>'
+    for i in range(-6, 8):
+        x0 = 270 + i * 40; x1 = 270 + i * 260
+        o += f'<path d="M {x0},420 L {x0 + 40},420 L {x1 + 260},960 L {x1},960 Z" fill="{"#647a62" if i % 2 else "#566a54"}"/>'
+    o += haze(410, 70, "#c8b4d4", .45)
+    # rows of graves receding (back rows small and hazy, front rows bigger)
+    kinds = ("arch", "cross", "celtic", "arch", "obelisk", "cross", "angel")
+    for row, (yy, k, op) in enumerate(((450, .42, .6), (500, .58, .75), (565, .78, .9))):
+        for j in range(9):
+            x = 20 + j * 64 + (row % 2) * 28 + RR.uniform(-6, 6)
+            if 190 < x < 350 and row == 2: continue   # keep the path clear
+            o += f'<g opacity="{op}">{headstone(x, yy + RR.uniform(-4, 4), k, kinds[(j + row) % 7])}</g>'
+            if RR.random() < .4: o += flower5(x + 8 * k, yy + 2, k * .9, "#e8d8f0")
+    o += cypress(70, 540, 150) + cypress(470, 530, 170) + cypress(505, 520, 120, "#465248", "#323c36")
+    o += haze(470, 60, "#d4c0dc", .25)
+    # stepping-stone path winding to the front
+    for i, (x, y, w) in enumerate(((270, 590, 24), (262, 620, 30), (276, 656, 36), (258, 700, 44), (280, 752, 54), (256, 812, 64), (284, 884, 78))):
+        o += f'<ellipse cx="{x}" cy="{y}" rx="{w}" ry="{w * .32:.0f}" fill="#9a94a6"/><ellipse cx="{x - w * .15:.0f}" cy="{y - w * .06:.0f}" rx="{w * .7:.0f}" ry="{w * .18:.0f}" fill="#b4aec0"/>'
+    # family plot with a little iron railing, lamp post lit at dusk, wreath on the cross
+    o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="560" width="2.5" height="22" fill="#2a2630"/>' for x in range(372, 452, 8)) + '<rect x="370" y="562" width="84" height="2.5" fill="#2a2630"/><rect x="370" y="574" width="84" height="2" fill="#2a2630"/></g>'
+    o += lamppost(170, 640, 190)
+    # wilted wreath on a stand and jars with candles
+    o += '<g transform="translate(450,640)"><path d="M -12,30 L 0,0 L 12,30" stroke="#3a3030" stroke-width="2.4" fill="none"/><circle cx="0" cy="-6" r="16" fill="none" stroke="#5a6a4e" stroke-width="7"/>' + "".join(f'<circle cx="{16 * __import__("math").cos(a / 3):.1f}" cy="{-6 + 16 * __import__("math").sin(a / 3):.1f}" r="2.6" fill="#e8d8e0"/>' for a in range(0, 19, 2)) + '<path d="M -4,6 l -4,14 M 4,6 l 5,14" stroke="#8a4a5a" stroke-width="3"/></g>'
+    # foreground: tall grass tufts, fallen frangipani, a big out-of-focus iron gate post at the left edge
+    o += "".join(tuft(RR.uniform(0, 540), RR.uniform(700, 950), RR.uniform(1, 1.8)) for _ in range(30))
+    o += "".join(flower5(RR.uniform(20, 520), RR.uniform(720, 940), RR.uniform(1.1, 1.7)) for _ in range(10))
+    return o
+
+def child_graves():
+    o = cross(130, 880, 1.4, "มาร์ธา") + cross(270, 900, 1.4, "นภา") + cross(410, 880, 1.4)
+    # small offerings: teddy bear, toy car, a hair ribbon, glass candle jars
+    o += '<g transform="translate(160,900)"><circle cx="0" cy="-10" r="9" fill="#a88a6a"/><circle cx="-6" cy="-18" r="3.5" fill="#a88a6a"/><circle cx="6" cy="-18" r="3.5" fill="#a88a6a"/><ellipse cx="0" cy="4" rx="11" ry="9" fill="#9a7a5a"/><circle cx="-3" cy="-11" r="1" fill="#1a1216"/><circle cx="3" cy="-11" r="1" fill="#1a1216"/></g>'
+    o += '<g transform="translate(300,918)"><rect x="-12" y="-8" width="24" height="9" rx="3" fill="#5a7aa8"/><rect x="-7" y="-14" width="14" height="7" rx="2" fill="#7a9ac8"/><circle cx="-7" cy="2" r="3.5" fill="#2a2a30"/><circle cx="7" cy="2" r="3.5" fill="#2a2a30"/></g>'
+    for (x, y) in ((100, 900), (240, 918), (382, 900), (440, 902)):
+        o += f'<rect x="{x - 5}" y="{y - 12}" width="10" height="13" rx="2" fill="#c8d0e0" opacity=".7"/><rect x="{x - 2}" y="{y - 10}" width="4" height="7" fill="#efe8da"/><circle cx="{x}" cy="{y - 13}" r="10" fill="url(#lg_ffe6c4)" opacity=".8" style="mix-blend-mode:screen"/>'
+    o += '<path d="M 412,904 c 6,-4 10,0 6,4 c 6,2 4,8 -2,6 l -2,10 l -2,-10 c -6,2 -8,-4 -2,-6 c -4,-4 0,-8 6,-4 Z" fill="#f2eee8"/>'  # white ribbon on the nameless grave
+    return o
+
+ST["cemetery"] = cemetery_bg() + C("rosa_point", 160, 780, .85) + C("mek", 400, 790, .88) + child_graves()
+ST["cemetery_wide"] = cemetery_bg() + child_graves() + C("rosa", 380, 700, .6) + C("mek_back", 250, 960, 1.05)
+
+def garden_bg():
+    o = sky("#9ab0d4", "#d8dce8", "#f2e8e0", clouds=((40, 90, 180, "#ffffff", .6), (300, 60, 200, "#ffffff", .5)))
+    # far: white cloister arcade + church tower in morning haze
+    o += f'<g opacity=".85">{church(410, 300, .48)}</g>'
+    o += '<rect x="-10" y="300" width="560" height="150" fill="#e4e0e8"/><rect x="-10" y="300" width="560" height="12" fill="#f4f0f6"/>'
+    o += "".join(f'<path d="M {x},450 L {x},350 Q {x + 22},322 {x + 44},350 L {x + 44},450 Z" fill="#8a8698"/><rect x="{x + 44}" y="330" width="10" height="120" fill="#f0ecf2"/>' for x in range(-6, 560, 56))
+    o += "".join(f'<rect x="{x}" y="372" width="10" height="34" fill="#f6f2ea"/>' for x in (24, 30, 140, 146, 152))   # habits drying on a line inside the arcade
+    o += '<path d="M 10,370 Q 90,380 170,368" stroke="#5a5660" stroke-width="1" fill="none"/>'
+    o += haze(290, 170, "#e8e4f0", .45)
+    # lawn + brick paths
+    o += '<path d="M 0,450 L 540,450 L 540,960 L 0,960 Z" fill="#5e7a58"/>'
+    for i in range(-5, 7):
+        x0 = 270 + i * 46; x1 = 270 + i * 220
+        o += f'<path d="M {x0},450 L {x0 + 46},450 L {x1 + 220},960 L {x1},960 Z" fill="{"#68845e" if i % 2 else "#5a7454"}"/>'
+    o += '<path d="M 230,450 L 310,450 L 420,960 L 120,960 Z" fill="#a88a7a"/>' + "".join(f'<path d="M {230 - (y - 450) * .21:.0f},{y} L {310 + (y - 450) * .21:.0f},{y}" stroke="#8a6e60" stroke-width="1.6"/>' for y in range(470, 960, 26))
+    # flower beds, bougainvillea on the arcade, Mary statue, birdbath, bench, watering can, pots
+    o += "".join(clump(x, 470, r, "#c88aa8", "#a86a88", "#8a5a74") for x, r in ((70, 40), (480, 44)))
+    o += "".join(clump(x, 520, 30, "#5e8a58", "#4e7448", "#3e5e3a") + "".join(f'<circle cx="{x + RR.uniform(-22, 22):.0f}" cy="{520 + RR.uniform(-16, 8):.0f}" r="3.4" fill="{c}"/>' for c in ("#e88a8a", "#f4d080", "#e8e0f0", "#e88a8a")) for x in (40, 120, 430, 510))
+    o += '<g transform="translate(470,600)"><rect x="-14" y="-6" width="28" height="40" fill="#d8d4dc"/><path d="M -9,-6 L -7,-58 L 7,-58 L 9,-6 Z" fill="#f2eef4"/><circle cx="0" cy="-64" r="7" fill="#f2eef4"/><path d="M -10,-62 C -10,-74 10,-74 10,-62 L 12,-30 L -12,-30 Z" fill="#9aaad8" opacity=".9"/><circle cx="0" cy="-70" r="11" fill="none" stroke="#e8d890" stroke-width="1.4" opacity=".8"/></g>'
+    o += '<g transform="translate(90,640)"><path d="M -24,0 C -24,-10 24,-10 24,0 C 24,6 -24,6 -24,0 Z" fill="#c8c4cc"/><ellipse cx="0" cy="-3" rx="20" ry="4" fill="#8aa0c8"/><rect x="-5" y="0" width="10" height="34" fill="#b8b4bc"/><rect x="-12" y="34" width="24" height="5" fill="#a8a4ac"/>' + pigeon(10, -12, .55) + '</g>'
+    o += '<g transform="translate(400,690)"><rect x="-56" y="-26" width="112" height="7" fill="#e4e0e8"/><rect x="-56" y="-14" width="112" height="7" fill="#d8d4dc"/><rect x="-50" y="-7" width="8" height="26" fill="#b8b4bc"/><rect x="42" y="-7" width="8" height="26" fill="#b8b4bc"/></g>'
+    o += '<g transform="translate(340,740)"><path d="M -12,0 L 12,0 L 10,-20 L -10,-20 Z" fill="#6a8a6a"/><path d="M 10,-16 L 26,-28 L 28,-24 L 12,-12 Z" fill="#6a8a6a"/><path d="M -10,-20 C -10,-30 10,-30 10,-20" fill="none" stroke="#4a6a4a" stroke-width="2.4"/></g>'
+    for (x, y, k) in ((200, 700, 1.0), (150, 760, 1.2)):
+        o += f'<g transform="translate({x},{y}) scale({k})"><path d="M -14,0 L 14,0 L 10,26 L -10,26 Z" fill="#a8604a"/>' + "".join(f'<ellipse cx="{dx}" cy="{dy}" rx="8" ry="4" fill="#4e6e4a" transform="rotate({dx * 3} {dx} {dy})"/>' for dx, dy in ((-8, -10), (8, -12), (0, -18), (-12, -18), (12, -22))) + '</g>'
+    # the great rain tree: trunk + layered canopy filling the top
+    o += '<path d="M 230,620 C 236,520 228,420 240,300 L 286,300 C 292,420 296,520 304,620 Z" fill="#4a3c38"/><path d="M 230,620 C 236,520 228,420 240,300 L 256,300 C 252,420 252,520 254,620 Z" fill="#5c4a44"/>'
+    o += '<path d="M 250,330 C 200,260 120,240 40,240 L 40,250 C 120,252 196,276 246,344 Z M 276,320 C 330,250 420,220 520,220 L 520,232 C 420,234 336,262 282,334 Z" fill="#4a3c38"/>'
+    for (x, y, r) in ((20, 120, 120), (140, 60, 120), (280, 40, 140), (420, 70, 130), (540, 140, 120), (80, 230, 90), (460, 230, 90), (270, 170, 110)):
+        o += clump(x, y, r, "#6a8a5a", "#4e6e48", "#3a5438")
+    o += "".join(f'<circle cx="{RR.uniform(0, 540):.0f}" cy="{RR.uniform(0, 280):.0f}" r="{RR.uniform(2, 5):.0f}" fill="#e8b0c8" opacity=".75"/>' for _ in range(40))   # pink rain-tree blossoms
+    # dappled light on the lawn
+    o += "".join(f'<ellipse cx="{RR.uniform(0, 540):.0f}" cy="{RR.uniform(640, 950):.0f}" rx="{RR.uniform(14, 34):.0f}" ry="{RR.uniform(4, 9):.0f}" fill="#f8f0d0" opacity=".22"/>' for _ in range(18))
+    o += "".join(tuft(RR.uniform(0, 540), RR.uniform(760, 950), RR.uniform(1, 1.6), "#4a6644") for _ in range(16))
+    return o
+
+ST["garden"] = garden_bg() + C("luc", 200, 860, .95) + C("agnes_left", 360, 860, .95) + C("mek", 500, 900, .9) + \
+    '<g filter="url(#lsoft)" opacity=".9"><path d="M -40,820 C 20,780 80,800 110,860 C 60,880 0,900 -40,900 Z" fill="#2e4a2c"/><path d="M -20,960 C 30,880 90,890 120,960 Z" fill="#26402a"/><path d="M 560,0 C 480,30 470,90 500,140 C 530,110 560,60 560,0 Z" fill="#3a5a36"/></g>'
+
+
+# --- evidence wall in Mek's guest room (shot 216), lit by one hanging lamp ---
+def evidence_wall():
+    R2 = _rr.Random(99)
+    o = '<rect width="540" height="960" fill="#1e3a42"/><rect y="0" width="540" height="960" fill="url(#wallTeal)"/>'
+    o += '<linearGradient id="wallTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14282e"/><stop offset=".5" stop-color="#2a4e56"/><stop offset="1" stop-color="#1a3238"/></linearGradient>'
+    # a dense field of pinned papers and photos
+    items = []
+    for i in range(130):
+        x = R2.uniform(-20, 540); y = R2.uniform(-10, 700); w = R2.uniform(34, 60); h = w * R2.uniform(1.1, 1.4); r = R2.uniform(-9, 9)
+        items.append((y, x, w, h, r, R2.random()))
+    for (y, x, w, h, r, t) in sorted(items):
+        if t < .45:   # portrait photo
+            o += (f'<g transform="translate({x:.0f},{y:.0f}) rotate({r:.1f})"><rect x="{-w / 2:.0f}" y="{-h / 2:.0f}" width="{w:.0f}" height="{h:.0f}" fill="#d8dcd4"/>'
+                  f'<rect x="{-w / 2 + 4:.0f}" y="{-h / 2 + 4:.0f}" width="{w - 8:.0f}" height="{h - 14:.0f}" fill="#4a5a5e"/><circle cx="0" cy="{-h * .12:.0f}" r="{w * .16:.0f}" fill="#9aa4a4"/><path d="M {-w * .28:.0f},{h * .3:.0f} C {-w * .2:.0f},{h * .02:.0f} {w * .2:.0f},{h * .02:.0f} {w * .28:.0f},{h * .3:.0f} Z" fill="#2a3436"/></g>')
+        else:         # note / document with scribbles
+            o += f'<g transform="translate({x:.0f},{y:.0f}) rotate({r:.1f})"><rect x="{-w / 2:.0f}" y="{-h / 2:.0f}" width="{w:.0f}" height="{h:.0f}" fill="#e8e4d4"/>' + "".join(f'<path d="M {-w * .38:.0f},{-h * .35 + k * h * .14:.0f} L {w * (.1 + R2.random() * .28):.0f},{-h * .35 + k * h * .14:.0f}" stroke="{"#b8382e" if R2.random() < .25 else "#8a8a80"}" stroke-width="1.6"/>' for k in range(5)) + '</g>'
+        o += f'<circle cx="{x:.0f}" cy="{y - h / 2 + 4:.0f}" r="2.4" fill="#c83a32"/>'
+    # the key items, near the lamp
+    def pin_photo(x, y, r, inner, cap=""):
+        return (f'<g transform="translate({x},{y}) rotate({r})"><rect x="-34" y="-42" width="68" height="84" fill="#f2efe4"/><rect x="-30" y="-38" width="60" height="62" fill="#5a5c58"/>{inner}'
+                + (f'<text x="0" y="36" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="9" fill="#3a3030">{cap}</text>' if cap else "") + '<circle cx="0" cy="-38" r="3.4" fill="#d8443a"/></g>')
+    twins = '<circle cx="-12" cy="-12" r="9" fill="#f4f0e6"/><circle cx="12" cy="-12" r="9" fill="#c8c2b4"/><path d="M -20,-20 l 16,16 M -4,-22 l -16,18" stroke="#fff" stroke-width="3"/><path d="M -24,20 C -20,4 -4,4 -2,20 Z M 2,20 C 4,4 20,4 24,20 Z" fill="#e8e4dc"/>'
+    jan = '<circle cx="0" cy="-10" r="11" fill="#e8d4c0"/><path d="M -12,-14 C -12,-26 12,-26 12,-14 Z" fill="#1a1619"/><path d="M 6,-22 A 4,4 0 1 0 10,-17 A 3,3 0 1 1 6,-22 Z" fill="#f2d36a"/><path d="M -16,20 C -12,4 12,4 16,20 Z" fill="#f3e4e0"/>'
+    tower = '<rect x="-6" y="-30" width="12" height="50" fill="#e4e0e8"/><path d="M -8,-30 C -8,-40 8,-40 8,-30 Z" fill="#e4e0e8"/><rect x="-1" y="-46" width="2" height="10" fill="#e4e0e8"/>'
+    luc = '<circle cx="0" cy="-8" r="10" fill="#e8d8cc"/><path d="M -14,-6 C -14,-28 14,-28 14,-6 L 16,22 L -16,22 Z" fill="#1a1520" opacity=".9"/><circle cx="0" cy="-8" r="8" fill="#efd6c6"/>'
+    o += pin_photo(200, 330, -4, twins, "แฝด 2549") + pin_photo(330, 310, 5, jan, "จันทร์เจ้า") + pin_photo(120, 450, 3, tower, "หอระฆัง") + pin_photo(420, 440, -6, luc, "ม.ลูเซีย")
+    o += ('<g transform="translate(270,430) rotate(-2)"><rect x="-58" y="-40" width="116" height="80" fill="#efe8d4"/><text x="0" y="-22" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="10" font-weight="700" fill="#2a2420">ไฟไหม้สถานรับเลี้ยง</text>'
+          '<text x="0" y="-9" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="9" fill="#2a2420">เด็กเสียชีวิต 2 ราย</text><path d="M -48,4 L 48,4 M -48,14 L 40,14 M -48,24 L 44,24" stroke="#9a9488" stroke-width="1.6"/><circle cx="16" cy="-9" r="16" fill="none" stroke="#c83a32" stroke-width="2.4"/><circle cx="0" cy="-38" r="3.4" fill="#d8443a"/></g>')
+    for (x, y, r, t) in ((150, 560, 6, "จับช้อน?"), (380, 560, -5, "เด็กคนที่ 3?"), (270, 230, 3, "มือซ้าย?"), (460, 300, -8, "14 ธ.ค. 03:00")):
+        o += f'<g transform="translate({x},{y}) rotate({r})"><rect x="-38" y="-16" width="76" height="32" fill="#f4e8a8"/><text x="0" y="5" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="12" font-weight="700" fill="#5a2a22">{t}</text><circle cx="0" cy="-12" r="3" fill="#d8443a"/></g>'
+    # red strings linking the clues
+    for (a, b) in (((200, 292), (330, 272)), ((200, 292), (270, 392)), ((330, 272), (380, 546)), ((270, 392), (150, 546)), ((120, 412), (270, 392)), ((420, 402), (270, 392)), ((270, 216), (200, 292)), ((460, 286), (420, 402))):
+        mx = (a[0] + b[0]) / 2; my = (a[1] + b[1]) / 2 + 14
+        o += f'<path d="M {a[0]},{a[1]} Q {mx},{my} {b[0]},{b[1]}" stroke="#c83a32" stroke-width="1.8" fill="none"/>'
+    # desk with clutter, chair, stacks
+    o += '<rect x="40" y="720" width="460" height="18" fill="#3a2a24"/><rect x="40" y="738" width="460" height="10" fill="#22181a"/><rect x="330" y="748" width="150" height="160" fill="#2a1e1c"/><rect x="340" y="770" width="130" height="4" fill="#3a2a26"/><circle cx="405" cy="820" r="3" fill="#8a7a5a"/><rect x="60" y="748" width="12" height="170" fill="#22181a"/>'
+    o += '<g transform="translate(110,720)"><rect x="-26" y="-14" width="52" height="14" rx="2" fill="#2b2b30"/><circle cx="8" cy="-7" r="7" fill="#16161a"/><circle cx="8" cy="-7" r="4" fill="#3a4a66"/></g>'
+    o += '<g transform="translate(170,720)"><path d="M -9,0 L -8,-20 L 8,-20 L 9,0 Z" fill="#e8e4dc"/><path d="M 9,-16 C 16,-16 16,-6 9,-6" fill="none" stroke="#e8e4dc" stroke-width="2.4"/></g>'
+    o += '<g transform="translate(420,720)">' + "".join(f'<rect x="-36" y="{-6 - i * 6}" width="72" height="6" fill="{c}" transform="rotate({rr} 0 {-3 - i * 6})"/>' for i, (c, rr) in enumerate((("#e8e4d4", 0), ("#d8d4c4", 3), ("#e8e4d4", -2), ("#c8c4b4", 4), ("#e8e4d4", -3)))) + '</g>'
+    o += '<g transform="translate(230,720)"><rect x="-30" y="-6" width="60" height="6" fill="#5a3a2a"/><path d="M -28,-6 L 0,-10 L 0,-4 L -28,-2 Z M 28,-6 L 0,-10 L 0,-4 L 28,-2 Z" fill="#e8dfcc"/></g>'
+    o += '<path d="M -10,760 C 30,740 80,746 90,790 L 96,880 L -10,890 Z" fill="#2a1e1c"/><path d="M -10,880 L 100,870 L 104,890 L -10,900 Z" fill="#3a2a26"/><path d="M 40,900 L 30,960 M 70,896 L 80,960" stroke="#1a1214" stroke-width="5"/>'
+    o += '<rect y="900" width="540" height="60" fill="#14100f"/>'
+    # Mek from behind, hand on his hip, facing the wall
+    o += C("mek_back", 270, 935, 1.08)
+    # the pendant lamp
+    o += '<path d="M 270,0 L 270,170" stroke="#0e1416" stroke-width="2.4"/><path d="M 230,214 C 230,180 310,180 310,214 Z" fill="#141c1e"/><ellipse cx="270" cy="214" rx="40" ry="7" fill="#fff4dc"/>'
+    return o
+ST["evidence_wall"] = evidence_wall()
+
 # ---------- lighting & atmosphere per stage ----------
 import random as _r
 _R = _r.Random(21)
@@ -212,21 +405,23 @@ L("gate", .14, holes=((120, 180, 300),), glows=((80, 160, 320, WARM, .45),),
   motes=None)
 L("guestroom", .38, holes=((275, 280, 200), (160, 560, 120)), beams=(("150,110 400,110 330,960 -40,960", WARM, .38),), motes=(60, 200, 420, 820, 22, "#fff0dc"),
   shadows=(("160,900 220,900 330,960 240,960", .4),))
-L("cemetery", .38, holes=((270, 300, 260),), fog=((480, 140, .4),), glows=((270, 120, 280, WARM, .3),), motes=(40, 300, 500, 760, 18, "#f4eef8"))
+L("cemetery", .3, holes=((270, 300, 300), (170, 440, 120)), glows=((120, 200, 260, "#f8d0c8", .35),), motes=(40, 300, 500, 760, 14, "#f4eef8"))
+L("cemetery_wide", .3, holes=((270, 300, 300), (170, 440, 120)), glows=((120, 200, 260, "#f8d0c8", .35),), motes=(40, 300, 500, 760, 14, "#f4eef8"))
 L("music", .42, holes=((180, 380, 180), (440, 380, 90)), glows=((180, 120, 260, WARM, .55),), motes=(60, 150, 360, 600, 18, "#fff0dc"))
 L("veranda", .66, holes=((270, 600, 170),), glows=((270, 610, 200, CANDLE, .9),), motes=(170, 460, 370, 640, 16, "#fff4e0"),
   shadows=(("140,860 200,860 120,960 40,960", .45), ("400,870 460,870 560,960 480,960", .45)))
 L("dawn_walk", .3, holes=((270, 400, 280),), fog=((420, 200, .45),), glows=((300, 200, 300, MOON, .35),), motes=(40, 300, 500, 760, 20, "#eef2ff"))
 L("mass", .45, holes=((270, 250, 170), (270, 500, 200)),
   beams=(("190,200 350,200 470,960 90,960", "#b8a8ff", .32),), glows=((270, 220, 160, "#b8a8ff", .5),), motes=(120, 260, 440, 800, 26, "#e8e2ff"))
-L("garden", .2, holes=((200, 500, 220), (360, 520, 160)), 
-  shadows=(("200,860 260,860 340,920 260,930", .4), ("360,860 420,860 500,920 420,930", .4)), motes=(100, 120, 460, 700, 22, "#fff4e0"))
+L("garden", .12, holes=((270, 600, 300),), beams=(("120,0 220,0 300,820 140,820", WARM, .3),), motes=(100, 120, 460, 700, 14, "#fff4e0"))
 L("archive", .5, holes=((270, 170, 70), (290, 560, 170)), beams=(("230,140 310,140 460,960 120,960", WARM, .5),), glows=((270, 170, 110, "#e8ecff", .6),), motes=(130, 220, 440, 800, 38, "#fff0dc"))
 L("flash_dorm", .5, tint="#120a04", holes=((450, 560, 120), (270, 600, 260)), glows=((410, 650, 110, CANDLE, .75),), motes=(150, 500, 520, 800, 16, "#fff0d8"))
 L("steps", .42, holes=((270, 420, 200), (270, 820, 100)), motes=(80, 200, 460, 700, 14, "#f4eef8"))
 L("kitchen", .55, holes=((270, 300, 220), (200, 640, 160)), glows=((270, 145, 300, WARM, .85),), motes=(120, 180, 420, 700, 24, "#fff4e0"), shadows=(("250,900 310,900 380,960 300,960", .4),))
 L("call", .0, extra='<circle cx="460" cy="150" r="260" fill="url(#lg_b4a8ff)" opacity=".8" style="mix-blend-mode:screen"/><rect x="0" y="474" width="540" height="486" fill="#06050c" opacity=".45"/><circle cx="200" cy="700" r="140" fill="url(#lg_cfe0ff)" opacity=".7" style="mix-blend-mode:screen"/><circle cx="450" cy="874" r="80" fill="#06050c" opacity=".0"/>')
 GLOWCOLS.update({SCREEN, PHONE})
+L("evidence_wall", .62, tint="#03121a", holes=((270, 470, 230), (270, 214, 60)), glows=((270, 220, 120, WARM, .9),),
+  beams=(("232,214 308,214 470,900 70,900", WARM, .55),), motes=(140, 230, 400, 700, 14, "#fff4e0"), shadows=(("250,935 300,935 380,960 230,960", .5),))
 L("dream", .3, tint="#1a1418", holes=((270, 240, 160),), glows=((270, 240, 200, "#f0f0ff", .55),), fog=((420, 420, .35),), motes=(60, 200, 480, 860, 30, "#e8e8f0"))
 L("tower_night", .55, holes=((430, 110, 90), (380, 860, 150), (180, 640, 90)), glows=((430, 110, 160, MOON, .7),),
   beams=(("206,646 222,638 520,850 470,940", WARM, .5),), motes=(200, 640, 520, 940, 20, "#fff4e0"))
@@ -298,10 +493,10 @@ PANELS = {
      ("81-82", "guestroom", (250, 560, 300), "ภาพใกล้มือ", "in", "คุณพ่อยื่นกุญแจทองเหลืองประตูข้างโบสถ์"),
      ("83-85", "guestroom", (160, 560, 360), "ภาพใกล้", "static", "'กฎเจ็ดข้อที่ป้ายนั่น เชื่อพ่อเถอะ ทำตามมัน'")],
  7: [("86-87", "cemetery", (160, 650, 500), "ภาพปานกลาง", "static", "โรซาพูดเร็ว พาเดินดูก่อนมืด"),
-     ("88-91", "cemetery", F_, "ภาพกว้าง", "pan-l", "ถ้ำแม่พระ หอระฆังมีโซ่คล้อง โรซาเล่าว่าระฆังดังจริง"),
+     ("88-91", "cemetery_wide", F_, "ภาพกว้าง", "pan-l", "ถ้ำแม่พระ หอระฆังมีโซ่คล้อง โรซาเล่าว่าระฆังดังจริง"),
      ("92-96", "cemetery", (270, 840, 340), "ภาพใกล้ หลุมศพ", "in", "หลุมเด็กสามหลุม หลุมหนึ่งไม่มีชื่อ ป้าย 'มาร์ธา'"),
      ("97-102", "cemetery", (400, 640, 460), "ภาพปานกลาง", "static", "โรซาถามว่าเคยมีเด็กถือเทียนเดินไหม เมฆนิ่ง"),
-     ("103-106", "cemetery", F_, "ภาพกว้าง", "out", "ระฆังหกโมง โรซารีบกลับหลังรั้ว เมฆยืนคนเดียว")],
+     ("103-106", "cemetery_wide", F_, "ภาพกว้าง", "out", "ระฆังหกโมง โรซารีบกลับหลังรั้ว เมฆยืนคนเดียว")],
  8: [("107-110", "music", F_, "ภาพกว้างผ่านหน้าต่าง", "in", "มาเรียมเล่นเปียโนคนเดียวในห้องดนตรี"),
      ("109", "hand", F_, "แทรกใกล้มือ", "static", "แผลไฟไหม้หลังมือซ้ายบนคีย์เปียโน"),
      ("111-116", "music", (180, 600, 440), "ภาพปานกลาง", "static", "มาเรียมคุยกับเมฆ เรื่องความจำหายและการพูดชื่อตัวเองทุกคืน"),
@@ -331,7 +526,8 @@ PANELS = {
       ("204-208", "kitchen", (456, 470, 300), "ภาพใกล้ที่ประตู", "in", "อักเนสโผล่ที่ประตูพร้อมกาน้ำชา ฮัมเพลง มือป้าแดงสั่น"),
       ("209-213", "kitchen", (250, 620, 460), "ภาพปานกลาง", "static", "อักเนสรินชามือซ้าย ยื่นให้ป้าแดง ป้าเทชาทิ้ง"),
       ("214-215", "kitchen", (250, 560, 320), "ภาพใกล้", "in", "'พรุ่งนี้เช้าป้าจะเล่าทั้งหมด' ยัดของใส่กระเป๋าผ้ากันเปื้อน")],
- 15: [("216-221", "dream", F_, "ฝัน ภาพกว้าง", "static", "ห้องน้ำหอเด็ก ควัน เด็กผู้หญิงปีนหน้าต่าง หน้ามืด"),
+ 15: [("216", "evidence_wall", F_, "ภาพกว้าง จากหลังตัวละคร", "in", "เมฆยืนหน้าผนังเบาะแสในห้องพัก รูปจากห้องเก็บเอกสาร เชือกแดง โคมไฟดวงเดียว"),
+      ("217-221", "dream", F_, "ฝัน ภาพกว้าง", "static", "ห้องน้ำหอเด็ก ควัน เด็กผู้หญิงปีนหน้าต่าง หน้ามืด"),
       ("222-227", "call", F_, "จอแบ่งครึ่ง", "static", "วิดีโอคอลกับเจมส์ เจมส์ชี้ว่าคนที่ถูกขูดหน้าถนัดซ้ายทุกรูป"),
       ("228-234", "drain", F_, "แทรก", "in", "เจมส์ได้ยินเสียงเด็กร้องเพลง ฝาท่อในห้อง"),
       ("235-239", "clock", F_, "แทรก", "shake", "เงียบ 2 วินาที แล้วระฆังดังตอน 03:00 ป้ายกฎข้อ 1"),
