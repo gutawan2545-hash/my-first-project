@@ -1,6 +1,6 @@
 {
  "fps": 24,
- "total": 1117.35,
+ "total": 1134.95,
  "outro": 2.6,
  "segments": [
   {
@@ -19,17 +19,18 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 2,
      "t0": 2.6,
-     "dur": 7.37,
+     "dur": 8.57,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 2.91,
+       "dur": 3.39,
        "lines": [
         [
          [
@@ -50,8 +51,8 @@
        ]
       },
       {
-       "t0": 2.91,
-       "dur": 4.46,
+       "t0": 3.39,
+       "dur": 5.18,
        "lines": [
         [
          [
@@ -84,7 +85,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      7.97,
+      "vo_ep1/s002.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -101,7 +107,9 @@
     ]
    ],
    "day": false,
-   "dur": 9.97
+   "walk": [],
+   "cry": [],
+   "dur": 11.17
   },
   {
    "type": "html",
@@ -111,17 +119,17 @@
    "move": "in",
    "kind": "stage",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 9.97037037037037,
+   "t0": 11.169999999999998,
    "shots": [
     {
      "n": 3,
      "t0": 0.0,
-     "dur": 4.93,
+     "dur": 5.35,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.93,
+       "dur": 5.35,
        "lines": [
         [
          [
@@ -148,13 +156,20 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      4.75,
+      "vo_ep1/s003.mp3"
+     ]
     }
    ],
    "bells": [],
    "lights": [],
    "day": false,
-   "dur": 4.93
+   "walk": [],
+   "cry": [],
+   "dur": 5.35
   },
   {
    "type": "html",
@@ -168,17 +183,17 @@
    "move": "static",
    "kind": "stage",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 14.896296296296295,
+   "t0": 16.52,
    "shots": [
     {
      "n": 4,
      "t0": 0.0,
-     "dur": 6.26,
+     "dur": 6.16,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 6.26,
+       "dur": 6.16,
        "lines": [
         [
          [
@@ -209,7 +224,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      5.56,
+      "vo_ep1/s004.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -226,7 +246,9 @@
     ]
    ],
    "day": false,
-   "dur": 6.26
+   "walk": [],
+   "cry": [],
+   "dur": 6.16
   },
   {
    "type": "html",
@@ -236,7 +258,7 @@
    "move": "static",
    "kind": "ins",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 21.155555555555555,
+   "t0": 22.68,
    "shots": [
     {
      "n": 5,
@@ -244,7 +266,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 6,
@@ -252,17 +275,18 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 7,
      "t0": 5.2,
-     "dur": 2.0,
+     "dur": 3.03,
      "speaker": "rosa",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 2.0,
+       "dur": 3.03,
        "lines": [
         [
          [
@@ -277,7 +301,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      2.43,
+      "vo_ep1/s007.mp3"
+     ]
     }
    ],
    "bells": [
@@ -289,7 +318,7 @@
    ],
    "lights": [],
    "day": false,
-   "dur": 7.2
+   "dur": 8.23
   },
   {
    "type": "html",
@@ -299,17 +328,17 @@
    "move": "in",
    "kind": "ins",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 28.355555555555558,
+   "t0": 30.910000000000004,
    "shots": [
     {
      "n": 8,
      "t0": 0.0,
-     "dur": 7.15,
+     "dur": 9.59,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 2.49,
+       "dur": 3.35,
        "lines": [
         [
          [
@@ -342,8 +371,8 @@
        ]
       },
       {
-       "t0": 2.49,
-       "dur": 4.65,
+       "t0": 3.35,
+       "dur": 6.24,
        "lines": [
         [
          [
@@ -370,13 +399,18 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      8.99,
+      "vo_ep1/s008.mp3"
+     ]
     }
    ],
    "bells": [],
    "lights": [],
    "day": false,
-   "dur": 7.15
+   "dur": 9.59
   },
   {
    "type": "html",
@@ -386,17 +420,17 @@
    "move": "in",
    "kind": "stage",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 35.50370370370371,
+   "t0": 40.5,
    "shots": [
     {
      "n": 9,
      "t0": 0.0,
-     "dur": 3.74,
+     "dur": 4.81,
      "speaker": "rosa",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 3.74,
+       "dur": 4.81,
        "lines": [
         [
          [
@@ -419,25 +453,31 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      4.21,
+      "vo_ep1/s009.mp3"
+     ]
     },
     {
      "n": 10,
-     "t0": 3.74,
+     "t0": 4.81,
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 11,
-     "t0": 6.34,
-     "dur": 6.63,
+     "t0": 7.41,
+     "dur": 8.15,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.01,
+       "dur": 4.93,
        "lines": [
         [
          [
@@ -458,8 +498,8 @@
        ]
       },
       {
-       "t0": 4.01,
-       "dur": 2.62,
+       "t0": 4.93,
+       "dur": 3.22,
        "lines": [
         [
          [
@@ -488,15 +528,21 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      7.55,
+      "vo_ep1/s011.mp3"
+     ]
     },
     {
      "n": 12,
-     "t0": 12.97,
+     "t0": 15.56,
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -528,7 +574,15 @@
     ]
    ],
    "day": false,
-   "dur": 15.17
+   "walk": [
+    [
+     "rosa",
+     "in",
+     false
+    ]
+   ],
+   "cry": [],
+   "dur": 17.76
   },
   {
    "type": "html",
@@ -542,7 +596,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "18 พ.ย. · 02:57",
-   "t0": 50.674074074074085,
+   "t0": 58.260000000000005,
    "shots": [
     {
      "n": 13,
@@ -550,17 +604,18 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 14,
      "t0": 2.6,
-     "dur": 2.0,
+     "dur": 2.79,
      "speaker": "rosa",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 2.0,
+       "dur": 2.79,
        "lines": [
         [
          [
@@ -571,23 +626,30 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      2.19,
+      "vo_ep1/s014.mp3"
+     ]
     },
     {
      "n": 15,
-     "t0": 4.6,
+     "t0": 5.39,
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 16,
-     "t0": 6.8,
+     "t0": 7.59,
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -604,12 +666,14 @@
     ]
    ],
    "day": false,
-   "dur": 9.4
+   "walk": [],
+   "cry": [],
+   "dur": 10.19
   },
   {
    "type": "video",
    "file": "rosa_tears.mp4",
-   "t0": 60.07407407407409,
+   "t0": 68.45,
    "dur": 17.0,
    "scene": 1,
    "shots": [
@@ -617,7 +681,24 @@
     18,
     19
    ],
-   "bells": []
+   "bells": [],
+   "vo": [
+    [
+     1.0,
+     3.87,
+     "vo_ep1/s017.mp3"
+    ],
+    [
+     5.47,
+     2.77,
+     "vo_ep1/s018.mp3"
+    ],
+    [
+     8.84,
+     4.21,
+     "vo_ep1/s019.mp3"
+    ]
+   ]
   },
   {
    "type": "html",
@@ -627,17 +708,17 @@
    "move": "tilt-u",
    "kind": "stage",
    "chip": "18 พ.ย. · 06:15",
-   "t0": 77.07407407407409,
+   "t0": 85.45,
    "shots": [
     {
      "n": 20,
      "t0": 0.0,
-     "dur": 4.26,
+     "dur": 4.81,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.26,
+       "dur": 4.81,
        "lines": [
         [
          [
@@ -654,17 +735,22 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      4.21,
+      "vo_ep1/s020.mp3"
+     ]
     },
     {
      "n": 21,
-     "t0": 4.26,
-     "dur": 4.26,
+     "t0": 4.81,
+     "dur": 4.0,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.26,
+       "dur": 4.0,
        "lines": [
         [
          [
@@ -691,17 +777,22 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      3.4,
+      "vo_ep1/s021.mp3"
+     ]
     },
     {
      "n": 22,
-     "t0": 8.52,
-     "dur": 4.19,
+     "t0": 8.81,
+     "dur": 4.57,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.19,
+       "dur": 4.57,
        "lines": [
         [
          [
@@ -718,7 +809,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      3.97,
+      "vo_ep1/s022.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -735,7 +831,9 @@
     ]
    ],
    "day": true,
-   "dur": 12.7
+   "walk": [],
+   "cry": [],
+   "dur": 13.38
   },
   {
    "type": "html",
@@ -745,17 +843,17 @@
    "move": "static",
    "kind": "stage",
    "chip": "18 พ.ย. · 06:15",
-   "t0": 89.7777777777778,
+   "t0": 98.83000000000001,
    "shots": [
     {
      "n": 23,
      "t0": 0.0,
-     "dur": 3.44,
+     "dur": 4.47,
      "speaker": "rosa",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 3.44,
+       "dur": 4.47,
        "lines": [
         [
          [
@@ -772,25 +870,31 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      3.87,
+      "vo_ep1/s023.mp3"
+     ]
     },
     {
      "n": 24,
-     "t0": 3.44,
+     "t0": 4.47,
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 25,
-     "t0": 6.04,
-     "dur": 5.0,
+     "t0": 7.07,
+     "dur": 7.37,
      "speaker": "cat",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 5.0,
+       "dur": 7.37,
        "lines": [
         [
          [
@@ -825,17 +929,22 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      6.77,
+      "vo_ep1/s025.mp3"
+     ]
     },
     {
      "n": 26,
-     "t0": 11.04,
-     "dur": 3.44,
+     "t0": 14.44,
+     "dur": 4.07,
      "speaker": "rosa",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 3.44,
+       "dur": 4.07,
        "lines": [
         [
          [
@@ -860,7 +969,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      3.47,
+      "vo_ep1/s026.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -882,7 +996,9 @@
     ]
    ],
    "day": true,
-   "dur": 14.49
+   "walk": [],
+   "cry": [],
+   "dur": 18.51
   },
   {
    "type": "html",
@@ -896,17 +1012,17 @@
    "move": "in",
    "kind": "stage",
    "chip": "18 พ.ย. · 06:15",
-   "t0": 104.26666666666668,
+   "t0": 117.34,
    "shots": [
     {
      "n": 27,
      "t0": 0.0,
-     "dur": 3.59,
+     "dur": 5.2,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 3.59,
+       "dur": 5.2,
        "lines": [
         [
          [
@@ -929,17 +1045,22 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      4.6,
+      "vo_ep1/s027.mp3"
+     ]
     },
     {
      "n": 28,
-     "t0": 3.59,
-     "dur": 3.74,
+     "t0": 5.2,
+     "dur": 5.93,
      "speaker": "cat",
      "cards": [
       {
        "t0": 0.0,
-       "dur": 3.74,
+       "dur": 5.93,
        "lines": [
         [
          [
@@ -970,7 +1091,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      5.33,
+      "vo_ep1/s028.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -992,7 +1118,9 @@
     ]
    ],
    "day": true,
-   "dur": 7.33
+   "walk": [],
+   "cry": [],
+   "dur": 11.13
   },
   {
    "type": "html",
@@ -1006,17 +1134,17 @@
    "move": "in",
    "kind": "stage",
    "chip": "18 พ.ย. · 06:15",
-   "t0": 111.60000000000002,
+   "t0": 128.47,
    "shots": [
     {
      "n": 29,
      "t0": 0.0,
-     "dur": 4.7,
+     "dur": 5.2,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 4.7,
+       "dur": 5.2,
        "lines": [
         [
          [
@@ -1043,17 +1171,22 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      4.6,
+      "vo_ep1/s029.mp3"
+     ]
     },
     {
      "n": 30,
-     "t0": 4.7,
-     "dur": 2.48,
+     "t0": 5.2,
+     "dur": 2.72,
      "speaker": null,
      "cards": [
       {
        "t0": 0.0,
-       "dur": 2.48,
+       "dur": 2.72,
        "lines": [
         [
          [
@@ -1072,7 +1205,12 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": [
+      0.15,
+      2.12,
+      "vo_ep1/s030.mp3"
+     ]
     }
    ],
    "bells": [],
@@ -1094,7 +1232,9 @@
     ]
    ],
    "day": true,
-   "dur": 7.19
+   "walk": [],
+   "cry": [],
+   "dur": 7.92
   },
   {
    "type": "html",
@@ -1104,7 +1244,7 @@
    "move": "static",
    "kind": "exact",
    "chip": "",
-   "t0": 118.78518518518521,
+   "t0": 136.39,
    "shots": [
     {
      "n": 31,
@@ -1147,7 +1287,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1167,7 +1308,7 @@
    "move": "in",
    "kind": "exact",
    "chip": "",
-   "t0": 122.45185185185188,
+   "t0": 140.05666666666664,
    "shots": [
     {
      "n": 32,
@@ -1200,7 +1341,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1216,7 +1358,7 @@
    "move": "static",
    "kind": "ins",
    "chip": "",
-   "t0": 127.1555555555556,
+   "t0": 144.76037037037034,
    "shots": [
     {
      "n": 33,
@@ -1224,7 +1366,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -1246,7 +1389,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 129.7555555555556,
+   "t0": 147.36037037037033,
    "shots": [
     {
      "n": 34,
@@ -1283,7 +1426,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 35,
@@ -1310,7 +1454,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 36,
@@ -1347,7 +1492,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 37,
@@ -1374,7 +1520,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1406,6 +1553,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 17.78
   },
   {
@@ -1416,7 +1565,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 147.5333333333334,
+   "t0": 165.13814814814813,
    "shots": [
     {
      "n": 38,
@@ -1424,7 +1573,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 39,
@@ -1445,7 +1595,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1465,7 +1616,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 152.91111111111115,
+   "t0": 170.5159259259259,
    "shots": [
     {
      "n": 40,
@@ -1502,7 +1653,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 41,
@@ -1529,7 +1681,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 42,
@@ -1574,7 +1727,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 43,
@@ -1607,7 +1761,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 44,
@@ -1628,7 +1783,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 45,
@@ -1659,7 +1815,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1691,6 +1848,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 22.41
   },
   {
@@ -1705,7 +1864,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 175.31851851851854,
+   "t0": 192.9233333333333,
    "shots": [
     {
      "n": 46,
@@ -1713,7 +1872,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 47,
@@ -1750,7 +1910,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 48,
@@ -1771,7 +1932,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -1803,6 +1965,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 8.31
   },
   {
@@ -1817,7 +1981,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 183.62962962962965,
+   "t0": 201.2344444444444,
    "shots": [
     {
      "n": 49,
@@ -1858,7 +2022,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 50,
@@ -1907,7 +2072,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 51,
@@ -1940,7 +2106,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 52,
@@ -1961,7 +2128,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 53,
@@ -2012,7 +2180,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2034,6 +2203,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 26.26
   },
   {
@@ -2048,7 +2219,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "19 พ.ย. · 04:10",
-   "t0": 209.8888888888889,
+   "t0": 227.49370370370366,
    "shots": [
     {
      "n": 54,
@@ -2075,7 +2246,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 55,
@@ -2112,7 +2284,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 56,
@@ -2137,7 +2310,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 57,
@@ -2178,7 +2352,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 58,
@@ -2205,7 +2380,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2221,7 +2397,7 @@
    "move": "pan-r",
    "kind": "stage",
    "chip": "20 พ.ย. · 16:30",
-   "t0": 228.7777777777778,
+   "t0": 246.38259259259254,
    "shots": [
     {
      "n": 59,
@@ -2229,7 +2405,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 60,
@@ -2266,7 +2443,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 61,
@@ -2274,7 +2452,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 62,
@@ -2331,7 +2510,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2348,6 +2528,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 17.05
   },
   {
@@ -2358,7 +2540,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "20 พ.ย. · 16:30",
-   "t0": 245.82962962962964,
+   "t0": 263.4344444444444,
    "shots": [
     {
      "n": 63,
@@ -2419,7 +2601,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 64,
@@ -2440,7 +2623,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2460,7 +2644,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 16:30",
-   "t0": 253.9037037037037,
+   "t0": 271.5085185185185,
    "shots": [
     {
      "n": 65,
@@ -2487,7 +2671,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 66,
@@ -2520,7 +2705,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 67,
@@ -2551,7 +2737,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 68,
@@ -2584,7 +2771,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2601,6 +2789,16 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "daeng",
+     "in",
+     false
+    ]
+   ],
+   "cry": [
+    "daeng"
+   ],
    "dur": 14.74
   },
   {
@@ -2615,7 +2813,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 16:30",
-   "t0": 268.6444444444445,
+   "t0": 286.24925925925925,
    "shots": [
     {
      "n": 69,
@@ -2652,7 +2850,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 70,
@@ -2697,7 +2896,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 71,
@@ -2754,7 +2954,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 72,
@@ -2821,7 +3022,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 73,
@@ -2854,7 +3056,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 74,
@@ -2875,7 +3078,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2892,6 +3096,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 32.74
   },
   {
@@ -2906,7 +3112,7 @@
    "move": "out",
    "kind": "stage",
    "chip": "20 พ.ย. · 16:30",
-   "t0": 301.38518518518526,
+   "t0": 318.99,
    "shots": [
     {
      "n": 75,
@@ -2931,7 +3137,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 76,
@@ -2964,7 +3171,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -2981,6 +3189,14 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "daeng",
+     "out",
+     false
+    ]
+   ],
+   "cry": [],
    "dur": 7.04
   },
   {
@@ -2995,7 +3211,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "",
-   "t0": 308.4222222222223,
+   "t0": 326.027037037037,
    "shots": [
     {
      "n": 77,
@@ -3030,7 +3246,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 78,
@@ -3065,7 +3282,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3082,6 +3300,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 9.26
   },
   {
@@ -3092,7 +3312,7 @@
    "move": "pan-r",
    "kind": "stage",
    "chip": "",
-   "t0": 317.6814814814815,
+   "t0": 335.28629629629626,
    "shots": [
     {
      "n": 79,
@@ -3125,7 +3345,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 80,
@@ -3178,7 +3399,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3195,6 +3417,14 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "mek",
+     "in",
+     false
+    ]
+   ],
+   "cry": [],
    "dur": 10.3
   },
   {
@@ -3209,7 +3439,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "",
-   "t0": 327.9777777777778,
+   "t0": 345.58259259259256,
    "shots": [
     {
      "n": 81,
@@ -3254,7 +3484,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 82,
@@ -3283,7 +3514,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3300,6 +3532,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 9.78
   },
   {
@@ -3314,7 +3548,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "",
-   "t0": 337.7555555555556,
+   "t0": 355.36037037037033,
    "shots": [
     {
      "n": 83,
@@ -3341,7 +3575,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 84,
@@ -3376,7 +3611,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 85,
@@ -3417,7 +3653,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3434,6 +3671,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 11.37
   },
   {
@@ -3448,7 +3687,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 17:20",
-   "t0": 349.12592592592597,
+   "t0": 366.7307407407407,
    "shots": [
     {
      "n": 86,
@@ -3501,7 +3740,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 87,
@@ -3534,7 +3774,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3556,6 +3797,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 11.78
   },
   {
@@ -3566,7 +3809,7 @@
    "move": "pan-l",
    "kind": "stage",
    "chip": "20 พ.ย. · 17:20",
-   "t0": 360.90370370370374,
+   "t0": 378.5085185185185,
    "shots": [
     {
      "n": 88,
@@ -3619,7 +3862,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 89,
@@ -3652,7 +3896,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 90,
@@ -3697,7 +3942,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 91,
@@ -3750,7 +3996,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -3772,6 +4019,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 23.04
   },
   {
@@ -3786,7 +4035,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "20 พ.ย. · 17:20",
-   "t0": 383.9407407407408,
+   "t0": 401.54555555555555,
    "shots": [
     {
      "n": 92,
@@ -3839,7 +4088,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 93,
@@ -3870,7 +4120,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 94,
@@ -3895,7 +4146,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 95,
@@ -3944,7 +4196,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 96,
@@ -3981,7 +4234,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4003,6 +4257,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 19.48
   },
   {
@@ -4017,7 +4273,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 17:20",
-   "t0": 403.42222222222233,
+   "t0": 421.0270370370371,
    "shots": [
     {
      "n": 97,
@@ -4088,7 +4344,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 98,
@@ -4115,7 +4372,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 99,
@@ -4136,7 +4394,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 100,
@@ -4157,7 +4416,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 101,
@@ -4165,7 +4425,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 102,
@@ -4186,7 +4447,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4208,6 +4470,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 21.24
   },
   {
@@ -4218,7 +4482,7 @@
    "move": "out",
    "kind": "stage",
    "chip": "20 พ.ย. · 17:20",
-   "t0": 424.65925925925933,
+   "t0": 442.2640740740741,
    "shots": [
     {
      "n": 103,
@@ -4226,7 +4490,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 104,
@@ -4281,7 +4546,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 105,
@@ -4289,7 +4555,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 106,
@@ -4334,7 +4601,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -4362,6 +4630,14 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "rosa",
+     "out",
+     true
+    ]
+   ],
+   "cry": [],
    "dur": 18.98
   },
   {
@@ -4372,7 +4648,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "",
-   "t0": 443.63703703703715,
+   "t0": 461.2418518518519,
    "shots": [
     {
      "n": 107,
@@ -4380,7 +4656,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 108,
@@ -4401,7 +4678,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4423,6 +4701,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 4.6
   },
   {
@@ -4433,7 +4713,7 @@
    "move": "static",
    "kind": "ins",
    "chip": "",
-   "t0": 448.23703703703717,
+   "t0": 465.8418518518519,
    "shots": [
     {
      "n": 109,
@@ -4466,7 +4746,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4482,7 +4763,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "",
-   "t0": 453.31111111111125,
+   "t0": 470.915925925926,
    "shots": [
     {
      "n": 110,
@@ -4517,7 +4798,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4539,6 +4821,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 3.22
   },
   {
@@ -4553,7 +4837,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "",
-   "t0": 456.5333333333335,
+   "t0": 474.1381481481482,
    "shots": [
     {
      "n": 111,
@@ -4598,7 +4882,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 112,
@@ -4623,7 +4908,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 113,
@@ -4676,7 +4962,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 114,
@@ -4731,7 +5018,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 115,
@@ -4756,7 +5044,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 116,
@@ -4797,7 +5086,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -4819,6 +5109,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 28.93
   },
   {
@@ -4833,7 +5125,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "",
-   "t0": 485.4592592592594,
+   "t0": 503.06407407407414,
    "shots": [
     {
      "n": 117,
@@ -4878,7 +5170,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 118,
@@ -4927,7 +5220,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 119,
@@ -4948,7 +5242,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 120,
@@ -4975,7 +5270,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 121,
@@ -5002,7 +5298,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 122,
@@ -5039,7 +5336,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5061,6 +5359,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 22.15
   },
   {
@@ -5071,7 +5371,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "",
-   "t0": 507.60740740740755,
+   "t0": 525.2122222222222,
    "shots": [
     {
      "n": 123,
@@ -5108,7 +5408,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5130,6 +5431,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 5.44
   },
   {
@@ -5140,7 +5443,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 19:40",
-   "t0": 513.051851851852,
+   "t0": 530.6566666666666,
    "shots": [
     {
      "n": 124,
@@ -5181,7 +5484,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 125,
@@ -5212,7 +5516,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 126,
@@ -5233,7 +5538,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5250,6 +5556,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 12.93
   },
   {
@@ -5264,7 +5572,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "20 พ.ย. · 19:40",
-   "t0": 525.9777777777779,
+   "t0": 543.5825925925925,
    "shots": [
     {
      "n": 127,
@@ -5299,7 +5607,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 128,
@@ -5307,7 +5616,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 129,
@@ -5352,7 +5662,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 130,
@@ -5373,7 +5684,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 131,
@@ -5418,7 +5730,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5435,6 +5748,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 20.01
   },
   {
@@ -5449,7 +5764,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "20 พ.ย. · 19:40",
-   "t0": 545.9925925925927,
+   "t0": 563.5974074074073,
    "shots": [
     {
      "n": 132,
@@ -5494,7 +5809,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 133,
@@ -5521,7 +5837,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5538,6 +5855,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 8.59
   },
   {
@@ -5552,7 +5871,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 03:00",
-   "t0": 554.5851851851853,
+   "t0": 572.1899999999999,
    "shots": [
     {
      "n": 134,
@@ -5560,7 +5879,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 135,
@@ -5568,7 +5888,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 136,
@@ -5595,7 +5916,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 137,
@@ -5603,7 +5925,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 138,
@@ -5660,7 +5983,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5677,6 +6001,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 18.32
   },
   {
@@ -5687,7 +6013,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 03:00",
-   "t0": 572.9037037037039,
+   "t0": 590.5085185185185,
    "shots": [
     {
      "n": 139,
@@ -5728,7 +6054,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 140,
@@ -5777,7 +6104,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 141,
@@ -5806,7 +6134,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 142,
@@ -5843,7 +6172,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5860,6 +6190,19 @@
     ]
    ],
    "day": false,
+   "walk": [
+    [
+     "mariam",
+     "in",
+     false
+    ],
+    [
+     "agnes",
+     "in",
+     false
+    ]
+   ],
+   "cry": [],
    "dur": 18.52
   },
   {
@@ -5870,7 +6213,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 06:00",
-   "t0": 591.4222222222223,
+   "t0": 609.027037037037,
    "shots": [
     {
      "n": 143,
@@ -5897,7 +6240,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 144,
@@ -5905,7 +6249,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 145,
@@ -5944,7 +6289,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -5966,6 +6312,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 8.53
   },
   {
@@ -5976,7 +6324,7 @@
    "move": "pan-r",
    "kind": "ins",
    "chip": "21 พ.ย. · 06:00",
-   "t0": 599.9481481481483,
+   "t0": 617.552962962963,
    "shots": [
     {
      "n": 146,
@@ -5997,7 +6345,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 147,
@@ -6024,7 +6373,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 148,
@@ -6061,7 +6411,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6077,7 +6428,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 06:00",
-   "t0": 609.5037037037039,
+   "t0": 627.1085185185185,
    "shots": [
     {
      "n": 149,
@@ -6136,7 +6487,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 150,
@@ -6144,7 +6496,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 151,
@@ -6152,7 +6505,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 152,
@@ -6173,7 +6527,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 153,
@@ -6194,7 +6549,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6206,6 +6562,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 16.1
   },
   {
@@ -6220,7 +6578,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "21 พ.ย. · 06:00",
-   "t0": 625.6000000000003,
+   "t0": 643.2048148148149,
    "shots": [
     {
      "n": 154,
@@ -6253,7 +6611,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 155,
@@ -6278,7 +6637,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 156,
@@ -6311,7 +6671,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6323,6 +6684,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 12.56
   },
   {
@@ -6337,7 +6700,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 06:00",
-   "t0": 638.1555555555558,
+   "t0": 655.7603703703704,
    "shots": [
     {
      "n": 157,
@@ -6370,7 +6733,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 158,
@@ -6397,7 +6761,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6409,6 +6774,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 8.0
   },
   {
@@ -6419,7 +6786,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 646.1555555555558,
+   "t0": 663.7603703703704,
    "shots": [
     {
      "n": 159,
@@ -6452,7 +6819,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 160,
@@ -6460,7 +6828,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 161,
@@ -6505,7 +6874,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6527,6 +6897,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 14.6
   },
   {
@@ -6537,7 +6909,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 660.7555555555558,
+   "t0": 678.3603703703704,
    "shots": [
     {
      "n": 162,
@@ -6558,7 +6930,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 163,
@@ -6591,7 +6964,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 164,
@@ -6648,7 +7022,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6664,7 +7039,7 @@
    "move": "pan-r",
    "kind": "stage",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 674.1629629629632,
+   "t0": 691.7677777777778,
    "shots": [
     {
      "n": 165,
@@ -6697,7 +7072,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 166,
@@ -6705,7 +7081,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 167,
@@ -6762,7 +7139,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 168,
@@ -6819,7 +7197,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 169,
@@ -6856,7 +7235,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 170,
@@ -6897,7 +7277,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 171,
@@ -6946,7 +7327,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -6968,6 +7350,14 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "jan",
+     "in",
+     true
+    ]
+   ],
+   "cry": [],
    "dur": 35.27
   },
   {
@@ -6982,7 +7372,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 709.42962962963,
+   "t0": 727.0344444444446,
    "shots": [
     {
      "n": 172,
@@ -6990,7 +7380,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 173,
@@ -6998,7 +7389,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 174,
@@ -7057,7 +7449,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7073,7 +7466,7 @@
    "move": "static",
    "kind": "ins",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 720.118518518519,
+   "t0": 737.7233333333336,
    "shots": [
     {
      "n": 175,
@@ -7081,7 +7474,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7097,7 +7491,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 722.318518518519,
+   "t0": 739.9233333333336,
    "shots": [
     {
      "n": 176,
@@ -7128,7 +7522,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 177,
@@ -7136,7 +7531,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 178,
@@ -7181,7 +7577,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 179,
@@ -7202,7 +7599,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7222,7 +7620,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 08:00",
-   "t0": 735.2148148148153,
+   "t0": 752.81962962963,
    "shots": [
     {
      "n": 180,
@@ -7230,7 +7628,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 181,
@@ -7263,7 +7662,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7285,6 +7685,8 @@
     ]
    ],
    "day": true,
+   "walk": [],
+   "cry": [],
    "dur": 7.38
   },
   {
@@ -7295,7 +7697,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "21 พ.ย. · 17:45",
-   "t0": 742.5925925925932,
+   "t0": 760.1974074074078,
    "shots": [
     {
      "n": 182,
@@ -7322,7 +7724,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 183,
@@ -7330,7 +7733,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 184,
@@ -7361,7 +7765,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7377,7 +7782,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 17:45",
-   "t0": 752.3037037037043,
+   "t0": 769.9085185185189,
    "shots": [
     {
      "n": 185,
@@ -7385,7 +7790,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 186,
@@ -7420,7 +7826,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 187,
@@ -7447,7 +7854,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 188,
@@ -7502,7 +7910,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 189,
@@ -7535,7 +7944,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7552,6 +7962,14 @@
     ]
    ],
    "day": true,
+   "walk": [
+    [
+     "agnes",
+     "out",
+     false
+    ]
+   ],
+   "cry": [],
    "dur": 23.09
   },
   {
@@ -7562,7 +7980,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 18:30",
-   "t0": 775.3925925925932,
+   "t0": 792.9974074074079,
    "shots": [
     {
      "n": 190,
@@ -7611,7 +8029,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 191,
@@ -7644,7 +8063,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 192,
@@ -7665,7 +8085,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 193,
@@ -7696,7 +8117,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -7718,6 +8140,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 15.11
   },
   {
@@ -7732,7 +8156,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "21 พ.ย. · 18:30",
-   "t0": 790.5037037037043,
+   "t0": 808.108518518519,
    "shots": [
     {
      "n": 194,
@@ -7793,7 +8217,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 195,
@@ -7801,7 +8226,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 196,
@@ -7834,7 +8260,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 197,
@@ -7889,7 +8316,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 198,
@@ -7926,7 +8354,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 199,
@@ -7947,7 +8376,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 200,
@@ -8002,7 +8432,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 201,
@@ -8023,7 +8454,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 202,
@@ -8072,7 +8504,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 203,
@@ -8125,7 +8558,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8147,6 +8581,10 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [
+    "daeng"
+   ],
    "dur": 48.72
   },
   {
@@ -8161,7 +8599,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "21 พ.ย. · 18:30",
-   "t0": 839.2222222222229,
+   "t0": 856.8270370370375,
    "shots": [
     {
      "n": 204,
@@ -8169,7 +8607,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 205,
@@ -8210,7 +8649,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 206,
@@ -8231,7 +8671,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 207,
@@ -8239,7 +8680,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 208,
@@ -8247,7 +8689,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8269,6 +8712,14 @@
     ]
    ],
    "day": false,
+   "walk": [
+    [
+     "agnes",
+     "in",
+     false
+    ]
+   ],
+   "cry": [],
    "dur": 14.36
   },
   {
@@ -8283,7 +8734,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "21 พ.ย. · 18:30",
-   "t0": 853.5777777777785,
+   "t0": 871.1825925925931,
    "shots": [
     {
      "n": 209,
@@ -8310,7 +8761,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 210,
@@ -8331,7 +8783,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 211,
@@ -8362,7 +8815,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 212,
@@ -8383,7 +8837,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 213,
@@ -8418,7 +8873,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8440,6 +8896,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 15.44
   },
   {
@@ -8454,7 +8912,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "21 พ.ย. · 18:30",
-   "t0": 869.0222222222229,
+   "t0": 886.6270370370376,
    "shots": [
     {
      "n": 214,
@@ -8499,7 +8957,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 215,
@@ -8524,7 +8983,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8546,6 +9006,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 8.0
   },
   {
@@ -8556,7 +9018,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 877.0222222222229,
+   "t0": 894.6270370370376,
    "shots": [
     {
      "n": 216,
@@ -8601,7 +9063,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8623,6 +9086,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 6.85
   },
   {
@@ -8633,7 +9098,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 883.8740740740748,
+   "t0": 901.4788888888894,
    "shots": [
     {
      "n": 217,
@@ -8641,7 +9106,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 218,
@@ -8686,7 +9152,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 219,
@@ -8713,7 +9180,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 220,
@@ -8746,7 +9214,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 221,
@@ -8754,7 +9223,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -8771,6 +9241,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 18.35
   },
   {
@@ -8781,7 +9253,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 902.2222222222229,
+   "t0": 919.8270370370375,
    "shots": [
     {
      "n": 222,
@@ -8802,7 +9274,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 223,
@@ -8841,7 +9314,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 224,
@@ -8868,7 +9342,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 225,
@@ -8913,7 +9388,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 226,
@@ -8962,7 +9438,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 227,
@@ -9001,12 +9478,15 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
    "lights": [],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 22.37
   },
   {
@@ -9017,7 +9497,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 924.5925925925931,
+   "t0": 942.1974074074077,
    "shots": [
     {
      "n": 228,
@@ -9025,7 +9505,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 229,
@@ -9052,7 +9533,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 230,
@@ -9073,7 +9555,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 231,
@@ -9100,7 +9583,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 232,
@@ -9108,7 +9592,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 233,
@@ -9143,7 +9628,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 234,
@@ -9204,7 +9690,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -9220,7 +9707,7 @@
    "move": "shake",
    "kind": "ins",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 947.3925925925932,
+   "t0": 964.9974074074079,
    "shots": [
     {
      "n": 235,
@@ -9247,7 +9734,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 236,
@@ -9255,7 +9743,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 237,
@@ -9263,7 +9752,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 238,
@@ -9284,7 +9774,8 @@
        ]
       }
      ],
-     "red": true
+     "red": true,
+     "vo": null
     },
     {
      "n": 239,
@@ -9323,7 +9814,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -9354,7 +9846,7 @@
    "move": "shake",
    "kind": "stage",
    "chip": "22 พ.ย. · 02:41",
-   "t0": 960.0444444444452,
+   "t0": 977.6492592592598,
    "shots": [
     {
      "n": 240,
@@ -9375,7 +9867,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 241,
@@ -9402,7 +9895,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 242,
@@ -9410,7 +9904,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 243,
@@ -9437,7 +9932,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -9449,6 +9945,8 @@
    ],
    "lights": [],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 12.01
   },
   {
@@ -9459,7 +9957,7 @@
    "move": "tilt-u",
    "kind": "stage",
    "chip": "",
-   "t0": 972.0518518518526,
+   "t0": 989.6566666666672,
    "shots": [
     {
      "n": 244,
@@ -9480,7 +9978,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 245,
@@ -9515,7 +10014,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 246,
@@ -9523,7 +10023,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -9556,6 +10057,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 8.38
   },
   {
@@ -9570,7 +10073,7 @@
    "move": "pan-l",
    "kind": "stage",
    "chip": "",
-   "t0": 980.4296296296303,
+   "t0": 998.034444444445,
    "shots": [
     {
      "n": 247,
@@ -9591,7 +10094,8 @@
        ]
       }
      ],
-     "red": true
+     "red": true,
+     "vo": null
     },
     {
      "n": 248,
@@ -9599,7 +10103,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -9626,6 +10131,14 @@
     ]
    ],
    "day": false,
+   "walk": [
+    [
+     "mek",
+     "in",
+     true
+    ]
+   ],
+   "cry": [],
    "stingers": [
     0.0
    ],
@@ -9643,7 +10156,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "",
-   "t0": 984.6296296296304,
+   "t0": 1002.234444444445,
    "shots": [
     {
      "n": 249,
@@ -9668,7 +10181,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 250,
@@ -9676,7 +10190,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 251,
@@ -9705,7 +10220,8 @@
        ]
       }
      ],
-     "red": true
+     "red": true,
+     "vo": null
     },
     {
      "n": 252,
@@ -9713,7 +10229,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 253,
@@ -9746,7 +10263,8 @@
        ]
       }
      ],
-     "red": true
+     "red": true,
+     "vo": null
     }
    ],
    "bells": [],
@@ -9773,6 +10291,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "hush": [
     [
      2.04,
@@ -9801,7 +10321,7 @@
    "move": "tilt-u",
    "kind": "stage",
    "chip": "",
-   "t0": 997.5037037037046,
+   "t0": 1015.1085185185192,
    "shots": [
     {
      "n": 254,
@@ -9828,7 +10348,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 255,
@@ -9865,7 +10386,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -9892,6 +10414,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 9.26
   },
   {
@@ -9902,7 +10426,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 05:40",
-   "t0": 1006.7629629629638,
+   "t0": 1024.3677777777784,
    "shots": [
     {
      "n": 256,
@@ -9923,7 +10447,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 257,
@@ -9962,7 +10487,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 258,
@@ -9987,7 +10513,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 259,
@@ -10012,7 +10539,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 260,
@@ -10065,7 +10593,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 261,
@@ -10092,7 +10621,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 262,
@@ -10113,7 +10643,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10130,6 +10661,10 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [
+    "mek"
+   ],
    "dur": 23.07
   },
   {
@@ -10144,7 +10679,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 05:40",
-   "t0": 1029.8370370370378,
+   "t0": 1047.4418518518523,
    "shots": [
     {
      "n": 263,
@@ -10203,7 +10738,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 264,
@@ -10230,7 +10766,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10247,6 +10784,10 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [
+    "mek"
+   ],
    "dur": 9.19
   },
   {
@@ -10257,7 +10798,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "22 พ.ย. · 05:40",
-   "t0": 1039.022222222223,
+   "t0": 1056.6270370370376,
    "shots": [
     {
      "n": 265,
@@ -10288,7 +10829,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 266,
@@ -10317,7 +10859,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 267,
@@ -10344,7 +10887,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 268,
@@ -10371,7 +10915,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 269,
@@ -10406,12 +10951,17 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
    "lights": [],
    "day": false,
+   "walk": [],
+   "cry": [
+    "mariam"
+   ],
    "dur": 15.52
   },
   {
@@ -10422,7 +10972,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1054.5407407407415,
+   "t0": 1072.145555555556,
    "shots": [
     {
      "n": 270,
@@ -10457,7 +11007,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 271,
@@ -10490,7 +11041,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10512,6 +11064,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 6.89
   },
   {
@@ -10522,7 +11076,7 @@
    "move": "in",
    "kind": "ins",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1061.4296296296304,
+   "t0": 1079.034444444445,
    "shots": [
     {
      "n": 272,
@@ -10530,7 +11084,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 273,
@@ -10595,7 +11150,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 274,
@@ -10628,7 +11184,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10644,7 +11201,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1075.0370370370379,
+   "t0": 1092.6418518518524,
    "shots": [
     {
      "n": 275,
@@ -10671,7 +11228,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 276,
@@ -10716,7 +11274,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10738,6 +11297,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 8.07
   },
   {
@@ -10748,7 +11309,7 @@
    "move": "in",
    "kind": "stage",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1083.111111111112,
+   "t0": 1100.7159259259265,
    "shots": [
     {
      "n": 277,
@@ -10793,7 +11354,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 278,
@@ -10801,7 +11363,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 279,
@@ -10834,7 +11397,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 280,
@@ -10855,7 +11419,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 281,
@@ -10880,7 +11445,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],
@@ -10902,6 +11468,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "dur": 18.08
   },
   {
@@ -10916,7 +11484,7 @@
    "move": "static",
    "kind": "stage",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1101.1925925925934,
+   "t0": 1118.797407407408,
    "shots": [
     {
      "n": 282,
@@ -10924,7 +11492,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 283,
@@ -10932,7 +11501,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 284,
@@ -10953,7 +11523,8 @@
        ]
       }
      ],
-     "red": true
+     "red": true,
+     "vo": null
     },
     {
      "n": 285,
@@ -10961,7 +11532,8 @@
      "dur": 2.6,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [
@@ -10989,6 +11561,8 @@
     ]
    ],
    "day": false,
+   "walk": [],
+   "cry": [],
    "hush": [
     [
      2.6,
@@ -11008,7 +11582,7 @@
    "move": "static",
    "kind": "ins",
    "chip": "22 พ.ย. · 23:50",
-   "t0": 1110.5925925925933,
+   "t0": 1128.1974074074078,
    "shots": [
     {
      "n": 286,
@@ -11049,7 +11623,8 @@
        ]
       }
      ],
-     "red": false
+     "red": false,
+     "vo": null
     },
     {
      "n": 287,
@@ -11057,7 +11632,8 @@
      "dur": 2.2,
      "speaker": null,
      "cards": [],
-     "red": false
+     "red": false,
+     "vo": null
     }
    ],
    "bells": [],

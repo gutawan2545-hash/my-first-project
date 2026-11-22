@@ -29,12 +29,30 @@ def face_fx(cid, talk):
     if cid not in SKIN: return ""
     tr = "" if cid in KIDS else ' transform="translate(0,9) scale(.82)"'
     ey = 3 if cid in KIDS else -0.5
-    per, off = R.uniform(3.6, 5.2), R.uniform(0, 4)
-    kt = 'keyTimes="0;.9;.935;.965;1"'
+    # blinks you can see: every 2.4-3.8 s, eyes stay shut ~0.12 s, every other character sometimes double-blinks
+    per, off = R.uniform(2.4, 3.8), R.uniform(0, 4)
+    if R.random() < .5:
+        vals, kt = "0;0;6.8;6.8;0;0;6.8;0;0", 'keyTimes="0;.84;.865;.89;.915;.93;.95;.97;1"'
+    else:
+        vals, kt = "0;0;6.8;6.8;0;0", 'keyTimes="0;.88;.905;.94;.965;1"'
+    lash = vals.replace("6.8", "1")
     o = f'<g{tr}>'
-    for x in (-13, 13):   # eyelids close briefly: skin ellipse grows over the eye, lash line appears
-        o += (f'<ellipse cx="{x}" cy="{ey}" rx="10.5" ry="0" fill="{SKIN[cid]}"><animate attributeName="ry" values="0;0;6.8;0;0" {kt} dur="{per:.2f}s" begin="-{off:.2f}s" repeatCount="indefinite"/></ellipse>'
-              f'<path d="M {x - 10},{ey} Q {x},{ey + 4} {x + 10},{ey}" stroke="#1b1316" stroke-width="1.6" fill="none" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" {kt} dur="{per:.2f}s" begin="-{off:.2f}s" repeatCount="indefinite"/></path>')
+    for x in (-13, 13):   # eyelids close: skin ellipse grows over the eye, lash line appears
+        o += (f'<ellipse cx="{x}" cy="{ey}" rx="10.5" ry="0" fill="{SKIN[cid]}"><animate attributeName="ry" values="{vals}" {kt} dur="{per:.2f}s" begin="-{off:.2f}s" repeatCount="indefinite"/></ellipse>'
+              f'<path d="M {x - 10},{ey} Q {x},{ey + 4} {x + 10},{ey}" stroke="#1b1316" stroke-width="1.6" fill="none" opacity="0"><animate attributeName="opacity" values="{lash}" {kt} dur="{per:.2f}s" begin="-{off:.2f}s" repeatCount="indefinite"/></path>')
+    # crying (hidden; the player shows it where the direction says ร้องไห้ / น้ำตา): red rims, wet lower lids, watery glints, tears running down
+    c = '<g class="cry" display="none">'
+    for i, x in enumerate((-13, 13)):
+        c += (f'<ellipse cx="{x}" cy="{ey + 5}" rx="10" ry="3.2" fill="#e0707a" opacity=".28"/>'
+              f'<ellipse cx="{x}" cy="{ey + 4}" rx="8.5" ry="1.5" fill="#dff0ff" opacity=".75"/>'
+              f'<circle cx="{x + 3}" cy="{ey - 2.5}" r="1.5" fill="#ffffff" opacity=".9"/><circle cx="{x - 3}" cy="{ey + 1.5}" r=".9" fill="#ffffff" opacity=".8"/>'
+              f'<path d="M {x - 2 + 4 * i},{ey + 5} C {x - 3 + 4 * i},{ey + 12} {x - 1 + 4 * i},{ey + 18} {x - 2 + 4 * i},{ey + 24}" stroke="#d6ecff" stroke-width="1.5" fill="none" opacity=".55"/>')
+        for k in range(2):
+            b = R.uniform(0, 1.6) + k * .9
+            c += (f'<path d="M 0,-3 C 1.8,0 2,2.4 0,3 C -2,2.4 -1.8,0 0,-3 Z" fill="#e4f3ff" stroke="#9cc4e8" stroke-width=".5" opacity="0">'
+                  f'<animateTransform attributeName="transform" type="translate" values="{x - 2 + 4 * i},{ey + 6};{x - 2 + 4 * i},{ey + 26}" dur="1.8s" begin="-{b:.2f}s" repeatCount="indefinite"/>'
+                  f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.75;1" dur="1.8s" begin="-{b:.2f}s" repeatCount="indefinite"/></path>')
+    o += c + '</g>'
     if talk:              # lips part and close in an irregular rhythm
         o += (f'<ellipse cx="0" cy="24.6" rx="3.4" ry=".4" fill="#5a2a2e"><animate attributeName="ry" values=".4;2.6;.8;3;.5;2;1.2;2.8;.4" dur="1.1s" repeatCount="indefinite"/>'
               f'<animate attributeName="rx" values="3.4;4.2;3.6;4.4;3.4" dur=".8s" repeatCount="indefinite"/></ellipse>')
@@ -157,6 +175,44 @@ for sc, panels in PANELS.items():
             if n in cover and (cover[n][2] <= b - a): continue
             cover[n] = (sc, idx, b - a)
 
+# ---- acting from sb_anim.py: who walks / runs, who cries, per panel ----
+ANIM = NS.get("ANIM", {})
+NAMES = [("ป้าแดง", "daeng"), ("โรซา", "rosa"), ("เมฆเด็ก", "mkid"), ("เมฆ", "mek"), ("เจมส์", "james"), ("คาทารีนา", "cat"), ("มาเรียม", "mariam"),
+         ("อักเนส", "agnes"), ("ลูเซีย", "luc"), ("คุณพ่อ", "jos"), ("ยอแซฟ", "jos"), ("ธนา", "thana"), ("จันทร์เจ้า", "jan"), ("ดีน", "dean"), ("แมว", "dean")]
+def stage_cids(stage):
+    src = NS["ST"].get(stage, "")
+    return {POSE_CID.get(h, "").replace("mek_back", "mek") for h in re.findall(r'href="#(sb_[a-zA-Z0-9_]+)"', src)} - {""}
+def names_in(txt):
+    out = []
+    for i in range(len(txt)):
+        for nm, cid in NAMES:
+            if txt.startswith(nm, i) and not any(i < e and i >= b for b, e, _ in out):
+                out.append((i, i + len(nm), cid)); break
+    return out
+def acting(rng, stage):
+    a = ANIM.get(rng)
+    if not a: return [], []
+    have = stage_cids(stage)
+    cry = []
+    for part in a[0].split("/"):
+        if re.search("ร้องไห้|น้ำตา", part) and "ไม่ร้อง" not in part:
+            nm = [c for _, _, c in names_in(part)] or (list(have) if len(have) == 1 else [])
+            cry += [c for c in nm if c in have and c not in cry]
+    walk = []
+    act = re.sub(r"'[^']*'|\"[^\"]*\"", "", a[1])   # drop quoted dialogue
+    for m in re.finditer("เดิน|วิ่ง", act):
+        before = [x for x in names_in(act[:m.start()])]
+        if before: cid = before[-1][2]
+        elif m.start() < 3 and len(have) == 1: cid = next(iter(have))
+        else: continue
+        after = act[m.end():m.end() + 14]
+        mode = "out" if (after.startswith("จาก") or "กลับ" in after[:10] or re.match(r"ไป(\s|$)", after)) else "in"
+        if cid in have and not any(w[0] == cid for w in walk): walk.append([cid, mode, m.group(0) == "วิ่ง"])
+    return walk, cry
+
+_vo_rep = os.path.join(HERE, "vo_ep1", "report.json")
+VO = json.load(open(_vo_rep))["lines"] if os.path.exists(_vo_rep) else {}
+VO_LEAD = .15                                   # voice starts this long after the cut
 DAY_SCENES = {2, 5, 6, 7, 8, 11, 12, 13}     # scenes set in daylight: bright sky, no darkness overlay, lighter grade
 segments, T = [], 0.0
 silence_left = 0
@@ -167,16 +223,23 @@ n = 1
 while n <= 287:
     sc, idx, _ = cover[n]
     if n in ROSA_SHOTS:
-        segments.append({"type": "video", "file": "rosa_tears.mp4", "t0": T, "dur": 17.0, "scene": sc, "shots": list(ROSA_SHOTS), "bells": []})
+        rv, at = [], 1.0
+        for rn in ROSA_SHOTS:
+            v = VO.get(f"s{rn:03d}")
+            if v: rv.append([round(at, 2), v["dur"], f"vo_ep1/s{rn:03d}.mp3"]); at += v["dur"] + .6
+        segments.append({"type": "video", "file": "rosa_tears.mp4", "t0": T, "dur": 17.0, "scene": sc, "shots": list(ROSA_SHOTS), "bells": [], "vo": rv})
         T += 17.0; n = 20; continue
     rng, stage, crop, size, mv, desc = PANELS[sc][idx]
     seg = {"type": "html", "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
            "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, []), "day": sc in DAY_SCENES}
+    if seg["kind"] == "stage": seg["walk"], seg["cry"] = acting(rng, stage)
     while n <= 287 and cover.get(n) == (sc, idx, cover[n][2]) and n not in ROSA_SHOTS:
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
         d = shot_dur(text, sfx)
+        vo = VO.get(f"s{n:03d}")
+        if vo: d = max(1.6, VO_LEAD + vo["dur"] + .45)   # the real line sets the length
         if "ระฆัง" in sfx or "ตั๊ง" in sfx:
             cnt = 6 if "หกครั้ง" in sfx else (1 if ("หนึ่งครั้ง" in sfx or "ตั๊ง" in sfx) else 3)
             vol = 1.35 if "สนั่น" in sfx else (.55 if ("เบาลง" in vis or "ไกล" in sfx) else 1.0)
@@ -184,7 +247,7 @@ while n <= 287:
         if n in STINGER_SHOTS: seg.setdefault("stingers", []).append(round(T - seg["t0"], 2))
         if "เงียบสนิท" in aud or "ดนตรีตัด" in sfx: silence_left = 3 if "ดนตรีตัด" in sfx else 1
         if silence_left > 0: seg.setdefault("hush", []).append([round(T - seg["t0"], 2), round(d, 2)]); silence_left -= 1
-        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS})
+        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([VO_LEAD, vo["dur"], f"vo_ep1/s{n:03d}.mp3"] if vo else None)})
         T += d; n += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)
@@ -199,7 +262,7 @@ const TL = %TL%, POSE_CID = %PC%;
 const $ = id => document.getElementById(id);
 const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 const stage = $('stage'); stage.pauseAnimations();
-let curSeg = -1, curShot = -1, curCard = -2, curStageKey = null;
+let curSeg = -1, curShot = -1, curCard = -2, curStageKey = null, curTalk = null;
 const SUB_Y = 770;
 const NS = 'http://www.w3.org/2000/svg';
 const MR = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
@@ -211,19 +274,56 @@ motes.forEach((m, i) => {
   g.appendChild(halo); g.appendChild(dot); $('motes').appendChild(g);
 });
 document.querySelectorAll('.lmotes').forEach(e => e.setAttribute('display', 'none'));
-function setTalk(seg, shot) {
+function setTalk(seg, shot, on) {
   const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
   g.querySelectorAll('use').forEach(u => {
     const h = (u.getAttribute('href') || '').slice(1); if (!h.startsWith('sb_')) return;
     const base = h.replace(/_talk$/, ''), cid = POSE_CID[base];
-    const want = (shot.speaker && cid === shot.speaker) ? base + '_talk' : base;
+    const want = (on && shot.speaker && cid === shot.speaker) ? base + '_talk' : base;
     if (want !== h) u.setAttribute('href', '#' + want);
   });
 }
-window.render = function (si, t) {          // segment index, seconds into the segment
+const ACT = { mods: [], inst: [] };
+function poseDefs(cidWanted) {        // pose defs (plain and _talk) belonging to a character
+  return Object.keys(POSE_CID).filter(p => POSE_CID[p].replace('mek_back', 'mek') === cidWanted).flatMap(p => [$(p), $(p + '_talk')]).filter(Boolean);
+}
+function setActs(seg) {
+  ACT.mods.forEach(([el, attr, v]) => v === null ? el.removeAttribute(attr) : el.setAttribute(attr, v)); ACT.mods = []; ACT.inst = [];
+  const mod = (el, attr) => ACT.mods.push([el, attr, el.getAttribute(attr)]);
+  (seg.cry || []).forEach(c => poseDefs(c).forEach(d => d.querySelectorAll('.cry').forEach(g => { mod(g, 'display'); g.setAttribute('display', 'inline'); })));
+  const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
+  (seg.walk || []).forEach(([c, mode, run]) => {
+    const u = [...g.querySelectorAll('use')].find(u => { const h = (u.getAttribute('href') || '').slice(1).replace(/_talk$/, ''); return (POSE_CID[h] || '').replace('mek_back', 'mek') === c; });
+    if (!u) return;
+    const tg = u.parentNode, m = /translate\(([-\d.]+),([-\d.]+)\) scale\(([-\d.]+)\)/.exec(tg.getAttribute('transform') || ''); if (!m) return;
+    const outer = tg.parentNode.parentNode, sh = outer.previousElementSibling && outer.previousElementSibling.tagName === 'ellipse' ? outer.previousElementSibling : null;
+    [tg, sh].forEach(e => e && mod(e, 'transform'));
+    const legs = [], arms = [];
+    poseDefs(c).forEach(d => {
+      d.querySelectorAll('[id$="-legL"],[id$="-legR"]').forEach(l => { mod(l, 'transform'); legs.push([l, l.id.endsWith('L') ? 1 : -1, (l.dataset.pivot || '0,182').split(',').map(Number)]); });
+      d.querySelectorAll('g[transform^="rotate("]').forEach(a => { const r = /rotate\(([-\d.]+) ([-\d.]+) ([-\d.]+)\)/.exec(a.getAttribute('transform')); if (r && Math.abs(+r[2]) === 42) { mod(a, 'transform'); arms.push([a, +r[1], +r[2], +r[3]]); } });
+    });
+    const x = +m[1], y = +m[2], k = +m[3];
+    ACT.inst.push({ tg, sh, x, y, k, mode, run, legs, arms, off: (x < 270 ? -1 : 1) * 140 });
+  });
+}
+function walkFrame(seg, t) {
+  ACT.inst.forEach(w => {
+    const D = seg.dur, len = Math.min(w.run ? 2.2 : 3.6, D * (w.mode === 'in' ? .6 : .55));
+    const t0 = w.mode === 'in' ? 0 : D - len, p = Math.max(0, Math.min(1, (t - t0) / len)), moving = t >= t0 && t <= t0 + len;
+    const prog = w.mode === 'in' ? 1 - p : p, dx = w.off * prog;
+    const cyc = (t - t0) * (w.run ? 2.6 : 1.7) * Math.PI * 2, sw = moving ? Math.sin(cyc) : 0, A = w.run ? 30 : 20;
+    const bob = moving ? -Math.abs(Math.sin(cyc)) * (w.run ? 9 : 5) * w.k : 0;
+    w.tg.setAttribute('transform', `translate(${(w.x + dx).toFixed(1)},${(w.y + bob).toFixed(1)}) scale(${w.k})`);
+    if (w.sh) w.sh.setAttribute('transform', `translate(${dx.toFixed(1)},0)`);
+    w.legs.forEach(([l, sg, [px, py]]) => l.setAttribute('transform', `rotate(${(sw * A * sg).toFixed(1)} ${px} ${py})`));
+    w.arms.forEach(([a, a0, px, py]) => a.setAttribute('transform', `rotate(${(a0 + (moving ? -sw * A * .7 * Math.sign(px) : 0)).toFixed(1)} ${px} ${py})`));
+  });
+}
+window.render = function (si, t) {
   const seg = TL.segments[si];
   if (si !== curSeg) {
-    curSeg = si; curShot = -1; curCard = -2;
+    curSeg = si; curShot = -1; curCard = -2; setActs(seg);
     const src = seg.kind === 'stage' ? '#st_' + seg.stage : seg.kind === 'ins' ? '#ins_' + seg.stage : '#exact_' + seg.stage;
     $('viewUse').setAttribute('href', src);
     const [cx, cy, h] = seg.crop || [270, 480, 960], w = h * 9 / 16;
@@ -238,8 +338,9 @@ window.render = function (si, t) {          // segment index, seconds into the s
   }
   const si2 = seg.shots.findIndex(s => t >= s.t0 && t < s.t0 + s.dur);
   const shotIdx = si2 < 0 ? seg.shots.length - 1 : si2, shot = seg.shots[shotIdx];
-  if (shotIdx !== curShot) { curShot = shotIdx; curCard = -2; setTalk(seg, shot); }
   const lt = t - shot.t0;
+  const talking = !!(shot.speaker && shot.vo && lt >= shot.vo[0] && lt < shot.vo[0] + shot.vo[1]);
+  if (shotIdx !== curShot || talking !== curTalk) { if (shotIdx !== curShot) curCard = -2; curShot = shotIdx; curTalk = talking; setTalk(seg, shot, talking); }
   let ci = shot.cards.findIndex(c => lt >= c.t0 && lt < c.t0 + c.dur); if (ci < 0 && shot.cards.length) ci = shot.cards.length - 1;
   if (ci !== curCard) {
     curCard = ci;
@@ -291,6 +392,7 @@ window.render = function (si, t) {          // segment index, seconds into the s
   if (prev && prev.scene !== seg.scene) fade = Math.max(fade, 1 - t / .35);
   if (next && next.scene !== seg.scene) fade = Math.max(fade, 1 - (seg.dur - t) / .35);
   $('fade').setAttribute('opacity', Math.max(0, Math.min(1, fade)).toFixed(3));
+  walkFrame(seg, t);
   stage.setCurrentTime(gt);
 };
 window.TL = TL;

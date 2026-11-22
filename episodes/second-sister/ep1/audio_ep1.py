@@ -253,12 +253,35 @@ def convolve(x, h, block=1 << 20):
 def wet(bus, dry=.62, rev=.55):
     l, r = BUSES[bus]; return dry * l + rev * convolve(l, ir(1)), dry * r + rev * convolve(r, ir(2))
 bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music")
+# ---- dialogue (ElevenLabs takes listed in the timeline): per-line loudness matched, a touch of room, music ducks under it
+import subprocess
+vo = np.zeros(N, np.float32)
+for sg in TL["segments"]:
+    items = sg.get("vo", []) if sg["type"] == "video" else [[sh["t0"] + sh["vo"][0], sh["vo"][1], sh["vo"][2]] for sh in sg["shots"] if sh.get("vo")]
+    for at, _, f in items:
+        fp = os.path.join(HERE, f)
+        if not os.path.exists(fp): continue
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-i", fp, "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"], capture_output=True).stdout
+        x = np.frombuffer(raw, np.float32).copy()
+        if not len(x): continue
+        rms = np.sqrt(np.mean(x[np.abs(x) > .01] ** 2)) if (np.abs(x) > .01).any() else 1
+        x *= .16 / max(rms, 1e-4)
+        i0 = int((sg["t0"] + at) * SR); i1 = min(N, i0 + len(x))
+        if i0 < N: vo[i0:i1] += x[:i1 - i0]
+HAS_VO = np.abs(vo).max() > 0
+if HAS_VO:
+    env = np.convolve(np.abs(vo), np.ones(int(.25 * SR), np.float32) / int(.25 * SR), "same")
+    duck = 1 - .5 * np.clip(env / .05, 0, 1)
+    ml, mr = ml * duck, mr * duck
+    vr = convolve(vo, ir(3, 1.2)); vol_, vor_ = .92 * vo + .1 * vr, .92 * vo + .1 * vr
+
 del BUSES
 bpk = max(np.abs(bl).max(), np.abs(br).max(), 1e-6)
 rest_pk = max(np.abs(ml).max(), np.abs(fl).max(), 1e-6)
 k = .95 / bpk                                    # bells reach full scale
 outL = bl * k + (fl * .80 + ml * .38) / rest_pk
 outR = br * k + (fr * .80 + mr * .38) / rest_pk
+if HAS_VO: outL, outR = outL + vol_, outR + vor_
 outL, outR = np.tanh(outL * 1.1) / np.tanh(1.1), np.tanh(outR * 1.1) / np.tanh(1.1)
 peak = max(np.abs(outL).max(), np.abs(outR).max())
 scale = .95 / peak
