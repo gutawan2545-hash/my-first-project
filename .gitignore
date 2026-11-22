@@ -20,3 +20,7 @@ pipeline/v2/outro.wav
 __pycache__/
 episodes/second-sister/ep1/frames_rosa/
 episodes/second-sister/ep1/check_*.png
+episodes/second-sister/ep1/segments/
+episodes/second-sister/ep1/render_ep1.log
+episodes/second-sister/ep1/music_ep1.wav
+episodes/second-sister/ep1/ambient_rosa.wav
