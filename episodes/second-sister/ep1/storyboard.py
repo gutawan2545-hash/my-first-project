@@ -39,13 +39,17 @@ pose("cat", "cat"); pose("cat_point", "cat", aR=-118)
 pose("jos", "jos"); pose("jos_key", "jos", aR=-58); pose("jos_pray", "jos", aL=-40, aR=40)
 pose("mariam", "mariam"); pose("mariam_piano", "mariam", aL=-30, aR=30)
 pose("agnes", "agnes"); pose("agnes_tray", "agnes", aL=-40, aR=40); pose("agnes_left", "agnes", aR=-40)
+pose("agnes_candle", "agnes", aR=-20, extraR='<g transform="translate(50,206)"><rect x="-2.5" y="-22" width="5" height="22" fill="#efe8da"/><path d="M 0,-33 C -3.5,-28 -3.5,-25 0,-23 C 3.5,-25 3.5,-28 0,-33 Z" fill="#fff6e6"/></g>')
 pose("luc", "luc"); pose("thana", "thana"); pose("thana_bag", "thana", aR=-60)
 for k in ("mkid", "jan", "twinM", "twinA"): pose(k, k)
 
 def kid(key, x, feet, k):
     y = feet - 300 * k
     return f'<ellipse cx="{x + 8}" cy="{feet + 2}" rx="{40 * k:.0f}" ry="{6 * k:.0f}" fill="#000" opacity=".35"/><g transform="translate({x},{y:.0f}) scale({k})"><use href="#{P[key]}"/></g>'
-def C(key, x, feet, k, light=1.0): return put(P[key], x, feet, k, light)
+def C(key, x, feet, k, light=1.0):
+    # Agnes always reads greyed-out and dim, as in the approved chapel frame
+    if key.startswith("agnes"): return put(P[key], x, feet, k, min(light, .78), .5)
+    return put(P[key], x, feet, k, light)
 
 # ---------- set primitives (rough, readable in grey) ----------
 def room(wall="#8a8494", floor="#5a5460", hz=640, ceil=None):
@@ -149,6 +153,10 @@ ST["tower_night"] = ('<rect width="540" height="960" fill="#1e2244"/><circle cx=
 ST["police"] = ('<rect width="540" height="960" fill="#7d8cab"/>' + "".join(f'<g transform="translate({x},330) scale(.55)"><use href="#{P["mariam"]}"/></g>' for x in (60, 130, 410, 480)) +
     '<rect y="470" width="540" height="10" fill="#e8c84a"/><rect y="640" width="540" height="320" fill="#4a4a54"/>' + C("cat", 110, 900, .9) + C("thana", 300, 900, 1.05) + C("mek", 470, 910, .9))
 ST["thana_night"] = (room("#3a3440", "#2a2430", 640) + '<rect x="0" y="560" width="540" height="20" fill="#5a4234"/>' + C("thana_bag", 170, 900, 1.0, .85) + C("mek", 390, 910, 1.0, .85) + '<circle cx="270" cy="120" r="10" fill="#fff4e0"/>')
+ST["chapel_sisters"] = ('<rect width="540" height="960" fill="#1e1822"/>' + '<rect x="0" y="0" width="70" height="620" fill="#120f16"/><rect x="470" y="0" width="70" height="620" fill="#120f16"/>' +
+    stained_glass(196, 40, 148, 230) + '<rect x="112" y="120" width="6" height="66" fill="#0d0b11"/><rect x="98" y="138" width="34" height="6" fill="#0d0b11"/>' +
+    '<path d="M 0,470 L 150,486 L 150,560 L 0,560 Z" fill="#2c2026"/><rect x="414" y="510" width="124" height="90" fill="#2a1e1e"/>' + "".join(f'<rect x="{424 + i * 16}" y="{494 + (i % 2) * 4}" width="7" height="14" fill="#efe6d6"/>' for i in range(7)) +
+    '<rect y="600" width="540" height="360" fill="#18131a"/>' + C("agnes_candle", 132, 760, 1.25) + C("mariam_piano", 384, 940, 1.6))
 ST["chapel_night"] = ('<rect width="540" height="960" fill="#2a2630"/>' + stained_glass(330, 80, 150, 250, bright=.9) +
     "".join(f'<path d="M 0,{y} L 540,{y - 20} L 540,{y + 30} L 0,{y + 50} Z" fill="#3a2a2c"/>' for y in (500, 600, 700)) +
     C("mek", 250, 760, .7, .7) + '<path d="M -20,800 L 560,800 L 560,960 L -20,960 Z" fill="#0e0c10"/>' + candle(440, 790, glow=False) + '<polygon points="330,180 480,180 300,960 0,960" fill="#c8d4ff" opacity=".12"/>')
@@ -157,7 +165,7 @@ ST["chapel_night"] = ('<rect width="540" height="960" fill="#2a2630"/>' + staine
 # ---------- lighting & atmosphere per stage ----------
 import random as _r
 _R = _r.Random(21)
-def L(key, dark=.5, tint="#06050c", holes=(), glows=(), beams=(), fog=(), motes=None, shadows=(), extra=""):
+def L(key, dark=.5, tint="#120c16", holes=(), glows=(), beams=(), fog=(), motes=None, shadows=(), extra=""):
     """dark: how much of the frame falls into darkness; holes: (x,y,r) where light keeps it open;
     glows: (x,y,r,color,op); beams: (points,color,op); fog: (y,h,op); motes: (x0,y0,x1,y1,n,color);
     shadows: cast-shadow polygons (points, op)."""
@@ -224,6 +232,7 @@ L("tower_night", .55, holes=((430, 110, 90), (380, 860, 150), (180, 640, 90)), g
   beams=(("206,646 222,638 520,850 470,940", WARM, .5),), motes=(200, 640, 520, 940, 20, "#fff4e0"))
 L("police", .25, holes=((270, 600, 260),), glows=((40, 300, 300, SIREN, .75),), motes=(40, 300, 500, 760, 14, "#e4e8ff"))
 L("thana_night", .6, holes=((270, 300, 180), (280, 600, 180)), glows=((270, 125, 220, WARM, .8),), motes=(120, 160, 420, 640, 16, "#fff4e0"))
+L("chapel_sisters", .5, holes=((261, 500, 90), (384, 345, 160), (270, 160, 120)), glows=((261, 510, 95, CANDLE, .9), (270, 150, 140, "#b8a8ff", .55), (470, 500, 90, WARM, .5)), motes=(120, 200, 460, 640, 18, "#dfe4ff"))
 L("chapel_night", .66, holes=((405, 210, 120), (250, 560, 110)), beams=(("330,180 480,180 300,960 0,960", MOON, .42),), glows=((405, 200, 150, "#b8a8ff", .5),),
   motes=(80, 300, 440, 800, 30, "#dfe4ff"), extra='<path d="M 440,760 C 432,730 452,700 440,670 C 432,650 448,630 440,610" stroke="#c8c4d0" stroke-width="2" fill="none" opacity=".5" filter="url(#lfar)"/>')
 
@@ -270,7 +279,9 @@ PANELS = {
      ("23-26", "refectory", F_, "ภาพกว้าง", "static", "ห้องอาหาร โรซาเล่า คาทารีนาวางแก้วเสียงดัง"),
      ("27-28", "refectory", (270, 560, 420), "ภาพปานกลาง", "in", "คาทารีนาลุกขึ้น 'เป็นลมพัด แค่นั้น'"),
      ("29-30", "refectory", (500, 560, 360), "ภาพใกล้", "in", "ป้าแดงยืนนิ่งปลายโต๊ะ มองไปทางปีกเก่า")],
- 3: [("31-33", "title", F_, "การ์ดชื่อเรื่อง", "in", "กระจกสีหน้ามาร์ธาแตก ซูมช้า ชื่อเรื่องขึ้น")],
+ 3: [("31", "chapel_sisters", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
+     ("32", "chapel_sisters", (270, 282, 560), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
+     ("33", "title", F_, "การ์ดชื่อเรื่อง", "static", "ชื่อเรื่องขึ้น ระฆังหนึ่งครั้ง")],
  4: [("34-37", "condo", F_, "ภาพกว้าง", "static", "เจมส์เล่นเกม ดีนนอนขด เมฆนอนบนโซฟา ดีนเดินมาขึ้นตัก"),
      ("38-39", "email", F_, "แทรก", "in", "อีเมลเชิญจากคอนแวนต์"),
      ("40-45", "condo", (380, 620, 520), "ภาพปานกลาง", "static", "เจมส์ถอดหูฟัง หมุนเก้าอี้หา 'มึงไม่เคยเล่าเรื่องที่นั่นเลยนะ'"),
@@ -394,6 +405,7 @@ def panel_svg(stage, crop, mv):
         vb = "0 0 540 960"
     return (f'<svg viewBox="0 0 540 960" role="img"><svg x="0" y="0" width="540" height="960" viewBox="{vb}" preserveAspectRatio="xMidYMid slice">'
             f'<g class="bw">{body}</g></svg>'
+            f'<rect width="540" height="960" fill="url(#pvig)"/><rect class="grade" width="540" height="960" fill="#3a2640" opacity=".22" style="mix-blend-mode:multiply"/>'
             f'<rect x="1" y="1" width="538" height="958" fill="none" stroke="#000" stroke-width="2"/>'
             f'<rect x="24" y="576" width="492" height="144" fill="none" stroke="#5aa0ff" stroke-width="2" stroke-dasharray="8 6" opacity=".7"/>'
             f'{move_overlay(mv)}</svg>')
@@ -421,6 +433,7 @@ DEFS = (f'<svg width="0" height="0" style="position:absolute" aria-hidden="true"
         + "".join(f'<g id="st_{k}">{v}</g>' for k, v in ST.items())
         + '<filter id="drop" x="-20%" y="-20%" width="150%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="6" dy="8"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
         + '<filter id="dof" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation="0"/></filter><filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>'
+        + '<radialGradient id="pvig" cx="50%" cy="45%" r="72%"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".7"/></radialGradient>'
         + '<filter id="lhole" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="40"/></filter><filter id="lhaze" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter><filter id="lsoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter><filter id="lfar" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="1.2"/></filter>'
         + ''.join(f'<radialGradient id="lg_{c.strip("#")}"><stop offset="0" stop-color="{c}" stop-opacity=".75"/><stop offset=".4" stop-color="{c}" stop-opacity=".25"/><stop offset="1" stop-color="{c}" stop-opacity="0"/></radialGradient>' for c in GLOWCOLS)
         + '</defs></svg>')
@@ -447,7 +460,8 @@ section h2 span {{ font-size:13px; color:var(--muted); font-weight:400; }}
 .panel {{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px; display:grid; gap:10px; align-content:start; min-width:0; }}
 .pic svg {{ display:block; width:100%; height:auto; aspect-ratio:9/16; background:#ddd; }}
 .bw {{ filter:grayscale(1) contrast(1.08) brightness(1.12); }}
-body.mood .bw {{ filter:none; }}
+body.mood .bw {{ filter:saturate(.85) brightness(.98); }}
+.grade {{ display:none; }} body.mood .grade {{ display:inline; }}
 .bar {{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; font-size:13px; color:var(--muted); }}
 button {{ font:inherit; font-size:13px; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer; }}
 button:hover {{ border-color:var(--muted); }} button:focus-visible {{ outline:2px solid var(--blue); outline-offset:2px; }}
