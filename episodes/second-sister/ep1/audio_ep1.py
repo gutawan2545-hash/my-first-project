@@ -57,12 +57,21 @@ build[int(scenes[max(scenes)][0] * CR):] *= 1.25
 def smooth(v, sec):
     k = int(sec * CR); c = np.cumsum(np.concatenate([np.zeros(k), v, np.full(k, v[-1])]))
     return (c[2 * k:] - c[:-2 * k])[:len(v)] / (2 * k) if k else v
+hush = np.ones(nc)
+for s in segs:
+    for a, d in s.get("hush", []):
+        hush[int((s["t0"] + a) * CR):int((s["t0"] + a + d) * CR)] = 0
 for k in LAYERS: ctrl[k] = smooth(ctrl[k] * build, 1.6)
+hush_s = np.minimum(hush, smooth(hush, .5))      # cut fast, come back softly
+for k in LAYERS: ctrl[k] = ctrl[k] * hush_s
 def gain_at(layer, t): return float(ctrl[layer][min(nc - 1, int(t * CR))])
 def gain_curve(layer, t0, n): return np.interp(t0 + np.arange(n) / SR, np.arange(nc) / CR, ctrl[layer]).astype(np.float32)
 
-L = np.zeros(N, np.float32); Rr = np.zeros(N, np.float32)
+# two buses: music (organ, choir, piano, box) and effects (bells, hits, puff); music sits lower than the effects
+BUSES = {"music": [np.zeros(N, np.float32), np.zeros(N, np.float32)], "fx": [np.zeros(N, np.float32), np.zeros(N, np.float32)]}
+BUS = "music"
 def add(sig, t0, pan=0.0, vol=1.0):
+    L, Rr = BUSES[BUS]
     i = int(t0 * SR)
     if i >= N: return
     sig = sig[:N - i] * vol
@@ -175,6 +184,7 @@ def boom(dur=3.0):
     s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 1.6)
     noise = np.convolve(rng.standard_normal(n), np.ones(40) / 40, "same") * np.exp(-t * 6)
     return (s + .5 * noise).astype(np.float32)
+BUS = "fx"
 prev = None
 for s in segs:
     if s["mood"] in ("shock", "title") and prev != s["mood"]:
@@ -194,9 +204,20 @@ def bell(dur=8.0, f0=147.0):
     return (s / 2.6).astype(np.float32)
 BELL = bell()
 for s in segs:
-    for b in s.get("bells", []):
-        for rep in range(3):
-            add(BELL, s["t0"] + b + rep * 2.6, pan=.1, vol=1.15)
+    for b, cnt, bv in s.get("bells", []):
+        for rep in range(cnt):
+            add(BELL, s["t0"] + b + rep * 2.6, pan=.1, vol=1.15 * bv)
+
+# scare stinger: sub boom + bright dissonant string-like stab
+def stinger(dur=2.6):
+    n = int(dur * SR); t = np.arange(n) / SR; out = boom(dur) * .9
+    for f in (622.3, 659.3, 698.5, 1244.5):
+        out += .12 * np.sign(np.sin(2 * np.pi * f * t + f)) * np.exp(-t * 2.2) * np.minimum(1, t / .01)
+    return out.astype(np.float32)
+STING = stinger()
+for s in segs:
+    for a in s.get("stingers", []):
+        add(STING, s["t0"] + a, vol=.75)
 
 # candle puff in the Rosa clip
 for s in segs:
@@ -218,6 +239,10 @@ def convolve(x, h, block=1 << 20):
         seg = x[i:i + block]
         y[i:i + nfft] += np.fft.irfft(np.fft.rfft(seg, nfft) * H, nfft)[:min(nfft, len(y) - i)].astype(np.float32)
     return y[:len(x)]
+MUSIC_LEVEL = .5   # user: music softer, effects at full level
+mL, mR = BUSES["music"]; fL, fR = BUSES["fx"]
+L, Rr = MUSIC_LEVEL * mL + fL, MUSIC_LEVEL * mR + fR
+del BUSES
 wetL, wetR = convolve(L, ir(1)), convolve(Rr, ir(2))
 outL, outR = .62 * L + .55 * wetL, .62 * Rr + .55 * wetR
 peak = max(np.abs(outL).max(), np.abs(outR).max())

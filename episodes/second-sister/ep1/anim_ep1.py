@@ -158,6 +158,9 @@ for sc, panels in PANELS.items():
             cover[n] = (sc, idx, b - a)
 
 segments, T = [], 0.0
+silence_left = 0
+RED_SHOTS = {238, 247, 251, 253, 284}       # the big scares: subtitle turns red
+STINGER_SHOTS = {237, 247, 284}             # sharp scare hit in the sound
 ROSA_SHOTS = (17, 18, 19)
 n = 1
 while n <= 287:
@@ -173,8 +176,14 @@ while n <= 287:
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
         d = shot_dur(text, sfx)
-        if "ระฆัง" in sfx or "ตั๊ง" in sfx: seg["bells"].append(round(T - seg["t0"], 2))
-        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d)})
+        if "ระฆัง" in sfx or "ตั๊ง" in sfx:
+            cnt = 6 if "หกครั้ง" in sfx else (1 if ("หนึ่งครั้ง" in sfx or "ตั๊ง" in sfx) else 3)
+            vol = 1.35 if "สนั่น" in sfx else (.55 if ("เบาลง" in vis or "ไกล" in sfx) else 1.0)
+            seg["bells"].append([round(T - seg["t0"], 2), cnt, vol])
+        if n in STINGER_SHOTS: seg.setdefault("stingers", []).append(round(T - seg["t0"], 2))
+        if "เงียบสนิท" in aud or "ดนตรีตัด" in sfx: silence_left = 3 if "ดนตรีตัด" in sfx else 1
+        if silence_left > 0: seg.setdefault("hush", []).append([round(T - seg["t0"], 2), round(d, 2)]); silence_left -= 1
+        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS})
         T += d; n += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)
@@ -236,7 +245,8 @@ window.render = function (si, t) {          // segment index, seconds into the s
       let y = SUB_Y - ((n - 1) * LH) / 2 + 8;
       for (const L of lines) {
         const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', 270); tx.setAttribute('y', y);
-        for (const [str, em] of L) { const sp = document.createElementNS(NS, 'tspan'); sp.textContent = str; if (em) sp.setAttribute('class', 'em'); tx.appendChild(sp); }
+        for (const [str, em] of L) { const sp = document.createElementNS(NS, 'tspan'); sp.textContent = str; if (em && !shot.red) sp.setAttribute('class', 'em'); tx.appendChild(sp); }
+        if (shot.red) tx.setAttribute('class', 'red');
         sub.appendChild(tx); y += LH;
       }
     }
@@ -286,7 +296,7 @@ JS = JS.replace("%TL%", json.dumps(timeline, ensure_ascii=False)).replace("%PC%"
 DEFS_INNER = DEFS.replace('<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>', "").replace("</defs></svg>", "")
 html = f'''<!doctype html><html><head><meta charset="utf-8"><title>EP1</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Noto+Serif+Thai:wght@500;700&family=Dancing+Script:wght@600;700&family=Inter:wght@500&display=swap">
-<style>html,body{{margin:0;background:#000}} svg{{display:block}} #sub text{{font-family:"IBM Plex Sans Thai",sans-serif;font-size:22px;font-weight:700;fill:#ffffff;text-anchor:middle}} #sub .em{{fill:#c27bff}}</style></head><body>
+<style>html,body{{margin:0;background:#000}} svg{{display:block}} #sub text{{font-family:"IBM Plex Sans Thai",sans-serif;font-size:22px;font-weight:700;fill:#ffffff;text-anchor:middle}} #sub .em{{fill:#c27bff}} #sub .red{{fill:#ff3b3b}}</style></head><body>
 <svg id="stage" width="540" height="960" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">
 <defs>{DEFS_INNER}{INS_DEFS}{EXACT_DEFS}
 <filter id="subStroke2" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
