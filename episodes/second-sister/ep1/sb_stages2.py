@@ -578,7 +578,7 @@ def cemetery_extra():
     for i, (x, y, w) in enumerate(((236, 640, 70), (226, 664, 90), (214, 692, 114))):
         o += f'<rect x="{x}" y="{y}" width="{w}" height="10" fill="#c8c2d0"/><rect x="{x}" y="{y + 10}" width="{w}" height="12" fill="#8a8494"/>'
     o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="{760 + (x - 380) * .1:.0f}" width="5" height="190" fill="#2a2226"/><path d="M {x - 4},{760 + (x - 380) * .1:.0f} L {x + 2.5},{744 + (x - 380) * .1:.0f} L {x + 9},{760 + (x - 380) * .1:.0f} Z" fill="#2a2226"/>' for x in range(380, 560, 20)) + '<path d="M 376,790 L 560,808 M 376,900 L 560,918" stroke="#2a2226" stroke-width="5"/><path d="M 390,800 C 420,780 440,820 470,800" stroke="#6a3a2a" stroke-width="2" fill="none" opacity=".7"/></g>'
-    o += haze(560, 90, "#d8cce0", .35) + haze(860, 100, "#d8cce0", .3)   # ground mist
+    o += haze(560, 90, "#d8cce0", .1) + haze(860, 100, "#d8cce0", .08)   # ground mist
     return o
 _old_cg = child_graves()
 def child_graves2():
@@ -684,7 +684,7 @@ def cemetery_extra2():
         o += big_stone(x, y, w, h, sh, (), k=.9, seed=sd)
     o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="{790 + (x - 380) * .1:.0f}" width="5" height="170" fill="#2a2226"/><path d="M {x - 4},{790 + (x - 380) * .1:.0f} L {x + 2.5},{774 + (x - 380) * .1:.0f} L {x + 9},{790 + (x - 380) * .1:.0f} Z" fill="#2a2226"/>' for x in range(380, 560, 20)) + '<path d="M 376,820 L 560,838 M 376,920 L 560,938" stroke="#2a2226" stroke-width="5"/></g>'
     o += "".join(tuft(RR.uniform(300, 540), RR.uniform(700, 800), 1.3) for _ in range(10))
-    o += haze(560, 90, "#d8cce0", .35) + haze(860, 100, "#d8cce0", .3)
+    o += haze(560, 90, "#d8cce0", .1) + haze(860, 100, "#d8cce0", .08)
     return o
 
 ST["cemetery"] = cemetery_bg() + cemetery_extra2() + C("rosa_point", 160, 780, .85) + C("mek", 400, 790, .88) + child_graves3()

@@ -1,14 +1,47 @@
 {
- "_note": "ElevenLabs voice IDs for แม่ชีคนที่สอง (user-chosen 2026-11-22). TODO entries still need a Thai voice from the Voice Library. Key lives in the environment's network secrets, never here.",
- "mek":    {"name": "เมฆ (31) ผู้เล่าและบทพูด", "voice_id": "bTU3YcWRdgcxQzaPPSNs"},
- "daeng":  {"name": "ป้าแดง (67)", "voice_id": "6OAfIwzWHuAZqjAUJrz5"},
- "cat":    {"name": "มาเธอร์คาทารีนา (55)", "voice_id": "gKCdxYoWF5uyLvqAZyTj"},
- "luc":    {"name": "มาเธอร์ลูเซีย (76)", "voice_id": "D53GKbgzKpmg6DP26Re8"},
- "rosa":   {"name": "ซิสเตอร์โรซา (22)", "voice_id": "IM6pYHlwZQDuZqGBrSYI"},
- "jos":    {"name": "คุณพ่อยอแซฟ (45)", "voice_id": "gImkfeJS2sJvoWcxNPos"},
- "thana":  {"name": "ร.ต.อ.ธนา (40)", "voice_id": "qJqi8XxeBcos4asE2nOV"},
- "agnes":  {"name": "ซิสเตอร์อักเนส", "voice_id": "f9kwJ3tQKX0TvvEubQ96"},
- "james":  {"name": "เจมส์ (28) เสียงประจำช่อง", "voice_id": "S2oNPNuiP27Jy2lVX5uZ"},
- "mariam": {"name": "ซิสเตอร์มาเรียม (29)", "voice_id": "TODO"},
- "child":  {"name": "เสียงเด็กผู้หญิงในความมืด (~8)", "voice_id": "TODO"}
+ "_note": "ElevenLabs voice IDs for แม่ชีคนที่สอง (user-chosen 2026-11-22).",
+ "mek": {
+  "name": "เมฆ (31) ผู้เล่าและบทพูด",
+  "voice_id": "bTU3YcWRdgcxQzaPPSNs"
+ },
+ "daeng": {
+  "name": "ป้าแดง (67)",
+  "voice_id": "6OAfIwzWHuAZqjAUJrz5"
+ },
+ "cat": {
+  "name": "มาเธอร์คาทารีนา (55)",
+  "voice_id": "gKCdxYoWF5uyLvqAZyTj"
+ },
+ "luc": {
+  "name": "มาเธอร์ลูเซีย (76)",
+  "voice_id": "D53GKbgzKpmg6DP26Re8"
+ },
+ "rosa": {
+  "name": "ซิสเตอร์โรซา (22)",
+  "voice_id": "IM6pYHlwZQDuZqGBrSYI"
+ },
+ "jos": {
+  "name": "คุณพ่อยอแซฟ (45)",
+  "voice_id": "gImkfeJS2sJvoWcxNPos"
+ },
+ "thana": {
+  "name": "ร.ต.อ.ธนา (40)",
+  "voice_id": "qJqi8XxeBcos4asE2nOV"
+ },
+ "agnes": {
+  "name": "ซิสเตอร์อักเนส",
+  "voice_id": "f9kwJ3tQKX0TvvEubQ96"
+ },
+ "james": {
+  "name": "เจมส์ (28) เสียงประจำช่อง",
+  "voice_id": "S2oNPNuiP27Jy2lVX5uZ"
+ },
+ "mariam": {
+  "name": "ซิสเตอร์มาเรียม (29)",
+  "voice_id": "u14IW5Q2cGXcEj6L2joU"
+ },
+ "child": {
+  "name": "เสียงเด็กผู้หญิงในความมืด (~8)",
+  "voice_id": "HmdKfx8YGb529nhdfgxg"
+ }
 }

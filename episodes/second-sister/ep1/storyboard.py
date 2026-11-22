@@ -66,9 +66,24 @@ def table(x, y, w, h=20, legs=120):
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#6a4a3a"/><rect x="{x + 8}" y="{y + h}" width="10" height="{legs}" fill="#3a2820"/><rect x="{x + w - 18}" y="{y + h}" width="10" height="{legs}" fill="#3a2820"/>'
 def bed(x, y, w=200):
     return f'<rect x="{x}" y="{y}" width="{w}" height="60" fill="#d8d2dc"/><rect x="{x}" y="{y + 60}" width="{w}" height="20" fill="#5a5060"/><rect x="{x - 10}" y="{y - 70}" width="10" height="150" fill="#2a2630"/><rect x="{x + w}" y="{y - 30}" width="10" height="110" fill="#2a2630"/><rect x="{x + 10}" y="{y - 14}" width="60" height="20" rx="6" fill="#f0eaf2"/>'
+NOTE_FIX = {  # viewer-facing wording (no director notes, handkerchief not name tag)
+    "เด็กถือดินสอด้วยมือซ้าย (เบาะแส ไม่เน้น)": "เด็กถือดินสอด้วยมือซ้าย",
+    "ป้ายชื่อผ้าปัก ใหม่เอี่ยม ไม่มีรอยไหม้": "ผ้าเช็ดหน้าปักชื่อ ใหม่เอี่ยม ไม่มีรอยไหม้",
+    "02:59 → 03:00 เข็มยาวกระดิกไปที่ XII": "02:59 → 03:00",
+    "เด็กซ้าย (มาร์ธา) หน้าถูกขีดฆ่า ถือเทียนมือซ้าย · ขวาคือมาเรียมกอดตุ๊กตา": "เด็กซ้ายหน้าถูกขีดฆ่า ถือเทียน · เด็กขวากอดตุ๊กตา",
+    "ซูมเข้า: มือซ้ายของเด็กที่ถูกขีดหน้าถือเทียน": "มือซ้ายของเด็กที่ถูกขีดหน้า ถือเทียน",
+    "ป้ายชื่อผ้าปักด้ายแดง ใหม่เอี่ยม ไม่มีรอยไหม้ ในถุงหลักฐาน": "ผ้าเช็ดหน้าปักด้ายแดง ใหม่เอี่ยม ไม่มีรอยไหม้",
+}
 def note(x, y, txt, w=None):
-    w = w or (len(txt) * 8 + 20)
-    return f'<g><rect x="{x}" y="{y}" width="{w}" height="22" rx="4" fill="#fffbe6" stroke="#c8a040"/><text x="{x + 8}" y="{y + 15}" font-family="IBM Plex Sans Thai, sans-serif" font-size="12" fill="#5a4010">{txt}</text></g>'
+    """Caption: transparent box with a thin grey border, centred horizontally, just above the subtitle band."""
+    txt = NOTE_FIX.get(txt, txt)
+    vis = sum(1 for ch in txt if not ('\u0e31' == ch or '\u0e34' <= ch <= '\u0e3a' or '\u0e47' <= ch <= '\u0e4e'))
+    w = min(vis * 7.4 + 28, 480)
+    cy = 676
+    return (f'<g><rect x="{270 - w / 2:.1f}" y="{cy - 14}" width="{w:.1f}" height="28" rx="6" fill="#120e18" fill-opacity=".28" '
+            f'stroke="#c9c4d4" stroke-opacity=".7" stroke-width=".8"/>'
+            f'<text x="270" y="{cy + 5}" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" '
+            f'fill="#f4f0fa" stroke="#140f1a" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke">{txt}</text></g>')
 def candle(x, y, glow=True):
     s = f'<rect x="{x - 3}" y="{y - 22}" width="6" height="22" fill="#efe8da"/><path d="M {x},{y - 34} C {x - 4},{y - 29} {x - 4},{y - 25} {x},{y - 23} C {x + 4},{y - 25} {x + 4},{y - 29} {x},{y - 34} Z" fill="#fff6e6"/>'
     return s + (f'<circle cx="{x}" cy="{y - 28}" r="40" fill="#fff4dc" opacity=".25"/>' if glow else "")
@@ -230,7 +245,7 @@ def cemetery_bg():
     for i in range(-6, 8):
         x0 = 270 + i * 40; x1 = 270 + i * 260
         o += f'<path d="M {x0},420 L {x0 + 40},420 L {x1 + 260},960 L {x1},960 Z" fill="{"#647a62" if i % 2 else "#566a54"}"/>'
-    o += haze(410, 70, "#c8b4d4", .45)
+    o += haze(410, 70, "#c8b4d4", .18)
     # rows of graves receding (back rows small and hazy, front rows bigger)
     kinds = ("arch", "cross", "celtic", "arch", "obelisk", "cross", "angel")
     for row, (yy, k, op) in enumerate(((450, .42, .6), (500, .58, .75), (565, .78, .9))):
@@ -240,13 +255,13 @@ def cemetery_bg():
             o += f'<g opacity="{op}">{headstone(x, yy + RR.uniform(-4, 4), k, kinds[(j + row) % 7])}</g>'
             if RR.random() < .4: o += flower5(x + 8 * k, yy + 2, k * .9, "#e8d8f0")
     o += cypress(70, 540, 150) + cypress(470, 530, 170) + cypress(505, 520, 120, "#465248", "#323c36")
-    o += haze(470, 60, "#d4c0dc", .25)
+    pass  # ground haze removed (day must stay clear)
     # worn grass-and-earth trail instead of paving
     o += '<path d="M 262,560 C 250,640 300,700 268,780 C 240,850 300,900 290,960 L 230,960 C 236,900 190,850 220,780 C 250,700 220,640 248,560 Z" fill="#7a6a54" opacity=".55"/>'
     o += '<path d="M 262,560 C 250,640 300,700 268,780 C 240,850 300,900 290,960" stroke="#5a7050" stroke-width="6" fill="none" opacity=".6"/>' 
     # family plot with a little iron railing, lamp post lit at dusk, wreath on the cross
     o += '<g opacity=".95">' + "".join(f'<rect x="{x}" y="560" width="2.5" height="22" fill="#2a2630"/>' for x in range(372, 452, 8)) + '<rect x="370" y="562" width="84" height="2.5" fill="#2a2630"/><rect x="370" y="574" width="84" height="2" fill="#2a2630"/></g>'
-    o += lamppost(170, 640, 190)
+    o += lamppost(170, 640, 190, lit=False)
     # wilted wreath on a stand and jars with candles
     o += '<g transform="translate(450,640)"><path d="M -12,30 L 0,0 L 12,30" stroke="#3a3030" stroke-width="2.4" fill="none"/><circle cx="0" cy="-6" r="16" fill="none" stroke="#5a6a4e" stroke-width="7"/>' + "".join(f'<circle cx="{16 * __import__("math").cos(a / 3):.1f}" cy="{-6 + 16 * __import__("math").sin(a / 3):.1f}" r="2.6" fill="#e8d8e0"/>' for a in range(0, 19, 2)) + '<path d="M -4,6 l -4,14 M 4,6 l 5,14" stroke="#8a4a5a" stroke-width="3"/></g>'
     # foreground: tall grass tufts, fallen frangipani, a big out-of-focus iron gate post at the left edge
