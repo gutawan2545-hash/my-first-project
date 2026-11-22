@@ -60,7 +60,7 @@ def leg(cid, side, pants, shoe, sole="#1e1a1e", skin=None, pants_to=ANKLE, hip=H
     out += f'<rect x="{xc-w[2]-2}" y="{a+11}" width="{2*w[2]+4}" height="4" rx="2" fill="{sole}"/>'
     return part(f"{cid}-leg{'L' if s < 0 else 'R'}", out, (xc, hip))
 
-def arm(cid, side, sleeve, skin, short=False, sh=(42, 66), el=(48, 146), wr=(50, 214), wide=False, hand_extra=""):
+def arm(cid, side, sleeve, skin, short=False, sh=(42, 66), el=(48, 146), wr=(50, 214), wide=False, hand_extra="", thick=1.0):
     s = side
     sx, sy = s * sh[0], sh[1]; ex, ey = s * el[0], el[1]; wx, wy = s * wr[0], wr[1]
     m, l, d = sleeve
@@ -68,9 +68,11 @@ def arm(cid, side, sleeve, skin, short=False, sh=(42, 66), el=(48, 146), wr=(50,
     sk = skin[0] if s < 0 else skin[1]
     out = ""
     # skin under everything (forearm), sleeve on top
-    out += f'<path d="M {sx-8},{sy} L {sx+8},{sy} L {ex+7},{ey} L {wx+6},{wy} L {wx-6},{wy} L {ex-7},{ey} Z" fill="{sk}"/>'
+    t = thick
+    out += f'<path d="M {sx-8*t},{sy} L {sx+8*t},{sy} L {ex+7*t},{ey} L {wx+6*t},{wy} L {wx-6*t},{wy} L {ex-7*t},{ey} Z" fill="{sk}"/>'
     if short:
-        out += f'<path d="M {sx-10},{sy-2} L {sx+10},{sy-2} L {s*46+9},{112} L {s*46-9},{112} Z" fill="{col}"/>'
+        out += f'<path d="M {sx-11*t},{sy-4} C {sx-14*t},{sy+20} {s*46-12*t},{96} {s*46-11*t},{114} L {s*46+11*t},{114} C {s*46+12*t},{96} {sx+14*t},{sy+20} {sx+11*t},{sy-4} Z" fill="{col}"/>'
+        out += f'<path d="M {s*46-10*t},{108} Q {s*46},{104} {s*46+10*t},{108}" stroke="{d}" stroke-width="1.4" fill="none"/><path d="M {sx-4*s},{sy+8} q {2*s},{14} {-1*s},{26}" stroke="{d}" stroke-width="1.2" fill="none" opacity=".7"/>'
     else:
         cuff = 12 if wide else 8
         out += f'<path d="M {sx-10},{sy-2} L {sx+10},{sy-2} L {ex+8},{ey} L {wx+cuff},{wy} L {wx-cuff},{wy} L {ex-8},{ey} Z" fill="{col}"/>'
@@ -127,19 +129,32 @@ F["mek"] = figure("mek", "",
   arm("mek", -1, ("#5d6f8a", "#7889a6", "#45546c"), MEK_SKIN) + arm("mek", 1, ("#5d6f8a", "#7889a6", "#45546c"), MEK_SKIN),
   hs(bc.mek_head))
 
-# Pa Daeng
+# Pa Daeng: fuller, rounder body with weight in the blouse, apron and sarong
 DG_SKIN = ("#e3b088", "#c98f69")
-dg_torso = (torso_basic(("#8a3a3e", "#a54a4e", "#6c2b30"), sw=42, ww=38, hw=42)
-  + '<path d="M -40,186 L 40,186 L 34,350 L -34,350 Z" fill="#4a3a4a"/><path d="M -40,186 L -22,186 L -20,350 L -34,350 Z" fill="#5c4a5c"/><path d="M 22,186 L 40,186 L 34,350 L 22,350 Z" fill="#3a2c3a"/>'
-  + '<g stroke="#7a6a5a" stroke-width="1.4" opacity=".5"><path d="M -36,220 L 36,220 M -35,260 L 35,260 M -34,300 L 34,300"/></g>'
-  + '<path d="M -32,86 L 32,86 L 38,290 L -38,290 Z" fill="#8fa3b0"/><path d="M -32,86 L -14,86 L -16,290 L -38,290 Z" fill="#a9bbc6"/><path d="M 16,86 L 32,86 L 38,290 L 20,290 Z" fill="#748894"/>'
-  + '<path d="M -32,86 C -30,70 -24,62 -14,56 M 32,86 C 30,70 24,62 14,56" fill="none" stroke="#8fa3b0" stroke-width="4"/>'
-  + '<rect x="-18" y="170" width="36" height="24" fill="#748894"/>'
-  + '<g transform="translate(40,196)"><circle r="8" fill="none" stroke="#b49a5a" stroke-width="2.4"/><path d="M -3,6 l -3,15 l 4,0 l 1,-5 l 3,0 Z M 4,7 l 2,13 l 4,-1 l -1,-5 Z" fill="#c9ad66"/></g>')
+dg_torso = (
+  # blouse: round shoulders, bust and belly
+  '<path d="M -16,52 C -34,54 -46,60 -48,78 C -50,100 -48,122 -45,140 C -49,160 -50,178 -46,192 L 46,192 C 50,178 49,160 45,140 C 48,122 50,100 48,78 C 46,60 34,54 16,52 Z" fill="#8a3a3e"/>'
+  '<path d="M -48,78 C -46,60 -34,54 -18,53 C -26,90 -30,140 -28,192 L -46,192 C -50,178 -49,160 -45,140 C -48,122 -50,100 -48,78 Z" fill="#a54a4e"/>'
+  '<path d="M 20,54 C 34,56 46,62 48,78 C 50,100 48,122 45,140 C 49,160 50,178 46,192 L 30,192 C 32,140 30,92 20,54 Z" fill="#6c2b30"/>'
+  '<path d="M -36,108 C -26,120 -10,120 -2,112 M 2,112 C 10,120 26,120 36,108" stroke="#6c2b30" stroke-width="1.6" fill="none" opacity=".7"/>'
+  '<g fill="#e9c6b0" opacity=".5"><circle cx="-36" cy="96" r="2"/><circle cx="-24" cy="128" r="2"/><circle cx="-40" cy="160" r="2"/><circle cx="36" cy="92" r="2"/><circle cx="40" cy="140" r="2"/><circle cx="28" cy="170" r="2"/></g>'
+  # sarong with batik bands and folds, slightly flared
+  '<path d="M -44,188 L 44,188 L 40,354 L -40,354 Z" fill="#4a3a4a"/><path d="M -44,188 L -22,188 L -22,354 L -40,354 Z" fill="#5c4a5c"/><path d="M 24,188 L 44,188 L 40,354 L 24,354 Z" fill="#3a2c3a"/>'
+  '<g stroke="#8a7a5a" stroke-width="1.6" opacity=".55" fill="none"><path d="M -42,214 L 42,214 M -41,318 L 41,318"/><path d="M -40,222 l 6,6 l 6,-6 l 6,6 l 6,-6 l 6,6 l 6,-6 l 6,6 l 6,-6 l 6,6 l 6,-6 l 6,6 l 6,-6 l 6,6"/></g>'
+  '<path d="M -6,190 L -10,354 M 12,196 L 16,354" stroke="#2c2030" stroke-width="1.6" opacity=".6"/><path d="M 30,190 C 34,206 30,222 34,236" stroke="#2c2030" stroke-width="2" fill="none"/>'
+  # apron: bib with neck strap, wide skirt with folds, pocket, side bow
+  '<path d="M -26,84 L 26,84 L 30,146 L -30,146 Z" fill="#8fa3b0"/><path d="M -26,84 L -12,84 L -14,146 L -30,146 Z" fill="#a9bbc6"/>'
+  '<path d="M -26,84 C -24,68 -18,60 -12,56 M 26,84 C 24,68 18,60 12,56" fill="none" stroke="#8fa3b0" stroke-width="4"/>'
+  '<path d="M -38,146 L 38,146 C 42,200 44,250 44,296 L -44,296 C -44,250 -42,200 -38,146 Z" fill="#8fa3b0"/><path d="M -38,146 L -16,146 C -18,200 -20,250 -20,296 L -44,296 C -44,250 -42,200 -38,146 Z" fill="#a9bbc6"/>'
+  '<path d="M 18,146 L 38,146 C 42,200 44,250 44,296 L 22,296 C 22,250 20,200 18,146 Z" fill="#748894"/>'
+  '<g stroke="#6a7c88" stroke-width="1.5" opacity=".7" fill="none"><path d="M -8,160 C -10,210 -8,260 -12,296"/><path d="M 8,160 C 10,210 8,260 10,296"/><path d="M -28,170 C -30,220 -30,260 -34,296"/></g>'
+  '<rect x="-38" y="142" width="76" height="8" fill="#748894"/><path d="M 38,146 c 10,-6 14,4 6,8 c 8,4 2,14 -6,6 Z" fill="#748894"/><path d="M 42,152 l 6,22 M 40,152 l -2,24" stroke="#748894" stroke-width="4"/>'
+  '<rect x="-20" y="190" width="40" height="28" rx="3" fill="#748894"/><path d="M -20,196 L 20,196" stroke="#6a7c88" stroke-width="1.4"/>'
+  '<g transform="translate(-40,200)"><circle r="8" fill="none" stroke="#b49a5a" stroke-width="2.4"/><path d="M -3,6 l -3,15 l 4,0 l 1,-5 l 3,0 Z M 4,7 l 2,13 l 4,-1 l -1,-5 Z" fill="#c9ad66"/></g>')
 F["daeng"] = figure("daeng", "",
   leg("daeng", -1, ("#4a3a4a",) * 3, "#6a4a3a", "#3a2a22", skin=DG_SKIN, pants_to=0) + leg("daeng", 1, ("#4a3a4a",) * 3, "#5a3e30", "#3a2a22", skin=DG_SKIN, pants_to=0),
   dg_torso,
-  arm("daeng", -1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(44, 66), el=(50, 146), wr=(52, 212)) + arm("daeng", 1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(44, 66), el=(50, 146), wr=(52, 212)),
+  arm("daeng", -1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(46, 68), el=(52, 146), wr=(54, 212), thick=1.25) + arm("daeng", 1, ("#8a3a3e", "#a54a4e", "#6c2b30"), DG_SKIN, short=True, sh=(46, 68), el=(52, 146), wr=(54, 212), thick=1.25),
   hs(bc.dg_head))
 
 # Mother Catarina (with folder in her right hand = viewer-left)
