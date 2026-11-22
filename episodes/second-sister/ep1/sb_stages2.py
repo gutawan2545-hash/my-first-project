@@ -747,19 +747,20 @@ def ragdoll():
     o += '<path d="M -34,8 C -52,20 -58,40 -54,58 L -44,58 C -46,42 -40,28 -28,18 Z" fill="#e8dcc8"/><path d="M 34,8 C 50,22 54,40 50,54 L 42,54 C 44,40 38,26 28,18 Z" fill="#3a2a22"/>'
     o += '<path d="M -50,40 l 6,2 M -51,48 l 6,2 M -24,80 l 8,0 M -24,90 l 8,0" stroke="#8a7a68" stroke-width="1.4"/>'
     # old-fashioned dress with collar and small print; the right side scorched with a ragged edge
-    o += '<path d="M -30,0 L 30,0 L 44,76 L -44,76 Z" fill="#9a6a7a"/><path d="M -30,0 L -8,0 L -16,76 L -44,76 Z" fill="#aa7a8a"/>'
-    o += "".join(f'<circle cx="{dx}" cy="{dy}" r="1.6" fill="#e8d0d8"/>' for dx, dy in ((-24, 20), (-14, 40), (-30, 58), (-6, 64), (-20, 70)))
+    o += '<path d="M -30,0 L 30,0 L 44,76 L -44,76 Z" fill="#16121a"/><path d="M -30,0 L -8,0 L -16,76 L -44,76 Z" fill="#241e2a"/>'
+    o += "".join(f'<circle cx="{dx}" cy="{dy}" r="1.4" fill="#3a3240"/>' for dx, dy in ((-24, 20), (-14, 40), (-30, 58), (-6, 64), (-20, 70)))
     o += '<path d="M -18,0 C -12,10 12,10 18,0 L 14,-4 L -14,-4 Z" fill="#f0e8dc"/>'
     o += '<path d="M 4,0 L 30,0 L 44,76 L 12,76 L 16,62 L 6,54 L 14,40 L 4,30 L 10,16 Z" fill="#1e1614"/><path d="M 4,0 L 10,16 L 4,30 L 14,40 L 6,54 L 16,62 L 12,76" stroke="#8a4a2a" stroke-width="2" fill="none" opacity=".8"/>'
     o += '<path d="M 10,30 c 4,-3 8,0 6,4 M 22,56 c 4,-3 8,1 5,5" stroke="#3a2a22" stroke-width="2" fill="none"/>'   # holes burnt through
+    o += "".join(f'<circle cx="-4" cy="{y}" r="2.6" fill="#050406"/><circle cx="-4.8" cy="{y - .8}" r=".6" fill="#fff" opacity=".3"/>' for y in (10, 24, 38, 52))
     # head: cloth face with a seam down the middle, stitched mouth, button eyes; right half blackened
     o += '<circle cx="0" cy="-28" r="26" fill="#efe2cc"/>'
     o += '<path d="M 0,-54 A 26,26 0 0 1 0,-2 C 6,-10 2,-18 8,-26 C 2,-34 6,-44 0,-54 Z" fill="#241a16"/><path d="M 0,-54 C 6,-44 2,-34 8,-26 C 2,-18 6,-10 0,-2" stroke="#9a5a32" stroke-width="2" fill="none" opacity=".8"/>'
     o += '<path d="M -2,-52 L -2,-4" stroke="#a8988a" stroke-width="1" stroke-dasharray="3 2"/>'
-    o += '<circle cx="-11" cy="-32" r="5" fill="#2a2228"/><circle cx="-11" cy="-32" r="5" fill="none" stroke="#5a5260" stroke-width="1"/><path d="M -13,-34 l 4,4 M -9,-34 l -4,4" stroke="#8a828e" stroke-width="1"/>'
-    o += '<ellipse cx="12" cy="-31" rx="5.5" ry="4" fill="#3a3238" transform="rotate(20 12 -31)"/><path d="M 8,-29 C 11,-27 15,-28 17,-31" stroke="#6a5a52" stroke-width="1.4" fill="none"/>'   # melted button
-    o += '<path d="M -14,-16 l 4,2 l 4,-2 l 4,2 l 4,-2" stroke="#7a4a4a" stroke-width="1.4" fill="none"/><path d="M -12,-18 l 0,4 M -6,-18 l 0,4 M 0,-18 l 0,4" stroke="#7a4a4a" stroke-width="1"/>'
-    o += '<ellipse cx="-16" cy="-22" rx="5" ry="2.6" fill="#e8a0a0" opacity=".5"/>'
+    o += '<circle cx="-11" cy="-32" r="5.6" fill="#050406"/><circle cx="-11" cy="-32" r="5.6" fill="none" stroke="#1e1a22" stroke-width="1"/><circle cx="-12.6" cy="-33.6" r=".7" fill="#3a3440"/><circle cx="-9.4" cy="-33.6" r=".7" fill="#3a3440"/><circle cx="-12.6" cy="-30.4" r=".7" fill="#3a3440"/><circle cx="-9.4" cy="-30.4" r=".7" fill="#3a3440"/><circle cx="-13" cy="-34.5" r="1" fill="#ffffff" opacity=".35"/>'
+    o += '<ellipse cx="12" cy="-31" rx="5.5" ry="4" fill="#050406" transform="rotate(20 12 -31)"/><path d="M 8,-29 C 11,-27 15,-28 17,-31" stroke="#6a5a52" stroke-width="1.4" fill="none"/>'   # melted button
+    o += '<path d="M -14,-16 l 4,2 l 4,-2 l 4,2 l 4,-2" stroke="#4a1a1e" stroke-width="1.6" fill="none"/><path d="M -12,-18 l 0,4 M -6,-18 l 0,4 M 0,-18 l 0,4" stroke="#4a1a1e" stroke-width="1"/>'
+    o += ''
     # yarn hair: two braids on the unburnt side, a singed curled stub on the burnt side
     o += '<path d="M -26,-36 C -30,-58 -6,-62 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 C -8,-52 -18,-50 -26,-36 Z" fill="#7a4a2a"/><path d="M 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 Z" fill="#2a1a12"/>'
     o += "".join(f'<path d="M {-22 + k * 4},-56 C {-24 + k * 4},-52 {-24 + k * 4},-46 {-22 + k * 4},-42" stroke="#9a6a3a" stroke-width="1.2" fill="none"/>' for k in range(5))
@@ -769,7 +770,7 @@ def ragdoll():
     return o + '</g>'
 INS2["doll"] = ('<rect width="540" height="960" fill="#3a3448"/><rect y="640" width="540" height="320" fill="#4a4250"/><rect y="640" width="540" height="10" fill="#5a5060"/>'
                 '<polygon points="380,0 540,0 540,700 300,700" fill="#d8d0e8" opacity=".08" filter="url(#lhaze)"/>'
-                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าโบราณ ไหม้ครึ่งตัว เปียไหมพรม ตากระดุม"))
+                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าโบราณ ชุดดำ ไหม้ครึ่งตัว ตากระดุมดำ"))
 ST["steps"] = ST["steps"].replace(ST["steps"][ST["steps"].index('<g transform="translate(270,820) scale(1.8)">'):ST["steps"].index('</g>', ST["steps"].index('<g transform="translate(270,820) scale(1.8)">')) + 4], '<g transform="translate(300,880) scale(.5)">' + ragdoll() + '</g>')
 
 # ---- final scene: embroidered handkerchief "Martha" (replaces the name tag) ----

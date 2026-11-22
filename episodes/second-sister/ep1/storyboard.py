@@ -374,11 +374,11 @@ def L(key, dark=.5, tint="#120c16", holes=(), glows=(), beams=(), fog=(), motes=
     o += '</mask>'
     o += f'<rect x="-200" y="-200" width="940" height="1360" fill="{tint}" opacity="{dark}" mask="url(#lm_{key})"/>'
     for (pts, col, op) in beams:
-        o += f'<polygon points="{pts}" fill="{col}" opacity="{op * .6:.2f}" filter="url(#lhaze)" style="mix-blend-mode:screen"/>'
+        o += f'<polygon class="lglow" points="{pts}" fill="{col}" opacity="{op * .6:.2f}" filter="url(#lhaze)" style="mix-blend-mode:screen"/>'
     for (y, h, op) in fog:
-        o += f'<rect x="-100" y="{y}" width="740" height="{h}" fill="#c8ccdc" opacity="{op * .55:.2f}" filter="url(#lhaze)"/>'
+        o += f'<rect class="lglow" x="-100" y="{y}" width="740" height="{h}" fill="#c8ccdc" opacity="{op * .55:.2f}" filter="url(#lhaze)"/>'
     for (x, y, r, col, op) in glows:
-        o += f'<circle cx="{x}" cy="{y}" r="{r}" fill="url(#lg_{col.strip("#")})" opacity="{op * .7:.2f}" style="mix-blend-mode:screen"/>'
+        o += f'<circle class="lglow" cx="{x}" cy="{y}" r="{r}" fill="url(#lg_{col.strip("#")})" opacity="{op * .7:.2f}" style="mix-blend-mode:screen"/>'
         GLOWCOLS.add(col)
     LIGHTS[key] = [(x, y, r) for (x, y, r) in holes] + [(x, y, r) for (x, y, r, c_, o_) in glows]
     if motes:

@@ -228,9 +228,10 @@ window.render = function (si, t) {          // segment index, seconds into the s
     $('viewUse').setAttribute('href', src);
     const [cx, cy, h] = seg.crop || [270, 480, 960], w = h * 9 / 16;
     $('view').setAttribute('viewBox', `${cx - w / 2} ${cy - h / 2} ${w} ${h}`);
-    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : seg.day ? 'saturate(1.1) brightness(1.12) contrast(1.03)' : 'saturate(1.12) brightness(1.05) contrast(1.05)';
+    $('viewWrap').style.filter = seg.kind === 'exact' ? 'none' : seg.day ? 'saturate(1.08) brightness(1.03) contrast(1.03)' : 'saturate(1.12) brightness(1.05) contrast(1.05)';
     $('grade').style.display = seg.kind === 'exact' ? 'none' : '';
     document.querySelectorAll('rect[mask^="url(#lm_"]').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
+    document.querySelectorAll('.lglow').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
     $('gMul').setAttribute('opacity', seg.day ? .16 : .42); $('gSoft').setAttribute('opacity', seg.day ? .05 : .14); $('gVig').setAttribute('opacity', seg.day ? .45 : 1); $('grain').style.display = seg.kind === 'exact' ? 'none' : '';
     $('chipText').textContent = seg.chip; $('chip').style.display = seg.chip ? '' : 'none';
     if (seg.chip) $('chipBox').setAttribute('width', 14 + seg.chip.length * 7.4);
