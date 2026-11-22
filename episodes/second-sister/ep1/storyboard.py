@@ -460,6 +460,25 @@ INS["count"] = ('<rect width="540" height="960" fill="#4a4456"/>' + "".join(f'<g
 INS["doll"] = '<rect width="540" height="960" fill="#3a3448"/><g transform="translate(270,480) scale(5)"><path d="M -18,0 L 18,0 L 24,32 L -24,32 Z" fill="#e8e0d4"/><path d="M 4,0 L 18,0 L 24,32 L 8,32 Z" fill="#3a2a24"/><circle cx="0" cy="-12" r="14" fill="#f0d8c0"/><path d="M 2,-26 C 14,-24 16,-12 12,-2 L 4,-6 Z" fill="#2a1a16"/><circle cx="-5" cy="-12" r="1.6" fill="#1a1216"/><circle cx="4" cy="-12" r="1.6" fill="#1a1216"/></g>'
 INS["question"] = '<rect width="540" height="960" fill="#15121c"/><text x="270" y="320" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="28" font-weight="700" fill="#fff">ป้าแดงตกเอง หรือถูกผลัก?</text><rect x="90" y="400" width="360" height="80" rx="14" fill="#2a2440" stroke="#8f74d8"/><text x="270" y="452" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="26" fill="#ffd84a">A · ตกเอง</text><rect x="90" y="510" width="360" height="80" rx="14" fill="#2a2440" stroke="#8f74d8"/><text x="270" y="562" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="26" fill="#ffd84a">B · ถูกผลัก</text><text x="270" y="680" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="18" fill="#c8c4d8">EP2 ห้องสารภาพบาป</text>'
 
+
+# ---------- shots 31-32: the approved frame, used exactly as it is (nuns-test-frame_v1.html) ----------
+_v1 = open(os.path.join(HERE, "..", "frames", "nuns-test-frame_v1.html")).read()
+_d0 = _v1.index("<defs>"); _d1 = _v1.index("</defs>")
+_v1defs = _v1[_d0 + 6:_d1]
+_f0 = _v1.index('<svg viewBox="0 0 540 960"'); _f1 = _v1.index("</svg>", _f0)
+_v1frame = _v1[_v1.index(">", _f0) + 1:_f1]
+_v1frame = re.sub(r'<g id="guide">.*?</g>', '', _v1frame, flags=re.S)
+def _ns(txt, ids):
+    for i in sorted(ids, key=len, reverse=True):
+        txt = txt.replace(f'id="{i}"', f'id="v1_{i}"').replace(f'url(#{i})', f'url(#v1_{i})').replace(f'href="#{i}"', f'href="#v1_{i}"')
+    return txt
+_ids = set(re.findall(r'id="([^"]+)"', _v1defs + _v1frame))
+V1_DEFS = _ns(_v1defs, _ids)
+# the picture you approved shows Agnes a cool lavender grey; match it with a colour matrix instead of the CSS brightness filter
+_fr = _ns(_v1frame, _ids).replace('<g style="filter:brightness(.6) saturate(.85)">', '<g filter="url(#v1_agT)">')
+V1_DEFS += '<filter id="v1_agT" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.64 0 0 0 0  0 0.63 0 0 0  0 0 0.81 0 0  0 0 0 1 0"/></filter>'
+INS_EXACT = {"chapel_v1": _fr}
+
 # ---------- panels: (shots, stage-or-insert, crop(cx,cy,h) or None, size, move, note) ----------
 F_ = None
 PANELS = {
@@ -474,8 +493,8 @@ PANELS = {
      ("23-26", "refectory", F_, "ภาพกว้าง", "static", "ห้องอาหาร โรซาเล่า คาทารีนาวางแก้วเสียงดัง"),
      ("27-28", "refectory", (270, 560, 420), "ภาพปานกลาง", "in", "คาทารีนาลุกขึ้น 'เป็นลมพัด แค่นั้น'"),
      ("29-30", "refectory", (500, 560, 360), "ภาพใกล้", "in", "ป้าแดงยืนนิ่งปลายโต๊ะ มองไปทางปีกเก่า")],
- 3: [("31", "chapel_sisters", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
-     ("32", "chapel_sisters", (270, 282, 560), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
+ 3: [("31", "chapel_v1", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
+     ("32", "chapel_v1", (270, 300, 600), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
      ("33", "title", F_, "การ์ดชื่อเรื่อง", "static", "ชื่อเรื่องขึ้น ระฆังหนึ่งครั้ง")],
  4: [("34-37", "condo", F_, "ภาพกว้าง", "static", "เจมส์เล่นเกม ดีนนอนขด เมฆนอนบนโซฟา ดีนเดินมาขึ้นตัก"),
      ("38-39", "email", F_, "แทรก", "in", "อีเมลเชิญจากคอนแวนต์"),
@@ -593,6 +612,10 @@ def move_overlay(mv):
     return o
 
 def panel_svg(stage, crop, mv):
+    if stage in INS_EXACT:   # approved frame: no grade, no vignette, no colour boost
+        cx, cy, h = crop if crop else (270, 480, 960); w = h * 9 / 16
+        return (f'<svg viewBox="0 0 540 960" role="img"><svg x="0" y="0" width="540" height="960" viewBox="{cx - w / 2:.1f} {cy - h / 2:.1f} {w:.1f} {h:.1f}" preserveAspectRatio="xMidYMid slice">{INS_EXACT[stage]}</svg>'
+                f'<rect x="1" y="1" width="538" height="958" fill="none" stroke="#000" stroke-width="2"/>{move_overlay(mv)}</svg>')
     body = INS.get(stage) or f'<use href="#st_{stage}"/>'
     if crop:
         cx, cy, h = crop; w = h * 9 / 16
@@ -625,7 +648,7 @@ for sc in sorted(PANELS):
     chip = CHIPS.get(sc, "")
     sections.append(f'<section><h2>ฉาก {sc} · {TITLES.get(sc, "")}<span>{chip} · ≈ {sc_dur / 60:.1f} นาที</span></h2><div class="grid">{"".join(cards)}</div></section>')
 
-DEFS = (f'<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{cf.NUN_DEFS}{v1.JAMES_DEFS}{"".join(v2.POSES)}'
+DEFS = (f'<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{V1_DEFS}{cf.NUN_DEFS}{v1.JAMES_DEFS}{"".join(v2.POSES)}'
         + "".join(f'<g id="st_{k}">{v}</g>' for k, v in ST.items())
         + '<filter id="drop" x="-20%" y="-20%" width="150%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="5"/><feOffset dx="6" dy="8"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
         + '<filter id="dof" x="0" y="0" width="100%" height="100%"><feGaussianBlur stdDeviation="0"/></filter><filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>'

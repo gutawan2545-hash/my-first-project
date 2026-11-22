@@ -196,6 +196,7 @@ figcaption b { color: var(--ink); font-weight: 500; }
     <use href="#cap"/>
   </g>
 
+  <filter id="agT" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.64 0 0 0 0  0 0.63 0 0 0  0 0 0.81 0 0  0 0 0 1 0"/></filter>
   <filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2.6"/></filter>
   <filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.8"/></filter>
   <filter id="haze" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
@@ -302,7 +303,7 @@ figcaption b { color: var(--ink); font-weight: 500; }
     <!-- ============ CHARACTERS ============ -->
     <!-- Agnes, a step behind, cooler and darker except where the candle hits -->
     <g filter="url(#dropSh)">
-      <g style="filter:brightness(.6) saturate(.85)"><use href="#agnes" transform="translate(162,330) scale(1.24)"/></g>
+      <g filter="url(#agT)"><use href="#agnes" transform="translate(162,330) scale(1.24)"/></g>
     </g>
     <!-- Mariam in front -->
     <g filter="url(#dropSh)">
