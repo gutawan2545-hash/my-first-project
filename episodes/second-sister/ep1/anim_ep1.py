@@ -88,6 +88,41 @@ def wrap_th(text, limit=24):
     if cur: lines.append(cur)
     return lines
 
+# words that get the purple highlight (at most two per card, longest match first)
+EMPH = ["มาร์ธา", "มาเรียม", "อักเนส", "โรซา", "ป้าแดง", "จันทร์เจ้า", "ลูเซีย", "คาทารีนา", "ยอแซฟ", "ธนา", "เจมส์", "นภา",
+        "หอระฆัง", "ระฆัง", "ตีสาม", "ฝาแฝด", "แฝด", "กองเพลิง", "ไฟไหม้", "ศพ", "ห้าม", "กฎ", "ปีกเก่า", "หลุมศพ", "หลุม",
+        "มือซ้าย", "ถนัดซ้าย", "ยี่สิบปี", "20 ปี", "สิบปี", "ลูกนกน้อย", "ผ้าเช็ดหน้า", "ตุ๊กตา", "เซนต์เวโรนิกา", "ผี", "เลือด", "หายไป"]
+def emph_line(line, budget):
+    spans, i = [], 0
+    while i < len(line):
+        hit = None
+        if budget[0] > 0:
+            for w in sorted(EMPH, key=len, reverse=True):
+                if line.startswith(w, i): hit = w; break
+        if hit:
+            spans.append([hit, 1]); i += len(hit); budget[0] -= 1
+        else:
+            if spans and spans[-1][1] == 0: spans[-1][0] += line[i]
+            else: spans.append([line[i], 0])
+            i += 1
+    return spans
+def make_cards(text, dur):
+    if not text: return []
+    lines = wrap_th(text, 22)
+    groups, k = [], 0
+    while k < len(lines):
+        left = len(lines) - k
+        take = left if left <= 3 else 2      # 4 lines -> 2+2, 5 -> 2+3 ...
+        groups.append(lines[k:k + take]); k += take
+    total = sum(vis_len("".join(g)) for g in groups)
+    cards, t = [], 0.0
+    for g in groups:
+        d = dur * vis_len("".join(g)) / total
+        budget = [2]
+        cards.append({"t0": round(t, 2), "dur": round(d, 2), "lines": [emph_line(L, budget) for L in g]})
+        t += d
+    return cards
+
 def parse_audio(a):
     sfx = " ".join(re.findall(r"(?<!\*)\*([^*]+)\*(?!\*)", a))
     m = re.match(r"\s*\*\*([^*]+):\*\*\s*(.*)", a)
@@ -131,7 +166,7 @@ while n <= 287:
         speaker, text, sfx = parse_audio(aud)
         d = shot_dur(text, sfx)
         if "ระฆัง" in sfx or "ตั๊ง" in sfx: seg["bells"].append(round(T - seg["t0"], 2))
-        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "th": wrap_th(text) if text else []})
+        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d)})
         T += d; n += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)
@@ -146,7 +181,8 @@ const TL = %TL%, POSE_CID = %PC%;
 const $ = id => document.getElementById(id);
 const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 const stage = $('stage'); stage.pauseAnimations();
-let curSeg = -1, curShot = -1, curStageKey = null;
+let curSeg = -1, curShot = -1, curCard = -2, curStageKey = null;
+const SUB_Y = 770;
 const NS = 'http://www.w3.org/2000/svg';
 const motes = [...Array(16)].map((_, i) => ({ x: (i * 97) % 540, y: (i * 211) % 960, s: 6 + (i % 5) * 3, r: .7 + (i % 3) * .5, o: .25 + (i % 4) * .12, ph: i }));
 motes.forEach((m, i) => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('id', 'mote' + i); c.setAttribute('r', m.r); c.setAttribute('fill', '#f4f0ff'); $('motes').appendChild(c); });
@@ -162,7 +198,7 @@ function setTalk(seg, shot) {
 window.render = function (si, t) {          // segment index, seconds into the segment
   const seg = TL.segments[si];
   if (si !== curSeg) {
-    curSeg = si; curShot = -1;
+    curSeg = si; curShot = -1; curCard = -2;
     const src = seg.kind === 'stage' ? '#st_' + seg.stage : seg.kind === 'ins' ? '#ins_' + seg.stage : '#exact_' + seg.stage;
     $('viewUse').setAttribute('href', src);
     const [cx, cy, h] = seg.crop || [270, 480, 960], w = h * 9 / 16;
@@ -174,15 +210,25 @@ window.render = function (si, t) {          // segment index, seconds into the s
   }
   const si2 = seg.shots.findIndex(s => t >= s.t0 && t < s.t0 + s.dur);
   const shotIdx = si2 < 0 ? seg.shots.length - 1 : si2, shot = seg.shots[shotIdx];
-  if (shotIdx !== curShot) {
-    curShot = shotIdx; setTalk(seg, shot);
+  if (shotIdx !== curShot) { curShot = shotIdx; curCard = -2; setTalk(seg, shot); }
+  const lt = t - shot.t0;
+  let ci = shot.cards.findIndex(c => lt >= c.t0 && lt < c.t0 + c.dur); if (ci < 0 && shot.cards.length) ci = shot.cards.length - 1;
+  if (ci !== curCard) {
+    curCard = ci;
     const sub = $('sub'); sub.innerHTML = '';
-    const lines = shot.th, n = lines.length;
-    let y = 712 - (n * 27) / 2 + 20;
-    for (const L of lines) { const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', 270); tx.setAttribute('y', y); tx.textContent = L; sub.appendChild(tx); y += 27; }
+    if (ci >= 0) {
+      const lines = shot.cards[ci].lines, n = lines.length, LH = 30;
+      let y = SUB_Y - ((n - 1) * LH) / 2 + 8;
+      for (const L of lines) {
+        const tx = document.createElementNS(NS, 'text'); tx.setAttribute('x', 270); tx.setAttribute('y', y);
+        for (const [str, em] of L) { const sp = document.createElementNS(NS, 'tspan'); sp.textContent = str; if (em) sp.setAttribute('class', 'em'); tx.appendChild(sp); }
+        sub.appendChild(tx); y += LH;
+      }
+    }
   }
-  // subtitle fade in/out at shot edges
-  const lt = t - shot.t0, a = Math.min(1, lt / .2, (shot.dur - lt) / .2);
+  const card = shot.cards[ci];
+  let a = 0;
+  if (card) { const ct = lt - card.t0; a = Math.min(1, ct / .15, (card.dur - ct) / .15); }
   $('sub').setAttribute('opacity', Math.max(0, a).toFixed(3));
   // camera
   const p = Math.min(1, t / Math.max(seg.dur, .1)), e = ease(p);
@@ -214,10 +260,10 @@ JS = JS.replace("%TL%", json.dumps(timeline, ensure_ascii=False)).replace("%PC%"
 DEFS_INNER = DEFS.replace('<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>', "").replace("</defs></svg>", "")
 html = f'''<!doctype html><html><head><meta charset="utf-8"><title>EP1</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Noto+Serif+Thai:wght@500;700&family=Dancing+Script:wght@600;700&family=Inter:wght@500&display=swap">
-<style>html,body{{margin:0;background:#000}} svg{{display:block}} #sub text{{font-family:"IBM Plex Sans Thai",sans-serif;font-size:20px;font-weight:700;fill:#ffd84a;text-anchor:middle}}</style></head><body>
+<style>html,body{{margin:0;background:#000}} svg{{display:block}} #sub text{{font-family:"IBM Plex Sans Thai",sans-serif;font-size:22px;font-weight:700;fill:#ffffff;text-anchor:middle}} #sub .em{{fill:#c27bff}}</style></head><body>
 <svg id="stage" width="540" height="960" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">
 <defs>{DEFS_INNER}{INS_DEFS}{EXACT_DEFS}
-<filter id="subStroke2" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.2" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="subStroke2" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <filter id="moteBlur2" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation=".7"/></filter>
 </defs>
 <rect width="540" height="960" fill="#0a080c"/>

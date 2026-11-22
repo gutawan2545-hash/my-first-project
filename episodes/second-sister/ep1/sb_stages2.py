@@ -93,10 +93,10 @@ def bell_tower_old(swing=0):
     o += f'<path d="M {l - 6:.0f},{y1 + 20} Q {(l + r_) / 2:.0f},{y1 - 70} {r_ + 6:.0f},{y1 + 20}" stroke="#e0dcf0" stroke-width="4" fill="none"/>'
     cx = (l + r_) / 2
     o += f'<rect x="{l + 6:.0f}" y="{y1 + 6}" width="{r_ - l - 12:.0f}" height="10" fill="#3a2a22"/><rect x="{cx - 4:.0f}" y="{y1 + 14}" width="8" height="14" fill="#2a1e1a"/>'
-    o += (f'<g transform="rotate({swing} {cx:.0f} {y1 + 26})"><path d="M {cx - 26:.0f},{y1 + 28} C {cx - 28:.0f},{y1 + 70} {cx - 40:.0f},{y1 + 96} {cx - 50:.0f},{y1 + 104} L {cx + 50:.0f},{y1 + 104} C {cx + 40:.0f},{y1 + 96} {cx + 28:.0f},{y1 + 70} {cx + 26:.0f},{y1 + 28} C {cx + 26:.0f},{y1 + 16} {cx - 26:.0f},{y1 + 16} {cx - 26:.0f},{y1 + 28} Z" fill="#5a6e5e"/>'
-          f'<path d="M {cx - 26:.0f},{y1 + 28} C {cx - 28:.0f},{y1 + 70} {cx - 40:.0f},{y1 + 96} {cx - 50:.0f},{y1 + 104} L {cx - 22:.0f},{y1 + 104} C {cx - 16:.0f},{y1 + 80} {cx - 12:.0f},{y1 + 50} {cx - 8:.0f},{y1 + 18} Z" fill="#8aa08a"/>'
-          f'<rect x="{cx - 52:.0f}" y="{y1 + 100}" width="104" height="7" rx="3" fill="#4a5a4c"/><path d="M {cx - 30:.0f},{y1 + 60} L {cx + 30:.0f},{y1 + 60}" stroke="#7a9080" stroke-width="2"/>'
-          f'<circle cx="{cx:.0f}" cy="{y1 + 108}" r="7" fill="#2a3a2e"/><path d="M {cx:.0f},{y1 + 112} L {cx + 4:.0f},{y1 + 180}" stroke="#a89a80" stroke-width="2"/></g>')
+    o += (f'<g transform="rotate({swing} {cx:.0f} {y1 + 26})"><path d="M {cx - 26:.0f},{y1 + 28} C {cx - 28:.0f},{y1 + 70} {cx - 40:.0f},{y1 + 96} {cx - 50:.0f},{y1 + 104} L {cx + 50:.0f},{y1 + 104} C {cx + 40:.0f},{y1 + 96} {cx + 28:.0f},{y1 + 70} {cx + 26:.0f},{y1 + 28} C {cx + 26:.0f},{y1 + 16} {cx - 26:.0f},{y1 + 16} {cx - 26:.0f},{y1 + 28} Z" fill="#c9952e"/>'
+          f'<path d="M {cx - 26:.0f},{y1 + 28} C {cx - 28:.0f},{y1 + 70} {cx - 40:.0f},{y1 + 96} {cx - 50:.0f},{y1 + 104} L {cx - 22:.0f},{y1 + 104} C {cx - 16:.0f},{y1 + 80} {cx - 12:.0f},{y1 + 50} {cx - 8:.0f},{y1 + 18} Z" fill="#f2cf63"/>'
+          f'<rect x="{cx - 52:.0f}" y="{y1 + 100}" width="104" height="7" rx="3" fill="#a8761f"/><path d="M {cx - 30:.0f},{y1 + 60} L {cx + 30:.0f},{y1 + 60}" stroke="#f6dc84" stroke-width="2"/>'
+          f'<circle cx="{cx:.0f}" cy="{y1 + 108}" r="7" fill="#7a5418"/><path d="M {cx:.0f},{y1 + 112} L {cx + 4:.0f},{y1 + 180}" stroke="#a89a80" stroke-width="2"/></g>')
     o += f'<path d="M {l:.0f},{y0 - 30} L {r_:.0f},{y0 - 30}" stroke="#d8d4e8" stroke-width="5"/>' + "".join(f'<rect x="{l + k * (r_ - l) / 9:.0f}" y="{y0 - 28}" width="4" height="26" fill="#d8d4e8"/>' for k in range(1, 9))  # balustrade
     # crown: cornice, balustrade, corner pinnacles, drum, dome, cross
     yc = ty
@@ -113,13 +113,6 @@ def bell_tower_old(swing=0):
     o += f'<path d="M {dx0:.0f},{yc - 106} C {dx0:.0f},{yc - 160} {dx1:.0f},{yc - 160} {dx1:.0f},{yc - 106} Z" fill="{mid}"/><path d="M {dx0:.0f},{yc - 106} C {dx0:.0f},{yc - 150} {(dx0 + dx1) / 2 - 10:.0f},{yc - 158} {(dx0 + dx1) / 2:.0f},{yc - 158} C {(dx0 + dx1) / 2 - 16:.0f},{yc - 146} {(dx0 + dx1) / 2 - 22:.0f},{yc - 124} {(dx0 + dx1) / 2 - 20:.0f},{yc - 106} Z" fill="{lit}"/>'
     cxx = (dx0 + dx1) / 2
     o += f'<rect x="{cxx - 4:.0f}" y="{yc - 176}" width="8" height="20" fill="{lit}"/><rect x="{cxx - 2:.0f}" y="{yc - 214}" width="4" height="40" fill="#e4e0f0"/><rect x="{cxx - 12:.0f}" y="{yc - 204}" width="24" height="4" fill="#e4e0f0"/>'
-    # age: peeling plaster, cracks, damp streaks under every cornice, moss and vines at the base
-    o += plaster_wear(X(0, 780), 620, X(.6, 780) - X(0, 780), 140, 11) + plaster_wear(X(0, 440), 460, X(.6, 440) - X(0, 440), 120, 12) + plaster_wear(X(.62, 860), 640, X(1, 860) - X(.62, 860), 200, 13, dark="#3a3658")
-    for y in (750, 590, 430, 290):
-        o += f'<rect x="{X(0, y):.0f}" y="{y}" width="{X(1, y) - X(0, y):.0f}" height="40" fill="url(#damp2)" opacity=".6"/>'
-    o += '<linearGradient id="damp2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3658" stop-opacity=".6"/><stop offset="1" stop-color="#3a3658" stop-opacity="0"/></linearGradient>'
-    o += f'<path d="M {X(0, by):.0f},{by} C {X(0, by) + 10:.0f},{by - 60} {X(0, by) - 6:.0f},{by - 120} {X(.04, by - 200):.0f},{by - 200}" stroke="#3e5a40" stroke-width="5" fill="none"/>' + "".join(f'<ellipse cx="{X(.02, by - k * 24) + _m.sin(k) * 8:.0f}" cy="{by - k * 24}" rx="7" ry="4" fill="#4e6e4a" transform="rotate({k * 30} {X(.02, by - k * 24):.0f} {by - k * 24})"/>' for k in range(1, 9))
-    o += f'<rect x="{X(0, by):.0f}" y="{by - 30}" width="{X(1, by) - X(0, by):.0f}" height="30" fill="#4a5a44" opacity=".45"/>'
     # pigeons on the cornices
     o += pigeon(X(.2, 600), 588, .7) + pigeon(X(.8, 440), 428, .6, -1)
     return o
@@ -223,20 +216,20 @@ def sisters_building():
         for k in range(7):
             x = 66 + k * 64
             lit = (i == 1 and k == 4)
-            o += f'<path d="M {x},{y + 86} L {x},{y + 30} Q {x + 18},{y + 6} {x + 36},{y + 30} L {x + 36},{y + 86} Z" fill="{"#f4dca0" if lit else "#16121e"}"/>'
+            o += f'<path d="M {x},{y + 86} L {x},{y + 30} Q {x + 18},{y + 6} {x + 36},{y + 30} L {x + 36},{y + 86} Z" fill="{"#f4dca0" if lit else "#d4d0e2"}"/>'
+            if not lit: o += f'<path d="M {x + 18},{y + 14} L {x + 18},{y + 86} M {x},{y + 54} L {x + 36},{y + 54}" stroke="#a9a4c0" stroke-width="2"/>'
             o += f'<path d="M {x - 4},{y + 30} Q {x + 18},{y + 0} {x + 40},{y + 30}" stroke="#e8e4f4" stroke-width="2.4" fill="none"/>'
             o += f'<rect x="{x - 9}" y="{y + 30}" width="8" height="56" fill="#3e4e48"/><rect x="{x + 37}" y="{y + 30}" width="8" height="56" fill="#3e4e48"/>'
             if lit:
                 o += f'<circle cx="{x + 18}" cy="{y + 58}" r="60" fill="url(#lg_ffe6c4)" opacity=".8"/><path d="M {x + 10},{y + 86} L {x + 11},{y + 50} C {x + 11},{y + 42} {x + 25},{y + 42} {x + 25},{y + 50} L {x + 26},{y + 86} Z" fill="#7a5a48" opacity=".6"/>'
     # ground-floor arcade walkway
-    o += "".join(f'<path d="M {x},800 L {x},716 Q {x + 26},686 {x + 52},716 L {x + 52},800 Z" fill="#0e0a14"/><rect x="{x + 52}" y="700" width="12" height="100" fill="#d8d4e8"/>' for x in range(46, 500, 64))
+    o += "".join(f'<path d="M {x},800 L {x},716 Q {x + 26},686 {x + 52},716 L {x + 52},800 Z" fill="#bab5cc"/><rect x="{x + 52}" y="700" width="12" height="100" fill="#d8d4e8"/>' for x in range(46, 500, 64))
     # tree shadows thrown on the façade by the moon (upper left)
     o += '<g opacity=".38" fill="#0a0814"><path d="M 300,330 C 340,360 380,350 420,400 C 440,430 470,440 500,430 L 500,470 C 460,470 430,450 400,420 C 370,390 330,390 300,350 Z"/><path d="M 360,500 C 390,520 430,540 470,530 L 470,546 C 430,556 390,540 356,516 Z"/><circle cx="440" cy="380" r="40"/><circle cx="480" cy="520" r="30"/></g>'
     # big rain tree silhouette on the right
     o += '<path d="M 470,960 C 474,820 466,700 480,600 L 510,600 C 516,700 520,820 524,960 Z" fill="#14101c"/>' + "".join(clump(x, y, r, "#1e2240", "#181c36", "#12162c") for x, y, r in ((430, 520, 90), (530, 470, 110), (480, 400, 80)))
     # ground, path, frangipani, fog
     o += '<path d="M 0,800 L 540,800 L 540,960 L 0,960 Z" fill="#26283a"/><path d="M 200,800 L 340,800 L 420,960 L 120,960 Z" fill="#3a3a50"/>'
-    o += frangipani(60, 720, .9, .85)
     o += haze(760, 140, "#b8bce0", .55) + haze(860, 120, "#b8bce0", .35)
     return o
 ST["sisters_ext"] = sisters_building()

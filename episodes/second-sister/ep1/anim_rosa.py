@@ -54,24 +54,27 @@ LIGHT = ('<rect id="moonA" width="540" height="960" fill="url(#moonGrad)" style=
          '<rect width="540" height="960" fill="url(#vig)"/>'
          '<rect width="540" height="960" filter="url(#grain)" opacity=".06" style="mix-blend-mode:screen"/>')
 
-SUBS = [  # (start, end, thai lines, english)
-    (1.4, 6.0, ["พระเจ้า…", "ลูกขอโทษ… ลูกขอโทษ"], "God... I'm sorry... I'm sorry."),
-    (6.7, 9.6, ["แล้วแสงเทียนก็ดับ", "เหมือนมีคนเป่ามันทิ้ง"], "Then the candle went out, as if someone had blown on it."),
-    (10.0, 16.4, ["เธอสวดมนต์อยู่อย่างนั้นจนฟ้าสาง", "โดยไม่กล้าหันกลับไปมองหน้าต่างอีกเลย"], "She prayed until dawn, never daring to look back at the window."),
+SUBS = [  # (start, end, thai lines; [word] = purple highlight)  white + purple, no English (user's rule)
+    (1.4, 6.0, ["[พระเจ้า]…", "ลูกขอโทษ… ลูกขอโทษ"]),
+    (6.7, 9.6, ["แล้วแสงเทียนก็[ดับ]", "เหมือนมีคนเป่ามันทิ้ง"]),
+    (10.0, 16.4, ["เธอสวดมนต์อยู่อย่างนั้นจนฟ้าสาง", "โดยไม่กล้าหันกลับไปมอง[หน้าต่าง]อีกเลย"]),
 ]
-def sub_svg(i, th, en):
-    y = 712 - (len(th) * 27 + 17) / 2 + 20
+import re as _re
+def sub_svg(i, th):
+    y = 770 - ((len(th) - 1) * 30) / 2 + 8
     o = f'<g id="sub{i}" opacity="0" font-family="IBM Plex Sans Thai, sans-serif" text-anchor="middle" filter="url(#subStroke)">'
-    for L in th: o += f'<text x="270" y="{y:.0f}" font-size="20" font-weight="700" fill="#ffd84a">{L}</text>'; y += 27
-    return o + f'<text x="270" y="{y:.0f}" font-family="Inter, sans-serif" font-size="13" font-weight="500" fill="#fff">{en}</text></g>'
-SUB_SVG = "".join(sub_svg(i, th, en) for i, (a, b, th, en) in enumerate(SUBS))
+    for L in th:
+        body = _re.sub(r"\[([^\]]+)\]", r'<tspan fill="#c27bff">\1</tspan>', L)
+        o += f'<text x="270" y="{y:.0f}" font-size="22" font-weight="700" fill="#ffffff">{body}</text>'; y += 30
+    return o + '</g>'
+SUB_SVG = "".join(sub_svg(i, th) for i, (a, b, th) in enumerate(SUBS))
 
 DEFS = NS["DEFS"].replace('<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>', '').replace('</defs></svg>', '')
 EXTRA_DEFS = ('<filter id="blurBg" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="2.2"/></filter>'
               '<radialGradient id="moonGrad" cx="18%" cy="30%" r="70%"><stop offset="0" stop-color="#b8c4ff" stop-opacity=".22"/><stop offset="1" stop-color="#b8c4ff" stop-opacity="0"/></radialGradient>'
               '<radialGradient id="vig" cx="50%" cy="45%" r="70%"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".6"/></radialGradient>'
               '<filter id="grain" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>'
-              '<filter id="subStroke" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.2" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>')
+              '<filter id="subStroke" x="-10%" y="-30%" width="120%" height="160%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.6" result="d"/><feFlood flood-color="#120e18"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>')
 
 JS = r'''
 const $ = id => document.getElementById(id);
@@ -161,7 +164,7 @@ window.setTime = function (t) {
 };
 window.DURATION = 17;
 setTime(0);
-'''.replace("%SUBS%", str([[a, b] for a, b, _, _ in SUBS]))
+'''.replace("%SUBS%", str([[a, b] for a, b, _ in SUBS]))
 
 html = f'''<!doctype html><html><head><meta charset="utf-8"><title>Rosa tears</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Inter:wght@500&display=swap">

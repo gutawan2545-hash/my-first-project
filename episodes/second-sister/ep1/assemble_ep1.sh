@@ -21,7 +21,7 @@ ffmpeg -y -loglevel error -f concat -safe 0 -i concat.txt -an -c:v libx264 -pix_
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 joined.mp4)
 ffmpeg -y -loglevel error -ss "$START" -t "$DUR" -i music_ep1.wav \
   -f lavfi -i "anoisesrc=color=pink:amplitude=0.25:duration=${DUR}:sample_rate=48000" \
-  -filter_complex "[1]highpass=f=160,lowpass=f=900,volume=0.22,tremolo=f=0.12:d=0.6[wind];[0]aresample=48000[m];[m][wind]amix=inputs=2:normalize=0,afade=t=in:d=1.5,alimiter=limit=0.85,pan=stereo|c0=c0|c1=c0[a]" \
+  -filter_complex "[1]highpass=f=160,lowpass=f=900,volume=0.12,tremolo=f=0.12:d=0.6,pan=stereo|c0=c0|c1=c0[wind];[0]aresample=48000,aformat=channel_layouts=stereo[m];[m][wind]amix=inputs=2:normalize=0,afade=t=in:d=1.5,alimiter=limit=0.9[a]" \
   -map "[a]" -c:a pcm_s16le bed.wav
 if [ "$FIRST" = 0 ] && [ "$LAST" = $((NSEG-1)) ]; then
   OUT=ep1_full_subs.mp4
