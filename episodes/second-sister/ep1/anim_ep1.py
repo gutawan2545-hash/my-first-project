@@ -158,6 +158,7 @@ def parse_audio(a):
         base = re.sub(r"\s*\(.*?\)", "", who).strip()
         speaker = SPEAKERS.get(base) if base != "เล่า" else None
         if base.startswith("เสียงเด็ก") or base.startswith("เด็ก"): speaker = None
+    text = re.sub(r"(?<!\*)\*[^*]+\*(?!\*)", "", text)   # sound notes are not spoken
     text = re.sub(r"\([^)]*\)", "", text).replace("**", "").strip()
     text = re.sub(r"\s+", " ", text)
     return speaker, text, sfx
@@ -251,7 +252,8 @@ while n <= 287:
         speaker, text, sfx = parse_audio(aud)
         d = shot_dur(text, sfx)
         vo = VO.get(f"s{n:03d}")
-        if vo: d = max(1.6, VO_LEAD + vo["dur"] + .45)   # the real line sets the length
+        lead = 2.2 if ("ระฆัง" in sfx or "ตั๊ง" in sfx) else VO_LEAD   # let the bell strike first
+        if vo: d = max(1.6, lead + vo["dur"] + .45)   # the real line sets the length
         if "ระฆัง" in sfx or "ตั๊ง" in sfx:
             cnt = 6 if "หกครั้ง" in sfx else (1 if ("หนึ่งครั้ง" in sfx or "ตั๊ง" in sfx) else 3)
             vol = 1.35 if "สนั่น" in sfx else (.55 if ("เบาลง" in vis or "ไกล" in sfx) else 1.0)
@@ -259,7 +261,7 @@ while n <= 287:
         if n in STINGER_SHOTS: seg.setdefault("stingers", []).append(round(T - seg["t0"], 2))
         if "เงียบสนิท" in aud or "ดนตรีตัด" in sfx: silence_left = 3 if "ดนตรีตัด" in sfx else 1
         if silence_left > 0: seg.setdefault("hush", []).append([round(T - seg["t0"], 2), round(d, 2)]); silence_left -= 1
-        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([VO_LEAD, vo["dur"], f"vo_ep1/s{n:03d}.mp3"] if vo else None)})
+        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([lead, vo["dur"], f"vo_ep1/s{n:03d}.mp3"] if vo else None)})
         T += d; n += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)

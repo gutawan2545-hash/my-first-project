@@ -31,6 +31,53 @@ TAGS = [("กระซิบ", "[whispers]"), ("สะอื้น", "[crying]")
         ("หอบ", "[panting]"), ("กลั้นหายใจ", "[nervously]"), ("สั่น", "[shaky voice]"), ("งัวเงีย", "[sleepy]"), ("หัวเราะ", "[laughs]")]
 
 
+# ---- emotion per line (user: delivery must follow the moment: whispers in suspense, startled in scares, storyteller narration)
+MOOD = {}
+for st in "refectory condo call email gate guestroom kitchen veranda dawn_walk path_dawn garden".split(): MOOD[st] = "calm"
+for st in "mass chapel_v1".split(): MOOD[st] = "sacred"
+for st in "tower_fog tower_night rosa_bed rosa_room oldwing chapel_night thana_night archive cemetery cemetery_wide drain steps sisters_ext clock rules1 rules7 note count".split(): MOOD[st] = "eerie"
+for st in "flash_dorm dream album doll tag music".split(): MOOD[st] = "memory"
+for st in "body_sheet police evidence_wall hand lefthand question".split(): MOOD[st] = "shock"
+NARR = {"calm": "[calm]", "sacred": "[reverent]", "eerie": "[hushed]", "memory": "[nostalgic]", "shock": "[shaken]", "title": "[ominous]"}
+RED = {238, 247, 251, 253}
+FEEL = [("กระซิบ", "[whispers]"), ("สะอื้น", "[crying]"), ("ร้องไห้", "[crying]"), ("น้ำตา", "[tearful]"), ("ตะโกน", "[shouting]"),
+        ("ตกใจ", "[startled]"), ("สะดุ้ง", "[startled]"), ("ช็อก", "[shocked]"), ("ตาเบิก", "[alarmed]"), ("หอบ", "[panting]"),
+        ("หวาดหวั่น", "[fearful]"), ("กลัว", "[fearful]"), ("ระแวง", "[nervous]"), ("ขนลุก", "[fearful]"), ("หน้าซีด", "[fearful]"),
+        ("เจ็บปวด", "[sad]"), ("เศร้า", "[sad]"), ("เย็นชา", "[cold]"), ("ดุ", "[stern]"), ("เข้ม", "[stern]"), ("เรียบ", "[flat]"),
+        ("ตื้นตัน", "[emotional]"), ("ใจดี", "[warm]"), ("ยิ้ม", "[warm]"), ("หัวเราะ", "[laughing]"), ("ตั้งใจเล่นเกม", "[playful]"),
+        ("สงสัย", "[suspicious]"), ("ละเมอ", "[dazed]"), ("งัวเงีย", "[sleepy]"), ("ลังเล", "[hesitant]"), ("เหนื่อย", "[tired]"),
+        ("จริงจัง", "[serious]"), ("ลดเสียง", "[lowered voice]"), ("สั่น", "[shaky voice]"), ("พูดเร็ว", "[rushed]")]
+NAME_OF = {"mek": "เมฆ", "rosa": "โรซา", "james": "เจมส์", "daeng": "ป้าแดง", "cat": "คาทารีนา", "mariam": "มาเรียม", "agnes": "อักเนส",
+           "luc": "ลูเซีย", "jos": "คุณพ่อ", "thana": "ธนา"}
+ANIM = NS.get("ANIM", {}); PANELS = NS.get("PANELS", {})
+cover = {}
+for sc, panels in PANELS.items():
+    for idx, p in enumerate(panels):
+        a, _, b = p[0].partition("-"); a = int(a); b = int(b or a)
+        for n in range(a, b + 1):
+            if n in cover and cover[n][2] <= b - a: continue
+            cover[n] = (p[0], p[1], b - a)
+def emotion(n, cid, narration, who_dirs, text):
+    rng, stage, _ = cover.get(n, ("", "", 0))
+    mood = MOOD.get(stage, "calm")
+    if narration:
+        t = "[whispers]" if "กระซิบ" in who_dirs else ("[panting]" if "หอบ" in who_dirs else NARR.get(mood, "[calm storytelling]"))
+        return t
+    if cid == "child": return "[eerie whisper]"
+    if n in RED: return "[terrified shout]"
+    expr = (ANIM.get(rng) or ("",))[0]
+    parts = [x for x in expr.split("/") if NAME_OF.get(cid, "@") in x or (cid == "jos" and "ยอแซฟ" in x)]
+    if not parts and "/" not in expr: parts = [expr]
+    pool = who_dirs + " " + " ".join(parts)
+    tags = []
+    for k, t in FEEL:
+        if k in pool and t not in tags: tags.append(t)
+    if cid == "agnes" and not tags: tags = ["[eerily sweet]"]
+    if cid == "luc" and not tags: tags = ["[frail, confused]"]
+    if not tags and "!" in text: tags = ["[urgent]"]
+    if not tags and mood == "eerie": tags = ["[nervous]"]
+    return " ".join(tags[:2])
+
 def plan():
     out = []
     for n in sorted(ROWS):
@@ -43,8 +90,7 @@ def plan():
         else: cid = WHO.get(base)
         if not cid: continue
         dirs = " ".join(re.findall(r"\(([^)]*)\)", who + " " + text))
-        tag = next((t for k, t in TAGS if k in dirs), "")
-        if base == "เล่า": tag = ""
+        tag = emotion(n, cid, base == "เล่า", dirs, text)
         clean = re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", "", text).replace("**", "")).strip()
         clean = re.sub(r"(?<!\*)\*[^*]+\*(?!\*)", "", clean).strip()     # drop *sfx*
         if not clean: continue
