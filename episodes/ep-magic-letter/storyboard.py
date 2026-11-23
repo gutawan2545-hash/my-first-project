@@ -21,21 +21,25 @@ def subs(th, en):
     y += 2
     for line in en:
         out += f'<text x="270" y="{y:.0f}" {SUB_EN}>{line}</text>'; y += 17
-    return out
+    return f'<g data-ui="1">{out}</g>'
 
 def badge(t):
     w = 22 + len(t) * 9.2
-    return f'''<g transform="translate(22,26)"><rect width="{w:.0f}" height="30" rx="15" fill="#15121c" fill-opacity=".85" stroke="#8a6cd8" stroke-width="1.4"/>
+    return f'''<g data-ui="1" transform="translate(22,26)"><rect width="{w:.0f}" height="30" rx="15" fill="#15121c" fill-opacity=".85" stroke="#8a6cd8" stroke-width="1.4"/>
     <text x="{w/2:.0f}" y="20" text-anchor="middle" {TH} font-weight="600" font-size="14" fill="#e8e2f4">{t}</text></g>'''
 
 def card(x, y, w, t1, t2="", tx=None, ty=None):
     h = 62 if t2 else 44
     line = f'<path d="M {x + w/2:.0f},{y + h} L {tx},{ty}" stroke="#8a76b8" stroke-width="2" stroke-dasharray="5 4"/>' if tx is not None else ""
     sub = f'<text x="14" y="50" {TH} font-size="13" fill="#5a5260">{t2}</text>' if t2 else ""
-    return f'{line}<g transform="translate({x},{y})"><rect width="{w}" height="{h}" rx="10" fill="#f6f1e6" stroke="#9a86c8" stroke-width="1.6"/><text x="14" y="28" {TH} font-size="15" font-weight="600" fill="#2a2430">{t1}</text>{sub}</g>'
+    return f'<g data-ui="1">{line}<g transform="translate({x},{y})"><rect width="{w}" height="{h}" rx="10" fill="#f6f1e6" stroke="#9a86c8" stroke-width="1.6"/><text x="14" y="28" {TH} font-size="15" font-weight="600" fill="#2a2430">{t1}</text>{sub}</g></g>'
+
+def Z(svg, k, ay=600, ax=270):
+    """ขยายพื้นหลังรอบแนวพื้น ให้ของในฉากใหญ่สมจริงเทียบกับคน"""
+    return f'<g transform="translate({ax},{ay}) scale({k}) translate({-ax},{-ay})">{svg}</g>'
 
 def pop(x, y, t, size=34, rot=-8):
-    return f'<text x="{x}" y="{y}" font-size="{size}" transform="rotate({rot} {x} {y})" {POP}>{t}</text>'
+    return f'<g data-ui="1"><text x="{x}" y="{y}" font-size="{size}" transform="rotate({rot} {x} {y})" {POP}>{t}</text></g>'
 
 EYE = '<g transform="translate(500,40)" opacity=".75"><path d="M -14,0 C -8,-8 8,-8 14,0 C 8,8 -8,8 -14,0 Z" fill="#b18cff"/><circle r="4" fill="#1b1f2b"/></g>'
 VIGN = '<rect width="540" height="960" fill="url(#vign)"/>'
@@ -544,20 +548,20 @@ p2 = frame(f'''{bedroom2()}
   {axe_pillow(70, 664, .9)}
   {thai_blanket(170, 676, 210)}
   {old_fan(470, 800, .9)}{slippers(60, 830)}
-  <g transform="translate(330,388) scale(1.2)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
+  <g transform="translate(340,374) scale(.62)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
   {pop(24, 130, "เอ้กอี๊เอ้กกก!!", 40)}
-  <path d="M 260,190 L 230,172 M 256,212 L 220,210 M 260,232 L 230,248" stroke="#fff4d0" stroke-width="3.4" stroke-linecap="round"/>
+  <g data-ui="1"><path d="M 300,270 L 270,256 M 296,290 L 262,290 M 300,310 L 270,322" stroke="#fff4d0" stroke-width="3.4" stroke-linecap="round"/></g>
   <g transform="translate(470,560) rotate(-118) scale(.72)"><use href="#c_sing"/></g>
   <g transform="translate(110,560) rotate(-24)">{axe_pillow(0, 0, .7)}</g>
   <g transform="translate(240,440) rotate(16)"><rect x="-26" y="-18" width="52" height="36" fill="#f4ecd8"/><path d="M -26,-18 L 0,4 L 26,-18" fill="none" stroke="#d8ccb6" stroke-width="2"/><circle cx="0" cy="2" r="6" fill="#8e1b24"/></g>
-  {card(330, 120, 190, "ที่อังกฤษ: นกฮูก", "ที่ไทย: ไก่ชน ตีห้าตรง", 360, 300)}
+  {card(330, 120, 190, "ที่อังกฤษ: นกฮูก", "ที่ไทย: ไก่ชน ตีห้าตรง", 350, 290)}
   {badge("05:00")}{EYE}
   {subs(["ที่อังกฤษ จดหมายมากับนกฮูก…", "ที่ไทย มากับไก่ชน ตีห้า!"], ["In England, letters come by owl.", "In Thailand, by fighting rooster. At 5 a.m.!"])}''')
 
 coins = "".join(f'<g transform="translate({x},{y}) rotate({r})"><ellipse rx="13" ry="12" fill="#e8c24a"/><ellipse rx="9" ry="8" fill="#f4d878"/><text y="4" text-anchor="middle" font-family="serif" font-size="10" font-weight="700" fill="#c49a2a">H</text></g>' for x, y, r in [(410,600,10),(436,626,-20),(392,640,30),(450,580,-10),(420,666,15)])
 p3 = frame(f'''{bedroom2("bgblur2")}
   {WARMGRAIN}
-  <g transform="translate(380,380) scale(.8)" filter="url(#bgblur)"><use href="#c_rooster"/></g>
+  <g transform="translate(400,372) scale(.5)" filter="url(#bgblur)"><use href="#c_rooster"/></g>
   <g transform="translate(270,320) scale(3.6)">
     <path d="M -54,72 C -52,58 -32,50 -12,49 L 12,49 C 32,50 52,58 54,72 L 58,120 L -58,120 Z" fill="#eeeef2"/>
     <path d="M -54,72 C -52,60 -36,52 -20,50 C -26,60 -28,90 -28,120 L -58,120 Z" fill="#fbfbfd"/>
@@ -581,7 +585,7 @@ p3 = frame(f'''{bedroom2("bgblur2")}
   {badge("05:02")}{EYE}
   {subs(["ไม่ดูเกรดด้วย!", "เกรดผมหนึ่งจุดห้าเองนะเว้ย"], ["And they don’t check grades!", "Mine’s a 1.5!"])}''')
 
-p4 = frame(f'''{gold_shop2()}
+p4 = frame(f'''{Z(gold_shop2(), 1.6, 600)}
   {WARMGRAIN}
   {shadow(220, 640, 110)}
   <g transform="translate(220,700) scale(.95)"><use href="#c_ama"/></g>
@@ -595,7 +599,7 @@ p4 = frame(f'''{gold_shop2()}
   {badge("ร้านทองชั้นล่าง · 07:00")}{EYE}
   {subs(["(ซิ่ง) ที่อังกฤษ เหรียญทองเอาไปฝากธนาคาร…", "ที่ไทย อาม้าขอกัดก่อน", "(อาม้า) แท้! ทองเก้าสิบหกจุดห้า!"], ["In England, gold goes to the bank. In Thailand,", "Ma bites it first. (Ma) Real! 96.5% gold!"])}''')
 
-p5 = frame(f'''{phranakhon_street()}
+p5 = frame(f'''{Z(phranakhon_street(), 2.0, 640)}
   {WARMGRAIN}
   {speed(420, 380, 540, 9, 4, "#fff4e0")}
   {shadow(290, 650, 200, 14)}
@@ -609,20 +613,20 @@ p5 = frame(f'''{phranakhon_street()}
   {badge("ย่านพระนคร · 08:00")}{EYE}
   {subs(["ที่อังกฤษ ไปโรงเรียนด้วยรถไฟ… ที่ไทย", "ลุงโตมารับด้วยตุ๊กตุ๊ก หัวรถลอยทั้งทาง"], ["In England, you take a train. In Thailand,", "Uncle To brings a tuk-tuk. Front wheel up all the way."])}''')
 
-p6 = frame(f'''{soi2()}
+p6 = frame(f'''{Z(soi2(), 2.0, 660)}
   {WARMGRAIN}
-  {shadow(140, 670, 70, 10)}
-  {spirit_house(140, 500, 1.15)}
-  {garland(100, 410, .9)}{garland(180, 410, .9)}
-  {zebra(96, 494, 1.2)}{zebra(138, 494, 1.2)}{zebra(180, 494, 1.2)}
-  {incense(60, 494)}
-  <g transform="translate(214,492)"><rect x="-8" y="-40" width="16" height="40" rx="4" fill="#c8243a" opacity=".85"/><path d="M 2,-40 L 10,-62" stroke="#f4f4f4" stroke-width="2.4"/></g>
-  {shadow(380, 710, 90)}
-  <g transform="translate(380,720) scale(.9)"><use href="#c_giant"/></g>
-  {shadow(254, 690, 60, 10)}
-  <g transform="translate(256,720) scale(.9)"><use href="#c_sing"/></g>
-  <path d="M 250,400 C 246,380 254,360 260,358 C 266,360 272,380 268,400 Z" fill="#d9a47a"/><path d="M 259,360 L 259,400" stroke="#bf8a62" stroke-width="1.4"/>
-  {card(20, 110, 210, "ที่อังกฤษ: วิ่งชนกำแพง", "ที่ไทย: ถวายน้ำแดง", 214, 450)}
+  {shadow(130, 760, 80, 10)}
+  {spirit_house(130, 600, 1.15)}
+  {garland(90, 510, .9)}{garland(170, 510, .9)}
+  {zebra(86, 594, 1.2)}{zebra(128, 594, 1.2)}{zebra(170, 594, 1.2)}
+  {incense(50, 594)}
+  <g transform="translate(204,592)"><rect x="-8" y="-40" width="16" height="40" rx="4" fill="#c8243a" opacity=".85"/><path d="M 2,-40 L 10,-62" stroke="#f4f4f4" stroke-width="2.4"/></g>
+  {shadow(400, 790, 80)}
+  <g transform="translate(400,800) scale(.72)"><use href="#c_giant"/></g>
+  {shadow(270, 790, 50, 10)}
+  <g transform="translate(270,800) scale(.72)"><use href="#c_sing"/></g>
+  <path d="M 265,540 C 262,524 268,508 272,506 C 277,508 282,524 279,540 Z" fill="#d9a47a"/><path d="M 272,508 L 272,540" stroke="#bf8a62" stroke-width="1.2"/>
+  {card(20, 110, 210, "ที่อังกฤษ: วิ่งชนกำแพง", "ที่ไทย: ถวายน้ำแดง", 204, 550)}
   {badge("ปากซอย")}{EYE}
   {subs(["ที่อังกฤษ ต้องวิ่งชนกำแพงชานชาลา…", "ที่ไทย ต้องถวายน้ำแดงศาลพระภูมิ"], ["In England, you run through a wall.", "In Thailand, you offer red soda to the spirit house."])}''')
 
@@ -640,11 +644,11 @@ p7 = frame(f'''<rect width="540" height="960" fill="#f4dcb0"/>
   {EYE}''')
 
 wandpile = "".join(f'<path d="M {236+k*10},570 L {252+k*10},{520-(k%3)*10}" stroke="{["#6a4a2c","#8a6a44","#9a7650","#5a3a22"][k%4]}" stroke-width="4" stroke-linecap="round"/>' for k in range(26))
-p8 = frame(f'''{magic_market()}
+p8 = frame(f'''{Z(magic_market(), 1.7, 620)}
   {dust(270, 300, 500, 200, 16, 21, "#ffe8c8")}
-  {stall(100, 440, 200, "#8e1b24", "meatball", "ลูกชิ้นปิ้ง")}
+  {Z(stall(100, 440, 200, "#8e1b24", "meatball", "ลูกชิ้นปิ้ง"), 1.5, 620)}
   {shadow(330, 650, 110)}
-  <g transform="translate(330,710) scale(1.1)"><use href="#c_vendor"/></g>
+  <g transform="translate(330,720) scale(.92)"><use href="#c_vendor"/></g>
   <rect x="220" y="560" width="320" height="100" fill="#5a3e28"/><rect x="220" y="560" width="320" height="10" fill="#7a5638"/>{wandpile}
   <rect x="400" y="500" width="120" height="48" rx="4" fill="#f2ead8"/><text x="460" y="532" text-anchor="middle" {TH} font-size="20" font-weight="700" fill="#c43a3a">3 อัน 100</text>
   {pop(380, 200, "จ้าาา!", 34, 6)}
@@ -653,7 +657,7 @@ p8 = frame(f'''{magic_market()}
   {subs(["(ซิ่ง) ที่อังกฤษ ไม้กายสิทธิ์ราคาแพง…", "(ป้าแต๋ว) สามอันร้อยจ้า!"], ["(Sing) In England, wands are expensive…", "(Vendor) Three for a hundred!"])}''')
 
 fallen = "".join(f'<path d="M {x},{y} L {x+60*math.cos(a):.0f},{y+60*math.sin(a):.0f}" stroke="#8a6a44" stroke-width="5" stroke-linecap="round"/>' for x, y, a in [(150,780,-.3),(240,820,.4),(380,800,-.8)])
-p9 = frame(f'''{magic_market()}
+p9 = frame(f'''{Z(magic_market(), 1.7, 620)}
   <g filter="url(#bgblur2)">{stall(120, 420, 220, "#8e1b24", "meatball", "ลูกชิ้นปิ้ง")}<g transform="translate(330,1120) scale(2.2)"><use href="#c_sing"/></g></g>
   <path d="M 250,700 C 236,640 246,560 270,540 L 320,540 C 330,580 330,650 320,700 Z" fill="#d9a47a"/>
   <path d="M 300,540 L 320,540 C 330,580 330,650 320,700 L 306,700 C 312,640 310,580 300,540 Z" fill="#bf8a62"/>
@@ -667,32 +671,32 @@ p9 = frame(f'''{magic_market()}
   {badge("ร้านไม้กายสิทธิ์")}{EYE}
   {subs(["แต่ไม้ที่เลือกผม…", "ดันเป็นไม้ลูกชิ้น"], ["But the wand that chose me…", "was a meatball skewer."])}''')
 
-p10 = frame(f'''{magic_market()}
+p10 = frame(f'''{Z(magic_market(), 1.7, 620)}
   {dust(270, 300, 500, 200, 12, 31, "#ffe8c8")}
-  {shadow(180, 660, 100)}
-  <g transform="translate(180,730) scale(1.12)"><use href="#c_ton"/></g>
+  {shadow(180, 735, 80)}
+  <g transform="translate(180,740) scale(.9)"><use href="#c_ton"/></g>
   {speed(0, 380, 70, 6, 8)}
-  <g transform="translate(110,300) rotate(-12)"><path d="M 0,80 L 0,-40" stroke="#d8c09a" stroke-width="5" stroke-linecap="round"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="#e8d4a8"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="none" stroke="#a8743a" stroke-width="3"/><path d="M -10,-50 L 10,-44 M -10,-34 L 10,-28 M -10,-20 L 10,-14" stroke="#b8844a" stroke-width="3"/><circle cy="-32" r="50" fill="url(#portal)" opacity=".45"/></g>
-  {shadow(440, 670, 80)}
-  <g transform="translate(440,740)"><use href="#c_sing"/></g>
-  <path d="M 488,440 L 500,250" stroke="#d8c09a" stroke-width="4" stroke-linecap="round"/><circle cx="499" cy="268" r="9" fill="#9a5a3a"/>
+  <g transform="translate(124,420) rotate(-12)"><path d="M 0,80 L 0,-40" stroke="#d8c09a" stroke-width="5" stroke-linecap="round"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="#e8d4a8"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="none" stroke="#a8743a" stroke-width="3"/><path d="M -10,-50 L 10,-44 M -10,-34 L 10,-28 M -10,-20 L 10,-14" stroke="#b8844a" stroke-width="3"/><circle cy="-32" r="50" fill="url(#portal)" opacity=".45"/></g>
+  {shadow(430, 745, 64)}
+  <g transform="translate(430,750) scale(.84)"><use href="#c_sing"/></g>
+  <path d="M 470,548 L 482,400" stroke="#d8c09a" stroke-width="4" stroke-linecap="round"/><circle cx="481" cy="414" r="8" fill="#9a5a3a"/>
   {pop(200, 180, "เสี่ยวว!", 32, -6)}
   {card(300, 110, 210, "ไม้ข้าวเหนียวปิ้ง", "ไม้กายสิทธิ์ของต้น", 130, 260)}
   {badge("ตลาดนัดเวทมนตร์")}{EYE}
   {subs(["เสี่ยว! ของข้อยได้", "ไม้ข้าวเหนียวปิ้ง!"], ["Buddy! Mine’s a", "grilled sticky-rice stick!"])}''')
 
-p11 = frame(f'''{great_hall()}
-  <g filter="url(#bgblur2)" opacity=".85"><g transform="translate(200,610) scale(.7)"><use href="#c_harry"/></g><g transform="translate(270,610) scale(.7)"><use href="#c_ron"/></g><g transform="translate(340,610) scale(.7)"><use href="#c_hermione"/></g></g>
+p11 = frame(f'''{Z(great_hall(), 1.5, 620)}
+  <g filter="url(#bgblur2)" opacity=".85"><g transform="translate(220,640) scale(.58)"><use href="#c_harry"/></g><g transform="translate(280,640) scale(.58)"><use href="#c_ron"/></g><g transform="translate(340,640) scale(.58)"><use href="#c_hermione"/></g></g>
   {shadow(150, 690, 100)}
-  <g transform="translate(150,770) scale(1.12)"><use href="#c_draco"/></g>
+  <g transform="translate(140,790) scale(.96)"><use href="#c_draco"/></g>
   {shadow(400, 690, 100)}
-  <g transform="translate(400,770) scale(1.12)"><use href="#c_ton"/></g>
+  <g transform="translate(410,790) scale(.96)"><use href="#c_ton"/></g>
   {pop(230, 190, "ฮึ!", 28, 0)}{pop(440, 200, "ฮ่าๆ", 22, 0)}
   {card(20, 110, 190, "โลว์ = ดูไม่มีระดับ", "ศัพท์วัยรุ่นตอนนี้", 160, 300)}
   {badge("ห้องโถงใหญ่")}{EYE}
   {subs(["(เดรโก) มาโรงเรียนด้วยตุ๊กตุ๊กเนี่ยนะ โลว์ชะมัด", "(ต้น) โลว์แต่มีนาสามร้อยไร่เด้อ"], ["(Draco) You came in a tuk-tuk? So low.", "(Ton) Low, with a 300-acre rice farm."])}''')
 
-p12 = frame(f'''{great_hall()}
+p12 = frame(f'''{Z(great_hall(), 1.5, 620)}
   {shadow(450, 700, 90)}
   <g transform="translate(450,780) scale(1.05)" filter="url(#bgblur)"><use href="#c_strict"/></g>
   <rect x="190" y="570" width="160" height="20" rx="4" fill="#6a4a32"/><rect x="200" y="590" width="14" height="80" fill="#4a3222"/><rect x="326" y="590" width="14" height="80" fill="#4a3222"/>
@@ -745,7 +749,7 @@ def swap_subs(svg, old_first, th, en):
 p5 = swap_subs(p5, "ที่อังกฤษ ไปโรงเรียนด้วยรถไฟ", ["ลุงโตภารโรงโรงเรียนมารับด้วยตุ๊กตุ๊ก", "ลุงนั่งปุ๊บ หัวรถลอยปั๊บ"], ["Uncle To came in a tuk-tuk.", "He sat down, and the front wheel went up."])
 p5 = p5.replace('ที่อังกฤษ: รถไฟ', 'ลุงโตนั่งปุ๊บ').replace('ที่ไทย: ตุ๊กตุ๊ก + ลุงโต', 'หัวรถลอยปั๊บ')
 
-p6d = frame(f'''{phranakhon_street("bgblur2")}
+p6d = frame(f'''{Z(phranakhon_street("bgblur2"), 2.0, 640)}
   {WARMGRAIN}
   <g transform="translate(150,960) scale(1.1)" filter="url(#bgblur)"><use href="#c_giant"/></g>
   <g transform="translate(310,1150) scale(2.0)"><use href="#c_tukdriver"/></g>
@@ -761,7 +765,7 @@ p6 = p6.replace('"ที่อังกฤษ: วิ่งชนกำแพง
 p11 = swap_subs(p11, "(เดรโก) มาโรงเรียนด้วยตุ๊กตุ๊ก", ["(เดรโก) รู้ไหมพ่อฉันเป็นใคร… พ่อมดใหญ่!", "(ต้น) พ่อข้อยกะใหญ่คือกัน… ผู้ใหญ่บ้าน!"], ["(Draco) Know who my father is? A great wizard!", "(Ton) Mine’s great too… the village headman!"])
 p11 = p11.replace("โลว์ = ดูไม่มีระดับ", "ผู้ใหญ่บ้าน").replace("ศัพท์วัยรุ่นตอนนี้", "ใหญ่ไม่แพ้พ่อมด").replace('ฮ่าๆ', 'ใหญ่!')
 
-p13t = frame(f'''{great_hall()}
+p13t = frame(f'''{Z(great_hall(), 1.5, 620)}
   {shadow(450, 700, 90)}
   <g transform="translate(450,780) scale(1.05)" filter="url(#bgblur)"><use href="#c_strict"/></g>
   <rect x="190" y="570" width="160" height="20" rx="4" fill="#6a4a32"/><rect x="200" y="590" width="14" height="80" fill="#4a3222"/><rect x="326" y="590" width="14" height="80" fill="#4a3222"/>
@@ -833,3 +837,22 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 </div>'''
 (HERE / "storyboard.html").write_text(page)
 print(len(PANELS), "panels", total, "sec")
+
+# ===== การ์ดโหวต 4 แบบ (ไฮไลต์ A/B/C/D) สำหรับทำคลิป =====
+def vote_svg(on_idx):
+    oc2 = ""
+    for i, (k, name, c1, c2, _) in enumerate(opts):
+        x, y = 60 + (i % 2) * 220, 250 + (i // 2) * 150
+        on = i == on_idx
+        f1, f2, tc = (c1, c2, "#fff") if on else ("#3c3c46", c1, "#b8b8c4")
+        oc2 += f'''<g transform="translate({x},{y})">
+    <rect width="200" height="120" rx="14" fill="{f1}"/><rect y="100" width="200" height="20" fill="{f2}" opacity="{.9 if on else .55}"/>
+    <circle cx="34" cy="40" r="20" fill="#15121c" opacity=".45"/><text x="34" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="{tc}">{k}</text>
+    <text x="64" y="50" {TH} font-size="20" font-weight="700" fill="{tc}">{name}</text></g>'''
+    return frame(f'''<g opacity=".6">{great_hall("bgblur2")}</g><rect width="540" height="960" fill="#15121c" opacity=".55"/>
+  <text x="270" y="190" text-anchor="middle" {TH} font-size="32" font-weight="700" fill="#fff">ซิ่งควรอยู่บ้านไหน?</text>
+  {oc2}
+  <g transform="translate(270,578)"><rect x="-150" y="-20" width="300" height="38" rx="19" fill="#2a2440" stroke="#8a6cd8"/><text y="5" text-anchor="middle" {TH} font-size="15" font-weight="600" fill="#e8e2f4">พิมพ์ A B C หรือ D ในคอมเมนต์</text></g>''')
+
+vote_page = page.split('<div class="wrap">')[0] + '<div class="wrap"><div class="grid">' + "".join(f'<figure class="panel"><div class="frame">{vote_svg(i)}</div></figure>' for i in range(4)) + '</div></div>'
+(HERE / "vote.html").write_text(vote_page)
