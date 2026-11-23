@@ -348,6 +348,14 @@ for seg in segments:
     if seg["stage"] == "question": seg["clicks"] = [1.2, 2.0, 2.8, 3.6]
 for seg in segments:
     if seg["type"] == "video": seg["grade"] = "base"
+# name cards: first time each main character is actually seen (not in the hook, not while hidden)
+_seen = set()
+for seg in segments:
+    if seg["type"] != "html" or seg["scene"] == 0 or seg["kind"] != "stage": continue
+    pos = stage_pos(seg["stage"]); hid = set(seg.get("hide", [])); ent = {m["cid"]: m["keys"][0][0] for m in seg.get("moves", [])}
+    for cid in pos:
+        if cid in NAMECARD and cid not in _seen and cid not in hid:
+            _seen.add(cid); seg.setdefault("names", []).append([cid, round(ent.get(cid, 0) + (1.4 if cid in ent else .4), 2)] + list(NAMECARD[cid]))
 
 OUTRO = 2.6
 timeline = {"fps": 24, "total": round(T, 2), "outro": OUTRO, "vo_tempo": VO_TEMPO, "segments": segments}
@@ -640,6 +648,11 @@ window.render = function (si, t) {
   if (prev && prev.scene !== seg.scene && !seg.zb) fade = Math.max(fade, 1 - t / .35);
   if (next && next.scene !== seg.scene && !next.zb) fade = Math.max(fade, 1 - (seg.dur - t) / .35);
   $('fade').setAttribute('opacity', Math.max(0, Math.min(1, fade)).toFixed(3));
+  // name card: the first time a main character is on screen
+  let nt = null; (seg.names || []).forEach(n => { if (t >= n[1] && t < n[1] + 3.2) nt = n; });
+  if (nt) { if ($('ntName').textContent !== nt[2]) { $('ntName').textContent = nt[2]; $('ntRole').textContent = nt[3]; $('ntBox').setAttribute('width', 30 + Math.max(nt[2].length * 11.5, nt[3].length * 8.2)); }
+            $('nameTag').setAttribute('opacity', Math.min(1, (t - nt[1]) / .3, (nt[1] + 3.2 - t) / .4).toFixed(3)); }
+  else $('nameTag').setAttribute('opacity', 0);
   bodyFrame(seg, t, gt, shot, talking);
   clockFrame(seg, t);
   walkFrame(seg, t);
@@ -668,6 +681,7 @@ html = f'''<!doctype html><html><head><meta charset="utf-8"><title>EP1</title>
 <g id="motes"></g>
 <g id="chip"><rect id="chipBox" x="24" y="28" width="134" height="30" rx="15" fill="#15121c" fill-opacity=".85" stroke="#8f74d8" stroke-width="1.4"/><text id="chipText" x="36" y="48" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" fill="#e6e0f4"></text></g>
 <g id="wm" transform="translate(500,44)" opacity=".8"><path d="M -14,0 C -8,-8 8,-8 14,0 C 8,8 -8,8 -14,0 Z" fill="none" stroke="#b18cff" stroke-width="1.6"/><circle r="3.6" fill="#b18cff"/></g>
+<g id="nameTag" opacity="0"><rect id="ntBox" x="24" y="70" width="200" height="50" rx="8" fill="#15121c" fill-opacity=".82" stroke="#8f74d8" stroke-width="1.2"/><rect x="24" y="70" width="4" height="50" rx="2" fill="#c27bff"/><text id="ntName" x="38" y="92" font-family="IBM Plex Sans Thai, sans-serif" font-size="17" font-weight="700" fill="#ffffff"></text><text id="ntRole" x="38" y="111" font-family="IBM Plex Sans Thai, sans-serif" font-size="12.5" fill="#cfc6ea"></text></g>
 <g id="sub" filter="url(#subStroke2)"></g>
 <rect id="fade" width="540" height="960" fill="#000" opacity="0"/>
 </svg>

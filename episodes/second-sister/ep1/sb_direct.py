@@ -24,9 +24,19 @@ DIRECT = {
     "249-253": {"shake": [["s250", 1.0]]},
     "254-255": {"shade": True, "shake": [[1.2, .45]]},
     "282-285": {"shake": [["s284", .9]]},
+    # hook: four fast shots before the title
+    "301": {"shake": [["bell", .8]]},
+    "303": {"shake": [[.5, .7]]},
+    "304": {"shade": True},
 }
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
-ZOOM_IN = {"33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
+ZOOM_IN = {"302", "303", "304", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
 GRADE = {}
 for st in "tower_fog tower_night chapel_night thana_night rosa_bed rosa_room oldwing veranda call call_mek drain clock evidence_wall rules1 sisters_ext".split(): GRADE[st] = "night"
 for st in "flash_dorm dream".split(): GRADE[st] = "flash"
+
+# name card the first time each main character is on screen (user: who is who must be clear)
+NAMECARD = {"mek": ("เมฆ", "ช่างภาพ · ผู้เล่าเรื่อง"), "james": ("เจม", "เพื่อนสนิทของเมฆ"), "rosa": ("ซิสเตอร์โรซา", "แม่ชีฝึกหัด"),
+            "cat": ("มาเธอร์คาทารีนา", "อธิการิณี"), "daeng": ("ป้าแดง", "แม่ครัว"), "jos": ("คุณพ่อยอแซฟ", "บาทหลวง"),
+            "mariam": ("ซิสเตอร์มาเรียม", "แฝดคนที่รอดจากไฟ"), "agnes": ("ซิสเตอร์อักเนส", "ห้องพยาบาล"), "luc": ("มาเธอร์ลูเซีย", "อดีตอธิการิณี"),
+            "thana": ("ร.ต.อ.ธนา", "สน.บางกอกน้อย")}
