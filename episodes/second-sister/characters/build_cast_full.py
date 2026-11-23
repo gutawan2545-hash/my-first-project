@@ -30,6 +30,25 @@ def _nun_head(gid, end_marker):
 MARIAM_HEAD = _nun_head("mariam", "<!-- ===== SISTER AGNES")
 AGNES_HEAD = _nun_head("agnes", '<filter id="dof"')
 
+# Agnes, revised (user): skin pale white with real light and shade (not grey), clearly red lips,
+# a calm closed smile instead of the hooked grin. Same face, eyes, veil and habit.
+AG_LIPS = ('<path d="M -7.6,21.4 Q -3.4,19.4 0,20.7 Q 3.4,19.4 7.6,21.4 Q 0,23 -7.6,21.4 Z" fill="#a51c2a"/>'
+           '<path d="M -7.6,21.4 Q 0,23 7.6,21.4 Q 4.4,25.4 0,25.7 Q -4.4,25.4 -7.6,21.4 Z" fill="#c22a38"/>'
+           '<path d="M -2.6,23.9 Q 0,24.6 2.6,23.9" stroke="#ec8a92" stroke-width="1" stroke-linecap="round" fill="none" opacity=".7"/>'
+           '<path d="M -7.6,21.4 L -8.6,20.6 M 7.6,21.4 L 8.6,20.6" stroke="#8a1a24" stroke-width=".9" stroke-linecap="round"/>')
+AG_PALE = {"#efe2da": "#f8f2ef", "#d3bfb5": "#e3d6d3", "#b39d94": "#cbbab8", "#e2d1c8": "#f2e9e6", "#fbf4ef": "#ffffff",
+           "#c8b2a8": "#d8c8c6", "#d9aaa2": "#e0aaa6", "#bfa79f": "#c6b4ba", "#c9b3ab": "#cfbfc4",
+           # the older chapel frame (shots 31-32) used warmer skin: same mapping so she matches everywhere
+           "#efd5c3": "#f8f2ef", "#d9ad97": "#e3d6d3", "#b98672": "#cbbab8", "#e5c3ae": "#f2e9e6", "#fdeee2": "#ffffff",
+           "#cf9f88": "#d8c8c6", "#dfa494": "#e0aaa6", "#caa08a": "#cfbfc4"}
+import re as _re
+def agnes_pale(head):
+    for a, b in AG_PALE.items(): head = head.replace(a, b)
+    head = head.replace('opacity=".3"/>', 'opacity=".05"/>').replace('opacity=".08"/>', 'opacity=".04"/>')   # almost no blush
+    head = _re.sub(r'<!-- (eerie|calm, closed) smile.*?(?=<use href="#cap"/>)', '<!-- calm closed smile, red lips -->' + AG_LIPS, head, flags=_re.S)
+    return head
+AGNES_HEAD = agnes_pale(AGNES_HEAD)
+
 # ---------------- part builders ----------------
 HIP, KNEE, ANKLE = 182, 280, 358
 
@@ -174,7 +193,7 @@ SCAR = '<path d="M 46,222 C 50,220 54,222 54,227 C 52,231 48,230 46,227 Z M 49,2
 F["mariam"] = nun("mariam", MARIAM_HEAD, MAR_SKIN, hand_extra_R=SCAR)
 
 # Sister Agnes: pale; same habit
-AG_SKIN = ("#f0e4dc", "#d5c2b8")
+AG_SKIN = ("#f8f2ef", "#e3d6d3")
 F["agnes"] = nun("agnes", AGNES_HEAD, AG_SKIN)
 
 # Father Joseph

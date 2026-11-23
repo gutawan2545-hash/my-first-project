@@ -21,7 +21,7 @@ R = random.Random(42)
 
 # ---------------- 1. living poses: breathing, blinking, talking ----------------
 SKIN = {"mek": "#eec4a2", "daeng": "#e3b088", "cat": "#f1d3bd", "luc": "#efd6c6", "rosa": "#f5d3b4", "jos": "#ebc6a6", "thana": "#d9a37c",
-        "mariam": "#f6dcc4", "agnes": "#efe2da", "james": "#fbe7d8", "mkid": "#efc6a3", "jan": "#f2cdab", "twinM": "#f6dcc4", "twinA": "#f6dcc4"}
+        "mariam": "#f6dcc4", "agnes": "#f8f2ef", "james": "#fbe7d8", "mkid": "#efc6a3", "jan": "#f2cdab", "twinM": "#f6dcc4", "twinA": "#f6dcc4"}
 KIDS = {"mkid", "jan", "twinM", "twinA"}
 POSE_CID = {}
 
@@ -99,7 +99,7 @@ _o = EXACT_DEFS.find("OVERLAY: time chip"); _e = EXACT_DEFS.find('<g id="v1_subs
 if _o > 0: EXACT_DEFS = EXACT_DEFS[:_o] + "-->" + EXACT_DEFS[_o:_e].replace("-->", "", 1).replace("<g", '<g display="none"', 1).replace('<g transform="translate(500,44)"', '<g display="none" transform="translate(500,44)"') + EXACT_DEFS[_e:]
 
 # ---------------- 3. timeline ----------------
-SPEAKERS = {"โรซา": "rosa", "เมฆ": "mek", "เจมส์": "james", "ป้าแดง": "daeng", "คาทารีนา": "cat", "มาเรียม": "mariam", "อักเนส": "agnes", "ลูเซีย": "luc", "ยอแซฟ": "jos", "ธนา": "thana", "โรซา ": "rosa"}
+SPEAKERS = {"โรซา": "rosa", "เมฆ": "mek", "เจม": "james", "ป้าแดง": "daeng", "คาทารีนา": "cat", "มาเรียม": "mariam", "อักเนส": "agnes", "ลูเซีย": "luc", "ยอแซฟ": "jos", "ธนา": "thana", "โรซา ": "rosa"}
 COMBINING = re.compile(r"[ัิ-ฺ็-๎]")
 def vis_len(s): return len(COMBINING.sub("", s))
 def wrap_th(text, limit=24):
@@ -115,7 +115,7 @@ def wrap_th(text, limit=24):
     return lines
 
 # words that get the purple highlight (at most two per card, longest match first)
-EMPH = ["มาร์ธา", "มาเรียม", "อักเนส", "โรซา", "ป้าแดง", "จันทร์เจ้า", "ลูเซีย", "คาทารีนา", "ยอแซฟ", "ธนา", "เจมส์", "นภา",
+EMPH = ["มาร์ธา", "มาเรียม", "อักเนส", "โรซา", "ป้าแดง", "จันทร์เจ้า", "ลูเซีย", "คาทารีนา", "ยอแซฟ", "ธนา", "เจม", "นภา",
         "หอระฆัง", "ระฆัง", "ตีสาม", "ฝาแฝด", "แฝด", "กองเพลิง", "ไฟไหม้", "ศพ", "ห้าม", "กฎ", "ปีกเก่า", "หลุมศพ", "หลุม",
         "มือซ้าย", "ถนัดซ้าย", "ยี่สิบปี", "20 ปี", "สิบปี", "ลูกนกน้อย", "ผ้าเช็ดหน้า", "ตุ๊กตา", "เซนต์เวโรนิกา", "ผี", "เลือด", "หายไป"]
 def emph_line(line, budget):
@@ -178,7 +178,7 @@ for sc, panels in PANELS.items():
 
 # ---- acting from sb_anim.py: who walks / runs, who cries, per panel ----
 ANIM = NS.get("ANIM", {})
-NAMES = [("ป้าแดง", "daeng"), ("โรซา", "rosa"), ("เมฆเด็ก", "mkid"), ("เมฆ", "mek"), ("เจมส์", "james"), ("คาทารีนา", "cat"), ("มาเรียม", "mariam"),
+NAMES = [("ป้าแดง", "daeng"), ("โรซา", "rosa"), ("เมฆเด็ก", "mkid"), ("เมฆ", "mek"), ("เจม", "james"), ("คาทารีนา", "cat"), ("มาเรียม", "mariam"),
          ("อักเนส", "agnes"), ("ลูเซีย", "luc"), ("คุณพ่อ", "jos"), ("ยอแซฟ", "jos"), ("ธนา", "thana"), ("จันทร์เจ้า", "jan"), ("ดีน", "dean"), ("แมว", "dean")]
 def stage_cids(stage):
     src = NS["ST"].get(stage, "")

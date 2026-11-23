@@ -322,7 +322,7 @@ def call_screen():
     o += '<g transform="translate(372,96)"><rect width="140" height="210" rx="14" fill="#141018"/><svg x="0" y="0" width="140" height="210" viewBox="0 0 140 210"><rect width="140" height="210" fill="#2a2430"/>' + put(P["mek_phone"], 70, 520, 1.15, .75) + '<circle cx="70" cy="80" r="70" fill="url(#lg_cfe0ff)" opacity=".6"/></svg><rect width="140" height="210" rx="14" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/></g>'
     # phone UI: status bar, name + call timer, call buttons at the very bottom (below the subtitle area)
     o += '<text x="40" y="44" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#fff">02:59</text><rect x="470" y="32" width="34" height="15" rx="4" fill="none" stroke="#fff" stroke-width="1.6"/><rect x="473" y="35" width="20" height="9" rx="2" fill="#fff"/>'
-    o += '<text x="40" y="96" font-family="IBM Plex Sans Thai, sans-serif" font-size="20" font-weight="700" fill="#fff">เจมส์</text><text x="40" y="120" font-family="Inter, sans-serif" font-size="14" fill="#e0e0ee">12:48</text>'
+    o += '<text x="40" y="96" font-family="IBM Plex Sans Thai, sans-serif" font-size="20" font-weight="700" fill="#fff">เจม</text><text x="40" y="120" font-family="Inter, sans-serif" font-size="14" fill="#e0e0ee">12:48</text>'
     for i, (col, icon) in enumerate((("#3a3a48", "M -8,-4 L 8,-4 M 0,-12 L 0,4"), ("#3a3a48", "M -10,-6 L 4,-6 L 4,6 L -10,6 Z M 4,-2 L 12,-7 L 12,7 L 4,2"), ("#e5484d", "M -12,2 C -6,-6 6,-6 12,2"), ("#3a3a48", "M -6,-10 L -6,10 M 6,-10 L 6,10"))):
         x = 110 + i * 107
         o += f'<circle cx="{x}" cy="880" r="30" fill="{col}" opacity=".92"/><path d="{icon}" transform="translate({x},880)" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>'
@@ -738,39 +738,51 @@ def veranda2():
     return o
 ST["veranda"] = ST["veranda"].replace(veranda(), veranda2())
 
-# ---- burnt rag doll: cloth girl, yarn braids, button eyes, stitches; the right half charred ----
+# ---- rag doll (revised): cloth girl doll, long loose black yarn hair with a fringe, black dress, black buttons,
+#      black button eyes, visible stitching and seams; one side scorched. Same doll in every scene.
 def ragdoll():
+    H, H2, HL = "#16121a", "#0c0a10", "#3a3444"        # yarn hair: base, shadow strands, sheen
+    SK, SKS = "#efe2cc", "#d8c6aa"                      # cloth skin and its shade
     o = '<g>'
-    o += '<ellipse cx="4" cy="104" rx="70" ry="10" fill="#0a080c" opacity=".55" filter="url(#lsoft)"/>'
-    # legs + arms (cloth tubes with stitch lines)
-    o += '<path d="M -22,70 L -12,70 L -14,104 L -26,104 Z" fill="#e8dcc8"/><path d="M 10,70 L 22,70 L 26,102 L 12,102 Z" fill="#2a1e1a"/>'
-    o += '<path d="M -34,8 C -52,20 -58,40 -54,58 L -44,58 C -46,42 -40,28 -28,18 Z" fill="#e8dcc8"/><path d="M 34,8 C 50,22 54,40 50,54 L 42,54 C 44,40 38,26 28,18 Z" fill="#3a2a22"/>'
-    o += '<path d="M -50,40 l 6,2 M -51,48 l 6,2 M -24,80 l 8,0 M -24,90 l 8,0" stroke="#8a7a68" stroke-width="1.4"/>'
-    # old-fashioned dress with collar and small print; the right side scorched with a ragged edge
-    o += '<path d="M -30,0 L 30,0 L 44,76 L -44,76 Z" fill="#16121a"/><path d="M -30,0 L -8,0 L -16,76 L -44,76 Z" fill="#241e2a"/>'
-    o += "".join(f'<circle cx="{dx}" cy="{dy}" r="1.4" fill="#3a3240"/>' for dx, dy in ((-24, 20), (-14, 40), (-30, 58), (-6, 64), (-20, 70)))
-    o += '<path d="M -18,0 C -12,10 12,10 18,0 L 14,-4 L -14,-4 Z" fill="#f0e8dc"/>'
-    o += '<path d="M 4,0 L 30,0 L 44,76 L 12,76 L 16,62 L 6,54 L 14,40 L 4,30 L 10,16 Z" fill="#1e1614"/><path d="M 4,0 L 10,16 L 4,30 L 14,40 L 6,54 L 16,62 L 12,76" stroke="#8a4a2a" stroke-width="2" fill="none" opacity=".8"/>'
-    o += '<path d="M 10,30 c 4,-3 8,0 6,4 M 22,56 c 4,-3 8,1 5,5" stroke="#3a2a22" stroke-width="2" fill="none"/>'   # holes burnt through
-    o += "".join(f'<circle cx="-4" cy="{y}" r="2.6" fill="#050406"/><circle cx="-4.8" cy="{y - .8}" r=".6" fill="#fff" opacity=".3"/>' for y in (10, 24, 38, 52))
-    # head: cloth face with a seam down the middle, stitched mouth, button eyes; right half blackened
-    o += '<circle cx="0" cy="-28" r="26" fill="#efe2cc"/>'
-    o += '<path d="M 0,-54 A 26,26 0 0 1 0,-2 C 6,-10 2,-18 8,-26 C 2,-34 6,-44 0,-54 Z" fill="#241a16"/><path d="M 0,-54 C 6,-44 2,-34 8,-26 C 2,-18 6,-10 0,-2" stroke="#9a5a32" stroke-width="2" fill="none" opacity=".8"/>'
-    o += '<path d="M -2,-52 L -2,-4" stroke="#a8988a" stroke-width="1" stroke-dasharray="3 2"/>'
-    o += '<circle cx="-11" cy="-32" r="5.6" fill="#050406"/><circle cx="-11" cy="-32" r="5.6" fill="none" stroke="#1e1a22" stroke-width="1"/><circle cx="-12.6" cy="-33.6" r=".7" fill="#3a3440"/><circle cx="-9.4" cy="-33.6" r=".7" fill="#3a3440"/><circle cx="-12.6" cy="-30.4" r=".7" fill="#3a3440"/><circle cx="-9.4" cy="-30.4" r=".7" fill="#3a3440"/><circle cx="-13" cy="-34.5" r="1" fill="#ffffff" opacity=".35"/>'
-    o += '<ellipse cx="12" cy="-31" rx="5.5" ry="4" fill="#050406" transform="rotate(20 12 -31)"/><path d="M 8,-29 C 11,-27 15,-28 17,-31" stroke="#6a5a52" stroke-width="1.4" fill="none"/>'   # melted button
-    o += '<path d="M -14,-16 l 4,2 l 4,-2 l 4,2 l 4,-2" stroke="#4a1a1e" stroke-width="1.6" fill="none"/><path d="M -12,-18 l 0,4 M -6,-18 l 0,4 M 0,-18 l 0,4" stroke="#4a1a1e" stroke-width="1"/>'
-    o += ''
-    # yarn hair: two braids on the unburnt side, a singed curled stub on the burnt side
-    o += '<path d="M -26,-36 C -30,-58 -6,-62 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 C -8,-52 -18,-50 -26,-36 Z" fill="#7a4a2a"/><path d="M 0,-56 C 6,-60 26,-58 26,-40 C 18,-50 6,-52 0,-50 Z" fill="#2a1a12"/>'
-    o += "".join(f'<path d="M {-22 + k * 4},-56 C {-24 + k * 4},-52 {-24 + k * 4},-46 {-22 + k * 4},-42" stroke="#9a6a3a" stroke-width="1.2" fill="none"/>' for k in range(5))
-    o += '<g>' + "".join(f'<ellipse cx="-30" cy="{-30 + k * 9}" rx="5" ry="5.5" fill="{"#7a4a2a" if k % 2 else "#8a5a32"}"/>' for k in range(6)) + '<path d="M -34,24 l 4,10 M -30,24 l 0,12 M -26,24 l -3,10" stroke="#8a5a32" stroke-width="1.6"/><rect x="-35" y="18" width="10" height="5" fill="#c84848"/></g>'
-    o += '<path d="M 26,-36 C 34,-34 36,-28 32,-24 C 38,-22 36,-14 30,-16 C 34,-10 28,-6 26,-12" stroke="#1a120e" stroke-width="4" fill="none"/><path d="M 28,-30 c 3,-2 6,0 4,3 M 30,-18 c 3,-2 5,1 3,3" stroke="#5a3a22" stroke-width="1.4" fill="none"/>'
-    o += '<path d="M 6,-8 C 12,-14 20,-10 26,-16" stroke="#6a6060" stroke-width="1" fill="none" opacity=".6"/>'   # soot smudge
+    o += '<ellipse cx="4" cy="106" rx="72" ry="10" fill="#0a080c" opacity=".55" filter="url(#lsoft)"/>'
+    # long hair behind the body (falls to the hips)
+    o += f'<path d="M -30,-40 C -40,-6 -42,40 -36,74 L -18,70 C -22,30 -20,-6 -14,-30 Z" fill="{H}"/><path d="M 30,-40 C 40,-6 42,40 36,74 L 18,70 C 22,30 20,-6 14,-30 Z" fill="{H2}"/>'
+    o += "".join(f'<path d="M {x},{-20} C {x - 2},{20} {x + 1},{44} {x - 1},{70}" stroke="{HL}" stroke-width=".9" fill="none" opacity=".7"/>' for x in (-34, -28, -23, 24, 30))
+    # legs + arms: cloth tubes, stitched seams, little black shoes
+    o += f'<path d="M -20,72 L -9,72 L -11,100 L -23,100 Z" fill="{SK}"/><path d="M 9,72 L 20,72 L 23,100 L 11,100 Z" fill="{SKS}"/>'
+    o += '<path d="M -25,98 L -9,98 C -8,104 -10,107 -14,107 L -26,107 C -28,104 -27,100 -25,98 Z" fill="#0e0b10"/><path d="M 10,98 L 25,98 C 27,100 28,104 26,107 L 14,107 C 10,107 9,104 10,98 Z" fill="#0e0b10"/>'
+    o += f'<path d="M -30,8 C -48,20 -54,38 -50,56 L -41,56 C -43,40 -38,28 -26,18 Z" fill="{SK}"/><path d="M 30,8 C 46,22 50,38 46,54 L 38,54 C 40,40 34,28 26,18 Z" fill="#3a2a22"/>'
+    o += '<path d="M -48,38 l 6,2 M -49,46 l 6,2 M -18,80 l 7,0 M -18,90 l 7,0 M 12,80 l 7,0" stroke="#8a7a68" stroke-width="1.2"/>'
+    # black cotton dress with white collar, black buttons, hand-sewn hem
+    o += '<path d="M -28,0 L 28,0 L 42,76 L -42,76 Z" fill="#17131c"/><path d="M -28,0 L -8,0 L -14,76 L -42,76 Z" fill="#251f2c"/>'
+    o += '<path d="M -40,72 L 40,72" stroke="#5a5260" stroke-width="1.2" stroke-dasharray="3 2.4"/>'
+    o += '<path d="M -18,0 C -12,10 12,10 18,0 L 14,-4 L -14,-4 Z" fill="#f0e8dc"/><path d="M -16,1 C -10,8 10,8 16,1" stroke="#a89a8a" stroke-width=".8" stroke-dasharray="2 1.6" fill="none"/>'
+    o += "".join(f'<circle cx="0" cy="{y}" r="2.8" fill="#050406"/><circle cx="-.9" cy="{y - .9}" r=".7" fill="#fff" opacity=".35"/><path d="M -1,{y} l 2,0 M 0,{y - 1} l 0,2" stroke="#3a3440" stroke-width=".5"/>' for y in (12, 26, 40, 54))
+    # scorch: right side of the dress and right arm burnt, ragged singed edge, two burn holes
+    o += '<path d="M 12,30 L 28,24 L 42,76 L 14,76 L 20,64 L 10,56 L 18,44 Z" fill="#0e0a0a"/><path d="M 12,30 L 18,44 L 10,56 L 20,64 L 14,76" stroke="#8a4a2a" stroke-width="1.8" fill="none" opacity=".8"/>'
+    o += '<path d="M 24,50 c 3,-3 7,0 5,4 c -2,3 -6,1 -5,-4 Z M 8,66 c 3,-2 6,1 4,4" fill="#2a1a14" stroke="#7a3a22" stroke-width=".8"/>'
+    # head: cloth face, seam lines, stitched-on smile, button eyes, faint cheek dye
+    o += f'<circle cx="0" cy="-28" r="25" fill="{SK}"/><path d="M 10,-51 A 25,25 0 0 1 10,-5 C 18,-18 18,-38 10,-51 Z" fill="{SKS}"/>'
+    o += '<path d="M -25,-28 C -18,-26 -18,-30 -25,-28 M 25,-28 C 18,-26 18,-30 25,-28" stroke="#a8988a" stroke-width=".8" fill="none"/>'
+    o += '<path d="M 0,-4 L 0,-1" stroke="#a8988a" stroke-width="1"/>'
+    for x in (-10, 10):
+        o += (f'<circle cx="{x}" cy="-27" r="5.4" fill="#050406"/><circle cx="{x}" cy="-27" r="5.4" fill="none" stroke="#2a2430" stroke-width="1"/>'
+              f'<circle cx="{x - 1.5}" cy="-28.5" r=".7" fill="#3a3440"/><circle cx="{x + 1.5}" cy="-28.5" r=".7" fill="#3a3440"/><circle cx="{x - 1.5}" cy="-25.5" r=".7" fill="#3a3440"/><circle cx="{x + 1.5}" cy="-25.5" r=".7" fill="#3a3440"/>'
+              f'<path d="M {x - 1.5},-28.5 L {x + 1.5},-25.5 M {x + 1.5},-28.5 L {x - 1.5},-25.5" stroke="#8a7a6a" stroke-width=".5"/><circle cx="{x - 2.2}" cy="-29.4" r="1" fill="#fff" opacity=".35"/>')
+    o += '<ellipse cx="-15" cy="-18" rx="4" ry="2" fill="#d88a86" opacity=".35"/><ellipse cx="15" cy="-18" rx="4" ry="2" fill="#d88a86" opacity=".25"/>'
+    o += '<path d="M -7,-15 Q 0,-10 7,-15" stroke="#4a1a1e" stroke-width="1.3" fill="none"/>' + "".join(f'<path d="M {x},-15.6 l .6,2.4" stroke="#4a1a1e" stroke-width=".7"/>' for x in (-5, -2, 1, 4))
+    o += '<path d="M 14,-20 C 18,-16 22,-18 23,-22" stroke="#4a4040" stroke-width="2.4" fill="none" opacity=".35"/>'   # soot on the burnt cheek
+    # hair on top: crown, centre-less fringe straight across the forehead, side curtains down the face
+    o += f'<path d="M -27,-30 C -30,-56 -10,-60 0,-58 C 10,-60 30,-56 27,-30 L 22,-38 L -22,-38 Z" fill="{H}"/>'
+    o += f'<path d="M -22,-40 L 22,-40 L 22,-35 L 17,-33 L 13,-36 L 8,-33 L 3,-36 L -2,-33 L -7,-36 L -12,-33 L -17,-36 L -22,-33 Z" fill="{H}"/>'
+    o += f'<path d="M -27,-34 C -28,-20 -27,-6 -25,4 L -19,2 C -21,-10 -22,-24 -21,-36 Z" fill="{H}"/><path d="M 27,-34 C 28,-20 27,-6 25,4 L 19,2 C 21,-10 22,-24 21,-36 Z" fill="{H2}"/>'
+    o += f'<path d="M -16,-54 C -8,-58 6,-58 14,-55" stroke="{HL}" stroke-width="2" fill="none" opacity=".8"/>' + "".join(f'<path d="M {x},-52 L {x + 1},-38" stroke="{HL}" stroke-width=".8" opacity=".6"/>' for x in (-14, -6, 2, 10))
+    o += '<path d="M 22,-40 c 4,-2 6,2 4,5 c 3,1 2,5 -1,5" stroke="#3a2418" stroke-width="1.6" fill="none"/>'   # singed tips on the burnt side
+    o += '<path d="M -24,-46 l 4,4 M -20,-46 l -4,4" stroke="#8a2a32" stroke-width="1.6"/>'   # small red cross-stitch hair tie
     return o + '</g>'
 INS2["doll"] = ('<rect width="540" height="960" fill="#3a3448"/><rect y="640" width="540" height="320" fill="#4a4250"/><rect y="640" width="540" height="10" fill="#5a5060"/>'
                 '<polygon points="380,0 540,0 540,700 300,700" fill="#d8d0e8" opacity=".08" filter="url(#lhaze)"/>'
-                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าโบราณ ชุดดำ ไหม้ครึ่งตัว ตากระดุมดำ"))
+                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าเด็กผู้หญิง ผมดำยาว ชุดดำ ตากระดุมดำ"))
 ST["steps"] = ST["steps"].replace(ST["steps"][ST["steps"].index('<g transform="translate(270,820) scale(1.8)">'):ST["steps"].index('</g>', ST["steps"].index('<g transform="translate(270,820) scale(1.8)">')) + 4], '<g transform="translate(300,880) scale(.5)">' + ragdoll() + '</g>')
 
 # ---- final scene: embroidered handkerchief "Martha" (replaces the name tag) ----

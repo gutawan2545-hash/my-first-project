@@ -223,7 +223,7 @@ S.append(("ฉาก 3 · ชื่อเรื่อง", "หน้าต่�
   None, None, None, "ชื่อเรื่อง")))
 
 # 4. James's condo
-S.append(("ฉาก 4 · คอนโดเจมส์", "เมฆเล่าเรื่องไฟไหม้ให้เจมส์ฟังเป็นครั้งแรก", frame(
+S.append(("ฉาก 4 · คอนโดเจม", "เมฆเล่าเรื่องไฟไหม้ให้เจมฟังเป็นครั้งแรก", frame(
   '<rect width="540" height="960" fill="#181633"/>'
   '<g filter="url(#dof)"><rect x="40" y="90" width="230" height="300" fill="#0e1430"/>'
   + "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#1a2250"/>' for x, y, w, h in [(50,200,40,190),(100,150,50,240),(160,230,36,160),(206,120,54,270)]) +
@@ -238,7 +238,7 @@ S.append(("ฉาก 4 · คอนโดเจมส์", "เมฆเล่�
   '<rect x="150" y="610" width="34" height="56" rx="5" fill="#0e0c1c"/><rect x="153" y="614" width="28" height="46" rx="3" fill="#cdd8ff"/>'
   + glow(166, 600, 90, "glowC", .7) + glow(520, 420, 260, "glowB", .7) +
   f'<g transform="translate(10,250) scale(1.2)">{CAT}</g>',
-  "19 พ.ย. · 04:10", "คืนสุดท้ายที่กูอยู่ที่นั่น|หอนอนมันไหม้", "The last night I was there, the dorm burned.", "คอนโดเจมส์")))
+  "19 พ.ย. · 04:10", "คืนสุดท้ายที่กูอยู่ที่นั่น|หอนอนมันไหม้", "The last night I was there, the dorm burned.", "คอนโดเจม")))
 
 # 5. Catarina at the iron fence
 fence = "".join(f'<rect x="{x}" y="300" width="6" height="320" fill="#141016"/><path d="M {x-4},300 L {x+3},282 L {x+10},300 Z" fill="#141016"/>' for x in range(-10, 560, 30))
@@ -383,7 +383,7 @@ S.append(("ฉาก 14 · ป้าแดงในครัว", "ป้าแ�
   "21 พ.ย. · 18:30", "ป้าได้ยินเพลงของป้า|เพลงที่ไม่มีใครในโลกนี้รู้จักอีกแล้ว", "I heard my song. A song no one else alive should know.", "ครัว")))
 
 # 15. Video call split screen
-S.append(("ฉาก 15 · วิดีโอคอลตีสาม", "เจมส์ได้ยินเสียงเด็กร้องเพลงในสายของเมฆ ก่อนระฆังจะดัง", frame(
+S.append(("ฉาก 15 · วิดีโอคอลตีสาม", "เจมได้ยินเสียงเด็กร้องเพลงในสายของเมฆ ก่อนระฆังจะดัง", frame(
   '<rect width="540" height="960" fill="#0e0c14"/>'
   '<svg x="0" y="0" width="540" height="470" viewBox="0 0 540 470"><rect width="540" height="470" fill="#181633"/>'
   + glow(500, 200, 300, "glowB", .8) + fig("james", 270, 210, 1.5, .95) +

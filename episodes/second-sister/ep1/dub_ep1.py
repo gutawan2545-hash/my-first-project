@@ -23,7 +23,7 @@ exec(open(os.path.join(HERE, "storyboard.py")).read(), NS)
 os.chdir(cwd)
 ROWS = NS["ROWS"]
 
-WHO = {"เล่า": "mek", "เมฆ": "mek", "โรซา": "rosa", "เจมส์": "james", "ป้าแดง": "daeng", "คาทารีนา": "cat",
+WHO = {"เล่า": "mek", "เมฆ": "mek", "โรซา": "rosa", "เจม": "james", "ป้าแดง": "daeng", "คาทารีนา": "cat",
        "มาเรียม": "mariam", "อักเนส": "agnes", "ลูเซีย": "luc", "ยอแซฟ": "jos", "ธนา": "thana"}
 PRON = {"คอนแวนต์": "คอนแวน"}      # words the TTS misreads -> spelling that sounds right
 # stage directions in brackets -> v3 audio tags
@@ -47,7 +47,7 @@ FEEL = [("กระซิบ", "[whispers]"), ("สะอื้น", "[crying]")
         ("ตื้นตัน", "[emotional]"), ("ใจดี", "[warm]"), ("ยิ้ม", "[warm]"), ("หัวเราะ", "[laughing]"), ("ตั้งใจเล่นเกม", "[playful]"),
         ("สงสัย", "[suspicious]"), ("ละเมอ", "[dazed]"), ("งัวเงีย", "[sleepy]"), ("ลังเล", "[hesitant]"), ("เหนื่อย", "[tired]"),
         ("จริงจัง", "[serious]"), ("ลดเสียง", "[lowered voice]"), ("สั่น", "[shaky voice]"), ("พูดเร็ว", "[rushed]")]
-NAME_OF = {"mek": "เมฆ", "rosa": "โรซา", "james": "เจมส์", "daeng": "ป้าแดง", "cat": "คาทารีนา", "mariam": "มาเรียม", "agnes": "อักเนส",
+NAME_OF = {"mek": "เมฆ", "rosa": "โรซา", "james": "เจม", "daeng": "ป้าแดง", "cat": "คาทารีนา", "mariam": "มาเรียม", "agnes": "อักเนส",
            "luc": "ลูเซีย", "jos": "คุณพ่อ", "thana": "ธนา"}
 ANIM = NS.get("ANIM", {}); PANELS = NS.get("PANELS", {})
 cover = {}
