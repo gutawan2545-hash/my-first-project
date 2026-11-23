@@ -348,7 +348,7 @@ for seg in segments:
     if d.get("blow"):   # old-wing child: walks in with the candle, turns to us on 16, lifts and blows it out on 18
         _st = {s_["n"]: s_["t0"] for s_ in seg["shots"]}
         t16 = _st.get(16, seg["dur"] - 6); t18 = _st.get(18, seg["dur"] - 3)
-        seg["blow"] = {"walk": [.2, 4.2], "turn": round(t16 + .25, 2), "lift": round(t16 + 1.3, 2), "blow": round(t18 + .9, 2)}
+        seg["blow"] = {"walk": [.2, 4.2], "turn": round(t16 + .25, 2), "lift": round(t16 + 1.3, 2), "blow": round(t18 + 1.05, 2)}
     if seg.get("rng") in ZOOM_IN: seg["zb"] = True
     agnes_on = "agnes" in pos and "agnes" not in hidden
     seg["grade"] = "exact" if seg["kind"] == "exact" else GRADE.get(seg["stage"]) or ("agnes" if agnes_on and not seg["day"] else ("day" if seg["day"] else "base"))
@@ -637,15 +637,15 @@ window.render = function (si, t) {
   // old wing: the child carries the candle in, turns to us, lifts it under her chin and blows it out
   if (seg.blow && $('owKid')) {
     const B = seg.blow, w = sm((t - B.walk[0]) / (B.walk[1] - B.walk[0]));
-    const bob = w < 1 ? Math.abs(Math.sin(t * 5.2)) * 3 * (1 - w) : 0;
+    const bob = 0;   // glides in, no bounce (user)
     $('owKid').setAttribute('transform', `translate(${(-140 + 140 * w).toFixed(1)},${(-bob).toFixed(1)})`);
     const tf = sm((t - B.turn) / .35);
     $('owSide').setAttribute('opacity', (1 - tf).toFixed(3)); $('owFront').setAttribute('opacity', tf.toFixed(3));
-    const lf = sm((t - B.lift) / 1.1);
+    const lf = 0;   // the candle stays at her chest; it goes out by itself (user)
     $('owArmF').setAttribute('transform', `translate(0,${(-36 * lf).toFixed(1)})`);
     $('owChin').setAttribute('opacity', (lf * (1 - sm((t - B.blow - .3) / .3))).toFixed(3));
     const lit = sm((t - .3) / .6), fl = 1 + .07 * Math.sin(t * 23) + .05 * Math.sin(t * 37 + 1.3);
-    const bend = sm((t - B.blow) / .35), gone = sm((t - B.blow - .3) / .3);
+    const bend = sm((t - B.blow) / .18) * .6, gone = sm((t - B.blow - .12) / .1);   // a quick shiver, then out
     const fT = `rotate(${(-8 * bend + 3 * Math.sin(t * 11) * (1 - bend)).toFixed(1)}) skewX(${(-28 * bend).toFixed(1)}) scale(${((1 - .2 * bend) * (1 - gone) * lit).toFixed(3)},${(fl * (1 - .55 * bend) * (1 - gone) * lit).toFixed(3)})`;
     ['owFlameS', 'owFlameF'].forEach(id => $(id).setAttribute('transform', fT));
     const g = lit * fl * (1 - .6 * bend) * (1 - gone);

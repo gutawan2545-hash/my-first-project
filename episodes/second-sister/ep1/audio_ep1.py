@@ -319,7 +319,7 @@ for i_, s in enumerate(segs):
     if s.get("blow"):   # the child blows her candle out: a soft breath "fuu", then the wick's tiny hiss
         n = int(.7 * SR); t = np.linspace(0, 1, n)
         puff = bandnoise(n, 500, 4200, 77) * np.sin(np.pi * np.clip(t / .35, 0, 1)) ** 2 * np.where(t > .35, np.exp(-(t - .35) * 7), 1)
-        add(puff.astype(np.float32), s["t0"] + s["blow"]["blow"] - .1, pan=0, vol=.42)
+        add(puff.astype(np.float32), s["t0"] + s["blow"]["blow"] - .15, pan=0, vol=.18)   # faint, like a breath from nowhere
         m = int(.5 * SR); add((bandnoise(m, 2500, 7000, 78) * np.exp(-np.arange(m) / SR * 8)).astype(np.float32), s["t0"] + s["blow"]["blow"] + .3, vol=.12)
 BUS = "amb"
 for i_, s in enumerate(segs):
