@@ -3,11 +3,13 @@ highlighted word, small dark-red rule tag. Only the art layer and the texts chan
 usage: python3 cover.py  -> cover.html ; then node render_cover.js -> ../out/cover.png"""
 import json, random
 
+# per-episode: texts + which art to use. Earlier cover (ตีสี่ EP1) is kept in cover_v2_4am_ep1.py
+SERIES = 'second-sister'
 EP = {
-    'episode': 'ตอนที่ 1',
-    'title1': 'เงินเข้าบัญชี',
-    'title2_before': 'ทุกคืนตอน', 'title2_hl': 'ตีสี่', 'title2_after': '',
-    'rule': 'กฎข้อที่ 1 • อย่าเพิ่งใช้เงิน',
+    'episode': 'ตอนที่ 1 · ระฆังตีสาม',
+    'title1': 'แม่ชี',
+    'title2_before': '', 'title2_hl': 'คนที่สอง', 'title2_after': '',
+    'rule': 'กฎข้อที่ 1 • ระฆังดังตอนตีสาม ห้ามออกจากห้อง',
 }
 
 # ---- fixed template slots (540x960 design units, rendered x2) ----
@@ -57,6 +59,15 @@ ART = f'''
 <rect width="540" height="960" filter="url(#grain)" opacity=".06" style="mix-blend-mode:overlay"/>
 '''
 
+if SERIES == 'second-sister':   # art from episodes/second-sister/cover/make_art_ep1.py (the chapel frame, current cast)
+    ART = '''
+<rect width="540" height="960" fill="url(#bg)"/>
+<g transform="translate(-95,150) scale(1.35)"><use href="#chapelArt"/></g>
+<rect width="540" height="520" fill="url(#topfade)"/>
+<rect width="540" height="960" fill="url(#vig)"/>
+<rect width="540" height="960" filter="url(#grain)" opacity=".07" style="mix-blend-mode:screen"/>
+'''
+
 S = SLOT
 TEXT = f'''
 <g id="logo" transform="translate({S['logo'][0]},{S['logo'][1]})"><ellipse rx="22" ry="16.5" fill="#7a1fff"/>
@@ -87,6 +98,7 @@ DEFS = '''<defs>
 </defs>'''
 
 CHAR = open('char_defs.svg.html').read()
+if SERIES == 'second-sister': CHAR += open('../episodes/second-sister/cover/art_ep1.svg.html').read()
 for c in ('blinkJ', 'blinkT', 'blinkC', 'mouthJ', 'mouthT'):          # stills: eyes open, mouths at rest
     CHAR = CHAR.replace(f'<g class="{c}">', f'<g class="{c}" display="none">')
 html = f'''<!doctype html><meta charset="utf-8"><title>Odd Hours cover</title>

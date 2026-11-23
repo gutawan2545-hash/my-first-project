@@ -143,6 +143,7 @@
 - ข้อความทั้งหมดอยู่ครึ่งบนของภาพ ครึ่งล่างเป็นภาพเด่นของตอน พื้นหลังดำอมม่วง ใส่เม็ดฟิล์มบาง ๆ
 - ห้ามเฉลยปมเรื่องบนปก
 - ทำตอนใหม่: แก้ EP กับ ART ใน cover.py แล้วรัน python3 cover.py ตามด้วย node render_cover.js
+- เรื่อง แม่ชีคนที่สอง: ตั้ง `SERIES = 'second-sister'` ใน cover.py ภาพมาจาก `episodes/second-sister/cover/make_art_ep1.py` (เฟรมโบสถ์น้อยที่ผ่านแล้ว ตัวละครชุดปัจจุบัน ไม่มีซับ) ปกตอน 1 เก็บที่ `episodes/second-sister/cover/cover_ep1.png` ปกตีสี่เดิมอยู่ใน `cover_v2_4am_ep1.py` และ `out/cover_4am_ep1.png`
 - ถ้าชื่อเรื่องยาวเกินขอบขวา สคริปต์จะเตือน
 
 ## ระบบทำคลิป
