@@ -2,7 +2,7 @@
 # how many people live in the convent and who they are). Shots listed here are left out; art and voice files stay on disk.
 # ORDER: hook (301-306 + twins 31-33), the story, the who's-who roll call (310-318) right after the Mother's rules,
 # the clue card (305) before the closing question.
-CUT = {3, 4, 8, 10, 12, 15, 17, 18, 19,
+CUT = {1, 3, 4, 8, 10, 12, 15, 17, 19,
        20, 24, 26, 27,
        35, 37, 38, 45, 46, 49, 51, 52, 53, 58,
        60, 61, 67, 71, 72, 73, 74, 76,
@@ -26,4 +26,4 @@ _story = _story[:_story.index(86) + 1] + [320, 310, 341, 311, 342, 312, 343, 313
 _story.insert(_story.index(96) + 1, 330)
 _story.insert(_story.index(192) + 1, 331)
 _i = _story.index(286)
-ORDER = [301, 302, 303, 304, 306, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]
+ORDER = [301, 302, 361, 362, 363, 364, 365, 303, 304, 306, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]

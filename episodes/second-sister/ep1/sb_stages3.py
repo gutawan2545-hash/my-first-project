@@ -621,3 +621,68 @@ def hook_board(hl=None):
     o += '<path d="M 300,720 c 2,20 -2,40 1,60" stroke="#6a2a22" stroke-width="3" fill="none" opacity=".7"/>'   # a drip from the red paint
     return o
 INS2["rules_all"], INS2["rules_h1"], INS2["rules_h7"] = hook_board(None), hook_board(0), hook_board(6)
+for _i in range(1, 6): INS2[f"rules_h{_i + 1}"] = hook_board(_i)   # every rule gets read in the hook (user)
+
+# ------------------------------------------------------------------ 18. OLD-WING WINDOW (shots 13-18): one burnt arched window, close.
+# A child's silhouette carries a lit candle in, stops, turns to us, lifts the candle under her chin and blows it out.
+# Animated in anim_ep1.py (seg.blow): #owKid (x), #owSide/#owFront (turn), #owArmS/#owArmF (lift), #owFlame*, #owGlow, #owSmoke.
+def _ow_flame(fid):
+    return (f'<g id="{fid}"><ellipse cx="0" cy="-2" rx="9" ry="7" fill="#ffe8dc" opacity=".35" filter="url(#lsoft)"/>'
+            '<path d="M 0,-24 C 6,-14 7,-6 5,-1 C 3,3 -3,3 -5,-1 C -7,-6 -5,-14 0,-24 Z" fill="#ffcfb4"/>'
+            '<path d="M 0,-16 C 3,-10 4,-5 2.5,-1.5 C 1.5,1 -1.5,1 -2.5,-1.5 C -4,-5 -3,-10 0,-16 Z" fill="#fff6ee"/>'
+            '<ellipse cx="0" cy="0" rx="1.6" ry="2.4" fill="#6a7ac8" opacity=".8"/></g>')
+def _ow_candle(fid):
+    return ('<rect x="-5" y="0" width="10" height="30" rx="2" fill="#efe4da"/><rect x="1" y="0" width="4" height="30" fill="#cfc2b8"/>'
+            '<path d="M -5,2 C -6,8 -4,10 -4,14" stroke="#f6eee6" stroke-width="2" fill="none"/><rect x="-0.7" y="-4" width="1.4" height="5" fill="#2a2024"/>'
+            f'<g transform="translate(0,-3) scale(1.6)">{_ow_flame(fid)}</g>')
+OW_KID_INK = "#07060b"
+def oldwing_win():
+    o = '<defs><clipPath id="owWin"><path d="M 160,640 L 160,330 Q 270,170 380,330 L 380,640 Z"/></clipPath>'
+    o += '<radialGradient id="owGlowG"><stop offset="0" stop-color="#ffe2d2" stop-opacity=".95"/><stop offset=".35" stop-color="#e8b8b0" stop-opacity=".45"/><stop offset="1" stop-color="#6a4a6a" stop-opacity="0"/></radialGradient>'
+    o += '<radialGradient id="owSoot"><stop offset="0" stop-color="#0a080c" stop-opacity=".9"/><stop offset="1" stop-color="#0a080c" stop-opacity="0"/></radialGradient></defs>'
+    # burnt brick wall, night blue light from the sky on its left edge
+    o += '<rect width="540" height="960" fill="#2a2434"/>'
+    r = _rr.Random(18)
+    for row in range(0, 40):
+        y = row * 24; off = 0 if row % 2 else 34
+        o += f'<path d="M 0,{y} L 540,{y}" stroke="#211c2a" stroke-width="2"/>'
+        o += "".join(f'<path d="M {x},{y} L {x},{y + 24}" stroke="#211c2a" stroke-width="2"/>' for x in range(off, 540, 68))
+        for _ in range(2):
+            x = r.randrange(0, 540, 68) + off
+            o += f'<rect x="{x + 2}" y="{y + 2}" width="64" height="20" fill="{r.choice(("#30293a", "#262030", "#2e2636"))}"/>'
+    o += '<rect width="120" height="960" fill="#5a6aa8" opacity=".10"/>'
+    o += '<ellipse cx="270" cy="230" rx="230" ry="200" fill="url(#owSoot)"/><ellipse cx="300" cy="120" rx="160" ry="150" fill="url(#owSoot)" opacity=".8"/>'   # soot plume above the window
+    # inside the room: dark, a burnt bed frame and a crucifix outline on the far wall, moonlight faint blue
+    o += '<g clip-path="url(#owWin)"><rect x="150" y="160" width="240" height="490" fill="#15121e"/>'
+    o += '<rect x="150" y="160" width="240" height="490" fill="#3a4680" opacity=".18"/>'
+    o += '<g id="owRoom" opacity="0"><rect x="150" y="160" width="240" height="490" fill="#4a3446" opacity=".55"/>'
+    o += '<rect x="196" y="300" width="4" height="34" fill="#2a1e28"/><rect x="186" y="310" width="24" height="4" fill="#2a1e28"/>'   # crucifix shadow
+    o += '<path d="M 300,560 L 300,520 L 380,520 L 380,560 M 300,540 L 380,540" stroke="#2a1e28" stroke-width="5" fill="none"/>'   # bed frame
+    o += '<path d="M 220,200 C 230,240 214,280 226,320" stroke="#2a1e28" stroke-width="6" fill="none" opacity=".7"/></g>'   # peeling streak
+    # the child (feet below the sill); a glow moves with her candle
+    o += '<g id="owKid" transform="translate(-140,0)">'
+    o += '<g id="owGlow" opacity="0"><circle id="owGlowC" cx="301" cy="505" r="230" fill="url(#owGlowG)" style="mix-blend-mode:screen"/></g>'
+    # side view, walking right: long hair down her back, nightgown, arm holding the candle out in front
+    o += f'<g id="owSide"><path d="M 252,455 C 238,470 232,520 236,660 L 300,660 C 300,560 296,488 286,456 Z" fill="{OW_KID_INK}"/>'
+    o += f'<circle cx="270" cy="420" r="30" fill="{OW_KID_INK}"/><path d="M 296,414 L 304,424 L 296,428 Z" fill="{OW_KID_INK}"/>'   # nose
+    o += f'<path d="M 268,390 C 244,392 236,420 240,470 C 242,500 238,520 234,540 L 252,540 C 256,500 258,470 262,450 Z" fill="{OW_KID_INK}"/>'   # hair down the back
+    o += f'<g id="owArmS"><path d="M 274,468 L 300,512 L 293,518 L 266,476 Z" fill="{OW_KID_INK}"/><g transform="translate(301,508)">{_ow_candle("owFlameS")}</g></g></g>'
+    # front view: hair either side, bangs, both hands holding the candle at her chest
+    o += f'<g id="owFront" opacity="0"><path d="M 242,456 C 226,480 222,540 224,660 L 316,660 C 318,540 314,480 298,456 Z" fill="{OW_KID_INK}"/>'
+    o += f'<path d="M 238,412 C 236,380 304,380 302,412 L 308,500 L 290,500 L 296,430 L 244,430 L 250,500 L 232,500 Z" fill="{OW_KID_INK}"/><circle cx="270" cy="420" r="29" fill="{OW_KID_INK}"/>'
+    o += '<g id="owChin" opacity="0"><path d="M 252,436 C 258,452 282,452 288,436 C 282,446 258,446 252,436 Z" fill="#c89a98" opacity=".35"/></g>'   # candle catching her chin from below
+    o += f'<g id="owArmF"><path d="M 250,470 L 262,520 L 278,520 L 290,470 L 284,466 L 272,512 L 268,512 L 256,466 Z" fill="{OW_KID_INK}"/><g transform="translate(270,512)">{_ow_candle("owFlameF")}</g></g></g>'
+    o += '<g id="owSmoke" opacity="0"><path d="M 270,0 C 262,-14 278,-26 268,-42 C 260,-56 276,-66 270,-84" stroke="#c8c4d4" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/></g>'
+    o += '</g></g>'
+    # window: stone surround, broken mullions, glass shards, a torn curtain, the sill
+    o += '<path d="M 146,650 L 146,328 Q 270,148 394,328 L 394,650 L 380,650 L 380,330 Q 270,170 160,330 L 160,650 Z" fill="#4a4252"/>'
+    o += '<path d="M 146,650 L 146,328 Q 200,240 236,214 L 240,226 Q 204,250 160,330 L 160,650 Z" fill="#6a6280" opacity=".6"/>'
+    o += '<path d="M 270,186 L 270,320 M 160,320 L 380,320" stroke="#1c1822" stroke-width="7"/>'   # only the top tracery survived the fire
+    o += '<path d="M 267,320 L 262,356 L 270,350 L 274,320 Z M 380,320 L 380,346 L 366,328 Z" fill="#1c1822"/>'   # broken stubs
+    o += '<path d="M 160,330 L 200,268 L 216,300 L 190,350 L 160,370 Z" fill="#8aa0d0" opacity=".14"/><path d="M 380,330 L 350,262 L 330,300 L 352,340 L 380,400 Z" fill="#8aa0d0" opacity=".12"/>'
+    o += '<path d="M 160,320 L 186,320 L 170,360 L 160,372 Z" fill="#8aa0d0" opacity=".14"/><path d="M 380,600 L 350,640 L 380,640 Z" fill="#8aa0d0" opacity=".12"/>'
+    o += '<path d="M 162,232 C 182,220 196,250 190,300 C 186,360 194,420 182,470 L 176,476 C 170,420 166,320 162,300 Z" fill="#3a3040" opacity=".9"/>'   # torn curtain
+    o += '<rect x="130" y="640" width="280" height="22" fill="#5a5264"/><rect x="130" y="640" width="280" height="5" fill="#7a7290"/><rect x="138" y="662" width="264" height="10" fill="#140f18" opacity=".7"/>'
+    o += "".join(f'<path d="M {x},662 C {x + 2},680 {x - 2},700 {x + 1},{720 + d}" stroke="#0e0b12" stroke-width="{w}" fill="none" opacity=".6"/>' for x, d, w in ((180, 20, 5), (240, 0, 3), (330, 40, 6), (372, 10, 3)))   # soot drips below the sill
+    return o
+ST["oldwing_win"] = oldwing_win()

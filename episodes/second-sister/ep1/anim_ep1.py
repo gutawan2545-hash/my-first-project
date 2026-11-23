@@ -234,7 +234,7 @@ segments, T = [], 0.0
 silence_left = 0
 RED_SHOTS = {238, 247, 251, 253, 284}       # the big scares: subtitle turns red
 STINGER_SHOTS = {237, 247, 284}             # sharp scare hit in the sound
-ROSA_SHOTS = (17, 18, 19)
+ROSA_SHOTS = (17, 19)                    # 18 now lives in the old-wing window shot (the candle blown out)
 exec(open(os.path.join(HERE, "sb_cut.py")).read())   # tighter cut: CUT / ORDER
 oi = 0
 while oi < len(ORDER):
@@ -345,6 +345,10 @@ for seg in segments:
         sk.append([round(t, 2), amp])
     if sk: seg["shakes"] = sk
     if d.get("shade"): seg["shade"] = True
+    if d.get("blow"):   # old-wing child: walks in with the candle, turns to us on 16, lifts and blows it out on 18
+        _st = {s_["n"]: s_["t0"] for s_ in seg["shots"]}
+        t16 = _st.get(16, seg["dur"] - 6); t18 = _st.get(18, seg["dur"] - 3)
+        seg["blow"] = {"walk": [.2, 4.2], "turn": round(t16 + .25, 2), "lift": round(t16 + 1.3, 2), "blow": round(t18 + .9, 2)}
     if seg.get("rng") in ZOOM_IN: seg["zb"] = True
     agnes_on = "agnes" in pos and "agnes" not in hidden
     seg["grade"] = "exact" if seg["kind"] == "exact" else GRADE.get(seg["stage"]) or ("agnes" if agnes_on and not seg["day"] else ("day" if seg["day"] else "base"))
@@ -630,6 +634,27 @@ window.render = function (si, t) {
     $('towerShade').setAttribute('opacity', o.toFixed(3));
     $('towerShadeFig').setAttribute('transform', `translate(${(40 * sm((t - 2.9) / 1.9)).toFixed(1)},0)`);
   } else if ($('towerShade')) $('towerShade').setAttribute('opacity', 0);
+  // old wing: the child carries the candle in, turns to us, lifts it under her chin and blows it out
+  if (seg.blow && $('owKid')) {
+    const B = seg.blow, w = sm((t - B.walk[0]) / (B.walk[1] - B.walk[0]));
+    const bob = w < 1 ? Math.abs(Math.sin(t * 5.2)) * 3 * (1 - w) : 0;
+    $('owKid').setAttribute('transform', `translate(${(-140 + 140 * w).toFixed(1)},${(-bob).toFixed(1)})`);
+    const tf = sm((t - B.turn) / .35);
+    $('owSide').setAttribute('opacity', (1 - tf).toFixed(3)); $('owFront').setAttribute('opacity', tf.toFixed(3));
+    const lf = sm((t - B.lift) / 1.1);
+    $('owArmF').setAttribute('transform', `translate(0,${(-36 * lf).toFixed(1)})`);
+    $('owChin').setAttribute('opacity', (lf * (1 - sm((t - B.blow - .3) / .3))).toFixed(3));
+    const lit = sm((t - .3) / .6), fl = 1 + .07 * Math.sin(t * 23) + .05 * Math.sin(t * 37 + 1.3);
+    const bend = sm((t - B.blow) / .35), gone = sm((t - B.blow - .3) / .3);
+    const fT = `rotate(${(-8 * bend + 3 * Math.sin(t * 11) * (1 - bend)).toFixed(1)}) skewX(${(-28 * bend).toFixed(1)}) scale(${((1 - .2 * bend) * (1 - gone) * lit).toFixed(3)},${(fl * (1 - .55 * bend) * (1 - gone) * lit).toFixed(3)})`;
+    ['owFlameS', 'owFlameF'].forEach(id => $(id).setAttribute('transform', fT));
+    const g = lit * fl * (1 - .6 * bend) * (1 - gone);
+    $('owGlow').setAttribute('opacity', (.9 * g).toFixed(3)); $('owRoom').setAttribute('opacity', g.toFixed(3));
+    $('owGlowC').setAttribute('cx', tf > .5 ? 270 : 301); $('owGlowC').setAttribute('cy', tf > .5 ? (505 - 48 * lf).toFixed(1) : 505);
+    const sk = Math.max(0, t - B.blow - .55);
+    $('owSmoke').setAttribute('opacity', (Math.min(1, sk * 3) * Math.max(0, 1 - sk / 3.2)).toFixed(3));
+    $('owSmoke').setAttribute('transform', `translate(0,${(460 - 18 * sk).toFixed(1)}) scale(1,${(1 + .3 * sk).toFixed(2)})`);
+  }
   // ending choice: the highlight steps A, B, A, B with a click each time, then both wait for the viewer
   if (seg.stage === 'question' && $('optAglow')) {
     const n = (seg.clicks || []).filter(c => t >= c).length, on = n === 0 || n > 4 ? '' : (n % 2 ? 'A' : 'B');

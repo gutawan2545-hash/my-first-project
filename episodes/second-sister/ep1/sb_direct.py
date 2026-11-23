@@ -28,6 +28,7 @@ DIRECT = {
     "302": {"shake": [["bell", .8]]},
     "304": {"shake": [[.5, .7]]},
     "306": {"shade": True},
+    "13-18": {"blow": True},                     # the child in the old wing blows her candle out
     "92-96": {"hide": ["rosa", "mek"]},          # Martha's stone alone in the frame (no cut-off legs)
     # who's who when Mek arrives: camera on one person at a time, with their name card (no lines for them yet)
     # Rosa says the name (card on screen), then Mek adds what the person is like on the same picture
@@ -40,7 +41,7 @@ DIRECT = {
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
 ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
 GRADE = {}
-for st in "tower_fog tower_night chapel_night thana_night rosa_bed rosa_room oldwing veranda call call_mek drain clock evidence_wall rules1 sisters_ext".split(): GRADE[st] = "night"
+for st in "oldwing_win tower_fog tower_night chapel_night thana_night rosa_bed rosa_room oldwing veranda call call_mek drain clock evidence_wall rules1 sisters_ext".split(): GRADE[st] = "night"
 for st in "flash_dorm dream".split(): GRADE[st] = "flash"
 
 # name card the first time each main character is on screen (user: who is who must be clear)

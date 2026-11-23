@@ -38,3 +38,6 @@ episodes/second-sister/ep1/*.log
 episodes/second-sister/ep1/*.wav
 episodes/second-sister/ep1/concat.txt
 episodes/second-sister/ep1/joined.mp4
+episodes/second-sister/ep1/segments_old/
+episodes/second-sister/ep1/music_ai/*.mp3
+episodes/second-sister/ep1/check_*.png
