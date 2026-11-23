@@ -562,3 +562,15 @@ _g3 = child_graves3()
 _ins = _cw.index(_g3) + len(_g3) if _g3 in _cw else None
 _pair = C("rosa_point", 352, 952, .9) + C("mek_back", 236, 958, .96)   # both in front of the first row of stones, on the grass, side by side
 ST["cemetery_wide"] = (_cw[:_ins] + _pair + _cw[_ins:]) if _ins else _cw + _pair
+
+# ------------------------------------------------------------------ 15. THE FIGURE IN THE BELFRY (shots 254-255): a black shape
+# beside the bell that slides away into the dark. Hidden by default; the player fades it in, holds, then slides it off.
+SHADE = ('<clipPath id="belfryClip"><path d="M 207,430 L 207,320 Q 270,240 333,320 L 333,430 Z"/></clipPath>'
+         '<g id="towerShade" opacity="0"><g clip-path="url(#belfryClip)">'
+         '<ellipse cx="300" cy="372" rx="56" ry="74" fill="#3a3460" opacity=".55" filter="url(#lsoft)"/>'   # faint light behind it, so the black reads
+         '<g id="towerShadeFig"><path d="M 300,332 C 300,316 324,314 326,330 C 328,342 326,350 324,356 C 338,362 346,378 350,404 L 352,440 L 288,440 L 290,404 C 292,380 300,364 312,356 C 304,350 300,342 300,332 Z" fill="#040307"/>'
+         '<path d="M 300,332 C 300,316 312,314 318,318 M 312,356 C 300,364 292,380 290,404" stroke="#a8a4d8" stroke-width="1.2" fill="none" opacity=".55"/></g>'
+         '</g></g>')
+_bt = bell_tower_old(swing=4)
+assert _bt in ST["tower_night"]
+ST["tower_night"] = ST["tower_night"].replace(_bt, _bt + SHADE, 1)

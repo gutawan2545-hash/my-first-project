@@ -1,0 +1,217 @@
+{
+ "used": 622,
+ "lines": {
+  "s041": {
+   "n": 41,
+   "cid": "james",
+   "text": "[chuckles] หน้าแบบนี้ ใครทวงเงินมึงอีกล่ะ",
+   "dur": 3.0,
+   "score": null,
+   "takes": 1,
+   "gain": 0,
+   "from_test": true
+  },
+  "s042": {
+   "n": 42,
+   "cid": "mek",
+   "text": "[tired] ที่เก่ากู เขาจะทำหนังสือครบร้อยปี ให้กูไปถ่ายรูปเอกสารเก่าทั้งหมด สามอาทิตย์",
+   "dur": 5.8,
+   "score": null,
+   "takes": 1,
+   "gain": -2,
+   "from_test": true
+  },
+  "s043": {
+   "n": 43,
+   "cid": "james",
+   "text": "[casual] ค่าจ้างเท่านี้ มึงจะคิดทำไม ไปเหอะ ถือว่ากลับไปเยี่ยมบ้านด้วย",
+   "dur": 3.97,
+   "score": null,
+   "takes": 1,
+   "gain": 0,
+   "from_test": true
+  },
+  "s044": {
+   "n": 44,
+   "cid": "mek",
+   "text": "[sighs] มันไม่ใช่บ้านว่ะ",
+   "dur": 1.96,
+   "score": null,
+   "takes": 1,
+   "gain": -5,
+   "from_test": true
+  },
+  "s045": {
+   "n": 45,
+   "cid": "james",
+   "text": "[gently] มึงไม่เคยเล่าเรื่องที่นั่นให้กูฟังเลยนะ สิบปีที่รู้จักกันมา",
+   "dur": 3.71,
+   "score": null,
+   "takes": 1,
+   "gain": -3,
+   "from_test": true
+  },
+  "s048": {
+   "n": 48,
+   "cid": "james",
+   "text": "[whispers] …เชี่ย",
+   "dur": 1.65,
+   "score": null,
+   "takes": 1,
+   "gain": -10,
+   "from_test": true
+  },
+  "s052": {
+   "n": 52,
+   "cid": "james",
+   "text": "[softly] มึงเคยตามหาน้องไหม",
+   "dur": 1.88,
+   "score": null,
+   "takes": 1,
+   "gain": -5,
+   "from_test": true
+  },
+  "s057": {
+   "n": 57,
+   "cid": "james",
+   "text": "[laughs] ไปเถอะ ถ้าเจอผีก็วิดีโอคอลมา [chuckles] กูตื่นทั้งคืนอยู่แล้ว",
+   "dur": 5.64,
+   "score": null,
+   "takes": 1,
+   "gain": 0,
+   "from_test": true
+  },
+  "s065": {
+   "n": 65,
+   "cid": "daeng",
+   "text": "[sobbing] เมฆ… [sniffles] ใช่เมฆจริง ๆ ใช่ไหมลูก",
+   "dur": 4.13,
+   "score": null,
+   "takes": 1,
+   "gain": -1,
+   "from_test": true
+  },
+  "s192": {
+   "n": 192,
+   "cid": "mek",
+   "text": "[laughs softly] ยังครับป้า… รสเดิมเลยนะป้า",
+   "dur": 2.69,
+   "score": null,
+   "takes": 1,
+   "gain": -2,
+   "from_test": true
+  },
+  "s238": {
+   "n": 238,
+   "cid": "james",
+   "text": "[gasps] อะไรวะนั่น!",
+   "dur": 1.8,
+   "score": null,
+   "takes": 1,
+   "gain": 2,
+   "from_test": true
+  },
+  "s245": {
+   "n": 245,
+   "cid": "mek",
+   "text": "[breathing heavily] โซ่ประตูหอระฆังถูกปลด… [gasps] มีคนขึ้นไปข้างบน",
+   "dur": 4.13,
+   "score": null,
+   "takes": 1,
+   "gain": -3,
+   "from_test": true
+  },
+  "s248": {
+   "n": 248,
+   "cid": "mek",
+   "text": "[panting] ไม่มีใคร… [panting] มีแต่รอยเท้าเปียก ๆ บนพื้น",
+   "dur": 3.0,
+   "score": null,
+   "takes": 1,
+   "gain": -2,
+   "from_test": true
+  },
+  "s265": {
+   "n": 265,
+   "cid": "mariam",
+   "text": "[sobbing] ป้าแดง… ไม่จริง… [crying] ป้าบอกว่าจะสอนหนูทำแกงจืด…",
+   "dur": 5.56,
+   "score": null,
+   "takes": 1,
+   "gain": -1,
+   "from_test": true
+  },
+  "s002": {
+   "n": 2,
+   "cid": "mek",
+   "text": "[softly] ที่คอนแวนเซนต์เวโรนิกา ริมคลองบางกอกน้อย มีระฆังใบหนึ่งที่ไม่มีใครตีมาสิบปีแล้ว เชือกของมันขาดไปตั้งแต่ก่อนผมเกิด",
+   "dur": 7.81,
+   "score": null,
+   "takes": 1,
+   "gain": -7
+  },
+  "s003": {
+   "n": 3,
+   "cid": "mek",
+   "text": "[softly] คืนนั้นซิสเตอร์โรซา ซิสเตอร์ฝึกหัดที่อายุน้อยที่สุดในคอนแวน ยังนอนไม่หลับ",
+   "dur": 4.91,
+   "score": null,
+   "takes": 1,
+   "gain": -7
+  },
+  "s004": {
+   "n": 4,
+   "cid": "mek",
+   "text": "[softly] เธอเล่าให้ผมฟังทีหลังว่า เธอนอนไม่หลับมาสามคืนแล้ว เพราะได้ยินเสียงบางอย่างจากปีกเก่าทุกคืน",
+   "dur": 6.19,
+   "score": null,
+   "takes": 1,
+   "gain": -7
+  },
+  "s005": {
+   "n": 5,
+   "cid": "mek",
+   "text": "[whispers] ตีสองห้าสิบเก้า… อีกนาทีเดียวก็จะตีสาม",
+   "dur": 3.55,
+   "score": null,
+   "takes": 1,
+   "gain": -12
+  },
+  "s006": {
+   "n": 6,
+   "cid": "mek",
+   "text": "[whispers] ตีสามตรง… ระฆังที่ถูกล่ามโซ่ไว้สิบปี ดังขึ้นเอง",
+   "dur": 4.68,
+   "score": null,
+   "takes": 1,
+   "gain": -12
+  },
+  "s007": {
+   "n": 7,
+   "cid": "rosa",
+   "text": "[whispers] ระฆัง… ไม่จริงน่ะ",
+   "dur": 2.51,
+   "score": null,
+   "takes": 1,
+   "gain": -10
+  },
+  "s008": {
+   "n": 8,
+   "cid": "mek",
+   "text": "[softly] ทุกคนที่นี่รู้กฎข้อแรกดี ถ้าระฆังดังตอนตีสาม ห้ามออกจากห้อง เด็ก ๆ เคยถูกขู่ว่า ใครออกไป จะไม่ได้กลับมานอนเตียงเดิม",
+   "dur": 8.52,
+   "score": null,
+   "takes": 1,
+   "gain": -7
+  },
+  "s009": {
+   "n": 9,
+   "cid": "rosa",
+   "text": "[nervously] แค่ดูเฉย ๆ ไม่ได้ออกไปซะหน่อย… พระเจ้าคงไม่โกรธ",
+   "dur": 4.28,
+   "score": null,
+   "takes": 1,
+   "gain": -2
+  }
+ }
+}

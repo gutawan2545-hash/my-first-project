@@ -13,8 +13,8 @@ import json, os, re, subprocess, sys, difflib, urllib.request, urllib.error, tim
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 API = "https://api.elevenlabs.io/v1"
-CEILING = 32000                      # user-confirmed ceiling (raised from 20,000 for the emotion re-dub)
-OUT = os.path.join(HERE, "vo_ep1")
+CEILING = 32000                      # ceiling for this natural re-dub run (the 32,000 the user approved with "ทุกอย่างผ่านหมด")
+OUT = os.path.join(HERE, "vo_ep1_nat")      # natural re-dub (user-approved samples); vo_ep1 = previous emotion dub, kept
 VOICES = json.load(open(os.path.join(HERE, "..", "voices.json")))
 
 NS = {"__file__": os.path.join(HERE, "storyboard.py"), "__name__": "sb"}
@@ -78,6 +78,70 @@ def emotion(n, cid, narration, who_dirs, text):
     if not tags and mood == "eerie": tags = ["[nervous]"]
     return " ".join(tags[:2])
 
+# ---- natural delivery (user-approved tests): at most one light tag, no levelling; real non-verbal sounds only where they happen
+GAIN = {"[whispers]": -10, "[softly]": -5, "[quietly]": -5, "[low voice]": -5, "[sighs]": -4, "[wistful]": -3, "[gently]": -3, "[tearful]": -2,
+        "[sobbing]": -1, "[gasps]": 2, "[panicked]": 3, "[startled]": 2, "[urgent]": 1}
+def natural(n, cid, narration, who_dirs, text):
+    """Returns (prefix tag, mid-line tag or '', gain dB)."""
+    rng, stage, _ = cover.get(n, ("", "", 0))
+    mood = MOOD.get(stage, "calm")
+    a = ANIM.get(rng) or ("", "", "", "")
+    expr = a[0]; act = a[1]
+    if narration:
+        if "กระซิบ" in who_dirs: t = "[whispers]"
+        elif "หอบ" in who_dirs or "หอบ" in expr: t = "[breathing heavily]"
+        else: t = {"eerie": "[softly]", "memory": "[wistful]", "shock": "[quietly]", "title": "[low voice]", "sacred": "[softly]"}.get(mood, "")
+        return t, "", GAIN.get(t, 0) - 2
+    if cid == "child": return "[whispers]", "", -6
+    parts = [x for x in expr.split("/") if NAME_OF.get(cid, "@") in x or (cid == "jos" and "ยอแซฟ" in x)]
+    if not parts and "/" not in expr: parts = [expr]
+    pool = who_dirs + " " + " ".join(parts) + " " + " ".join(x for x in act.split("/") if NAME_OF.get(cid, "@") in x)
+    has = lambda *ks: any(k in pool for k in ks)
+    if cid == "agnes": return ("[whispers]", "", -10) if "กระซิบ" in pool else ("[softly]", "", -3)
+    if cid == "luc": return "[frail]", "", -3
+    if n in (238,): return "[gasps]", "", 2
+    if n in (247,): return "[startled]", "", 2
+    if n in (251, 253): return "[panicked]", "", 3
+    if has("กระซิบ"): return "[whispers]", "", -10
+    if has("สะอื้น", "ร้องไห้", "น้ำตาไหล"): return "[sobbing]", "[sniffles]", -1
+    if has("น้ำตาคลอ", "น้ำตา", "ตื้นตัน"): return "[tearful]", "", -2
+    if has("หอบ", "วิ่ง"): return "[panting]", "", 0
+    if has("หัวเราะ", "ขำ", "ตลก"): return "[laughs]", "", 0
+    if has("แซว", "ยิ้มมุมปาก", "ผิวปาก", "ยิ้มกวน"): return "[chuckles]", "", 0
+    if has("ถอนหายใจ", "เหนื่อยใจ", "ปลง", "เบื่อ", "ยิ้มเหนื่อย"): return "[sighs]", "", -4
+    if has("ตกใจ", "สะดุ้ง", "ช็อก", "ตาเบิก"): return "[gasps]", "", 1
+    if has("หวาดหวั่น", "กลัว", "ระแวง", "ขนลุก", "หน้าซีด"): return "[nervously]", "", -2
+    if has("ลังเล", "สงสัย"): return "[hesitant]", "", -1
+    if has("ใจดี", "ยิ้ม", "อบอุ่น"): return "[warmly]", "", 0
+    if has("เศร้า", "เจ็บปวด"): return "[sadly]", "", -3
+    if has("ละเมอ", "งัวเงีย"): return "[sleepy]", "", -4
+    if cid == "agnes": return "[softly]", "", -3
+    if cid == "luc": return "[frail]", "", -3
+    if cid == "james" and stage in ("condo",): return "[casual]", "", 0
+    if mood == "eerie": return "[softly]", "", -3
+    return "", "", 0
+OVERRIDE = {   # key: (full spoken text with tags, gain)
+    "s041": ("[chuckles] หน้าแบบนี้ ใครทวงเงินมึงอีกล่ะ", 0), "s042": ("[tired] ที่เก่ากู เขาจะทำหนังสือครบร้อยปี ให้กูไปถ่ายรูปเอกสารเก่าทั้งหมด สามอาทิตย์", -2),
+    "s043": ("[casual] ค่าจ้างเท่านี้ มึงจะคิดทำไม ไปเหอะ ถือว่ากลับไปเยี่ยมบ้านด้วย", 0), "s044": ("[sighs] มันไม่ใช่บ้านว่ะ", -5),
+    "s045": ("[gently] มึงไม่เคยเล่าเรื่องที่นั่นให้กูฟังเลยนะ สิบปีที่รู้จักกันมา", -3), "s048": ("[whispers] …เชี่ย", -10),
+    "s052": ("[softly] มึงเคยตามหาน้องไหม", -5), "s057": ("[laughs] ไปเถอะ ถ้าเจอผีก็วิดีโอคอลมา [chuckles] กูตื่นทั้งคืนอยู่แล้ว", 0),
+    "s192": ("[laughs softly] ยังครับป้า… รสเดิมเลยนะป้า", -2), "s065": ("[sobbing] เมฆ… [sniffles] ใช่เมฆจริง ๆ ใช่ไหมลูก", -1),
+    "s245": ("[breathing heavily] โซ่ประตูหอระฆังถูกปลด… [gasps] มีคนขึ้นไปข้างบน", -3), "s238": ("[gasps] อะไรวะนั่น!", 2),
+    "s248": ("[panting] ไม่มีใคร… [panting] มีแต่รอยเท้าเปียก ๆ บนพื้น", -2), "s265": ("[sobbing] ป้าแดง… ไม่จริง… [crying] ป้าบอกว่าจะสอนหนูทำแกงจืด…", -1),
+}
+def with_mid(text, mid):
+    """Put the second sound (e.g. a sniffle) at a natural break in longer lines."""
+    if not mid or len(text) < 24: return text
+    for br in ("… ", " "):
+        i = len(text) // 3
+        while True:
+            i = text.find(br, i)
+            if i < 0 or i >= len(text) - 6: break
+            j = i + len(br)
+            if not text[j:].startswith("ๆ"): return text[:j] + mid + " " + text[j:]
+            i = j
+    return text
+
 def plan():
     out = []
     for n in sorted(ROWS):
@@ -90,12 +154,14 @@ def plan():
         else: cid = WHO.get(base)
         if not cid: continue
         dirs = " ".join(re.findall(r"\(([^)]*)\)", who + " " + text))
-        tag = emotion(n, cid, base == "เล่า", dirs, text)
+        tag, mid, gain = natural(n, cid, base == "เล่า", dirs, text)
         clean = re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", "", text).replace("**", "")).strip()
         clean = re.sub(r"(?<!\*)\*[^*]+\*(?!\*)", "", clean).strip()     # drop *sfx*
         if not clean: continue
         for w, say in PRON.items(): clean = clean.replace(w, say)   # spoken spelling only; subtitles keep the script
-        out.append({"key": f"s{n:03d}", "n": n, "cid": cid, "narration": base == "เล่า", "text": (tag + " " + clean).strip(), "plain": clean})
+        spoken = (tag + " " + with_mid(clean, mid)).strip()
+        if f"s{n:03d}" in OVERRIDE: spoken, gain = OVERRIDE[f"s{n:03d}"]
+        out.append({"key": f"s{n:03d}", "n": n, "cid": cid, "narration": base == "เล่า", "text": spoken, "plain": clean, "gain": gain})
     return out
 
 
@@ -150,7 +216,7 @@ def main():
         if x["key"] in rep["lines"]: continue
         voice = VOICES[x["cid"]]["voice_id"]
         takes = []
-        for take, stab in ((1, 0.5), (2, 1.0)):
+        for take, stab in ((1, 0.5),):   # natural setting only, one take
             if rep["used"] + len(x["text"]) > CEILING:
                 json.dump(rep, open(rp, "w"), ensure_ascii=False, indent=1)
                 raise SystemExit(f"STOP: next take would pass the {CEILING}-credit ceiling (used {rep['used']})")
@@ -164,7 +230,7 @@ def main():
             if score is None or score >= 0.75: break
         best = max(takes, key=lambda t: (t["score"] or 0, -t["take"]))
         os.replace(os.path.join(OUT, best["path"]), os.path.join(OUT, x["key"] + ".mp3"))
-        rep["lines"][x["key"]] = {"n": x["n"], "cid": x["cid"], "text": x["text"], "dur": best["dur"], "score": best["score"], "takes": len(takes)}
+        rep["lines"][x["key"]] = {"n": x["n"], "cid": x["cid"], "text": x["text"], "dur": best["dur"], "score": best["score"], "takes": len(takes), "gain": x["gain"]}
         json.dump(rep, open(rp, "w"), ensure_ascii=False, indent=1)
     print("DONE credits used", rep["used"], "lines", len(rep["lines"]))
 

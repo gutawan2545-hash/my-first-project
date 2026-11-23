@@ -25,13 +25,20 @@ for st in "tower_fog tower_night rosa_bed rosa_room oldwing chapel_night thana_n
 for st in "flash_dorm dream album doll tag music".split(): MOOD[st] = "memory"
 for st in "body_sheet police evidence_wall hand lefthand question".split(): MOOD[st] = "shock"
 MOOD["title"] = "title"
+# master revision: music follows the situation
+MOOD.update({"school": "calm", "grotto": "grotto", "steps": "tension", "doll": "tension", "police": "police", "question": "choice",
+             "call_mek": "eerie", "tower_night": "eerie"})
 #            organ choir piano box  pedal
 GAIN = {"calm":   (.30, .00, .55, .00, .25),
         "sacred": (.75, .70, .00, .00, .60),
         "eerie":  (.45, .60, .15, .00, .70),
         "memory": (.20, .00, .55, .45, .20),
         "shock":  (.85, .80, .00, .00, 1.0),
-        "title":  (1.0, .70, .00, .00, 1.0)}
+        "title":  (1.0, .70, .00, .00, 1.0),
+        "grotto": (.32, .38, .10, .00, .30),     # still, sacred, a little mysterious
+        "tension":(.18, .22, .00, .00, .95),     # finding the doll / Agnes: low pressure that builds
+        "police": (.12, .00, .00, .00, .55),     # serious, almost no melody: the real-world sounds carry it
+        "choice": (.10, .00, .00, .00, .50)}
 LAYERS = ["organ", "choir", "piano", "box", "pedal"]
 
 CR = 50  # control rate (Hz)
@@ -44,6 +51,7 @@ for s in segs:
     s["mood"] = m
     a, b = int(s["t0"] * CR), int((s["t0"] + s["dur"]) * CR)
     for k, g in zip(LAYERS, GAIN[m]): ctrl[k][a:b] = g
+hush = np.ones(nc)
 # each scene builds toward its end (cliffhanger) by up to +40 %
 scenes = {}
 for s in segs: scenes.setdefault(s["scene"], [s["t0"], 0]); scenes[s["scene"]][1] = s["t0"] + s["dur"]
@@ -57,10 +65,16 @@ build[int(scenes[max(scenes)][0] * CR):] *= 1.25
 def smooth(v, sec):
     k = int(sec * CR); c = np.cumsum(np.concatenate([np.zeros(k), v, np.full(k, v[-1])]))
     return (c[2 * k:] - c[:-2 * k])[:len(v)] / (2 * k) if k else v
-hush = np.ones(nc)
 for s in segs:
     for a, d in s.get("hush", []):
         hush[int((s["t0"] + a) * CR):int((s["t0"] + a + d) * CR)] = 0
+for s in segs:
+    if s.get("moves") and any(m.get("clip") for m in s["moves"]):          # Agnes peeks: tension build-up under her walk
+        a, b = int(s["t0"] * CR), int((s["t0"] + s["dur"]) * CR)
+        ramp = np.linspace(.6, 1.5, b - a)
+        for k_, g_ in zip(LAYERS, GAIN["tension"]): ctrl[k_][a:b] = g_ * ramp
+    for ts, amp in s.get("shakes", []):
+        i0 = int((s["t0"] + ts - .9) * CR); hush[max(0, i0):int((s["t0"] + ts) * CR)] = 0
 for k in LAYERS: ctrl[k] = smooth(ctrl[k] * build, 1.6)
 hush_s = np.minimum(hush, smooth(hush, .5))      # cut fast, come back softly
 for k in LAYERS: ctrl[k] = ctrl[k] * hush_s
@@ -68,7 +82,7 @@ def gain_at(layer, t): return float(ctrl[layer][min(nc - 1, int(t * CR))])
 def gain_curve(layer, t0, n): return np.interp(t0 + np.arange(n) / SR, np.arange(nc) / CR, ctrl[layer]).astype(np.float32)
 
 # two buses: music (organ, choir, piano, box) and effects (bells, hits, puff); music sits lower than the effects
-BUSES = {k: [np.zeros(N, np.float32), np.zeros(N, np.float32)] for k in ("music", "fx", "bell")}
+BUSES = {k: [np.zeros(N, np.float32), np.zeros(N, np.float32)] for k in ("music", "fx", "bell", "amb")}
 BUS = "music"
 def add(sig, t0, pan=0.0, vol=1.0):
     L, Rr = BUSES[BUS]
@@ -235,6 +249,64 @@ for s in segs:
         n = int(.35 * SR)
         add((rng.standard_normal(n) * np.exp(-np.arange(n) / SR * 9)).astype(np.float32), s["t0"] + 7.65, vol=.05)
 
+# ---------------- master revision: sound effects tied to the picture ----------------
+def bandnoise(n, lo, hi, seed=0):
+    x = np.random.default_rng(seed).standard_normal(n); X = np.fft.rfft(x); f = np.fft.rfftfreq(n, 1 / SR)
+    X[(f < lo) | (f > hi)] = 0; y = np.fft.irfft(X, n); return (y / (np.abs(y).max() + 1e-9)).astype(np.float32)
+def whoosh(dur=.6, seed=1):
+    n = int(dur * SR); t = np.linspace(0, 1, n)
+    env = np.sin(np.pi * np.clip(t / .75, 0, 1)) ** 2 * np.where(t > .75, np.exp(-(t - .75) * 14), 1)
+    return (bandnoise(n, 250, 5200, seed) * env).astype(np.float32)
+def click():
+    n = int(.06 * SR); t = np.arange(n) / SR
+    return (np.sin(2 * np.pi * 1350 * t) * np.exp(-t * 90) * .7 + np.sin(2 * np.pi * 2700 * t) * np.exp(-t * 160) * .25).astype(np.float32)
+def impact(dur=1.6):
+    n = int(dur * SR); t = np.arange(n) / SR
+    f = 30 + 30 * np.exp(-t * 5); body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 2.4)
+    return (body + .35 * bandnoise(n, 40, 400, 9) * np.exp(-t * 9)).astype(np.float32)
+def siren(dur, seed=3):   # far-off siren wail + police radio chatter + an idling engine
+    n = int(dur * SR); t = np.arange(n) / SR
+    f = 760 + 280 * np.sin(2 * np.pi * t / 1.7)
+    wail = np.sin(2 * np.pi * np.cumsum(f) / SR) * .25 * (np.clip(1 - t / dur, 0, 1) ** .5)
+    eng = np.sin(2 * np.pi * 31 * t) * (.5 + .5 * np.sin(2 * np.pi * 7 * t)) * .25 + bandnoise(n, 30, 160, seed) * .25
+    radio = np.zeros(n, np.float32); r = np.random.default_rng(seed)
+    for _ in range(int(dur / 4)):
+        a = int(r.uniform(.5, dur - 2) * SR); d = int(r.uniform(.8, 1.8) * SR)
+        burst = bandnoise(d, 500, 2800, int(a)) * (.5 + .5 * np.sign(np.sin(2 * np.pi * r.uniform(5, 9) * np.arange(d) / SR)))
+        radio[a:a + d] += burst * .45; radio[a:a + 300] += .8; radio[a + d - 300:a + d] += .6   # squelch clicks
+    return (wail + eng + radio).astype(np.float32)
+def water(dur, seed=4):   # canal lapping against stone steps, drips, soft wind
+    n = int(dur * SR); t = np.arange(n) / SR
+    lap = bandnoise(n, 60, 900, seed) * (.45 + .4 * np.sin(2 * np.pi * .35 * t) ** 2)
+    wind = bandnoise(n, 120, 700, seed + 1) * .25 * (.6 + .4 * np.sin(2 * np.pi * .08 * t))
+    out = lap + wind; r = np.random.default_rng(seed)
+    for _ in range(int(dur * .7)):
+        a = int(r.uniform(0, dur - .3) * SR); m = int(.25 * SR); tt = np.arange(m) / SR
+        out[a:a + m] += np.sin(2 * np.pi * r.uniform(1100, 2100) * tt * (1 - tt)) * np.exp(-tt * 22) * .4
+    return out.astype(np.float32)
+def kids(dur, seed=5):    # far-away schoolchildren fading out, wind, one gecko call
+    n = int(dur * SR); t = np.arange(n) / SR
+    chat = bandnoise(n, 300, 2600, seed) * (.5 + .5 * np.sin(2 * np.pi * 5.3 * t) * np.sin(2 * np.pi * 3.1 * t)) * np.clip(1 - t / dur, 0, 1) * .5
+    wind = bandnoise(n, 100, 600, seed + 2) * .2
+    out = chat + wind
+    g0 = int(min(dur - 1.6, dur * .6) * SR)
+    for k in range(4):   # "tok-kae": two-tone croak, repeated
+        a = g0 + int(k * .32 * SR); m = int(.16 * SR); tt = np.arange(m) / SR
+        tone = np.sign(np.sin(2 * np.pi * (330 if k % 2 == 0 else 260) * tt)) * np.exp(-tt * 18) * .35
+        out[a:a + m] += tone[:max(0, min(m, n - a))]
+    return out.astype(np.float32)
+BUS = "fx"
+for i_, s in enumerate(segs):
+    if s.get("zb"): add(whoosh(seed=i_), max(0, s["t0"] - .3), pan=0, vol=.5)               # zoom-blur cut
+    for ts, amp in s.get("shakes", []): add(impact(), s["t0"] + ts, vol=.9 * amp)            # bass hit on the shake
+BUS = "amb"
+for i_, s in enumerate(segs):
+    st = s.get("stage")
+    if st == "police": add(siren(s["dur"], i_), s["t0"], pan=-.3, vol=.22)
+    elif st == "grotto": add(water(s["dur"], i_), s["t0"], vol=.22)
+    elif st == "school": add(kids(s["dur"], i_), s["t0"], pan=.2, vol=.2)
+    for c in s.get("clicks", []): add(click(), s["t0"] + c, pan=.1, vol=.3)                  # choice UI clicks, dry and close
+
 # ---------------- stone-church reverb (FFT convolution, decorrelated L/R) ----------------
 def ir(seed, rt=3.6):
     n = int(rt * SR); t = np.arange(n) / SR; r = np.random.default_rng(seed)
@@ -252,35 +324,35 @@ def convolve(x, h, block=1 << 20):
 # levels (user): bells very loud and clear, scares at full level, music clearly underneath
 def wet(bus, dry=.62, rev=.55):
     l, r = BUSES[bus]; return dry * l + rev * convolve(l, ir(1)), dry * r + rev * convolve(r, ir(2))
-bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music")
+bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music"); al, ar = BUSES["amb"]
 # ---- dialogue (ElevenLabs takes listed in the timeline): per-line loudness matched, a touch of room, music ducks under it
 import subprocess
 vo = np.zeros(N, np.float32)
 for sg in TL["segments"]:
-    items = sg.get("vo", []) if sg["type"] == "video" else [[sh["t0"] + sh["vo"][0], sh["vo"][1], sh["vo"][2]] for sh in sg["shots"] if sh.get("vo")]
-    for at, _, f in items:
+    items = [list(v) + [0] * (4 - len(v)) for v in sg.get("vo", [])] if sg["type"] == "video" else [[sh["t0"] + sh["vo"][0], sh["vo"][1], sh["vo"][2], (sh["vo"][3] if len(sh["vo"]) > 3 else 0)] for sh in sg["shots"] if sh.get("vo")]
+    for at, _, f, gdb in items:
         fp = os.path.join(HERE, f)
         if not os.path.exists(fp): continue
         raw = subprocess.run(["ffmpeg", "-v", "error", "-i", fp, "-af", f"atempo={TL.get('vo_tempo', 1)}", "-f", "f32le", "-ac", "1", "-ar", str(SR), "-"], capture_output=True).stdout
         x = np.frombuffer(raw, np.float32).copy()
         if not len(x): continue
         rms = np.sqrt(np.mean(x[np.abs(x) > .01] ** 2)) if (np.abs(x) > .01).any() else 1
-        x *= .16 / max(rms, 1e-4)
+        x *= .16 / max(rms, 1e-4) * 10 ** (gdb / 20)    # one speech level, then the line's own loudness (whisper well under, a cry out above)
         i0 = int((sg["t0"] + at) * SR); i1 = min(N, i0 + len(x))
         if i0 < N: vo[i0:i1] += x[:i1 - i0]
 HAS_VO = np.abs(vo).max() > 0
 if HAS_VO:
     env = np.convolve(np.abs(vo), np.ones(int(.25 * SR), np.float32) / int(.25 * SR), "same")
-    duck = 1 - .5 * np.clip(env / .05, 0, 1)
+    duck = 1 - .6 * np.clip(env / .04, 0, 1)       # music steps well back under the voices
     ml, mr = ml * duck, mr * duck
-    vr = convolve(vo, ir(3, 1.2)); vol_, vor_ = .92 * vo + .1 * vr, .92 * vo + .1 * vr
+    vr = convolve(vo, ir(3, .45)); vol_, vor_ = .96 * vo + .035 * vr, .96 * vo + .035 * vr   # just a little room, no echo
 
 del BUSES
 bpk = max(np.abs(bl).max(), np.abs(br).max(), 1e-6)
 rest_pk = max(np.abs(ml).max(), np.abs(fl).max(), 1e-6)
 k = .95 / bpk                                    # bells reach full scale
-outL = bl * k + (fl * .80 + ml * .38) / rest_pk
-outR = br * k + (fr * .80 + mr * .38) / rest_pk
+outL = bl * k + (fl * .80 + ml * .38) / rest_pk + al * .9
+outR = br * k + (fr * .80 + mr * .38) / rest_pk + ar * .9
 if HAS_VO: outL, outR = outL + vol_, outR + vor_
 outL, outR = np.tanh(outL * 1.1) / np.tanh(1.1), np.tanh(outR * 1.1) / np.tanh(1.1)
 peak = max(np.abs(outL).max(), np.abs(outR).max())

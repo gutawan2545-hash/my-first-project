@@ -222,9 +222,11 @@ def acting(rng, stage):
                 if cid in have and not any(g[0] == cid and g[1] == typ for g in gest): gest.append([cid, typ])
     return walk, cry, gest
 
-_vo_rep = os.path.join(HERE, "vo_ep1", "report.json")
+_nat = os.path.join(HERE, "vo_ep1_nat", "report.json")
+VO_DIR = "vo_ep1_nat" if os.path.exists(_nat) and len(json.load(open(_nat))["lines"]) >= 240 else "vo_ep1"
+_vo_rep = os.path.join(HERE, VO_DIR, "report.json")
 VO = json.load(open(_vo_rep))["lines"] if os.path.exists(_vo_rep) else {}
-VO_TEMPO = .9                                   # user: voices a bit slower (pitch kept, ffmpeg atempo)
+VO_TEMPO = .95 if VO_DIR == "vo_ep1_nat" else .9   # natural dub: 95 % (user approved in the tests)
 for _v in VO.values(): _v["dur"] = round(_v["dur"] / VO_TEMPO, 2)
 VO_LEAD = .15                                   # voice starts this long after the cut
 DAY_SCENES = {2, 5, 6, 7, 8, 11, 12, 13}     # scenes set in daylight: bright sky, no darkness overlay, lighter grade
@@ -240,11 +242,11 @@ while n <= 287:
         rv, at = [], 1.0
         for rn in ROSA_SHOTS:
             v = VO.get(f"s{rn:03d}")
-            if v: rv.append([round(at, 2), v["dur"], f"vo_ep1/s{rn:03d}.mp3"]); at += v["dur"] + .6
+            if v: rv.append([round(at, 2), v["dur"], f"{VO_DIR}/s{rn:03d}.mp3"]); at += v["dur"] + .6
         segments.append({"type": "video", "file": "rosa_tears.mp4", "t0": T, "dur": 17.0, "scene": sc, "shots": list(ROSA_SHOTS), "bells": [], "vo": rv})
         T += 17.0; n = 20; continue
     rng, stage, crop, size, mv, desc = PANELS[sc][idx]
-    seg = {"type": "html", "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
+    seg = {"type": "html", "rng": rng, "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
            "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, []), "day": sc in DAY_SCENES}
     if seg["kind"] == "stage": seg["walk"], seg["cry"], seg["gest"] = acting(rng, stage)
@@ -254,7 +256,14 @@ while n <= 287:
         d = shot_dur(text, sfx)
         vo = VO.get(f"s{n:03d}")
         lead = 2.2 if ("ระฆัง" in sfx or "ตั๊ง" in sfx) else VO_LEAD   # let the bell strike first
-        if vo: d = max(1.6, lead + vo["dur"] + .45)   # the real line sets the length
+        if vo:   # the real line sets the length; the pause after it follows the talk (quick replies, longer after narration or before a silence)
+            nxt = parse_audio(ROWS[n + 1][2])[0] if n + 1 in ROWS else None
+            nxt_txt = ROWS[n + 1][2] if n + 1 in ROWS else ""
+            if speaker and nxt and nxt != speaker and cover.get(n + 1, (0, 0))[:2] == (sc, idx): tail = .28
+            elif speaker and nxt == speaker: tail = .32
+            elif "เงียบ" in nxt_txt or not nxt_txt.strip().startswith("**"): tail = .7
+            else: tail = .45
+            d = max(1.6, lead + vo["dur"] + tail)
         if "ระฆัง" in sfx or "ตั๊ง" in sfx:
             cnt = 6 if "หกครั้ง" in sfx else (1 if ("หนึ่งครั้ง" in sfx or "ตั๊ง" in sfx) else 3)
             vol = 1.35 if "สนั่น" in sfx else (.55 if ("เบาลง" in vis or "ไกล" in sfx) else 1.0)
@@ -262,10 +271,79 @@ while n <= 287:
         if n in STINGER_SHOTS: seg.setdefault("stingers", []).append(round(T - seg["t0"], 2))
         if "เงียบสนิท" in aud or "ดนตรีตัด" in sfx: silence_left = 3 if "ดนตรีตัด" in sfx else 1
         if silence_left > 0: seg.setdefault("hush", []).append([round(T - seg["t0"], 2), round(d, 2)]); silence_left -= 1
-        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([lead, vo["dur"], f"vo_ep1/s{n:03d}.mp3"] if vo else None)})
+        seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([lead, vo["dur"], f"{VO_DIR}/s{n:03d}.mp3", vo.get("gain", 0)] if vo else None)})
         T += d; n += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)
+
+# ---- direction pass (master revision): camera follows the speaker, entrances, peeks, shakes, transitions, grade ----
+exec(open(os.path.join(HERE, "sb_direct.py")).read())
+def stage_pos(stage):
+    out = {}
+    for m in re.finditer(r'<g transform="translate\(([-\d.]+),([-\d.]+)\) scale\(([-\d.]+)\)"><use href="#(sb_[A-Za-z0-9_]+)"/>', NS["ST"].get(stage, "")):
+        cid = POSE_CID.get(m.group(4), "").replace("mek_back", "mek")
+        if cid and cid not in out: out[cid] = (float(m.group(1)), float(m.group(2)), float(m.group(3)))
+    return out
+def frame(x, y, k, size):
+    H = 372 * k
+    h, cy = (H * .8, y + H * .27) if size == "cu" else (H * 1.34, y + H * .47)
+    h = min(h, 960); w = h * 9 / 16
+    return [round(min(max(x, w / 2), 540 - w / 2), 1), round(min(max(cy, h / 2), 960 - h / 2), 1), round(h, 1)]
+for seg in segments:
+    if seg["type"] != "html": continue
+    d = DIRECT.get(seg.get("rng"), {})
+    pos = stage_pos(seg["stage"]) if seg["kind"] == "stage" else {}
+    hidden = set(d.get("hide", []))
+    base = seg["crop"] or [270, 480, 960]
+    prev, spoken = None, 0
+    for i, sh in enumerate(seg["shots"]):
+        sp, cam = sh["speaker"], None
+        if seg["stage"] == "call" and sp == "mek": sh["stage"] = "call_mek"   # video call: whoever talks fills the phone screen
+        elif sp and sp in pos and sp not in hidden and sh.get("vo") and seg["kind"] == "stage":
+            x, y, k = pos[sp]; H = 372 * k
+            already = base[2] <= H * 1.75 and abs(base[0] - x) < base[2] * 9 / 32 - 20
+            establishing = i == 0 and len(seg["shots"]) >= 3 and base[2] >= 900
+            if not already and not establishing:
+                vtxt = (VO.get(f"s{sh['n']:03d}") or {}).get("text", "")
+                emo = sh["red"] or sp in seg.get("cry", []) or any(t in vtxt for t in ("[sobbing]", "[whispers]", "[crying]", "[tearful]"))
+                cam = frame(x, y, k, "cu" if (emo or (sh["vo"][1] > 5 and spoken % 2)) else "ms")
+            spoken += 1
+        if cam is None and prev is not None and sh["dur"] < 1.4 and not sp: cam = prev   # a very short beat holds the last framing
+        sh["cam"] = cam; prev = cam
+    # entrances / peeks: characters are not standing there waiting
+    moves = []
+    for cid, t, side, run in d.get("enter", []):
+        if cid not in pos: continue
+        x, y, k = pos[cid]; f = y + 372 * k; x0 = -70 if side == "left" else 610
+        ln = abs(x - x0) / (240 if run else 130)
+        moves.append({"cid": cid, "keys": [[t, x0, f, k], [t + ln, x, f, k]], "run": run, "hideBefore": t})
+    pk = d.get("peek")
+    if pk and pk["cid"] in pos:
+        x, y, k = pos[pk["cid"]]; f = y + 372 * k; x0d, y0d, x1d, y1d = pk["door"]
+        sc_ = min(1, seg["dur"] / 7.5)
+        xh, xp = x1d + 46 * k, x1d + 6 * k
+        wx, wf, wk = pk["walk"]
+        moves.append({"cid": pk["cid"], "run": False, "clip": [x0d, y0d, x1d - x0d, y1d - y0d + 40], "clipUntil": 4.6 * sc_,
+                      "keys": [[0, xh, f, k], [.9 * sc_, xh, f, k], [1.9 * sc_, xp, f, k], [3.3 * sc_, xp, f, k], [4.6 * sc_, x, f, k], [6.9 * sc_, wx, wf, wk]]})
+        seg["walk"] = [w for w in seg.get("walk", []) if w[0] != pk["cid"]]
+        if d.get("rack") and "mek" in pos:   # focus starts on Mek, then pulls to the doorway as she appears
+            mx, my, mk = pos["mek"]; seg["rack"] = [1.5 * sc_, frame(mx, my, mk, "ms")]
+    seg["walk"] = [w for w in seg.get("walk", []) if w[0] not in {m["cid"] for m in moves}]
+    if moves: seg["moves"] = moves
+    if hidden: seg["hide"] = sorted(hidden)
+    sk = []
+    for t, amp in d.get("shake", []):
+        if t == "bell": t = (seg["bells"][0][0] + .05) if seg["bells"] else 1.0
+        elif isinstance(t, str) and t.startswith("s"): t = next((s_["t0"] for s_ in seg["shots"] if s_["n"] == int(t[1:])), 0) + .1
+        sk.append([round(t, 2), amp])
+    if sk: seg["shakes"] = sk
+    if d.get("shade"): seg["shade"] = True
+    if seg.get("rng") in ZOOM_IN: seg["zb"] = True
+    agnes_on = "agnes" in pos and "agnes" not in hidden
+    seg["grade"] = "exact" if seg["kind"] == "exact" else GRADE.get(seg["stage"]) or ("agnes" if agnes_on and not seg["day"] else ("day" if seg["day"] else "base"))
+    if seg["stage"] == "question": seg["clicks"] = [1.2, 2.0, 2.8, 3.6]
+for seg in segments:
+    if seg["type"] == "video": seg["grade"] = "base"
 
 OUTRO = 2.6
 timeline = {"fps": 24, "total": round(T, 2), "outro": OUTRO, "vo_tempo": VO_TEMPO, "segments": segments}
@@ -290,7 +368,7 @@ motes.forEach((m, i) => {
 });
 document.querySelectorAll('.lmotes').forEach(e => e.setAttribute('display', 'none'));
 function setTalk(seg, shot, on) {
-  const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
+  const g = seg.kind === 'stage' ? $('st_' + (shot.stage || seg.stage)) : null; if (!g) return;
   g.querySelectorAll('use').forEach(u => {
     const h = (u.getAttribute('href') || '').slice(1); if (!h.startsWith('sb_')) return;
     const base = h.replace(/_talk$/, ''), cid = POSE_CID[base];
@@ -304,6 +382,7 @@ function poseDefs(cidWanted) {        // pose defs (plain and _talk) belonging t
 }
 function setActs(seg) {
   ACT.mods.forEach(([el, attr, v]) => v === null ? el.removeAttribute(attr) : el.setAttribute(attr, v)); ACT.mods = []; ACT.inst = [];
+  (ACT.added || []).forEach(e => e.remove()); ACT.added = []; ACT.moves = [];
   const mod = (el, attr) => ACT.mods.push([el, attr, el.getAttribute(attr)]);
   setBodies(seg, mod);
   (seg.cry || []).forEach(c => poseDefs(c).forEach(d => d.querySelectorAll('.cry').forEach(g => { mod(g, 'display'); g.setAttribute('display', 'inline'); })));
@@ -321,6 +400,49 @@ function setActs(seg) {
     });
     const x = +m[1], y = +m[2], k = +m[3];
     ACT.inst.push({ tg, sh, x, y, k, mode, run, legs, arms, off: (x < 270 ? -1 : 1) * 140 });
+  });
+  const findInst = c => {
+    const u = [...g.querySelectorAll('use')].find(u => { const h = (u.getAttribute('href') || '').slice(1).replace(/_talk$/, ''); return (POSE_CID[h] || '').replace('mek_back', 'mek') === c; });
+    if (!u) return null;
+    const tg = u.parentNode, m = /translate\(([-\d.]+),([-\d.]+)\) scale\(([-\d.]+)\)/.exec(tg.getAttribute('transform') || ''); if (!m) return null;
+    const outer = tg.parentNode.parentNode, sh = outer.previousElementSibling && outer.previousElementSibling.tagName === 'ellipse' ? outer.previousElementSibling : null;
+    return { tg, outer, sh, x: +m[1], y: +m[2], k: +m[3] };
+  };
+  (seg.hide || []).forEach(c => { const I = findInst(c); if (!I) return; [I.outer, I.sh].forEach(e => { if (e) { mod(e, 'display'); e.setAttribute('display', 'none'); } }); });
+  ACT.moves = [];
+  (seg.moves || []).forEach(mv => {
+    const I = findInst(mv.cid); if (!I) return;
+    [I.tg, I.sh].forEach(e => e && mod(e, 'transform')); [I.outer, I.sh].forEach(e => e && mod(e, 'display')); mod(I.outer, 'clip-path');
+    const legs = [], arms = [];
+    poseDefs(mv.cid).forEach(d => {
+      d.querySelectorAll('[id$="-legL"],[id$="-legR"]').forEach(l => { mod(l, 'transform'); legs.push([l, l.id.endsWith('L') ? 1 : -1, (l.dataset.pivot || '0,182').split(',').map(Number)]); });
+    });
+    let clipId = null;
+    if (mv.clip) {
+      clipId = 'mvclip' + Math.random().toString(36).slice(2, 8);
+      const cp = document.createElementNS(NS, 'clipPath'); cp.setAttribute('id', clipId); cp.setAttribute('clipPathUnits', 'userSpaceOnUse');
+      const r = document.createElementNS(NS, 'rect'); const [cx, cy, cw, ch] = mv.clip; r.setAttribute('x', cx); r.setAttribute('y', cy); r.setAttribute('width', cw); r.setAttribute('height', ch);
+      cp.appendChild(r); g.appendChild(cp); ACT.added.push(cp);
+    }
+    ACT.moves.push({ ...I, ...mv, legs, clipId, f0: I.y + 372 * I.k });
+  });
+}
+ACT.added = [];
+function moveFrame(seg, t) {
+  (ACT.moves || []).forEach(m => {
+    const K = m.keys; let i = 0; while (i < K.length - 1 && t > K[i + 1][0]) i++;
+    const a = K[i], b = K[Math.min(i + 1, K.length - 1)], span = Math.max(1e-3, b[0] - a[0]);
+    const p = t <= a[0] ? 0 : t >= b[0] ? 1 : sm((t - a[0]) / span);
+    const x = a[1] + (b[1] - a[1]) * p, f = a[2] + (b[2] - a[2]) * p, k = a[3] + (b[3] - a[3]) * p;
+    const moving = t > a[0] && t < b[0] && (Math.abs(b[1] - a[1]) + Math.abs(b[2] - a[2])) > 2;
+    const cyc = t * (m.run ? 2.6 : 1.6) * Math.PI * 2, sw = moving ? Math.sin(cyc) : 0, A = m.run ? 28 : 18;
+    const bob = moving ? -Math.abs(Math.sin(cyc)) * (m.run ? 8 : 4) * k : 0;
+    m.tg.setAttribute('transform', `translate(${x.toFixed(1)},${(f - 372 * k + bob).toFixed(1)}) scale(${k.toFixed(4)})`);
+    if (m.sh) m.sh.setAttribute('transform', `translate(${(x - m.x).toFixed(1)},${(f - m.f0).toFixed(1)})`);
+    m.legs.forEach(([l, sg, [px, py]]) => l.setAttribute('transform', `rotate(${(sw * A * sg).toFixed(1)} ${px} ${py})`));
+    const hid = m.hideBefore !== undefined && t < m.hideBefore;
+    m.outer.setAttribute('display', hid ? 'none' : 'inline'); if (m.sh) m.sh.setAttribute('display', hid ? 'none' : 'inline');
+    if (m.clipId && t < m.clipUntil) m.outer.setAttribute('clip-path', `url(#${m.clipId})`); else m.outer.removeAttribute('clip-path');
   });
 }
 function walkFrame(seg, t) {
@@ -408,6 +530,12 @@ window.render = function (si, t) {
     document.querySelectorAll('rect[mask^="url(#lm_"]').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
     document.querySelectorAll('.lglow').forEach(r => r.setAttribute('display', seg.day ? 'none' : 'inline'));
     $('gMul').setAttribute('opacity', seg.day ? .16 : .42); $('gSoft').setAttribute('opacity', seg.day ? .05 : .14); $('gVig').setAttribute('opacity', seg.day ? .45 : 1); $('grain').style.display = 'none';  // grain off (user: file too heavy)
+    // cinematic grade per kind of scene (user): night cool blue-grey with readable shadows, flashback warm and faded, Agnes cooler with more contrast
+    const G = { night: ['#cdd4f4', .42, '#4a5cb0', .16, 'saturate(1.02) brightness(1.03) contrast(1.08)'],
+                flash: ['#f2e0c8', .30, '#a07850', .12, 'sepia(.22) saturate(.82) brightness(1.05) contrast(.95)'],
+                agnes: ['#d6dbf4', .40, '#5a66b4', .15, 'saturate(1.0) brightness(1.02) contrast(1.1)'] }[seg.grade];
+    $('gMul').setAttribute('fill', G ? G[0] : '#e2dcfa'); $('gSoft').setAttribute('fill', G ? G[2] : '#6c64b0');
+    if (G) { $('gMul').setAttribute('opacity', G[1]); $('gSoft').setAttribute('opacity', G[3]); $('viewWrap').style.filter = G[4]; }
     $('chipText').textContent = seg.chip; $('chip').style.display = seg.chip ? '' : 'none';
     if (seg.chip) $('chipBox').setAttribute('width', 14 + seg.chip.length * 7.4);
   }
@@ -435,6 +563,24 @@ window.render = function (si, t) {
   let a = 0;
   if (card) { const ct = lt - card.t0; a = Math.min(1, ct / .15, (card.dur - ct) / .15); }
   $('sub').setAttribute('opacity', Math.max(0, a).toFixed(3));
+  // which set is on screen (the video call swaps to Mek's camera while he talks)
+  const wantSrc = seg.kind === 'stage' ? '#st_' + (shot.stage || seg.stage) : null;
+  if (wantSrc && $('viewUse').getAttribute('href') !== wantSrc) $('viewUse').setAttribute('href', wantSrc);
+  // framing follows the speaker: medium / close on whoever talks, eased pan between them (no jumps)
+  const camOf = i => (seg.shots[i] && seg.shots[i].cam) || seg.crop || [270, 480, 960];
+  let [ccx, ccy, ch] = camOf(shotIdx);
+  if (shotIdx > 0 && !shot.stage && !(seg.shots[shotIdx - 1] || {}).stage) {
+    const pc = camOf(shotIdx - 1);
+    if (pc[0] !== ccx || pc[1] !== ccy || pc[2] !== ch) { const q = sm(lt / .7); ccx = pc[0] + (ccx - pc[0]) * q; ccy = pc[1] + (ccy - pc[1]) * q; ch = pc[2] + (ch - pc[2]) * q; }
+  }
+  let rackBlur = 0;
+  if (seg.rack) {   // focus on Mek first, then pull to the doorway as Agnes shows herself
+    const [ts, mc] = seg.rack, q = sm((t - ts) / .9);
+    if (t < ts + .9) { ccx = mc[0] + (ccx - mc[0]) * q; ccy = mc[1] + (ccy - mc[1]) * q; ch = mc[2] + (ch - mc[2]) * q; rackBlur = 2.2 * Math.sin(Math.PI * q); }
+  }
+  if (shot.stage) [ccx, ccy, ch] = [270, 480, 960];
+  const cw = ch * 9 / 16;
+  $('view').setAttribute('viewBox', `${(ccx - cw / 2).toFixed(1)} ${(ccy - ch / 2).toFixed(1)} ${cw.toFixed(1)} ${ch.toFixed(1)}`);
   // camera
   const p = Math.min(1, t / Math.max(seg.dur, .1)), e = ease(p);
   let s = 1 + .02 * e, tx = 0, ty = 0;
@@ -445,10 +591,33 @@ window.render = function (si, t) {
   else if (seg.move === 'tilt-u') { s = 1.08; ty = -34 + 68 * e; }
   else if (seg.move === 'tilt-d') { s = 1.08; ty = 34 - 68 * e; }
   else if (seg.move === 'shake') { s = 1.04; const k = Math.max(0, 1 - t / .8); tx = Math.sin(t * 61) * 5 * k; ty = Math.cos(t * 47) * 4 * k; }
+  // short shakes on the twists, with a bass hit in the sound; still before, still after
+  (seg.shakes || []).forEach(([ts, amp]) => { if (t >= ts && t < ts + 1.1) { const k = amp * Math.exp(-(t - ts) * 4.5); tx += Math.sin(t * 71) * 7 * k; ty += Math.cos(t * 53) * 6 * k; } });
+  // zoom-blur transition into this segment / out to the next
+  const nx = TL.segments[si + 1];
+  let zb = 0;
+  if (seg.zb && t < .32) zb = 1 - t / .32;
+  if (nx && nx.zb && seg.dur - t < .28) zb = Math.max(zb, 1 - (seg.dur - t) / .28);
+  s *= 1 + .28 * zb * zb;
   $('cam').setAttribute('transform', `translate(${270 + tx},${480 + ty}) scale(${s.toFixed(4)}) translate(-270,-480)`);
+  const blur = Math.max(rackBlur, 7 * zb * zb);
+  $('cam').style.filter = blur > .05 ? `blur(${blur.toFixed(2)}px)` : 'none';
+  // the figure in the belfry: fades in beside the bell, holds, slides away into the dark
+  if (seg.shade && $('towerShade')) {
+    const o = sm((t - .8) / .9) * (1 - sm((t - 3.1) / 1.7));
+    $('towerShade').setAttribute('opacity', o.toFixed(3));
+    $('towerShadeFig').setAttribute('transform', `translate(${(40 * sm((t - 2.9) / 1.9)).toFixed(1)},0)`);
+  } else if ($('towerShade')) $('towerShade').setAttribute('opacity', 0);
+  // ending choice: the highlight steps A, B, A, B with a click each time, then both wait for the viewer
+  if (seg.stage === 'question' && $('optAglow')) {
+    const n = (seg.clicks || []).filter(c => t >= c).length, on = n === 0 || n > 4 ? '' : (n % 2 ? 'A' : 'B');
+    ['A', 'B'].forEach(o => { const hi = on === o; $('opt' + o + 'glow').setAttribute('opacity', hi ? (.75 + .25 * Math.sin(t * 9)).toFixed(2) : 0);
+      $('opt' + o + 'arrow').setAttribute('opacity', hi ? 1 : 0); $('opt' + o + 'box').setAttribute('stroke', hi ? '#c9a8ff' : '#6a5a9a'); $('opt' + o + 'box').setAttribute('fill', hi ? '#2a2040' : '#1a1426'); });
+    $('qCta').setAttribute('opacity', n > 4 ? (.65 + .35 * Math.sin(t * 3)).toFixed(2) : .85);
+  }
   // dust
   const gt = seg.t0 + t;
-  const [vcx, vcy, vh] = seg.crop || [270, 480, 960], vk = 960 / vh, vx0 = vcx - vh * 9 / 32, vy0 = vcy - vh / 2;
+  const [vcx, vcy, vh] = [ccx, ccy, ch], vk = 960 / vh, vx0 = vcx - vh * 9 / 32, vy0 = vcy - vh / 2;
   const L = (seg.lights || []).map(([x, y, r]) => [(x - vx0) * vk, (y - vy0) * vk, r * vk]);
   motes.forEach((m, i) => {
     const x = (((m.x + gt * m.vx + Math.sin(gt * .23 + m.ph) * 14) % 540) + 540) % 540;
@@ -459,17 +628,18 @@ window.render = function (si, t) {
     g.firstChild.setAttribute('opacity', (lit * .55 * tw).toFixed(3));
     g.lastChild.setAttribute('opacity', ((m.far ? .12 : .16) + lit * (m.far ? .35 : .75) * tw).toFixed(3));
   });
-  $('motes').style.display = (seg.kind === 'stage' && L.length) ? '' : 'none';
+  $('motes').style.display = (seg.kind === 'stage' && L.length && !seg.stage.startsWith('call')) ? '' : 'none';
   // grain off: no per-frame seed
   // dip to black at scene changes
   const prev = TL.segments[si - 1], next = TL.segments[si + 1];
   let fade = 0;
-  if (prev && prev.scene !== seg.scene) fade = Math.max(fade, 1 - t / .35);
-  if (next && next.scene !== seg.scene) fade = Math.max(fade, 1 - (seg.dur - t) / .35);
+  if (prev && prev.scene !== seg.scene && !seg.zb) fade = Math.max(fade, 1 - t / .35);
+  if (next && next.scene !== seg.scene && !next.zb) fade = Math.max(fade, 1 - (seg.dur - t) / .35);
   $('fade').setAttribute('opacity', Math.max(0, Math.min(1, fade)).toFixed(3));
   bodyFrame(seg, t, gt, shot, talking);
   clockFrame(seg, t);
   walkFrame(seg, t);
+  moveFrame(seg, t);
   stage.setCurrentTime(gt);
 };
 window.TL = TL;
