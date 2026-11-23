@@ -83,12 +83,17 @@ else:
     voices = json.loads(pathlib.Path("el/voices.json").read_text()) if pathlib.Path("el/voices.json").exists() else VOICE
     for n, i, who, text in lines():
         key = f"s{n:02d}_{i}"; final = f"vo_el/{key}.wav"
-        if os.path.exists(final):
+        if report.get(key, {}).get("text") == text and os.path.exists(final):
             continue
+        prev = next((k for k, v in report.items() if isinstance(v, dict) and v.get("text") == text and v.get("who") == who and os.path.exists(f"vo_el_prev/{k}.wav")), None)
+        if prev:                                             # ข้อความเดิม ใช้เสียงเดิม ไม่เสียเครดิต
+            subprocess.run(["cp", f"vo_el_prev/{prev}.wav", final], check=True)
+            report[key] = dict(report[prev]); print(key, "reuse", prev); continue
         takes = []
         for take, stab in enumerate([0.5, 0.5, 1.0], 1):
             path = f"el/{key}_t{take}.mp3"
-            err = tts(voices[who], TAG[who] + text, path, stab)
+            tag = "[singing] " if "โอ้ละหนอ" in text else ("[amazed] " if "ครั้งแรกของโลก" in text else TAG[who])
+            err = tts(voices[who], tag + text, path, stab)
             if err:
                 print(key, "ERROR", err); break
             heard = stt(path); sc = difflib.SequenceMatcher(None, norm(text), norm(heard or "")).ratio() if heard else None

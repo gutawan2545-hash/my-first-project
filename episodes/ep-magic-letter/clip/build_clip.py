@@ -80,10 +80,10 @@ for sh in shots:
     for i, (who, text) in enumerate(sh["turns"]):
         a = say(f"s{sh['n']:02d}_{i}", who, text)
         clips.append(dict(who=who, text=text, at=cur, len=len(a) / SR, audio=a))
-        cur += len(a) / SR + 0.08
-    d = max(sh["dur"] * 0.9, cur + 0.35)
+        cur += len(a) / SR + 0.06
+    d = max(sh["dur"] * 0.7, cur + 0.35)
     if sh["n"] == 2:                               # ให้มีเวลาไก่ขันแล้วซิ่งล้ม
-        d = max(d, cur + 2.3)
+        d = max(d, cur + 1.9)
     if sh["n"] == len(shots):
         d += 1.2                                   # ค้างการ์ดโหวตให้ตัดสินใจ
     plan.append(dict(n=sh["n"], start=t, dur=round(d, 2), clips=clips))
@@ -164,15 +164,15 @@ def isan(t0, t1, bpm=138):
         tt += b; k += 1
 s = {p["n"]: p for p in plan}
 C = 261.6
-groove(0, s[8]["start"], 124)
-groove(s[9]["start"], s[11]["start"] + .1, 124, 9/8, bells=True)
-isan(s[11]["start"], s[14]["start"])
-cut14 = s[14]["start"] + s[14]["clips"][-1]["at"] - 0.1
+groove(0, s[7]["start"], 124)
+groove(s[8]["start"], s[10]["start"] + .1, 124, 9/8, bells=True)
+isan(s[10]["start"], s[13]["start"] + 1.2)
+cut14 = s[13]["start"] + s[13]["clips"][-1]["at"] + s[13]["clips"][-1]["len"]
 for i, f in enumerate([C, C*9/8, C*5/4, C*4/3, C*3/2, C*5/3]):
-    a = s[14]["start"] + i * 0.45
+    a = s[13]["start"] + 1.2 + i * 0.45
     if a < cut14:
         add(music, tone(f, 0.8, "saw", 1.4) * 0.22, a, .35); hat(a, .06)
-groove(s[15]["start"] + 0.2, TOTAL, 118, light=True)
+groove(s[14]["start"] + 0.2, TOTAL, 118, light=True)
 
 # เสียงประกอบ
 sfx = np.zeros(N, np.float32)
@@ -208,14 +208,15 @@ crow(_cr); thud(_cr + .38)
 for k in range(5): add(sfx, (np.random.randn(int(.04*SR))*np.exp(-np.arange(int(.04*SR))/SR*60)).astype(np.float32), _cr + .42 + k*.08, .35)   # ปีกตีพั่บ ๆ
 thud(_cr + .86); crow(_cr + .95)
 for i in range(3): add(sfx, tone(1500 + 300*i, .3, "sine", 8), s[3]["start"] + .3 + i*.12, .12)
-ding(s[4]["start"] + s[4]["clips"][-1]["at"])
-boing(s[5]["start"] + .6); ding(s[6]["start"] + .5, 2200)
-whoosh(s[8]["start"] - .4, 1.3)
-sparkle(s[10]["start"] + .3); clack(s[10]["start"] + s[10]["dur"] - 1.0)
-khaen(s[11]["start"] + .1)
+boing(s[4]["start"] + s[4]["clips"][-1]["at"] + 1.2); ding(s[5]["start"] + .5, 2200)
+whoosh(s[7]["start"] - .4, 1.3)
+sparkle(s[9]["start"] + .3); clack(s[9]["start"] + s[9]["dur"] - 1.0)
+khaen(s[10]["start"] + .1)
+for st in (2, 4, 8, 10, 12):                                   # ป๊อปตอนขึ้นขั้นใหม่
+    add(sfx, tone(880, .12, "sine", 18), s[st]["start"] + .05, .35); add(sfx, tone(1320, .15, "sine", 14), s[st]["start"] + .12, .3)
 VOTE_STEP = 0.75
-for i in range(int((s[15]["dur"] - .4) / VOTE_STEP)):
-    click(s[15]["start"] + .3 + i * VOTE_STEP)
+for i in range(int((s[14]["dur"] - .4) / VOTE_STEP)):
+    click(s[14]["start"] + .3 + i * VOTE_STEP)
 
 def rms(x):
     m = np.abs(x) > 1e-4; return float(np.sqrt(np.mean(x[m]**2))) if m.any() else 1e-6
@@ -262,7 +263,7 @@ for p in plan:
 inputs = sum((["-i", f] for f in segs), [])
 fc = ""; prev = "[0:v]"; tt = plan[0]["dur"]
 for i in range(1, len(segs)):
-    trans = "zoomin" if plan[i]["n"] == 8 else "fade"
+    trans = "zoomin" if plan[i]["n"] == 7 else "fade"
     xd = .45 if trans == "zoomin" else XF
     off = tt - xd
     fc += f"{prev}[{i}:v]xfade=transition={trans}:duration={xd}:offset={off:.3f}[x{i}];"

@@ -55,7 +55,7 @@ for sh in TL:
 s2 = TL[1]["lines"][0]; CROW = s2[2] + s2[3] + 0.05
 
 # ท่าเดินเข้าเฟรม: ช็อต: [(href, ระยะเริ่ม (หน่วยในตัวละคร), วินาที)]
-WALK = {4: [("#c_sing", 420, 1.0)], 11: [("#c_ton", -560, 1.1)], 12: [("#c_draco", -420, .9)]}
+WALK = {10: [("#c_ton", -560, 1.1)]}
 
 html = (EP / "storyboard.html").read_text()
 head = html.split('<div class="wrap">')[0]
@@ -117,7 +117,9 @@ window.setShot = function (n, f) {{
     const h = u.getAttribute("href"), ph = +u.dataset.ph;
     let extra = ` scale(1,${{(1 + 0.007 * Math.sin(2 * Math.PI * t / 2.8 + ph)).toFixed(4)}})`;
     const w = (WALK[n] || []).find(x => x[0] === h);
-    if (n === 8) extra = ` rotate(${{t * 420}},0,-260) scale(${{Math.max(0.2, 1 - 0.3 * t)}})`;
+    if (n === 7) extra = ` rotate(${{t * 420}},0,-260) scale(${{Math.max(0.2, 1 - 0.3 * t)}})`;
+    if (n === 11 && h !== "#c_ton") extra += ` rotate(${{(7 * Math.sin(t * 2 * Math.PI * 1.15 + ph)).toFixed(2)}},0,-120) translate(0,${{(-10 * Math.abs(Math.sin(t * 2 * Math.PI * 1.15 + ph))).toFixed(1)}})`;
+    if (n === 11 && h === "#c_ton") extra += ` translate(0,${{(-6 * Math.abs(Math.sin(t * 2 * Math.PI * 1.15))).toFixed(1)}})`;
     if (h === "#c_hat") extra += ` rotate(${{3 * Math.sin(t * 5)}},0,0)`;
     if (w) {{
       const p = Math.min(1, t / w[2]), dx = w[1] * (1 - ease(p)), walking = p < 1;
@@ -139,6 +141,11 @@ window.setShot = function (n, f) {{
     if (a === "tuk") {{
       const w = -14 + 3.5 * Math.sin(t * 2 * Math.PI * 1.6), b = 3 * Math.abs(Math.sin(t * 2 * Math.PI * 3.2));
       g.setAttribute("transform", `translate(300,${{620 - b}}) rotate(${{w}})`);
+    }}
+    if (a === "beam") {{
+      const k = +g.dataset.ph, ang = 14 * Math.sin(t * 1.6 + k * 1.7);
+      const x0 = [90, 200, 340, 450][k] || 270;
+      g.setAttribute("transform", `rotate(${{ang.toFixed(2)}},${{x0}},-20)`);
     }}
     if (a === "carry") {{
       const p = Math.min(1, t / +g.dataset.t), dx = +g.dataset.dx * (1 - ease(p));

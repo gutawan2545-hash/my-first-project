@@ -1,4 +1,4 @@
-# สร้าง storyboard.html: สตอรี่บอร์ดเต็มทั้งคลิป (ตาม script.md v10) เฟรม 9:16 (540x960)
+# สร้าง storyboard.html: สตอรี่บอร์ดเต็มทั้งคลิป (ตาม script.md v12e) เฟรม 9:16 (540x960)
 # ฉากละเอียด มีเฟอร์นิเจอร์และของประกอบเยอะ · กรุงเทพโทนสว่างพาสเทล · โลกเวทมนตร์กลางคืน
 # เม็ดฟิล์มละเอียดเฉพาะพื้นหลัง เห็นชัดขึ้นในบริเวณสีเข้ม (blend แบบ screen)
 # ใช้ตัวละครจาก cast.html (ดึงบล็อก <defs> มาใช้ซ้ำ ไม่วาดหน้าใหม่)
@@ -806,6 +806,75 @@ PANELS = [
   ("15", "3.5", p13, "การ์ดโหวต", "ไฮไลต์วน A → B → C → D ตัวที่เลือกขึ้นสีบ้าน ตัวอื่นสีเทา · ไม่เฉลย", "เสียงคลิกทุกครั้งที่สลับ · ต่อด้วยโลโก้ปิดท้าย 2.6 วิ"),
 ]
 
+# ===== บท v12e: 5 ขั้นตอน · ตัดอาม้าและเดรโก · ฉากหมอลำ =====
+STEPS = ["รับจดหมาย", "เดินทางเข้าโลกเวทมนตร์", "ซื้อไม้กายสิทธิ์", "หาเพื่อนใหม่", "คัดบ้าน"]
+def set_badge(svg, text):
+    return re.sub(r'<g data-ui="1" transform="translate\(22,26\)">.*?</text></g>', badge(text).replace("\n", ""), svg, count=1, flags=re.S)
+def stepb(k): return f"ขั้นที่ {k}/5 · {STEPS[k-1]}"
+
+p1 = swap_subs(p1, "ถ้าวันหนึ่งคุณได้จดหมายเข้าเรียน", ["ถ้าวันหนึ่งคุณได้จดหมายเข้าเรียน", "จากฮอกวอตส์ ต้องผ่านห้าขั้นนี้ครับ"], ["If one day you got a letter from Hogwarts,", "here are the five steps."])
+p2 = swap_subs(p2, "จดหมายของผมมากับไก่ชน", ["ขั้นแรก รับจดหมาย", "จดหมายของผมมากับไก่ชน… ตอนตีห้า!"], ["Step one: get the letter.", "Mine came by fighting rooster\u2026 at 5 a.m.!"])
+p2 = set_badge(p2, stepb(1)); p3 = set_badge(p3, stepb(1))
+p5 = swap_subs(p5, "ลุงโตภารโรงโรงเรียนมารับด้วยตุ๊กตุ๊ก", ["ขั้นที่สอง เดินทางเข้าโลกเวทมนตร์", "ลุงโตมารับด้วยตุ๊กตุ๊ก", "ลุงนั่งปุ๊บ หัวรถลอยปั๊บ"], ["Step two: travel to the magic world. Uncle To", "came in a tuk-tuk. He sat, the front went up."])
+for v in ("p5", "p6d", "p6"):
+    globals()[v] = set_badge(globals()[v], stepb(2))
+p8 = swap_subs(p8, "ไม้กายสิทธิ์จ้า สามอันร้อย", ["ขั้นที่สาม ซื้อไม้กายสิทธิ์", "(ป้าแต๋ว) ไม้กายสิทธิ์จ้า สามอันร้อย", "เลือกเลยจ้า!"], ["Step three: buy a wand.", "(Vendor) Magic wands, three for a hundred!"])
+p8 = set_badge(p8, stepb(3)); p9 = set_badge(p9, stepb(3))
+p10 = swap_subs(p10, "เสี่ยว! ของข้อยได้", ["ขั้นที่สี่ หาเพื่อนใหม่", "(ต้น) ครั้งแรกของโลก… ครั้งแรกของโลกใบนี้", "สิพ้อเหตุการณ์แนวนี้ ขนคิงลุกยาบ ๆ!", "เสี่ยว! ของข้อยได้ไม้ข้าวเหนียวปิ้ง!"], ["Step four: make a friend. (Ton) First time on this earth", "seeing this, goosebumps! Mine\u2019s a sticky-rice stick!"])
+p10 = set_badge(p10, stepb(4)).replace("เสี่ยวว!", "ขนคิงลุก!").replace("ไม้ข้าวเหนียวปิ้ง\", \"ไม้กายสิทธิ์ของต้น", "ครั้งแรกของโลก!\", \"สิพ้อ = จะได้เจอ")
+p10 = p10.replace('{EYE}', '{EYE}') 
+goose = '<g data-ui="1">' + "".join(f'<path d="M {x},{y} l {dx},{dy}" stroke="#fff4d0" stroke-width="3" stroke-linecap="round"/>' for x, y, dx, dy in [(120,330,-14,-10),(116,360,-18,0),(124,390,-14,10),(240,330,14,-10),(244,360,18,0),(236,390,14,10)]) + '</g>'
+broom_fly = '<g transform="translate(250,190) rotate(-10)"><rect x="-60" y="-3" width="120" height="6" fill="#9a7444"/><path d="M 60,-10 L 92,0 L 60,10 Z" fill="#c9a26a"/><path d="M -20,-4 L -8,-34 L 4,-4 Z" fill="#2a2440"/><circle cx="-8" cy="-40" r="8" fill="#2a2440"/><path d="M -18,-42 L 2,-42 L -6,-62 Z" fill="#2a2440"/></g>'
+p10 = p10.replace('<g data-ui="1" transform="translate(22,26)">', goose + broom_fly + '<g data-ui="1" transform="translate(22,26)">', 1)
+
+beams = "".join(f'<path data-anim="beam" data-ph="{i}" d="M {x},-20 L {x-60},960 L {x+60},960 Z" fill="{c}" opacity=".22" style="mix-blend-mode:screen"/>' for i, (x, c) in enumerate([(90, "#ff5aa8"), (200, "#b18cff"), (340, "#5ad8ff"), (450, "#ff5aa8")]))
+balls = "".join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{c}" opacity=".85"/><circle cx="{x}" cy="{y}" r="{r*2.4}" fill="{c}" opacity=".18"/>' for x, y, r, c in [(70,150,7,"#ff5aa8"),(170,110,6,"#5ad8ff"),(270,160,8,"#ffd84a"),(370,105,6,"#b18cff"),(470,150,7,"#5ad8ff"),(120,240,5,"#ffd84a"),(420,240,5,"#ff5aa8")])
+pmor = frame(f'''{Z(great_hall(), 1.5, 620)}
+  <rect width="540" height="960" fill="#2a0a3a" opacity=".35"/>
+  {balls}{beams}
+  <g transform="translate(270,300)"><path d="M -170,0 L 170,0 L 160,46 L -160,46 Z" fill="#c8243a"/><path d="M -170,0 L 170,0 L 170,8 L -170,8 Z" fill="#f0cc60"/>
+    <text y="34" text-anchor="middle" {TH} font-size="24" font-weight="700" fill="#ffe08a">หมอลำซิ่ง · คืนแรก</text></g>
+  <rect x="0" y="690" width="540" height="40" fill="#3a2030"/><rect x="0" y="690" width="540" height="6" fill="#f0cc60"/>
+  <g transform="translate(36,690)"><rect x="-26" y="-120" width="52" height="120" rx="4" fill="#1a1a20"/><circle cy="-80" r="16" fill="#3a3a44"/><circle cy="-34" r="20" fill="#3a3a44"/></g>
+  <g transform="translate(504,690)"><rect x="-26" y="-120" width="52" height="120" rx="4" fill="#1a1a20"/><circle cy="-80" r="16" fill="#3a3a44"/><circle cy="-34" r="20" fill="#3a3a44"/></g>
+  <g transform="translate(120,690) scale(.62)"><use href="#c_harry"/></g><g transform="translate(420,690) scale(.62)"><use href="#c_hermione"/></g><g transform="translate(470,700) scale(.62)"><use href="#c_ron"/></g>
+  {shadow(270, 780, 80)}
+  <g transform="translate(270,790) scale(.95)"><use href="#c_ton"/></g>
+  <g transform="translate(232,520) rotate(-30)"><path d="M 0,60 L 0,-20" stroke="#d8c09a" stroke-width="5" stroke-linecap="round"/><rect x="-12" y="-44" width="24" height="44" rx="10" fill="#e8d4a8"/><path d="M -8,-36 L 8,-32 M -8,-24 L 8,-20" stroke="#b8844a" stroke-width="3"/><circle cy="-22" r="36" fill="url(#portal)" opacity=".5"/></g>
+  {pop(30, 210, "ม่วนอีหลี!", 36, -8)}
+  {badge(stepb(4))}{EYE}
+  {subs(["(ซิ่ง) คืนแรก เพื่อนใหม่ผมเสกห้องโถง", "ให้กลายเป็นเวทีหมอลำ", "(ต้น) โอ้ละหนอ… ม่วนอีหลีเด้อพี่น้อง!"], ["(Sing) First night, my friend turned the hall into a mor lam stage.", "(Ton) Oh la nor\u2026 let\u2019s party, everyone!"])}''')
+
+p13t = swap_subs(p13t, "(หมวก) หัวนี้มีแต่ส้มตำ", ["ขั้นสุดท้าย คัดบ้าน", "(หมวก) หัวนี้มีแต่ส้มตำ… ฮัฟเฟิลพัฟ!", "(ต้น) ตำปลาแดกเด้อหมวก บ่แม่นตำไทย!"], ["Final step: the sorting. (Hat) All papaya salad\u2026 Hufflepuff!", "(Ton) Fermented-fish style, hat, not Bangkok style!"])
+p13t = set_badge(p13t, stepb(5))
+p12 = swap_subs(p12, "(หมวก) อืมม", ["(หมวก) อืมม… หัวคนนี้มีแต่เพลงหมอลำ", "ฟังอะไรไม่ออกเลย…", "ให้คนดูช่วยเลือกแล้วกัน!"], ["(Hat) Hmm\u2026 this head is full of mor lam,", "I can\u2019t hear a thing\u2026 let the viewers decide!"])
+p12 = set_badge(p12, stepb(5)).replace("เช็กเกลียว = ลองเชิง", "หัวมีแต่เพลงหมอลำ").replace("หมวกงอน โยนให้คนดู", "คัดไม่ได้ โยนให้คนดู").replace("งอนแล้ว!", "ฟังไม่ออก!")
+
+PANELS = [
+  ("1", "3.5", p1, "Wide · ตึกแถวเก่าย่านพระนครตอนเช้า", "แดดเช้าเฉียง ยอดวัดไกล ๆ · ซูมเข้าหน้าต่างชั้นบนร้านทอง", "ซิ่งบรรยายเปิดเรื่อง"),
+  ("2", "5", p2, "ขั้นที่ 1 · ห้องนอน", "การ์ด 'ขั้นที่ 1 รับจดหมาย' เด้งกลางจอ · ไก่ขัน ซิ่งล้ม ไก่กระโดดทับ", "ซิ่งบรรยายบอกขั้น · ไก่ขัน + ตุ้บ"),
+  ("3", "3.5", p3, "Close-up · ซิ่งอ่านจดหมาย", "ตาตี๋ยิ้มกวน · เหรียญทองไหลออกจากซอง", "ปากซิ่งขยับ"),
+  ("4", "4.5", p5, "ขั้นที่ 2 · ถนนย่านพระนคร", "การ์ด 'ขั้นที่ 2' · ตุ๊กตุ๊กหัวลอย ลุงโตเบียดเบาะหลัง", "ซิ่งบรรยายบอกขั้น · ตุ๊กตุ๊ก 'ปั๊ด ๆ'"),
+  ("5", "2.5", p6d, "Medium · ลุงเปี๊ยกหันมา", "ชูสามนิ้ว ฟันทองวิ้ง", "ปากลุงเปี๊ยกขยับ"),
+  ("6", "3.5", p6, "Medium · ศาลพระภูมิปากซอย", "ลุงโตวางน้ำแดง ซิ่งพนมมือไหว้", "ปากลุงโตขยับ"),
+  ("7", "2.5", p7, "ซูมเบลอ", "ม้าลายกะพริบตา ประตูศาลเปิด ดูดทั้งสองคนหมุนเข้าไป", "เสียงวูบ"),
+  ("8", "4", p8, "ขั้นที่ 3 · ตลาดนัดเวทมนตร์", "การ์ด 'ขั้นที่ 3' · ป้าแต๋วตะโกน '3 อัน 100'", "ซิ่งบรรยายบอกขั้น → ปากป้าแต๋วขยับ"),
+  ("9", "3", p9, "Close-up มือ", "ไม้ลูกชิ้นลอยเข้ามือซิ่ง ไม้สามอันร่วง", "เสียงเวทมนตร์ + ไม้ร่วง"),
+  ("10", "5.5", p10, "ขั้นที่ 4 · ต้นเดินเข้าเฟรม", "การ์ด 'ขั้นที่ 4' · ต้นตาโต ไม้กวาดบินผ่านหัว ขนลุกซู่ 'ครั้งแรกของโลก…' แล้วชูไม้ข้าวเหนียวปิ้ง", "แคน · ปากต้นขยับ · เพลงอีสานเริ่ม"),
+  ("11", "5", pmor, "Wide · ห้องโถงกลายเป็นเวทีหมอลำ", "ไฟเวทีชมพูม่วงกวาด ลูกบอลดิสโก้ ลำโพง ป้าย 'หมอลำซิ่ง' · ต้นร้องใช้ไม้ข้าวเหนียวปิ้งเป็นไมค์ · แฮร์รี่ รอน เฮอร์ไมโอนี่เซิ้ง", "ซิ่งบรรยาย → ต้นร้อง · ลายอีสานเต็มวง"),
+  ("12", "4.5", p13t, "ขั้นที่ 5 · ต้นคัดบ้าน", "การ์ด 'ขั้นที่ 5' · ต้นชี้นิ้วแก้หมวก", "ซิ่งบรรยายบอกขั้น → ปากหมวก → ปากต้น"),
+  ("13", "5", p12, "Medium Close-up · ซิ่งคัดบ้าน", "หมวกโยกหัวตามเพลงหมอลำในหัวซิ่ง แล้วหันมองกล้อง ภาพหยุด", "ปากหมวกขยับ · เพลงหมอลำแว่ว ๆ แล้วหยุด"),
+  ("14", "3.5", p13, "การ์ดโหวต", "ไฮไลต์วน A → B → C → D ตัวที่เลือกขึ้นสีบ้าน ตัวอื่นสีเทา · ไม่เฉลย", "เสียงคลิก · ต่อโลโก้ปิดท้าย"),
+]
+
+# การ์ดขั้นตอนกลางจอ (ชั้นโปร่งใส) สำหรับทำคลิป
+def step_card(k):
+    return f'''<svg viewBox="0 0 540 960" role="img"><g data-ui="1" transform="translate(270,400)">
+    <rect x="-200" y="-70" width="400" height="140" rx="26" fill="#1e1630" fill-opacity=".92" stroke="#b18cff" stroke-width="3"/>
+    <circle cx="-150" cy="0" r="40" fill="#b18cff"/><text x="-150" y="16" text-anchor="middle" font-family="Inter, sans-serif" font-size="44" font-weight="800" fill="#1e1630">{k}</text>
+    <text x="-92" y="-16" {TH} font-size="20" font-weight="600" fill="#c9a8ff">ขั้นที่ {k} จาก 5</text>
+    <text x="-92" y="30" {TH} font-size="{30 if len(STEPS[k-1]) < 12 else 24}" font-weight="700" fill="#ffffff">{STEPS[k-1]}</text></g></svg>'''
+
 total = sum(float(d) for _, d, *_ in PANELS)
 
 cards = "".join(f'''<figure class="panel">
@@ -840,7 +909,7 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}{DEFS_THAI}</defs></svg>
 <div class="wrap">
-  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v7 · บท v11</span></h1>
+  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v8 · บท v12e · 5 ขั้นตอน</span></h1>
   <div class="grid">{cards}</div>
   <p class="note">ท่าทางพิเศษ (ตกฟูก นั่งตุ๊กตุ๊ก พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนหมุนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
 </div>'''
@@ -865,3 +934,6 @@ def vote_svg(on_idx):
 
 vote_page = page.split('<div class="wrap">')[0] + '<div class="wrap"><div class="grid">' + "".join(f'<figure class="panel"><div class="frame">{vote_svg(i)}</div></figure>' for i in range(4)) + '</div></div>'
 (HERE / "vote.html").write_text(vote_page)
+
+step_page = page.split('<div class="wrap">')[0] + '<style>html,body{background:transparent}</style><div class="wrap"><div class="grid">' + "".join(f'<figure class="panel"><div class="frame">{step_card(k)}</div></figure>' for k in range(1, 6)) + '</div></div>'
+(HERE / "steps.html").write_text(step_page)

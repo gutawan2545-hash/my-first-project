@@ -7,7 +7,8 @@ FPS, XF, STEP = 24, 0.3, 0.75
 TL = json.load(open("out/timeline.json"))
 os.makedirs("seg24", exist_ok=True)
 run = lambda c: subprocess.run(c, check=True)
-ov = "[1:v]format=rgba,fade=t=in:st=0.25:d=0.35:alpha=1[ov];[bg][ov]overlay=0:0:format=auto,format=yuv420p[v]"
+ov = "[1:v]format=rgba,fade=t=in:st=0.25:d=0.35:alpha=1[ov];[bg][ov]overlay=0:0:format=auto[b2]"
+STEP_AT = {2: 1, 4: 2, 8: 3, 10: 4, 12: 5}   # ช็อตที่ขึ้นขั้นใหม่ -> เลขการ์ด
 segs = []
 for i, sh in enumerate(TL):
     n, d = sh["n"], sh["dur"]; out = f"seg24/s{n:02d}.mp4"
@@ -19,13 +20,18 @@ for i, sh in enumerate(TL):
     else:
         src = ["-framerate", str(FPS), "-i", f"anim/fr/s{n:02d}/%04d.jpg"]
         vf = "[0:v]scale=1080:1920,setsar=1[bg];" + ov
-    run(["ffmpeg", "-y", "-loglevel", "error"] + src + ["-loop", "1", "-t", str(d), "-i", f"frames/o{n:02d}.png",
+    if n in STEP_AT:                                          # การ์ดขั้นตอนเด้งกลางจอ 0.1-1.75 วิ
+        extra = ["-loop", "1", "-t", str(d), "-i", f"frames/step{STEP_AT[n]}.png"]
+        vf += ";[2:v]format=rgba,fade=t=in:st=0.1:d=0.25:alpha=1,fade=t=out:st=1.45:d=0.3:alpha=1[sc];[b2][sc]overlay=0:0:format=auto,format=yuv420p[v]"
+    else:
+        extra = []; vf += ";[b2]format=yuv420p[v]"
+    run(["ffmpeg", "-y", "-loglevel", "error"] + src + ["-loop", "1", "-t", str(d), "-i", f"frames/o{n:02d}.png"] + extra + [
          "-filter_complex", vf, "-map", "[v]", "-t", str(d), "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", out])
     segs.append(out)
 inputs = sum((["-i", f] for f in segs), [])
 fc = ""; prev = "[0:v]"
 for i in range(1, len(segs)):
-    trans = "zoomin" if TL[i]["n"] == 8 else "fade"
+    trans = "zoomin" if TL[i]["n"] == 7 else ("slideleft" if TL[i]["n"] in STEP_AT else "fade")
     fc += f"{prev}[{i}:v]xfade=transition={trans}:duration={XF}:offset={TL[i]['start']:.3f}[x{i}];"; prev = f"[x{i}]"
 fc += f"{prev}eq=contrast=1.04:saturation=1.06:gamma=1.02,noise=c0s=4:c0f=t+u,format=yuv420p[v]"
 run(["ffmpeg", "-y", "-loglevel", "error"] + inputs + ["-i", "out/mix.wav", "-filter_complex", fc, "-map", "[v]", "-map", f"{len(segs)}:a",

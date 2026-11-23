@@ -38,6 +38,13 @@ const CSS = `
   await v.addStyleTag({ content: CSS });
   const vs = await v.$$('.frame svg');
   for (let i = 0; i < vs.length; i++) await vs[i].screenshot({ path: path.join(OUT, `v${i}.png`) });
+  const st = await b.newPage({ viewport: { width: 700, height: 1100 }, deviceScaleFactor: 2 });
+  await st.goto('file://' + path.join(ROOT, 'steps.html'));
+  await st.waitForTimeout(600);
+  await st.addStyleTag({ content: CSS + 'html,body{background:transparent!important}' });
+  await st.evaluate(() => { document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; });
+  const ss = await st.$$('.frame svg');
+  for (let i = 0; i < ss.length; i++) await ss[i].screenshot({ path: path.join(OUT, `step${i + 1}.png`), omitBackground: true });
   await b.close();
-  console.log('rendered', n, 'shots +', vs.length, 'vote frames');
+  console.log('rendered', n, 'shots +', vs.length, 'vote frames +', ss.length, 'step cards');
 })();
