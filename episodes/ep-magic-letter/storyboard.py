@@ -27,13 +27,13 @@ def badge(t):
 
 def card(x, y, w, t1, t2="", tx=None, ty=None):
     """กล่องคำอธิบายสีขาวนวล + เส้นประชี้จุด"""
-    line = f'<path d="M {x + w/2:.0f},{y+ (56 if t2 else 40)} L {tx},{ty}" stroke="#f6f1e6" stroke-width="2" stroke-dasharray="5 4"/>' if tx is not None else ""
+    line = f'<path d="M {x + w/2:.0f},{y+ (56 if t2 else 40)} L {tx},{ty}" stroke="#8a76b8" stroke-width="2" stroke-dasharray="5 4"/>' if tx is not None else ""
     h = 62 if t2 else 44
-    sub = f'<text x="14" y="50" {TH} font-size="13" fill="#5a5260">{t2}</text>' if t2 else ""
-    return f'{line}<g transform="translate({x},{y})"><rect width="{w}" height="{h}" rx="10" fill="#f6f1e6"/><text x="14" y="28" {TH} font-size="15" font-weight="600" fill="#2a2430">{t1}</text>{sub}</g>'
+    sub = f'<text x="14" y="50" {TH} font-size="13" fill="#eae4f2">{t2}</text>' if t2 else ""
+    return f'{line}<g transform="translate({x},{y})"><rect width="{w}" height="{h}" rx="10" fill="#f6f1e6" stroke="#9a86c8" stroke-width="1.6"/><text x="14" y="28" {TH} font-size="15" font-weight="600" fill="#2a2430">{t1}</text>{sub}</g>'
 
 EYE = '<g transform="translate(500,40)" opacity=".75"><path d="M -14,0 C -8,-8 8,-8 14,0 C 8,8 -8,8 -14,0 Z" fill="#b18cff"/><circle r="4" fill="#1b1f2b"/></g>'
-GRAIN = '<rect width="540" height="960" filter="url(#grain)" opacity=".09"/>'
+GRAIN = '<rect width="540" height="960" filter="url(#grain)" opacity=".05"/>'
 
 def dust(cx, cy, w, h, n=14, seed=1, col="#fff4e0"):
     r = random.Random(seed); out = ""
@@ -46,7 +46,7 @@ def dust(cx, cy, w, h, n=14, seed=1, col="#fff4e0"):
     return out
 
 def shadow(cx, cy, rx, ry=12, o=.4):
-    return f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="#000" opacity="{o}" filter="url(#shadow)"/>'
+    return f'<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="#5a4a7a" opacity="{o*.7:.2f}" filter="url(#shadow)"/>'
 
 def speed(x0, y0, x1, n=6, seed=2, col="#e8e2f4"):
     r = random.Random(seed)
@@ -59,12 +59,14 @@ DEFS_SB = '''
 <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
 <filter id="glow"><feGaussianBlur stdDeviation=".7"/></filter>
 <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
-<linearGradient id="morning" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8cc0"/><stop offset=".6" stop-color="#d6b8c8"/><stop offset="1" stop-color="#f2d6c4"/></linearGradient>
-<linearGradient id="roomwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4258"/><stop offset="1" stop-color="#5a5064"/></linearGradient>
-<linearGradient id="shopwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a2a32"/><stop offset="1" stop-color="#3e1e26"/></linearGradient>
+<linearGradient id="morning" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c4ee"/><stop offset=".55" stop-color="#bfe2f8"/><stop offset="1" stop-color="#f2f8ff"/></linearGradient>
+<linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".75"/><stop offset=".5" stop-color="#fff2fa" stop-opacity=".35"/><stop offset="1" stop-color="#e8f4ff" stop-opacity="0"/></linearGradient>
+<radialGradient id="cloud"><stop offset=".55" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+<linearGradient id="roomwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2ddf4"/><stop offset="1" stop-color="#f4eefa"/></linearGradient>
+<linearGradient id="shopwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d6de"/><stop offset="1" stop-color="#ecc2cc"/></linearGradient>
 <linearGradient id="nightsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a36"/><stop offset="1" stop-color="#2c3c68"/></linearGradient>
 <linearGradient id="hall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1626"/><stop offset="1" stop-color="#3a2e3a"/></linearGradient>
-<linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0e0" stop-opacity=".32"/><stop offset="1" stop-color="#fff0e0" stop-opacity="0"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".6"/><stop offset="1" stop-color="#fff4fa" stop-opacity="0"/></linearGradient>
 <radialGradient id="portal"><stop offset="0" stop-color="#fff6e0"/><stop offset=".35" stop-color="#f4d6a0" stop-opacity=".9"/><stop offset="1" stop-color="#b18cff" stop-opacity="0"/></radialGradient>
 <radialGradient id="pingpong"><stop offset="0" stop-color="#fff4dc"/><stop offset=".5" stop-color="#ffe2b8" stop-opacity=".6"/><stop offset="1" stop-color="#ffe2b8" stop-opacity="0"/></radialGradient>
 <radialGradient id="candle"><stop offset="0" stop-color="#fff0d8" stop-opacity=".9"/><stop offset="1" stop-color="#fff0d8" stop-opacity="0"/></radialGradient>
@@ -90,29 +92,39 @@ def bike_side(x, y, s=1.0, rot=0, body="#1c1b22", trim="#c8432e"):
     <text x="-6" y="-26" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#f0c050" transform="skewX(-12)">ZING</text>
     </g>'''
 
+def clouds(seed=1):
+    r = random.Random(seed); out = ""
+    for _ in range(4):
+        x, y, w = r.uniform(0, 540), r.uniform(40, 220), r.uniform(70, 140)
+        out += "".join(f'<ellipse cx="{x+dx*w:.0f}" cy="{y+dy*w*.3:.0f}" rx="{w*.5:.0f}" ry="{w*.28:.0f}" fill="url(#cloud)"/>' for dx, dy in [(-.4,.2),(0,0),(.4,.15)])
+    return out
+
+def shafts(xs=(120, 300, 440), top=0, h=760):
+    return "".join(f'<path d="M {x-40},{top} L {x+40},{top} L {x+110},{top+h} L {x-10},{top+h} Z" fill="url(#shaft)" opacity=".55"/>' for x in xs)
+
 def shophouses(x0=0, w=540, horizon=600, sign=True, blur=True):
     """ตึกแถวเยาวราชสามชั้น ร้านทองชั้นล่าง"""
     g = []
-    for i, (bx, col) in enumerate([(-40, "#8a6e72"), (140, "#7e6670"), (320, "#8c7268"), (500, "#74606c")]):
+    for i, (bx, col) in enumerate([(-40, "#f2d6dc"), (140, "#dcd8f2"), (320, "#f6e6d2"), (500, "#d4e8f4")]):
         g.append(f'<rect x="{bx}" y="{horizon-470}" width="180" height="470" fill="{col}"/>')
         for fy in (horizon-430, horizon-300):
-            g.append(f'<rect x="{bx+24}" y="{fy}" width="132" height="90" fill="#3a3040"/>')
-            g.append("".join(f'<rect x="{bx+24+k*22}" y="{fy}" width="3" height="90" fill="#9aa0aa" opacity=".7"/>' for k in range(7)))
-            g.append(f'<rect x="{bx+14}" y="{fy+92}" width="152" height="8" fill="#5a4a50"/>')
-        g.append(f'<rect x="{bx}" y="{horizon-160}" width="180" height="160" fill="#2a2228"/>')
+            g.append(f'<rect x="{bx+24}" y="{fy}" width="132" height="90" fill="#a8c8e8"/><rect x="{bx+24}" y="{fy}" width="60" height="90" fill="#c8e0f4"/>')
+            g.append("".join(f'<rect x="{bx+24+k*22}" y="{fy}" width="3" height="90" fill="#ffffff" opacity=".9"/>' for k in range(7)))
+            g.append(f'<rect x="{bx+14}" y="{fy+92}" width="152" height="8" fill="#ffffff" opacity=".8"/>')
+        g.append(f'<rect x="{bx}" y="{horizon-160}" width="180" height="160" fill="#d6cfe0"/>' + "".join(f'<rect x="{bx}" y="{horizon-160+k*12}" width="180" height="2" fill="#bfb6cc"/>' for k in range(13)))
     if sign:
         g.append(f'<rect x="150" y="{horizon-200}" width="160" height="44" fill="#7a1e24"/><rect x="154" y="{horizon-196}" width="152" height="36" fill="none" stroke="#e0b84a" stroke-width="2"/>')
         g.append(f'<text x="230" y="{horizon-170}" text-anchor="middle" {TH} font-size="20" font-weight="700" fill="#f0d070">ห้างทอง ซิ่งเฮง</text>')
-        g.append(f'<rect x="150" y="{horizon-150}" width="160" height="150" fill="#5a2a32"/><rect x="160" y="{horizon-120}" width="140" height="70" fill="#d8b860" opacity=".55"/>')
+        g.append(f'<rect x="150" y="{horizon-150}" width="160" height="150" fill="#f4dce2"/><rect x="160" y="{horizon-120}" width="140" height="70" fill="#f0d488" opacity=".7"/>')
         g.append("".join(f'<rect x="150" y="{horizon-150 + k*10}" width="160" height="2" fill="#3a2028" opacity=".6"/>' for k in range(3)))
-    g.append(f'<path d="M -10,{horizon-480} C 120,{horizon-440} 300,{horizon-450} 560,{horizon-470} M -10,{horizon-450} C 160,{horizon-410} 360,{horizon-420} 560,{horizon-445}" fill="none" stroke="#1a1620" stroke-width="2"/>')
+    g.append(f'<path d="M -10,{horizon-480} C 120,{horizon-440} 300,{horizon-450} 560,{horizon-470} M -10,{horizon-450} C 160,{horizon-410} 360,{horizon-420} 560,{horizon-445}" fill="none" stroke="#6a6280" stroke-width="2"/>')
     return f'<g {"filter=\"url(#bgblur)\"" if blur else ""}>{"".join(g)}</g>'
 
 # ---------- 1 หน้าตึกแถวเยาวราชตอนเช้า ----------
-p1 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>
+p1 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>{clouds(1)}
   {shophouses(horizon=640)}
-  <rect y="640" width="540" height="320" fill="#4a4250"/><rect y="640" width="540" height="8" fill="#5a5260"/>
-  <path d="M 540,0 L 540,260 L 120,960 L 0,960 L 0,700 Z" fill="url(#beam)" opacity=".7"/>
+  <rect y="640" width="540" height="320" fill="#dcd6e8"/><rect y="640" width="540" height="8" fill="#eae4f2"/>
+  {shafts((140, 330, 470), 0, 820)}
   {dust(330, 380, 300, 300, 18, 11)}
   <g transform="translate(232,330) scale(.5)"><use href="#c_sing"/></g>
   <rect x="140" y="300" width="200" height="8" fill="#5a4a50"/><g fill="#9aa0aa">{"".join(f'<rect x="{150+k*18}" y="262" width="3" height="40"/>' for k in range(11))}</g>
@@ -125,24 +137,24 @@ def room():
     return f'''<g filter="url(#bgblur)">
     <rect width="540" height="960" fill="url(#roomwall)"/>
     <rect x="300" y="120" width="200" height="250" fill="url(#morning)"/>
-    <g fill="#3a3040">{"".join(f'<rect x="{300+k*25}" y="120" width="4" height="250"/>' for k in range(9))}{"".join(f'<rect x="300" y="{120+k*50}" width="200" height="4"/>' for k in range(6))}</g>
-    <path d="M 294,114 L 506,114 L 506,376 L 294,376 Z M 300,120 L 300,370 L 500,370 L 500,120 Z" fill="#6a6070" fill-rule="evenodd"/>
+    <g fill="#ffffff">{"".join(f'<rect x="{300+k*25}" y="120" width="4" height="250"/>' for k in range(9))}{"".join(f'<rect x="300" y="{120+k*50}" width="200" height="4"/>' for k in range(6))}</g>
+    <path d="M 294,114 L 506,114 L 506,376 L 294,376 Z M 300,120 L 300,370 L 500,370 L 500,120 Z" fill="#ffffff" fill-rule="evenodd"/>
     <rect x="40" y="140" width="150" height="200" fill="#1c1b22"/><rect x="48" y="148" width="134" height="184" fill="#c8432e"/>
     <path d="M 60,300 C 80,260 150,250 172,290 L 172,320 L 60,320 Z" fill="#1c1b22"/><circle cx="84" cy="318" r="14" fill="#1c1b22"/><circle cx="150" cy="318" r="14" fill="#1c1b22"/>
     <text x="115" y="200" text-anchor="middle" font-family="Inter, sans-serif" font-size="24" font-weight="800" fill="#f0c050" transform="skewX(-10)">SPEED</text>
-    <rect y="640" width="540" height="320" fill="#3a3440"/><rect y="640" width="540" height="6" fill="#4a4250"/>
+    <rect y="640" width="540" height="320" fill="#d8cce4"/><rect y="640" width="540" height="6" fill="#dcd6e8"/>
     </g>'''
 
 # ---------- 2 ห้องนอน ไก่เกาะแฮนด์ขัน ซิ่งตกฟูก ----------
 p2 = frame(f'''{room()}
-  <path d="M 300,120 L 0,700 L 0,960 L 200,960 L 500,370 Z" fill="url(#beam)"/>
+  <path d="M 300,120 L 0,700 L 0,960 L 200,960 L 500,370 Z" fill="url(#beam)"/>{shafts((360, 450), 110, 620)}
   {dust(260, 420, 280, 300, 16, 5)}
   {shadow(300, 640, 170)}
   {bike_side(310, 610, 1.3)}
   <g transform="translate(250,494) scale(1.25)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
   <text x="34" y="120" font-size="40" transform="rotate(-8 34 120)" {POP}>เอ้กอี๊เอ้กกก!!</text>
   <path d="M 180,280 L 210,262 M 186,300 L 220,296 M 180,320 L 210,334" stroke="#fff4d0" stroke-width="3" stroke-linecap="round" opacity=".8"/>
-  <rect x="300" y="680" width="260" height="60" rx="6" fill="#6a6080"/><rect x="300" y="680" width="260" height="12" fill="#7a7090"/>
+  <rect x="300" y="680" width="260" height="60" rx="6" fill="#a8b8e8"/><rect x="300" y="680" width="260" height="12" fill="#c4d0f4"/>
   <g transform="translate(470,860) rotate(-64) scale(1.15)"><use href="#c_sing"/></g>
   <text x="440" y="560" font-size="34" {POP}>!?</text>
   {badge("06:31")}{EYE}
@@ -178,15 +190,16 @@ p3 = frame(f'''{room()}
 # ---------- 4 ร้านทอง อาม้ากัดเหรียญ ----------
 p4 = frame(f'''<g filter="url(#bgblur)">
   <rect width="540" height="960" fill="url(#shopwall)"/>
-  <rect x="30" y="120" width="480" height="180" fill="#3a1a20"/>
+  <rect x="30" y="120" width="480" height="180" fill="#fbeef2"/>
   {"".join(f'<path d="M {60+k*44},140 C {70+k*44},200 {90+k*44},200 {100+k*44},140" fill="none" stroke="#e0b84a" stroke-width="4"/>' for k in range(10))}
   {"".join(f'<path d="M {50+k*48},210 C {62+k*48},270 {86+k*48},270 {98+k*48},210" fill="none" stroke="#c9a24a" stroke-width="3"/>' for k in range(9))}
   <rect x="200" y="60" width="140" height="40" fill="#7a1e24"/><text x="270" y="88" text-anchor="middle" {TH} font-size="18" font-weight="700" fill="#f0d070">ซิ่งเฮง</text>
-  <rect y="640" width="540" height="320" fill="#2a1a1e"/>
+  <rect y="640" width="540" height="320" fill="#ead6de"/>
   </g>
+  {shafts((90, 270, 450), 0, 700)}
   {shadow(220, 640, 120)}
   <g transform="translate(220,700) scale(1.15)"><use href="#c_ama"/></g>
-  <rect x="0" y="560" width="400" height="120" fill="#3a2028"/><rect x="0" y="560" width="400" height="10" fill="#c9a24a" opacity=".6"/>
+  <rect x="0" y="560" width="400" height="120" fill="#c88a96"/><rect x="0" y="560" width="400" height="10" fill="#c9a24a" opacity=".6"/>
   <rect x="20" y="572" width="360" height="60" fill="#d8b860" opacity=".35"/>
   {"".join(f'<rect x="{40+k*60}" y="590" width="40" height="22" rx="3" fill="#e8c24a"/>' for k in range(6))}
   <g transform="translate(232,302)"><circle r="12" fill="#e8c24a"/><circle r="8" fill="#f4d878"/></g>
@@ -200,9 +213,9 @@ p4 = frame(f'''<g filter="url(#bgblur)">
   {subs(["จ่ายค่าเทอมเป็นเหรียญทองเหรอ", "เอามาให้ม๊าชั่งก่อน!"], ["Tuition in gold coins?", "Bring them here, Ma’s weighing them first!"])}''')
 
 # ---------- 5 ซอย ล้อหน้าลอย ----------
-p5 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>
+p5 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>{clouds(2)}
   <g filter="url(#bgblur2)">{shophouses(horizon=600, sign=False, blur=False)}</g>
-  <rect y="600" width="540" height="360" fill="#4a4250"/><path d="M 0,700 L 540,700" stroke="#e8e2f4" stroke-width="4" stroke-dasharray="40 30" opacity=".5"/>
+  <rect y="600" width="540" height="360" fill="#dcd6e8"/><path d="M 0,700 L 540,700" stroke="#e8e2f4" stroke-width="4" stroke-dasharray="40 30" opacity=".5"/>
   {speed(380, 300, 540, 10, 4)}
   {shadow(270, 640, 190, 14)}
   <g transform="translate(270,560) rotate(-18)">
@@ -237,9 +250,9 @@ def zebra(x, y, s=1.0, blink=False):
     </g>'''
 
 # ---------- 6 ศาลพระภูมิ ----------
-p6 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>
+p6 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>{clouds(3)}
   <g filter="url(#bgblur2)">{shophouses(horizon=620, sign=False, blur=False)}</g>
-  <rect y="620" width="540" height="340" fill="#4a4250"/>
+  <rect y="620" width="540" height="340" fill="#dcd6e8"/>
   {shadow(150, 640, 60, 10, .35)}
   {spirit_house(150, 470, 1.1)}
   {zebra(108, 470, 1.2)}{zebra(150, 470, 1.2)}{zebra(192, 470, 1.2)}
@@ -256,7 +269,7 @@ p6 = frame(f'''<rect width="540" height="960" fill="url(#morning)"/>
 
 # ---------- 7 วูบ ประตูศาลเปิด ----------
 rays = "".join(f'<path d="M 270,330 L {270 + 900*__import__("math").cos(a/24*6.283):.0f},{330 + 900*__import__("math").sin(a/24*6.283):.0f}" stroke="#fff0d0" stroke-width="{6 if a%2 else 2}" opacity=".25"/>' for a in range(24))
-p7 = frame(f'''<rect width="540" height="960" fill="#2a2238"/>
+p7 = frame(f'''<rect width="540" height="960" fill="#efe4fb"/>
   {rays}
   <circle cx="270" cy="330" r="260" fill="url(#portal)"/>
   {spirit_house(270, 470, 2.2)}
@@ -454,7 +467,7 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}</defs></svg>
 <div class="wrap">
-  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v1</span></h1>
+  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v2 · ฉากกรุงเทพโทนสว่างฟ้าอ่อน</span></h1>
   <div class="grid">{cards}</div>
   <p class="note">ภาพร่างนี้ใช้ตรวจองค์ประกอบ มุมกล้อง และจังหวะมุก ท่าทางพิเศษ (ขี่รถ ขี่ไม้กวาด ตกฟูก พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
 </div>'''
