@@ -72,6 +72,16 @@ def eyes_squint(col="#1d1717"):
     <path d="M 20,-2 C 15,-4.5 10,-4.5 6,-2 C 10,-0.6 15,-0.6 20,-2 Z" fill="#e6dccf"/><circle cx="13" cy="-2.1" r="1.9" fill="{col}"/>
     <path d="M -21,-2.6 C -15,-6 -10,-6 -5,-2.6 M 21,-2.6 C 15,-6 10,-6 5,-2.6" fill="none" stroke="{col}" stroke-width="1.8"/>'''
 
+
+# ---------- ชิ้นส่วนแอนิเมชัน: ตาปิด (กะพริบ) และปากเปิด (พูด) ซ่อนไว้ ใช้ JS เปิดปิดผ่าน attribute display ----------
+def anim_parts(key, sk, my=25, mx=0, mw=6, ey=-2, ex=13, blink=True):
+    out = ""
+    if blink:
+        lids = "".join(f'<path d="M {sx*ex-10},{ey-8} L {sx*ex+10},{ey-8} L {sx*ex+10},{ey+1.5} C {sx*ex+5},{ey+3.5} {sx*ex-5},{ey+3.5} {sx*ex-10},{ey+1.5} Z" fill="{sk}"/><path d="M {sx*ex-10},{ey+1.5} C {sx*ex-5},{ey+3.5} {sx*ex+5},{ey+3.5} {sx*ex+10},{ey+1.5}" fill="none" stroke="#2a1a14" stroke-width="1.6"/>' for sx in (-1, 1))
+        out += f'<g class="an-blink-{key}" display="none">{lids}</g>'
+    out += f'<g class="an-mouth-{key}" display="none"><ellipse cx="{mx}" cy="{my}" rx="{mw}" ry="{mw*.62:.1f}" fill="#5a1e24"/><ellipse cx="{mx}" cy="{my+mw*.3:.1f}" rx="{mw*.6:.1f}" ry="{mw*.25:.1f}" fill="#c86a6a"/><rect x="{mx-mw*.7:.1f}" y="{my-mw*.62:.1f}" width="{mw*1.4:.1f}" height="{mw*.3:.1f}" fill="#fff8ee"/></g>'
+    return out
+
 # ---------- ชุดคลุมโรงเรียน ----------
 def robe(c, light, shade, trim, inner, hem=455, w=62):
     dia = "".join(f'<path d="M {sx*-10},{y} l 2.6,4 l -2.6,4 l -2.6,-4 Z"/>' for y in range(70, hem-20, 26) for sx in (1,-1))
@@ -262,7 +272,7 @@ def kid(cid, h, head_svg, sk, sh, sy=0.95, hand_l=None, hand_r=None, arm_up=Fals
     {hand_l if hand_l is not None else hand(-60,206,sk,sh,-1)}{"" if arm_up else (hand_r if hand_r is not None else hand(60,206,sk,sh))}
     {shoes_svg}
   </g>
-  <g transform="scale({hs})">{head_svg}</g>
+  <g transform="scale({hs})">{head_svg}{anim_parts(cid[2:], sk, my=24.5, ey=-1)}</g>
   <g transform="scale({bx},{sy})">{student_collar(h)}</g>
   </g></g>'''
 
@@ -502,7 +512,8 @@ SING_HEAD = f'''
   <circle cx="-32.5" cy="8" r="2.4" fill="none" stroke="#dfe3ea" stroke-width="1.2"/>
   {blush("#c8705a",.28)}
   <path d="M -6,24.6 Q 1,26 8,21.6" fill="none" stroke="#8e4a3e" stroke-width="2" stroke-linecap="round"/><path d="M 8,21.6 L 9.6,20.4" stroke="#a8754e" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M -3,27.6 Q 0,28.8 3,27.6" fill="none" stroke="#bf8a62" stroke-width="1.2" stroke-linecap="round"/>'''
+  <path d="M -3,27.6 Q 0,28.8 3,27.6" fill="none" stroke="#bf8a62" stroke-width="1.2" stroke-linecap="round"/>
+  {anim_parts("sing", sk, my=24.5, mx=1, mw=5.5, ey=-1.6)}'''
 C["sing"] = f'''<g id="c_sing"><g transform="translate(0,-482)">
   <path d="M -27,320 L -11,320 L -11,452 L -26,452 Z" fill="{sk}"/><path d="M -27,320 L -22,320 L -22,452 L -26,452 Z" fill="{hl}"/>
   <path d="M 11,320 L 27,320 L 26,452 L 11,452 Z" fill="{sh}"/>
@@ -706,6 +717,22 @@ C["guard"] = f'''<g id="c_guard"><g transform="translate(0,-495)">
   </g></g>'''
 
 
+
+# ใส่ชิ้นส่วนแอนิเมชันให้ตัวละครที่หัวอยู่ที่จุดกำเนิด
+ANIM_SPEC = {
+  "head": dict(sk="#f2cfae", my=29, mw=5), "strict": dict(sk="#f5d6b8", my=25), "potion": dict(sk="#e9bf98", my=26, mw=7),
+  "vendor": dict(sk="#d9a57c", my=26, mw=7), "ama": dict(sk="#f6dcc4", my=25.5, mw=5), "ton": dict(sk="#c98f62", my=25, mw=7),
+  "tukdriver": dict(sk="#b8805a", my=25, mw=6), "guard": dict(sk="#e2b48c", my=25),
+  "giant": dict(sk="#e0ae88", my=29, mw=5, t="translate(0,2) scale(1.12)"),
+}
+for k, a in ANIM_SPEC.items():
+    a = dict(a); t = a.pop("t", "")
+    i = C[k].rindex("</g></g>")
+    C[k] = C[k][:i] + f'<g transform="{t}">{anim_parts(k, **a)}</g>' + C[k][i:]
+i = C["hat"].rindex("</g></g>")
+C["hat"] = C["hat"][:i] + '<g class="an-mouth-hat" display="none"><path d="M -20,-40 C -10,-30 8,-30 18,-42 C 12,-20 -10,-18 -20,-40 Z" fill="#1a0f08"/><path d="M -10,-30 C -4,-26 4,-26 8,-30" stroke="#8a3a2a" stroke-width="3" fill="none"/></g>' + C[k][i:] if False else C["hat"][:i] + '<g class="an-mouth-hat" display="none"><path d="M -20,-40 C -10,-30 8,-30 18,-42 C 12,-20 -10,-18 -20,-40 Z" fill="#1a0f08"/><path d="M -10,-30 C -4,-26 4,-26 8,-30" stroke="#8a3a2a" stroke-width="3" fill="none"/></g>' + C["hat"][i:]
+i = C["rooster"].rindex("</g></g>")
+C["rooster"] = C["rooster"][:i] + '<g class="an-mouth-rooster" display="none"><path d="M -26,-145 L -42,-134 L -27,-140 Z" fill="#c4922a"/></g>' + C["rooster"][i:]
 
 INFO = [
   ("head", "อาจารย์ใหญ่ทองหล่อ", "ครูใหญ่ อายุราว 90 · ใจดี ยิ้มตาหยี เคราขาวยาวถึงอก แว่นกรอบกระ · ผ้าขาวม้าพาดไหล่แทนผ้าพันคอ ไม้เท้าตะเกียงทอง", 1.0),

@@ -77,6 +77,8 @@ for sh in shots:
         clips.append(dict(who=who, text=text, at=cur, len=len(a) / SR, audio=a))
         cur += len(a) / SR + 0.14
     d = max(sh["dur"] * 0.9, cur + 0.35)
+    if sh["n"] == 2:                               # ให้มีเวลาไก่ขันแล้วซิ่งล้ม
+        d = max(d, cur + 1.6)
     if sh["n"] == len(shots):
         d += 1.2                                   # ค้างการ์ดโหวตให้ตัดสินใจ
     plan.append(dict(n=sh["n"], start=t, dur=round(d, 2), clips=clips))
@@ -183,6 +185,10 @@ mix = mix / (np.abs(mix).max() + 1e-6) * .89
 pcm = (np.stack([mix, mix], 1) * 32767).astype(np.int16)
 with wave.open("out/mix.wav", "wb") as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
+
+if os.environ.get("AUDIO_ONLY"):
+    json.dump([dict(n=p["n"], start=round(p["start"], 2), dur=p["dur"], lines=[(c["who"], c["text"], round(c["at"], 2), round(c["len"], 2)) for c in p["clips"]]) for p in plan], open("out/timeline.json", "w"), ensure_ascii=False, indent=1)
+    print("audio only, TOTAL", round(TOTAL, 2)); raise SystemExit
 
 # ---------- 4. ภาพ ----------
 def run(cmd):

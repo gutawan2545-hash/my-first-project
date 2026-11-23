@@ -551,7 +551,7 @@ p2 = frame(f'''{bedroom2()}
   <g transform="translate(340,374) scale(.62)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
   {pop(24, 130, "เอ้กอี๊เอ้กกก!!", 40)}
   <g data-ui="1"><path d="M 300,270 L 270,256 M 296,290 L 262,290 M 300,310 L 270,322" stroke="#fff4d0" stroke-width="3.4" stroke-linecap="round"/></g>
-  <g transform="translate(470,560) rotate(-118) scale(.72)"><use href="#c_sing"/></g>
+  <g data-anim="fall" transform="translate(470,560) rotate(-118) scale(.72)"><use href="#c_sing"/></g>
   <g transform="translate(110,560) rotate(-24)">{axe_pillow(0, 0, .7)}</g>
   <g transform="translate(240,440) rotate(16)"><rect x="-26" y="-18" width="52" height="36" fill="#f4ecd8"/><path d="M -26,-18 L 0,4 L 26,-18" fill="none" stroke="#d8ccb6" stroke-width="2"/><circle cx="0" cy="2" r="6" fill="#8e1b24"/></g>
   {card(330, 120, 190, "ที่อังกฤษ: นกฮูก", "ที่ไทย: ไก่ชน ตีห้าตรง", 350, 290)}
@@ -603,7 +603,7 @@ p5 = frame(f'''{Z(phranakhon_street(), 2.0, 640)}
   {WARMGRAIN}
   {speed(420, 380, 540, 9, 4, "#fff4e0")}
   {shadow(290, 650, 200, 14)}
-  <g transform="translate(300,620) rotate(-14)">
+  <g data-anim="tuk" data-x="300" data-y="620" transform="translate(300,620) rotate(-14)">
     {tuktuk_thai(0, 0, 1.15)}
     <clipPath id="tkc"><rect x="-220" y="-420" width="440" height="335"/></clipPath>
     <g clip-path="url(#tkc)"><g transform="translate(70,-24) scale(.34)"><use href="#c_giant"/></g><g transform="translate(22,-34) scale(.34)"><use href="#c_sing"/></g><g transform="translate(-72,-40) scale(.32)"><use href="#c_tukdriver"/></g></g>
@@ -676,7 +676,7 @@ p10 = frame(f'''{Z(magic_market(), 1.7, 620)}
   {shadow(180, 735, 80)}
   <g transform="translate(180,740) scale(.9)"><use href="#c_ton"/></g>
   {speed(0, 380, 70, 6, 8)}
-  <g transform="translate(124,420) rotate(-12)"><path d="M 0,80 L 0,-40" stroke="#d8c09a" stroke-width="5" stroke-linecap="round"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="#e8d4a8"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="none" stroke="#a8743a" stroke-width="3"/><path d="M -10,-50 L 10,-44 M -10,-34 L 10,-28 M -10,-20 L 10,-14" stroke="#b8844a" stroke-width="3"/><circle cy="-32" r="50" fill="url(#portal)" opacity=".45"/></g>
+  <g data-anim="carry" data-dx="-504" data-t="1.1" data-base="translate(124,420) rotate(-12)" transform="translate(124,420) rotate(-12)"><path d="M 0,80 L 0,-40" stroke="#d8c09a" stroke-width="5" stroke-linecap="round"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="#e8d4a8"/><rect x="-14" y="-60" width="28" height="56" rx="12" fill="none" stroke="#a8743a" stroke-width="3"/><path d="M -10,-50 L 10,-44 M -10,-34 L 10,-28 M -10,-20 L 10,-14" stroke="#b8844a" stroke-width="3"/><circle cy="-32" r="50" fill="url(#portal)" opacity=".45"/></g>
   {shadow(430, 745, 64)}
   <g transform="translate(430,750) scale(.84)"><use href="#c_sing"/></g>
   <path d="M 470,548 L 482,400" stroke="#d8c09a" stroke-width="4" stroke-linecap="round"/><circle cx="481" cy="414" r="8" fill="#9a5a3a"/>

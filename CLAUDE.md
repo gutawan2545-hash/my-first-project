@@ -101,7 +101,7 @@
 - ถ้าชื่อเรื่องยาวเกินขอบขวา สคริปต์จะเตือน
 
 ## ระบบทำคลิป
-- ตอนฮอกวอตส์สาขาไทย: `episodes/ep-magic-letter/clip/render_layers.js` (เรนเดอร์ภาพ/ซับแยกชั้นจาก storyboard.html) แล้ว `python3 build_clip.py` (เสียงชั่วคราว espeak-ng จัดเวลา มิกซ์ ต่อโลโก้) ได้ `clip/out/clip_draft.mp4` · เปลี่ยนเป็นเสียง ElevenLabs เมื่อผู้ใช้อนุมัติเครดิต
+- ตอนฮอกวอตส์สาขาไทย: `episodes/ep-magic-letter/clip/render_layers.js` (เรนเดอร์ภาพ/ซับแยกชั้นจาก storyboard.html) แล้ว `python3 build_clip.py` (เสียงชั่วคราว espeak-ng จัดเวลา มิกซ์ ต่อโลโก้) ได้ `clip/out/clip_draft.mp4` · แบบมีการเคลื่อนไหว: `python3 build_anim.py` → `node render_anim.js` → `python3 assemble_anim.py` ได้ `clip/out/clip_anim.mp4` (กะพริบตา ปากขยับตามเสียงเฉพาะคนพูดจริง หายใจ เดินเข้าเฟรมแบบตัดขาหมุนที่สะโพก ท่าพิเศษผ่าน data-anim) · ชิ้นส่วนตาปิด/ปากเปิดอยู่ใน cast.py (class an-blink-*/an-mouth-*) · เปลี่ยนเป็นเสียง ElevenLabs เมื่อผู้ใช้อนุมัติเครดิต
 - ขั้นตอนทั้งหมดอยู่ใน pipeline/README.md (บท → ภาพนิ่ง → แจ้งเครดิตแล้วพากย์ → timeline → เรนเดอร์ → assemble → ปก)
 
 ## การกำกับภาพและเสียง (ใช้ทุกตอน)
