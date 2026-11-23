@@ -224,16 +224,16 @@ F["agnes"] = _into_body(F["agnes"], "agnes",
     '<path d="M -22,96 L 22,96 L 24,150 L 40,300 L -40,300 L -24,150 Z" fill="#b4c2d4"/><path d="M 8,96 L 22,96 L 24,150 L 40,300 L 14,300 Z" fill="#94a4ba"/>'
     '<path d="M -22,96 L -32,64 M 22,96 L 32,64" stroke="#94a4ba" stroke-width="4"/><path d="M -24,150 L 24,150" stroke="#8494aa" stroke-width="3"/>'
     '<rect x="-7" y="106" width="14" height="14" rx="2" fill="#f4f0f2"/><path d="M 0,108 L 0,118 M -5,113 L 5,113" stroke="#c8323c" stroke-width="3.2"/>')
-_lash = "".join(f'<path d="{d}" fill="none" stroke="#1b1316" stroke-width="1.05" stroke-linecap="round"/>' for d in (
-    "M -20.4,-2.6 C -21.8,-3.4 -22.8,-4.4 -23.4,-5.8", "M -18.6,-5.2 C -19.6,-6.4 -20.2,-7.6 -20.4,-9", "M -16.2,-6.8 C -16.8,-8 -17,-9.2 -16.8,-10.4",
-    "M 20.4,-2.6 C 21.8,-3.4 22.8,-4.4 23.4,-5.8", "M 18.6,-5.2 C 19.6,-6.4 20.2,-7.6 20.4,-9", "M 16.2,-6.8 C 16.8,-8 17,-9.2 16.8,-10.4"))
+_lash = "".join(f'<path d="{d}" fill="none" stroke="#1b1316" stroke-width=".9" stroke-linecap="round"/>' for d in (
+    "M -20.4,-2.6 C -21.4,-3.2 -22.1,-4 -22.5,-5", "M -18.4,-5.2 C -19.1,-6.1 -19.5,-7 -19.6,-8",
+    "M 20.4,-2.6 C 21.4,-3.2 22.1,-4 22.5,-5", "M 18.4,-5.2 C 19.1,-6.1 19.5,-7 19.6,-8"))
 _r = F["rosa"]
 _r = _r.replace('<ellipse cx="-18" cy="12" rx="6.5" ry="3.4" fill="#ec8f88" opacity="0.55"/><ellipse cx="18" cy="12" rx="6.5" ry="3.4" fill="#e0857e" opacity="0.55"/>',
-    '<ellipse cx="-18" cy="12" rx="8" ry="4.3" fill="#f597a6" opacity=".72"/><ellipse cx="18" cy="12" rx="8" ry="4.3" fill="#ec8c9c" opacity=".72"/><ellipse cx="-20" cy="10.6" rx="2.4" ry="1.1" fill="#fff" opacity=".45"/><ellipse cx="16" cy="10.6" rx="2.4" ry="1.1" fill="#fff" opacity=".4"/>', 1)
+    '<ellipse cx="-18" cy="12" rx="7" ry="3.6" fill="#f29aa4" opacity=".55"/><ellipse cx="18" cy="12" rx="7" ry="3.6" fill="#e98e98" opacity=".55"/>', 1)
 _r = _r.replace('<circle cx="-14.8" cy="-1.8" r="1.7249999999999999" fill="#fff"/><circle cx="11.2" cy="-1.8" r="1.7249999999999999" fill="#fff"/>',
-    _lash + '<circle cx="-14.8" cy="-1.8" r="2.2" fill="#fff"/><circle cx="11.2" cy="-1.8" r="2.2" fill="#fff"/><circle cx="-10.6" cy="-2.6" r=".9" fill="#fff"/><circle cx="15.4" cy="-2.6" r=".9" fill="#fff"/>', 1)
+    _lash + '<circle cx="-14.8" cy="-1.8" r="1.9" fill="#fff"/><circle cx="11.2" cy="-1.8" r="1.9" fill="#fff"/>', 1)
 _r = _r.replace('<ellipse cx="0" cy="24" rx="4" ry="3.2" fill="#8e4a4c"/><ellipse cx="0" cy="25.4" rx="2.4" ry="1.4" fill="#d27e7e"/>',
-    '<ellipse cx="0" cy="24" rx="4.2" ry="3.2" fill="#c85466"/><ellipse cx="0" cy="25.4" rx="2.6" ry="1.4" fill="#f08a98"/><ellipse cx="-1.2" cy="25" rx="1" ry=".5" fill="#fff" opacity=".7"/>', 1)
+    '<ellipse cx="0" cy="24" rx="4" ry="3.1" fill="#b2606a"/><ellipse cx="0" cy="25.4" rx="2.4" ry="1.3" fill="#e2949a"/>', 1)
 assert _r != F["rosa"]; F["rosa"] = _r
 # Mother Catharina: deep purple cincture with a hanging end, the superior's large cross already on her chest
 F["cat"] = _into_body(F["cat"], "cat",
