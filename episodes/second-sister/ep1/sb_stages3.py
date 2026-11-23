@@ -530,7 +530,7 @@ def police_bg3():
     o += '<path d="M 0,736 L 540,756" stroke="#e8c84a" stroke-width="7"/><path d="M 0,736 L 540,756" stroke="#1a1a20" stroke-width="7" stroke-dasharray="18 18"/>' + "".join(f'<rect x="{x}" y="{728 + x * .037:.0f}" width="5" height="50" fill="#e8e0d0"/>' for x in (16, 270, 520))
     # a second officer by the car with a radio
     return o
-_pol = ("".join(C("mariam", x, 760, .5) if False else f'<g transform="translate({x},560) scale(.5)"><use href="#{P["mariam"]}"/></g>' for x in (380, 440, 490))
+_pol = ("".join(C("mariam", x, 760, .5) if False else f'<g transform="translate({x},560) scale(.5)"><use href="#{P["nunx"]}"/></g>' for x in (380, 440, 490))
         + C("thana", 300, 905, 1.05) + C("cat", 110, 905, .9) + C("mek", 470, 912, .9))
 ST["police"] = police_bg3() + _pol
 L("police", .18, holes=((270, 600, 280),), glows=((150, 600, 220, SIREN, .6),), motes=None)
@@ -574,3 +574,15 @@ SHADE = ('<clipPath id="belfryClip"><path d="M 207,430 L 207,320 Q 270,240 333,3
 _bt = bell_tower_old(swing=4)
 assert _bt in ST["tower_night"]
 ST["tower_night"] = ST["tower_night"].replace(_bt, _bt + SHADE, 1)
+
+# ------------------------------------------------------------------ 16. CLUE CARD before the question (shot 305): the three things Mek knows
+def _clue(y, num, th, sub):
+    return (f'<g transform="translate(70,{y})"><rect width="400" height="96" rx="12" fill="#1a1426" stroke="#6a5a9a" stroke-width="2"/>'
+            f'<circle cx="44" cy="48" r="22" fill="#2a2040" stroke="#c9a8ff" stroke-width="2"/><text x="44" y="57" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#c9a8ff">{num}</text>'
+            f'<text x="86" y="44" font-family="IBM Plex Sans Thai, sans-serif" font-size="20" font-weight="700" fill="#f2eef8">{th}</text>'
+            f'<text x="86" y="72" font-family="IBM Plex Sans Thai, sans-serif" font-size="15" fill="#a89cc8">{sub}</text></g>')
+INS2["clues"] = ('<rect width="540" height="960" fill="#0c0a12"/><radialGradient id="cv" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#2a1e3a"/><stop offset="1" stop-color="#05040a"/></radialGradient><rect width="540" height="960" fill="url(#cv)"/>'
+    + '<text x="270" y="190" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="16" fill="#a89cc8" letter-spacing="3">เบาะแสที่เมฆมี</text>'
+    + '<g id="clue1">' + _clue(230, 1, "แฝดแยกกันได้ตอนจับช้อน", "มาเรียมถนัดขวา · มาร์ธาถนัดซ้าย") + '</g>'
+    + '<g id="clue2">' + _clue(346, 2, "อักเนสใช้มือซ้ายทุกครั้ง", "รินชา ป้อนยา หยิบตุ๊กตา") + '</g>'
+    + '<g id="clue3">' + _clue(462, 3, "ผ้าเช็ดหน้า \"Martha\" ผืนใหม่", "อยู่ในมือป้าแดงตอนตาย ไม่มีรอยไหม้") + '</g>')

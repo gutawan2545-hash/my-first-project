@@ -38,7 +38,7 @@ pose("daeng", "daeng"); pose("daeng_hug", "daeng", aL=10, aR=-38); pose("daeng_w
 pose("cat", "cat"); pose("cat_point", "cat", aR=-118)
 pose("jos", "jos"); pose("jos_key", "jos", aR=-58); pose("jos_pray", "jos", aL=-40, aR=40)
 pose("mariam", "mariam"); pose("mariam_piano", "mariam", aL=-30, aR=30)
-pose("agnes", "agnes"); pose("agnes_tray", "agnes", aL=-40, aR=40); pose("agnes_left", "agnes", aR=-40)
+pose("nunx", "nunx"); pose("agnes", "agnes"); pose("agnes_tray", "agnes", aL=-40, aR=40); pose("agnes_left", "agnes", aR=-40)
 pose("agnes_candle", "agnes", aR=-20, extraR='<g transform="translate(50,206)"><rect x="-2.5" y="-22" width="5" height="22" fill="#efe8da"/><path d="M 0,-33 C -3.5,-28 -3.5,-25 0,-23 C 3.5,-25 3.5,-28 0,-33 Z" fill="#fff6e6"/></g>')
 pose("luc", "luc"); pose("thana", "thana"); pose("thana_bag", "thana", aR=-60)
 for k in ("mkid", "jan", "twinM", "twinA"): pose(k, k)
@@ -135,7 +135,7 @@ ST["dawn_walk"] = ('<rect width="540" height="960" fill="#7d8cab"/><rect y="240"
     '<path d="M 0,560 L 540,560 L 540,960 L 0,960 Z" fill="#5a5c6e"/>' + C("agnes", 380, 900, .95, .9) + C("mariam", 220, 920, 1.0, .95))
 ST["mass"] = ('<rect width="540" height="960" fill="#5a5466"/>' + stained_glass(190, 120, 160, 260, bright=.9) +
     '<rect x="160" y="420" width="220" height="60" fill="#d8d2dc"/>' + C("jos", 270, 470, .5) +
-    "".join(f'<g transform="translate({x},{y}) scale(.42)"><use href="#{P["mariam"]}"/></g>' for x, y in ((90, 520), (170, 520), (250, 520), (330, 520), (410, 520), (130, 560), (210, 560), (290, 560), (370, 560), (450, 560), (60, 560), (480, 520))) +
+    "".join(f'<g transform="translate({x},{y}) scale(.42)"><use href="#{P["nunx"]}"/></g>' for x, y in ((90, 520), (170, 520), (250, 520), (330, 520), (410, 520), (130, 560), (210, 560), (290, 560), (370, 560), (450, 560), (60, 560), (480, 520))) +
     '<rect y="760" width="540" height="200" fill="#2a1e22"/>' + C("mek", 270, 1040, 1.0, .85))
 ST["garden"] = ('<rect width="540" height="960" fill="#5a6a5a"/><circle cx="120" cy="160" r="170" fill="#3e5a3e"/><circle cx="400" cy="120" r="190" fill="#34503a"/><rect x="250" y="180" width="30" height="420" fill="#3a3030"/>' +
     '<path d="M 0,560 L 540,560 L 540,960 L 0,960 Z" fill="#4a5a44"/>' + C("luc", 200, 860, .95) + C("agnes_left", 360, 860, .95, .95) + C("mek", 500, 900, .9))
@@ -165,7 +165,7 @@ ST["tower_night"] = ('<rect width="540" height="960" fill="#1e2244"/><circle cx=
     '<path d="M 0,690 L 540,690 L 540,960 L 0,960 Z" fill="#2a2a36"/>' + C("mek_torch", 130, 900, 1.05, .85) +
     '<polygon points="206,646 222,638 520,850 470,940" fill="#fff4dc" opacity=".22"/>' +
     '<g transform="translate(380,862)"><path d="M -110,0 C -100,-18 70,-22 100,-6 L 102,14 C 50,22 -70,22 -110,12 Z" fill="#6c2b30"/><path d="M -40,-14 L 64,-16 L 68,14 L -38,16 Z" fill="#748894"/><ellipse cx="-124" cy="2" rx="18" ry="14" fill="#a9a4a6"/><path d="M -20,14 L -60,36 L -54,42 L -12,20 Z" fill="#c98f69"/><rect x="-74" y="36" width="10" height="7" fill="#fbf8f2"/></g>')
-ST["police"] = ('<rect width="540" height="960" fill="#7d8cab"/>' + "".join(f'<g transform="translate({x},330) scale(.55)"><use href="#{P["mariam"]}"/></g>' for x in (60, 130, 410, 480)) +
+ST["police"] = ('<rect width="540" height="960" fill="#7d8cab"/>' + "".join(f'<g transform="translate({x},330) scale(.55)"><use href="#{P["nunx"]}"/></g>' for x in (60, 130, 410, 480)) +
     '<rect y="470" width="540" height="10" fill="#e8c84a"/><rect y="640" width="540" height="320" fill="#4a4a54"/>' + C("cat", 110, 900, .9) + C("thana", 300, 900, 1.05) + C("mek", 470, 910, .9))
 ST["thana_night"] = (room("#3a3440", "#2a2430", 640) + '<rect x="0" y="560" width="540" height="20" fill="#5a4234"/>' + C("thana_bag", 170, 900, 1.0, .85) + C("mek", 390, 910, 1.0, .85) + '<circle cx="270" cy="120" r="10" fill="#fff4e0"/>')
 ST["chapel_sisters"] = ('<rect width="540" height="960" fill="#1e1822"/>' + '<rect x="0" y="0" width="70" height="620" fill="#120f16"/><rect x="470" y="0" width="70" height="620" fill="#120f16"/>' +
@@ -513,6 +513,13 @@ INS_EXACT = {"chapel_v1": _fr}
 # ---------- panels: (shots, stage-or-insert, crop(cx,cy,h) or None, size, move, note) ----------
 F_ = None
 PANELS = {
+ 0: [("301", "tower_fog", F_, "ภาพกว้าง มุมต่ำ", "in", "ระฆังที่ถูกล่ามโซ่แกว่งเองในหมอก"),
+     ("302", "doll", F_, "แทรกใกล้", "in", "ตุ๊กตาผ้าไหม้ครึ่งตัว"),
+     ("303", "kitchen", (480, 470, 300), "ภาพใกล้", "static", "อักเนสแอบมองจากหลังประตู"),
+     ("304", "tower_night", (270, 360, 480), "มุมเงยขึ้นช่องระฆัง", "static", "เงาดำในช่องระฆังค่อย ๆ หลบหาย"),
+     ("31", "chapel_v1", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
+     ("32", "chapel_v1", (270, 300, 600), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
+     ("33", "title", F_, "การ์ดชื่อเรื่อง", "static", "ชื่อเรื่องขึ้น ระฆังหนึ่งครั้ง")],
  1: [("1-2", "tower_fog", F_, "ภาพกว้าง มุมต่ำ", "tilt-u", "หอระฆังเก่าในหมอก พระจันทร์เต็มดวงหลังเมฆ ระฆังในช่องหอแกว่งเองหนึ่งครั้ง"),
      ("3", "sisters_ext", F_, "ภาพกว้าง", "in", "ตึกพักซิสเตอร์ตอนกลางคืน หน้าต่างมืดทุกบาน ยกเว้นบานเดียวที่มีแสงเทียน"),
      ("4", "rosa_bed", (320, 560, 560), "ภาพปานกลาง", "static", "โรซานั่งบนเตียง มือหนึ่งถือไฟฉาย อีกมือเปิดพระคัมภีร์ แสงไฟฉายตกบนหน้ากระดาษ"),
@@ -525,9 +532,6 @@ PANELS = {
      ("23-26", "refectory", F_, "ภาพกว้าง", "static", "ห้องอาหาร โรซาเล่า คาทารีนาวางแก้วเสียงดัง"),
      ("27-28", "refectory", (270, 560, 420), "ภาพปานกลาง", "in", "คาทารีนาลุกขึ้น 'เป็นลมพัด แค่นั้น'"),
      ("29-30", "refectory", (470, 560, 360), "ภาพใกล้", "in", "ป้าแดงยืนนิ่งปลายโต๊ะ มองไปทางปีกเก่าผ่านหน้าต่าง")],
- 3: [("31", "chapel_v1", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
-     ("32", "chapel_v1", (270, 300, 600), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
-     ("33", "title", F_, "การ์ดชื่อเรื่อง", "static", "ชื่อเรื่องขึ้น ระฆังหนึ่งครั้ง")],
  4: [("34-37", "condo", F_, "ภาพกว้าง", "static", "เจมเล่นเกม ดีนนอนขด เมฆนอนบนโซฟา ดีนเดินมาขึ้นตัก"),
      ("38-39", "email", F_, "แทรก", "in", "อีเมลเชิญจากคอนแวนต์"),
      ("40-45", "condo", (380, 620, 520), "ภาพปานกลาง", "static", "เจมถอดหูฟัง หมุนเก้าอี้หา 'มึงไม่เคยเล่าเรื่องที่นั่นเลยนะ'"),
@@ -596,7 +600,8 @@ PANELS = {
       ("272-274", "tag", F_, "แทรกใกล้", "in", "ผ้าเช็ดหน้าปักชื่อ Martha ด้วยลายมือ ผ้าสะอาด ด้ายใหม่"),
       ("277-281", "chapel_night", F_, "ภาพกว้าง", "in", "เมฆไขประตูข้างโบสถ์ นั่งแถวหน้า กระซิบ 'มาร์ธา…'"),
       ("282-285", "chapel_night", (270, 560, 600), "ภาพกว้าง จากหลังแท่นบูชา", "static", "เทียนดับ เงียบ 2 วิ เสียงเด็กจากความมืด 'ค่ะ'"),
-      ("286-287", "question", F_, "การ์ดคำถาม", "static", "A/B แล้วต่อฉากโลโก้ปิดท้าย")],
+      ("305", "clues", F_, "การ์ด", "static", "สรุปเบาะแส 3 ข้อ"),
+     ("286-287", "question", F_, "การ์ดคำถาม", "static", "A/B แล้วต่อฉากโลโก้ปิดท้าย")],
 }
 
 # ---------- script parsing ----------
@@ -608,7 +613,7 @@ for line in SCRIPT.splitlines():
     m = re.match(r"## ฉาก (\d+): (.+)", line)
     if m: cur = int(m.group(1)); TITLES[cur] = m.group(2); continue
     m = re.match(r"\| (\d+) \| (.*?) \|(.*)\|$", line)
-    if m and cur: ROWS[int(m.group(1))] = (cur, m.group(2), m.group(3).strip())
+    if m and cur is not None: ROWS[int(m.group(1))] = (cur, m.group(2), m.group(3).strip())
 CHIPS = {}
 for m in re.finditer(r"## ฉาก (\d+):.*?\n(?:ป้าย: \*\*(.+?)\*\*)?", SCRIPT):
     if m.group(2): CHIPS[int(m.group(1))] = m.group(2)
@@ -619,9 +624,10 @@ def md(s):
     s = re.sub(r"\*(.+?)\*", r"<i>\1</i>", s)
     return s
 
+exec(open(os.path.join(HERE, "sb_cut.py")).read())   # CUT / ORDER of the tighter cut
 def shots(rng):
     a, _, b = rng.partition("-"); a = int(a); b = int(b or a)
-    return [n for n in range(a, b + 1) if n in ROWS]
+    return [n for n in range(a, b + 1) if n in ROWS and n not in CUT]
 
 def dur(ns):
     t = 0.0

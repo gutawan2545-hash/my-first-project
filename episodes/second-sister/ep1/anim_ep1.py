@@ -20,7 +20,7 @@ ST, INS, INS_EXACT, DEFS, V2 = NS["ST"], NS["INS"], NS["INS_EXACT"], NS["DEFS"],
 R = random.Random(42)
 
 # ---------------- 1. living poses: breathing, blinking, talking ----------------
-SKIN = {"mek": "#eec4a2", "daeng": "#e3b088", "cat": "#f1d3bd", "luc": "#efd6c6", "rosa": "#f5d3b4", "jos": "#ebc6a6", "thana": "#d9a37c",
+SKIN = {"nunx": "#efd8c4", "mek": "#eec4a2", "daeng": "#e3b088", "cat": "#f1d3bd", "luc": "#efd6c6", "rosa": "#f5d3b4", "jos": "#ebc6a6", "thana": "#d9a37c",
         "mariam": "#f6dcc4", "agnes": "#f7ebe4", "james": "#fbe7d8", "mkid": "#efc6a3", "jan": "#f2cdab", "twinM": "#f6dcc4", "twinA": "#f6dcc4"}
 KIDS = {"mkid", "jan", "twinM", "twinA"}
 POSE_CID = {}
@@ -235,8 +235,10 @@ silence_left = 0
 RED_SHOTS = {238, 247, 251, 253, 284}       # the big scares: subtitle turns red
 STINGER_SHOTS = {237, 247, 284}             # sharp scare hit in the sound
 ROSA_SHOTS = (17, 18, 19)
-n = 1
-while n <= 287:
+exec(open(os.path.join(HERE, "sb_cut.py")).read())   # tighter cut: CUT / ORDER
+oi = 0
+while oi < len(ORDER):
+    n = ORDER[oi]
     sc, idx, _ = cover[n]
     if n in ROSA_SHOTS:
         rv, at = [], 1.0
@@ -244,22 +246,24 @@ while n <= 287:
             v = VO.get(f"s{rn:03d}")
             if v: rv.append([round(at, 2), v["dur"], f"{VO_DIR}/s{rn:03d}.mp3"]); at += v["dur"] + .6
         segments.append({"type": "video", "file": "rosa_tears.mp4", "t0": T, "dur": 17.0, "scene": sc, "shots": list(ROSA_SHOTS), "bells": [], "vo": rv})
-        T += 17.0; n = 20; continue
+        T += 17.0; oi = ORDER.index(20) if 20 in ORDER else oi + 3; continue
     rng, stage, crop, size, mv, desc = PANELS[sc][idx]
     seg = {"type": "html", "rng": rng, "scene": sc, "stage": stage, "crop": list(crop) if crop else None, "move": mv,
            "kind": "exact" if stage in INS_EXACT else ("ins" if stage in INS else "stage"),
            "chip": CHIPS.get(sc, ""), "t0": T, "shots": [], "bells": [], "lights": LIGHTS.get(stage, []), "day": sc in DAY_SCENES}
     if seg["kind"] == "stage": seg["walk"], seg["cry"], seg["gest"] = acting(rng, stage)
-    while n <= 287 and cover.get(n) == (sc, idx, cover[n][2]) and n not in ROSA_SHOTS:
+    while oi < len(ORDER) and cover.get(ORDER[oi]) == (sc, idx, cover[ORDER[oi]][2]) and ORDER[oi] not in ROSA_SHOTS:
+        n = ORDER[oi]
         _, vis, aud = ROWS[n]
         speaker, text, sfx = parse_audio(aud)
         d = shot_dur(text, sfx)
         vo = VO.get(f"s{n:03d}")
         lead = 2.2 if ("ระฆัง" in sfx or "ตั๊ง" in sfx) else VO_LEAD   # let the bell strike first
         if vo:   # the real line sets the length; the pause after it follows the talk (quick replies, longer after narration or before a silence)
-            nxt = parse_audio(ROWS[n + 1][2])[0] if n + 1 in ROWS else None
-            nxt_txt = ROWS[n + 1][2] if n + 1 in ROWS else ""
-            if speaker and nxt and nxt != speaker and cover.get(n + 1, (0, 0))[:2] == (sc, idx): tail = .28
+            nn = ORDER[oi + 1] if oi + 1 < len(ORDER) else None
+            nxt = parse_audio(ROWS[nn][2])[0] if nn in ROWS else None
+            nxt_txt = ROWS[nn][2] if nn in ROWS else ""
+            if speaker and nxt and nxt != speaker and cover.get(nn, (0, 0))[:2] == (sc, idx): tail = .28
             elif speaker and nxt == speaker: tail = .32
             elif "เงียบ" in nxt_txt or not nxt_txt.strip().startswith("**"): tail = .7
             else: tail = .45
@@ -272,7 +276,7 @@ while n <= 287:
         if "เงียบสนิท" in aud or "ดนตรีตัด" in sfx: silence_left = 3 if "ดนตรีตัด" in sfx else 1
         if silence_left > 0: seg.setdefault("hush", []).append([round(T - seg["t0"], 2), round(d, 2)]); silence_left -= 1
         seg["shots"].append({"n": n, "t0": round(T - seg["t0"], 2), "dur": round(d, 2), "speaker": speaker, "cards": make_cards(text, d), "red": n in RED_SHOTS, "vo": ([lead, vo["dur"], f"{VO_DIR}/s{n:03d}.mp3", vo.get("gain", 0)] if vo else None)})
-        T += d; n += 1
+        T += d; oi += 1
     seg["dur"] = round(T - seg["t0"], 2)
     segments.append(seg)
 

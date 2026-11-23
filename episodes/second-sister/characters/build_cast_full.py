@@ -196,6 +196,26 @@ F["mariam"] = nun("mariam", MARIAM_HEAD, MAR_SKIN, hand_extra_R=SCAR)
 AG_SKIN = ("#f7ebe4", "#e4d0c6")
 F["agnes"] = nun("agnes", AGNES_HEAD, AG_SKIN)
 
+# ---- identity at first glance (user): each sister gets one thing you can read from across the room; same habit underneath
+def _into_body(fig, cid, svg):
+    i = fig.index(f'<g id="{cid}-body">'); j = fig.index('</g>', i)
+    return fig[:j] + svg + fig[j:]
+# a plain sister for crowds (no accessories), so the background never looks like a named character
+F["nunx"] = nun("nunx", MARIAM_HEAD.replace("#f6dcc4", "#efd8c4"), ("#efd8c4", "#ddb8a0"))
+# Mariam: a long pale-blue scapular down the front and a blue rosary in her hand
+F["mariam"] = _into_body(F["mariam"], "mariam",
+    '<path d="M -13,62 L 13,62 L 16,352 L -16,352 Z" fill="#a9c6e8"/><path d="M 4,62 L 13,62 L 16,352 L 6,352 Z" fill="#87a8d0"/><path d="M -16,346 L 16,346" stroke="#6a8ab8" stroke-width="2"/>')
+F["mariam"] = F["mariam"].replace(SCAR, SCAR + ''.join(f'<circle cx="{48 + 4 * __import__("math").sin(k * .6):.1f}" cy="{228 + k * 4.2:.1f}" r="1.9" fill="#4a7ac8"/>' for k in range(9))
+    + '<path d="M 49,266 L 49,278 M 45,270 L 53,270" stroke="#c8b07a" stroke-width="2"/>', 1)
+# Agnes: grey-blue infirmary apron with a red cross on the bib (the nurse)
+F["agnes"] = _into_body(F["agnes"], "agnes",
+    '<path d="M -22,96 L 22,96 L 24,150 L 40,300 L -40,300 L -24,150 Z" fill="#b4c2d4"/><path d="M 8,96 L 22,96 L 24,150 L 40,300 L 14,300 Z" fill="#94a4ba"/>'
+    '<path d="M -22,96 L -32,64 M 22,96 L 32,64" stroke="#94a4ba" stroke-width="4"/><path d="M -24,150 L 24,150" stroke="#8494aa" stroke-width="3"/>'
+    '<rect x="-7" y="106" width="14" height="14" rx="2" fill="#f4f0f2"/><path d="M 0,108 L 0,118 M -5,113 L 5,113" stroke="#c8323c" stroke-width="3.2"/>')
+# Mother Catharina: deep purple cincture with a hanging end, the superior's large cross already on her chest
+F["cat"] = _into_body(F["cat"], "cat",
+    '<path d="M -37,144 L 37,144 L 38,156 L -38,156 Z" fill="#5a2a6e"/><path d="M -30,156 L -22,156 L -24,236 L -32,236 Z" fill="#5a2a6e"/><path d="M -32,236 L -24,236 L -22,244 L -34,244 Z" fill="#7a4a8e"/>')
+
 # Father Joseph
 JOS_SKIN = ("#ebc6a6", "#d4a585")
 jos_body = (robe(("#ece8e0", "#faf7f1", "#c4bdb2"), flare=44)

@@ -546,7 +546,7 @@ def police_dawn_bg():
     o += '<path d="M 0,640 L 540,640 L 540,960 L 0,960 Z" fill="#4a4a5a"/>' + "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#3a3a48" stroke-width="2"/>' for y in (680, 740, 820, 920))
     o += '<path d="M 0,610 L 540,640" stroke="#e8c84a" stroke-width="7"/><path d="M 0,610 L 540,640" stroke="#1a1a20" stroke-width="7" stroke-dasharray="18 18"/>' + "".join(f'<rect x="{x}" y="{600 + x * .055:.0f}" width="6" height="60" fill="#e8e0d0"/>' for x in (20, 260, 500))
     return o
-ST["body_sheet"] = (police_dawn_bg() + "".join(f'<g transform="translate({x},420) scale(.5)"><use href="#{P["mariam"]}"/></g>' for x in (380, 450)) +
+ST["body_sheet"] = (police_dawn_bg() + "".join(f'<g transform="translate({x},420) scale(.5)"><use href="#{P["nunx"]}"/></g>' for x in (380, 450)) +
     C("agnes", 330, 760, .78) + C("mariam", 200, 770, .8) + '<g transform="translate(290,860) scale(1.15)">' + body_sheet() + '</g>')
 
 # carved stone plaque on Martha's grave (replaces the plain label)
