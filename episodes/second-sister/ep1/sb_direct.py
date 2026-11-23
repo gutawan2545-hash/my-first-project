@@ -30,8 +30,12 @@ DIRECT = {
     "306": {"shade": True},
     "92-96": {"hide": ["rosa", "mek"]},          # Martha's stone alone in the frame (no cut-off legs)
     # who's who when Mek arrives: camera on one person at a time, with their name card (no lines for them yet)
-    "311": {"focus": "cat"}, "312": {"focus": "luc"}, "313": {"focus": "mariam"}, "314": {"focus": "rosa"},
-    "315": {"focus": "agnes"}, "317": {"focus": "jos"}, "318": {"focus": "daeng"},
+    # Rosa says the name (card on screen), then Mek adds what the person is like on the same picture
+    "341": {"focus": "cat"}, "342": {"focus": "luc"}, "343": {"focus": "mariam"}, "344": {"focus": "rosa"},
+    "345": {"focus": "agnes"}, "347": {"focus": "jos"}, "348": {"focus": "daeng"},
+    "311": {"focus": "cat", "noname": True}, "312": {"focus": "luc", "noname": True}, "313": {"focus": "mariam", "noname": True},
+    "314": {"focus": "rosa", "noname": True}, "315": {"focus": "agnes", "noname": True}, "317": {"focus": "jos", "noname": True},
+    "318": {"focus": "daeng", "noname": True},
 }
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
 ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}

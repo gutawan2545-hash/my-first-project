@@ -22,7 +22,7 @@ CUT = {3, 4, 8, 10, 12, 15, 17, 18, 19,
        92, 104,                                         # graves: just Martha's stone and a joke
        197, 206}                                        # kitchen: straight to the twins and the song
 _story = [n for n in range(1, 288) if n not in CUT and n not in (31, 32, 33)]
-_story = _story[:_story.index(86) + 1] + [320, 310, 311, 312, 313, 314, 315, 316, 317, 318] + _story[_story.index(86) + 1:]   # roll call comes from Rosa's tour
+_story = _story[:_story.index(86) + 1] + [320, 310, 341, 311, 342, 312, 343, 313, 344, 314, 345, 315, 346, 316, 347, 317, 348, 318] + _story[_story.index(86) + 1:]   # roll call comes from Rosa's tour
 _story.insert(_story.index(96) + 1, 330)
 _story.insert(_story.index(192) + 1, 331)
 _i = _story.index(286)

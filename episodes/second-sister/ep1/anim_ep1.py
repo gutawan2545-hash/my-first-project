@@ -357,9 +357,10 @@ for seg in segments:
     if seg["type"] != "html" or seg["scene"] == 0 or seg["kind"] != "stage": continue
     pos = stage_pos(seg["stage"]); hid = set(seg.get("hide", [])); ent = {m["cid"]: m["keys"][0][0] for m in seg.get("moves", [])}
     fc = DIRECT.get(seg.get("rng"), {}).get("focus")
+    if fc in NAMECARD and DIRECT.get(seg.get("rng"), {}).get("noname"): continue
     if fc in NAMECARD:   # the roll call always shows the card of the person it introduces
         _seen.add(fc); seg.setdefault("names", []).append([fc, .3] + list(NAMECARD[fc])); continue
-    if seg.get("rng", "").isdigit() and 310 <= int(seg["rng"]) <= 318: continue   # roll call: only the person being introduced gets a card
+    if seg.get("rng", "").isdigit() and (310 <= int(seg["rng"]) <= 318 or 341 <= int(seg["rng"]) <= 348): continue   # roll call: only the person being introduced gets a card
     for cid in pos:
         if cid in NAMECARD and cid not in _seen and cid not in hid:
             _seen.add(cid); seg.setdefault("names", []).append([cid, round(ent.get(cid, 0) + (1.4 if cid in ent else .4), 2)] + list(NAMECARD[cid]))
