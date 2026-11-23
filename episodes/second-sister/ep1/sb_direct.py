@@ -28,6 +28,9 @@ DIRECT = {
     "302": {"shake": [["bell", .8]]},
     "304": {"shake": [[.5, .7]]},
     "306": {"shade": True},
+    # who's who when Mek arrives: camera on one person at a time, with their name card (no lines for them yet)
+    "311": {"focus": "cat"}, "312": {"focus": "luc"}, "313": {"focus": "mariam"}, "314": {"focus": "rosa"},
+    "315": {"focus": "agnes"}, "317": {"focus": "jos"}, "318": {"focus": "daeng"},
 }
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
 ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}

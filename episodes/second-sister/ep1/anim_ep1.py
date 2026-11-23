@@ -313,6 +313,9 @@ for seg in segments:
                 cam = frame(x, y, k, "cu" if (emo or (sh["vo"][1] > 5 and spoken % 2)) else "ms")
             spoken += 1
         if cam is None and prev is not None and sh["dur"] < 1.4 and not sp: cam = prev   # a very short beat holds the last framing
+        fc = d.get("focus")
+        if fc and fc in pos:   # roll call: hold a medium shot on the person being introduced
+            fx, fy, fk = pos[fc]; cam = frame(fx, fy + (60 * fk if fc == "luc" else 0), fk, "ms")
         sh["cam"] = cam; prev = cam
     # entrances / peeks: characters are not standing there waiting
     moves = []
@@ -353,6 +356,10 @@ _seen = set()
 for seg in segments:
     if seg["type"] != "html" or seg["scene"] == 0 or seg["kind"] != "stage": continue
     pos = stage_pos(seg["stage"]); hid = set(seg.get("hide", [])); ent = {m["cid"]: m["keys"][0][0] for m in seg.get("moves", [])}
+    fc = DIRECT.get(seg.get("rng"), {}).get("focus")
+    if fc in NAMECARD:   # the roll call always shows the card of the person it introduces
+        _seen.add(fc); seg.setdefault("names", []).append([fc, .3] + list(NAMECARD[fc])); continue
+    if seg.get("rng", "").isdigit() and 310 <= int(seg["rng"]) <= 318: continue   # roll call: only the person being introduced gets a card
     for cid in pos:
         if cid in NAMECARD and cid not in _seen and cid not in hid:
             _seen.add(cid); seg.setdefault("names", []).append([cid, round(ent.get(cid, 0) + (1.4 if cid in ent else .4), 2)] + list(NAMECARD[cid]))
