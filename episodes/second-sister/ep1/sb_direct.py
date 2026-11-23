@@ -28,6 +28,7 @@ DIRECT = {
     "302": {"shake": [["bell", .8]]},
     "304": {"shake": [[.5, .7]]},
     "306": {"shade": True},
+    "92-96": {"hide": ["rosa", "mek"]},          # Martha's stone alone in the frame (no cut-off legs)
     # who's who when Mek arrives: camera on one person at a time, with their name card (no lines for them yet)
     "311": {"focus": "cat"}, "312": {"focus": "luc"}, "313": {"focus": "mariam"}, "314": {"focus": "rosa"},
     "315": {"focus": "agnes"}, "317": {"focus": "jos"}, "318": {"focus": "daeng"},

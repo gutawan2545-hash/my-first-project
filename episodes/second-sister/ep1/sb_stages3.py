@@ -553,7 +553,7 @@ INS2["question"] = (
 
 # ------------------------------------------------------------------ 14. CEMETERY: Mek next to Rosa, nobody standing on a grave
 _cbg = cemetery_bg() if False else None
-ST["cemetery"] = ST["cemetery"].replace(C("mek", 400, 790, .88), C("mek", 300, 792, .88))
+ST["cemetery"] = ST["cemetery"].replace(C("mek", 400, 790, .88), C("mek", 330, 792, .88))
 _cw = ST["cemetery_wide"]
 _r_old, _m_old = C("rosa", 380, 700, .6), C("mek_back", 250, 960, 1.05)
 assert _r_old in _cw and _m_old in _cw

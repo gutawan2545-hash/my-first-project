@@ -18,8 +18,12 @@ CUT = {3, 4, 8, 10, 12, 15, 17, 18, 19,
        190, 193, 194, 195, 198, 199, 210, 211, 212, 213,
        216, 217, 218, 219, 220, 222, 224, 228, 230, 235,
        263, 264, 267, 276,                              # the missing tower key waits
-       277, 279}
+       277, 279,
+       92, 104,                                         # graves: just Martha's stone and a joke
+       197, 206}                                        # kitchen: straight to the twins and the song
 _story = [n for n in range(1, 288) if n not in CUT and n not in (31, 32, 33)]
-_story = _story[:_story.index(70) + 1] + [310, 311, 312, 313, 314, 315, 316, 317, 318] + _story[_story.index(70) + 1:]
+_story = _story[:_story.index(86) + 1] + [320, 310, 311, 312, 313, 314, 315, 316, 317, 318] + _story[_story.index(86) + 1:]   # roll call comes from Rosa's tour
+_story.insert(_story.index(96) + 1, 330)
+_story.insert(_story.index(192) + 1, 331)
 _i = _story.index(286)
 ORDER = [301, 302, 303, 304, 306, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]
