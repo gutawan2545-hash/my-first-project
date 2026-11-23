@@ -59,6 +59,11 @@ def read_wav(path):
     return x.astype(np.float32)
 
 def say(key, who, text):
+    el = HERE / "vo_fast" / f"{key}.wav"
+    if el.exists():
+        x = read_wav(el); nz = np.where(np.abs(x) > 0.012)[0]
+        x = x[max(0, nz[0] - 800):nz[-1] + 2400] if len(nz) else x
+        return x / (np.abs(x).max() + 1e-6) * 0.8
     v, p, s = VOICES[who]
     clean = re.sub(r"[“”\"!?]", "", text).replace("…", ", ")
     path = HERE / "vo" / f"{key}.wav"
@@ -75,10 +80,10 @@ for sh in shots:
     for i, (who, text) in enumerate(sh["turns"]):
         a = say(f"s{sh['n']:02d}_{i}", who, text)
         clips.append(dict(who=who, text=text, at=cur, len=len(a) / SR, audio=a))
-        cur += len(a) / SR + 0.14
+        cur += len(a) / SR + 0.08
     d = max(sh["dur"] * 0.9, cur + 0.35)
     if sh["n"] == 2:                               # ให้มีเวลาไก่ขันแล้วซิ่งล้ม
-        d = max(d, cur + 1.6)
+        d = max(d, cur + 2.3)
     if sh["n"] == len(shots):
         d += 1.2                                   # ค้างการ์ดโหวตให้ตัดสินใจ
     plan.append(dict(n=sh["n"], start=t, dur=round(d, 2), clips=clips))
@@ -108,31 +113,66 @@ for sh in plan:
     for c in sh["clips"]:
         add(voice, c["audio"], sh["start"] + c["at"])
 
-# ดนตรี: ช่วงกรุงเทพสดใส (ช็อต 1-7) · โลกเวทมนตร์มีระฆัง (9-13) · ลุ้น (14) แล้วหยุดตอน "เช็กเกลียว" · การ์ดโหวตเบา ๆ
+# ดนตรี: สนุก ม่วน ๆ · ช่วงกรุงเทพจังหวะเด้ง (ช็อต 1-7) · ตลาดเวทมนตร์มีระฆัง (9-10)
+# ช่วงต้น (11-13) เป็นลายอีสาน: แคนเสียงยืน + พิณดีดรัว + กลองตุ๊บ ๆ + ฉิ่งฉับ · ลุ้น (14) แล้วหยุดก่อน "เช็กเกลียว"
 music = np.zeros(N, np.float32)
-C = 261.6; scale = [1, 9/8, 5/4, 3/2, 5/3, 2]
-beat = 60 / 112
-def section(t0, t1, root=1.0, bells=False, sparse=False):
+def noise_hit(d, dec, g):
+    n = int(d * SR); return (np.random.randn(n) * np.exp(-np.arange(n) / SR * dec) * g).astype(np.float32)
+def kick(at): x = np.arange(int(.22*SR))/SR; add(music, (np.sin(2*np.pi*(150*np.exp(-x*18)+70)*x)*np.exp(-x*14)).astype(np.float32), at, .55)
+def snare(at): add(music, noise_hit(.16, 28, .28), at); add(music, tone(330, .12, "sine", 25), at, .2)
+def hat(at, g=.07): y = noise_hit(.04, 120, g); add(music, y - np.concatenate([[0], y[:-1]]), at)
+def groove(t0, t1, bpm=124, root=1.0, bells=False, light=False):
+    b = 60 / bpm; k = 0; tt = t0
+    prog = [1, 4/3, 3/2, 4/3]
+    mel = [5, 3, 2, 3, 1, 2, 3, 5, 6, 5, 3, 2, 1, 2, 3, 1]
+    deg = {1: 1, 2: 9/8, 3: 5/4, 5: 3/2, 6: 5/3}
+    while tt < t1:
+        ch = prog[(k // 8) % 4] * root
+        if not light:
+            if k % 2 == 0: kick(tt)
+            if k % 4 == 2: snare(tt)
+        hat(tt + b/2, .05 if light else .07)
+        add(music, tone(C/2*ch, .3, "pluck", 9), tt, .55)                               # เบสเด้ง
+        add(music, tone(C/2*ch*1.5, .2, "pluck", 12), tt + b/2, .3)
+        if k % 2 == 1:                                                                   # คอร์ดตบจังหวะยก
+            for r in (1, 5/4, 3/2): add(music, tone(C*ch*r, .18, "pluck", 14), tt + b/2, .12)
+        add(music, tone(C*2*deg[mel[k % 16]]*root, .28, "pluck", 8), tt, .22 if k % 2 == 0 else .14)   # ทำนอง
+        if bells and k % 4 == 0: add(music, tone(C*4*deg[mel[k % 16]], 1.0, "sine", 3), tt, .1)
+        tt += b; k += 1
+def isan(t0, t1, bpm=138):
+    b = 60 / bpm; A = 220.0
+    pent = [1, 6/5, 4/3, 3/2, 9/5, 2]                       # A C D E G A (ลายอีสาน)
+    # แคน: เสียงยืนลิ้นหลายลูก สั่นเบา ๆ
+    x = np.arange(int((t1 - t0) * SR)) / SR
+    khaen = np.zeros(len(x), np.float32)
+    for f, g in ((A, .5), (A*3/2, .35), (A*2, .3), (A*2*6/5, .18)):
+        ph = 2*np.pi*f*x + .3*np.sin(2*np.pi*5.5*x)
+        khaen += (np.sign(np.sin(ph)) * .35 + np.sin(ph) * .65).astype(np.float32) * g
+    khaen *= (1 + .25*np.sin(2*np.pi*2.3*x)) * .22
+    khaen[:int(.4*SR)] *= np.linspace(0, 1, int(.4*SR)); khaen[-int(.3*SR):] *= np.linspace(1, 0, int(.3*SR))
+    add(music, khaen, t0)
+    riff = [0, 2, 3, 2, 0, 2, 3, 4, 3, 2, 0, 1, 0, 2, 0, 3]
     k = 0; tt = t0
     while tt < t1:
-        prog = [1, 4/3, 3/2, 4/3][(k // 8) % 4] * root
-        if k % 2 == 0:
-            add(music, tone(C/2*prog, .5, "pluck", 5), tt, .5)
-        if not sparse or k % 2 == 0:
-            add(music, tone(C*prog*scale[(k*3) % 6], .35, "pluck", 7), tt + (beat/2 if k % 4 == 3 else 0), .32)
-        if bells and k % 4 == 0:
-            add(music, tone(C*4*prog*scale[k % 5], 1.2, "sine", 2.5), tt, .14)
-        tt += beat; k += 1
+        for sub in range(2):                                 # พิณดีดรัว (โน้ตละครึ่งจังหวะ)
+            n = riff[(k * 2 + sub) % 16]; f = A * 2 * pent[n]
+            add(music, tone(f, .22, "pluck", 11), tt + sub*b/2, .26); add(music, tone(f*2, .15, "pluck", 16), tt + sub*b/2, .1)
+        if k % 2 == 0: kick(tt)                              # กลองหาง ตุ๊บ
+        else: add(music, tone(180, .12, "sine", 20), tt, .35)
+        if k % 2 == 0: add(music, tone(3520, .5, "sine", 6), tt, .1); add(music, tone(4180, .4, "sine", 8), tt, .05)   # ฉิ่ง
+        else: add(music, noise_hit(.06, 60, .14), tt)                                                   # ฉับ
+        tt += b; k += 1
 s = {p["n"]: p for p in plan}
-section(0, s[8]["start"], 1.0)
-section(s[9]["start"], s[14]["start"], 9/8, bells=True)
-# ลุ้นช็อต 14: โน้ตยาวไต่ขึ้น หยุดเงียบก่อนประโยค "เช็กเกลียว"
+C = 261.6
+groove(0, s[8]["start"], 124)
+groove(s[9]["start"], s[11]["start"] + .1, 124, 9/8, bells=True)
+isan(s[11]["start"], s[14]["start"])
 cut14 = s[14]["start"] + s[14]["clips"][-1]["at"] - 0.1
-for i, f in enumerate([C, C*9/8, C*5/4, C*4/3, C*3/2]):
-    a = s[14]["start"] + i * 0.5
+for i, f in enumerate([C, C*9/8, C*5/4, C*4/3, C*3/2, C*5/3]):
+    a = s[14]["start"] + i * 0.45
     if a < cut14:
-        add(music, tone(f, 0.9, "saw", 1.2) * 0.25, a, .35)
-section(s[15]["start"] + 0.2, TOTAL, 1.0, sparse=True)
+        add(music, tone(f, 0.8, "saw", 1.4) * 0.22, a, .35); hat(a, .06)
+groove(s[15]["start"] + 0.2, TOTAL, 118, light=True)
 
 # เสียงประกอบ
 sfx = np.zeros(N, np.float32)
@@ -163,7 +203,10 @@ def khaen(at):
 def click(at):
     add(sfx, tone(2400, .05, "sine", 60), at, .35)
 
-crow(s[2]["start"] + s[2]["clips"][0]["at"] + s[2]["clips"][0]["len"] + .05); thud(s[2]["start"] + s[2]["dur"] - 1.0)
+_cr = s[2]["start"] + s[2]["clips"][0]["at"] + s[2]["clips"][0]["len"] + .05
+crow(_cr); thud(_cr + .38)
+for k in range(5): add(sfx, (np.random.randn(int(.04*SR))*np.exp(-np.arange(int(.04*SR))/SR*60)).astype(np.float32), _cr + .42 + k*.08, .35)   # ปีกตีพั่บ ๆ
+thud(_cr + .86); crow(_cr + .95)
 for i in range(3): add(sfx, tone(1500 + 300*i, .3, "sine", 8), s[3]["start"] + .3 + i*.12, .12)
 ding(s[4]["start"] + s[4]["clips"][-1]["at"])
 boing(s[5]["start"] + .6); ding(s[6]["start"] + .5, 2200)
@@ -176,7 +219,7 @@ for i in range(int((s[15]["dur"] - .4) / VOTE_STEP)):
 
 def rms(x):
     m = np.abs(x) > 1e-4; return float(np.sqrt(np.mean(x[m]**2))) if m.any() else 1e-6
-music *= rms(voice) / rms(music) * 10**(-9/20)                  # ดนตรีเบากว่าเสียงพูด 9 dB
+music *= rms(voice) / rms(music) * 10**(-8.5/20)                  # ดนตรีเบากว่าเสียงพูด 9 dB
 act = np.convolve((np.abs(voice) > .02).astype(np.float32), np.ones(int(.25*SR))/int(.25*SR), "same")
 music *= 1 - .35*np.clip(act*3, 0, 1)                           # หลบเสียงพูดเพิ่มอีกนิด
 mix = voice + music + sfx * .8

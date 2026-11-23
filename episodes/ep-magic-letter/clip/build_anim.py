@@ -37,8 +37,9 @@ for sh in TL:
     for i, (who, text, at, ln) in enumerate(sh["lines"]):
         if who == "ซิ่ง" and vo_shots.get(n) and i == 0:
             continue                                         # เสียงบรรยาย ไม่ขยับปาก
-        x, sr = read_wav(HERE / "vo" / f"s{n:02d}_{i}.wav")
-        nz = np.where(np.abs(x) > 0.01)[0]; x = x[nz[0]:nz[-1] + 1] if len(nz) else x
+        el = HERE / "vo_fast" / f"s{n:02d}_{i}.wav"
+        x, sr = read_wav(el if el.exists() else HERE / "vo" / f"s{n:02d}_{i}.wav")
+        nz = np.where(np.abs(x) > (0.012 if el.exists() else 0.01))[0]; x = x[max(0, nz[0] - (800 if el.exists() else 0)):nz[-1] + 1] if len(nz) else x
         hop = sr // FPS; fr = []
         for k in range(0, len(x), hop):
             fr.append(float(np.sqrt(np.mean(x[k:k + hop] ** 2))))
@@ -143,6 +144,13 @@ window.setShot = function (n, f) {{
       const p = Math.min(1, t / +g.dataset.t), dx = +g.dataset.dx * (1 - ease(p));
       g.setAttribute("transform", `translate(${{dx.toFixed(1)}},0) ` + g.dataset.base);
     }}
+    if (a === "rooster") {{
+      const j0 = CROW + 0.4, J = 0.45; let x = 340, y = 374;
+      if (t >= j0) {{ const q = Math.min(1, (t - j0) / J), p = ease(q); x = 340 + (232 - 340) * p; y = 374 + (676 - 374) * p - 130 * Math.sin(Math.PI * q);
+        if (q >= 1) y -= 3 * Math.abs(Math.sin(t * 9)); }}
+      else if (t > CROW) y -= 5 * Math.abs(Math.sin(t * 22));
+      g.setAttribute("transform", `translate(${{x.toFixed(1)}},${{y.toFixed(1)}}) scale(.62)`);
+    }}
     if (a === "fall") {{
       const p = ease((t - CROW) / 0.35), ang = -118 * p;
       g.setAttribute("transform", `translate(${{470 - 40 * p}},${{560 + 40 * (1 - p)}}) rotate(${{ang}}) scale(.72)`);
@@ -153,7 +161,7 @@ window.setShot = function (n, f) {{
   // ขยับปากตามเสียง
   KEYS.forEach(k => show("an-mouth-" + k, false));
   sh.talk.forEach(x => {{ const i = f - x.start; if (i >= 0 && i < x.flags.length && x.flags[i]) show("an-mouth-" + x.key, true); }});
-  if (n === 2 && t > CROW && t < CROW + 1.3) show("an-mouth-rooster", Math.floor(t * 8) % 2 === 0);
+  if (n === 2 && ((t > CROW && t < CROW + 0.4) || (t > CROW + 0.9 && t < CROW + 1.5))) show("an-mouth-rooster", Math.floor(t * 8) % 2 === 0);
 }};
 window.FRAMES = SHOTS.map(s => s.frames);
 </script>'''

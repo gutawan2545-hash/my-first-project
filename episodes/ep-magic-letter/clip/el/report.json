@@ -1,0 +1,344 @@
+{
+ "test:ซิ่ง": {
+  "path": "el/test_TX3LPaxmHKxFdv7VOQHJ.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:อาม้า": {
+  "path": "el/test_XrExE9yKIg1WjnnlVkGX.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:ลุงเปี๊ยก": {
+  "error": "HTTP 404: b'{\"detail\":{\"type\":\"not_found\",\"code\":\"voice_not_found\",\"message\":\"A voice with voice_id \\'pqHfZKP75CVOlQylNhV4\\' was not found.\",\"status\":\"voice_not_found\",\"request_id\":\"31be13d8968b9e7261c93fd16fb586b4'"
+ },
+ "test:ลุงโต": {
+  "path": "el/test_nPczCjzI2devNBz1zQrb.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:ป้าแต๋ว": {
+  "path": "el/test_FGY2WhTYpPnrIDTdsKH5.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:ต้น": {
+  "path": "el/test_IKne3meq5aSn9XLyUdCD.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:เดรโก": {
+  "path": "el/test_N2lVS1w4EtoT3dr4eOWO.mp3",
+  "heard": null,
+  "score": null
+ },
+ "test:หมวก": {
+  "path": "el/test_JBFqnCBsd6RMkjVDRZzb.mp3",
+  "heard": null,
+  "score": null
+ },
+ "s01_0": {
+  "who": "ซิ่ง",
+  "text": "ถ้าวันหนึ่งคุณได้จดหมายเข้าเรียนจากฮอกวอตส์ คุณจะไปไหมครับ",
+  "best": {
+   "path": "el/s01_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s01_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s02_0": {
+  "who": "ซิ่ง",
+  "text": "จดหมายของผมมากับไก่ชน… ตอนตีห้า!",
+  "best": {
+   "path": "el/s02_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s02_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s03_0": {
+  "who": "ซิ่ง",
+  "text": "ฮอกวอตส์ สาขาประเทศไทย… ไม่ดูเกรดด้วย! เกรดผมหนึ่งจุดห้าเองนะเว้ย",
+  "best": {
+   "path": "el/s03_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s03_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s04_0": {
+  "who": "ซิ่ง",
+  "text": "ในซองมีเหรียญทองมาด้วย อาม้าเลยขอกัดก่อน",
+  "best": {
+   "path": "el/s04_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s04_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s04_1": {
+  "who": "อาม้า",
+  "text": "แท้! ทองเก้าสิบหกจุดห้า!",
+  "best": {
+   "path": "el/s04_1_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s04_1_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s05_0": {
+  "who": "ซิ่ง",
+  "text": "ลุงโตภารโรงโรงเรียนมารับด้วยตุ๊กตุ๊ก ลุงนั่งปุ๊บ หัวรถลอยปั๊บ",
+  "best": {
+   "path": "el/s05_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s05_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s06_0": {
+  "who": "ลุงเปี๊ยก",
+  "text": "สามร้อย! คนตัวใหญ่คิดสองที่!",
+  "best": {
+   "path": "el/s06_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s06_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s07_0": {
+  "who": "ลุงโต",
+  "text": "ทางเข้าโลกเวทมนตร์ ต้องถวายน้ำแดงก่อนนะไอ้หนู",
+  "best": {
+   "path": "el/s07_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s07_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s09_0": {
+  "who": "ป้าแต๋ว",
+  "text": "ไม้กายสิทธิ์จ้า สามอันร้อย เลือกเลยจ้า!",
+  "best": {
+   "path": "el/s09_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s09_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s10_0": {
+  "who": "ซิ่ง",
+  "text": "แต่ไม้ที่เลือกผม… ดันเป็นไม้ลูกชิ้น",
+  "best": {
+   "path": "el/s10_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s10_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s11_0": {
+  "who": "ต้น",
+  "text": "เสี่ยว! ไม้ลูกชิ้นคือกันบ่ ของข้อยได้ไม้ข้าวเหนียวปิ้ง!",
+  "best": {
+   "path": "el/s11_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s11_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s12_0": {
+  "who": "เดรโก",
+  "text": "รู้ไหมพ่อฉันเป็นใคร… พ่อมดใหญ่!",
+  "best": {
+   "path": "el/s12_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s12_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s12_1": {
+  "who": "ต้น",
+  "text": "พ่อข้อยกะใหญ่คือกัน… ผู้ใหญ่บ้าน!",
+  "best": {
+   "path": "el/s12_1_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s12_1_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s13_0": {
+  "who": "หมวก",
+  "text": "หัวนี้มีแต่ส้มตำ… ฮัฟเฟิลพัฟ!",
+  "best": {
+   "path": "el/s13_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s13_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s13_1": {
+  "who": "ต้น",
+  "text": "ตำปลาแดกเด้อหมวก บ่แม่นตำไทย!",
+  "best": {
+   "path": "el/s13_1_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s13_1_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s14_0": {
+  "who": "หมวก",
+  "text": "อืมม… บ้านไหนดี",
+  "best": {
+   "path": "el/s14_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s14_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s14_1": {
+  "who": "ซิ่ง",
+  "text": "ลุงหมวก เร็ว ๆ ดิ ช้ากว่าเน็ตบ้านผมอีก",
+  "best": {
+   "path": "el/s14_1_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s14_1_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s14_2": {
+  "who": "หมวก",
+  "text": "มาเช็กเกลียวฉันเหรอ? งั้นให้คนดูเลือกไปเลย!",
+  "best": {
+   "path": "el/s14_2_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s14_2_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ },
+ "s15_0": {
+  "who": "ซิ่ง",
+  "text": "ผมควรอยู่บ้านไหน คอมเมนต์มาเลยครับ",
+  "best": {
+   "path": "el/s15_0_t1.mp3",
+   "score": null,
+   "heard": null
+  },
+  "takes": [
+   {
+    "path": "el/s15_0_t1.mp3",
+    "score": null,
+    "heard": null
+   }
+  ]
+ }
+}
