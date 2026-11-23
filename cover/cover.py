@@ -62,7 +62,8 @@ ART = f'''
 if SERIES == 'second-sister':   # art from episodes/second-sister/cover/make_art_ep1.py (the chapel frame, current cast)
     ART = '''
 <rect width="540" height="960" fill="url(#bg)"/>
-<g transform="translate(-95,150) scale(1.35)"><use href="#chapelArt"/></g>
+<g transform="translate(-54,120) scale(1.2)"><use href="#chapelArt"/></g>
+<rect width="540" height="124" fill="#07050c"/><rect y="118" width="540" height="140" fill="url(#seam)"/>
 <rect width="540" height="520" fill="url(#topfade)"/>
 <rect width="540" height="960" fill="url(#vig)"/>
 <rect width="540" height="960" filter="url(#grain)" opacity=".07" style="mix-blend-mode:screen"/>
@@ -90,6 +91,7 @@ DEFS = '''<defs>
 <radialGradient id="halo"><stop offset="0" stop-color="#cfc4ff" stop-opacity=".22"/><stop offset="1" stop-color="#cfc4ff" stop-opacity="0"/></radialGradient>
 <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3fa0"/><stop offset=".55" stop-color="#2a2370"/><stop offset=".56" stop-color="#332a80"/><stop offset="1" stop-color="#1b1650"/></linearGradient>
 <linearGradient id="topfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05030a" stop-opacity=".9"/><stop offset=".7" stop-color="#05030a" stop-opacity=".45"/><stop offset="1" stop-color="#05030a" stop-opacity="0"/></linearGradient>
+<linearGradient id="seam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07050c"/><stop offset="1" stop-color="#07050c" stop-opacity="0"/></linearGradient>
 <radialGradient id="vig" cx="50%" cy="58%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".7"/></radialGradient>
 <filter id="lilac" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.92 0 0 0 0.02  0 0.84 0 0 0.01  0 0 1.0 0 0.06  0 0 0 1 0"/></filter>
 <filter id="soft" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="1.2"/></filter>
