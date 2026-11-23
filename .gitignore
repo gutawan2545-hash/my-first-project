@@ -35,3 +35,6 @@ episodes/second-sister/ep1/acting_test.mp4
 episodes/second-sister/ep1/render_ep1b.log
 episodes/second-sister/ep1/dub_nat.log
 episodes/second-sister/ep1/*.log
+episodes/second-sister/ep1/*.wav
+episodes/second-sister/ep1/concat.txt
+episodes/second-sister/ep1/joined.mp4
