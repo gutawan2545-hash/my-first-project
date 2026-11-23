@@ -286,7 +286,7 @@ def stage_pos(stage):
     return out
 def frame(x, y, k, size):
     H = 372 * k
-    h, cy = (H * .8, y + H * .27) if size == "cu" else (H * 1.34, y + H * .47)
+    h, cy = (H * .84, y + H * .26) if size == "cu" else (H * 1.4, y + H * .45)
     h = min(h, 960); w = h * 9 / 16
     return [round(min(max(x, w / 2), 540 - w / 2), 1), round(min(max(cy, h / 2), 960 - h / 2), 1), round(h, 1)]
 for seg in segments:
