@@ -224,12 +224,32 @@ def bell(dur=9.0, f0=131.0):
     s *= np.minimum(1, t / .002)
     s = np.tanh(1.8 * s / np.abs(s).max()) / np.tanh(1.8)   # dense, loud body
     return s.astype(np.float32)
+def bandnoise(n, lo, hi, seed=0):
+    x = np.random.default_rng(seed).standard_normal(n); X = np.fft.rfft(x); f = np.fft.rfftfreq(n, 1 / SR)
+    X[(f < lo) | (f > hi)] = 0; y = np.fft.irfft(X, n); return (y / (np.abs(y).max() + 1e-9)).astype(np.float32)
 BELL = bell()
+# eerie version (user: loud and haunting, three tolls): a ghost copy a little flat and late so the tone beats and wavers,
+# a low swell rising into the first strike, and a cold high shimmer hanging in the tail
+def ghost_bell():
+    b = BELL; n = len(b); idx = np.arange(n) * .972               # 2.8 % flat
+    g = np.interp(idx, np.arange(n), b).astype(np.float32)
+    g = np.concatenate([np.zeros(int(.045 * SR), np.float32), g])[:n]
+    t = np.arange(n) / SR
+    shimmer = (np.sin(2 * np.pi * 1863 * t) * .5 + np.sin(2 * np.pi * 1971 * t) * .5) * np.minimum(1, t / 1.2) * np.exp(-t * .45) * .12
+    return (b + .55 * g + shimmer).astype(np.float32)
+GBELL = ghost_bell()
+def swell(dur=1.6):
+    n = int(dur * SR); t = np.arange(n) / SR
+    return (np.sin(2 * np.pi * 41 * t) * (t / dur) ** 2 * .6 + bandnoise(n, 60, 300, 21) * (t / dur) ** 3 * .25).astype(np.float32)
 BUS = "bell"
+BELL_TIMES = []
 for s in segs:
     for b, cnt, bv in s.get("bells", []):
-        for rep in range(cnt):
-            add(BELL, s["t0"] + b + rep * 2.6, pan=.1, vol=1.15 * bv)
+        t0 = s["t0"] + b
+        add(swell(), max(0, t0 - 1.6), vol=.8)
+        for rep in range(3):                                         # always three tolls, slow and heavy
+            add(GBELL, t0 + rep * 3.1, pan=(-.15, .15, 0)[rep], vol=1.4 * max(bv, .9))
+            BELL_TIMES.append(t0 + rep * 3.1)
 
 # scare stinger: sub boom + bright dissonant string-like stab
 def stinger(dur=2.6):
@@ -250,9 +270,6 @@ for s in segs:
         add((rng.standard_normal(n) * np.exp(-np.arange(n) / SR * 9)).astype(np.float32), s["t0"] + 7.65, vol=.05)
 
 # ---------------- master revision: sound effects tied to the picture ----------------
-def bandnoise(n, lo, hi, seed=0):
-    x = np.random.default_rng(seed).standard_normal(n); X = np.fft.rfft(x); f = np.fft.rfftfreq(n, 1 / SR)
-    X[(f < lo) | (f > hi)] = 0; y = np.fft.irfft(X, n); return (y / (np.abs(y).max() + 1e-9)).astype(np.float32)
 def whoosh(dur=.6, seed=1):
     n = int(dur * SR); t = np.linspace(0, 1, n)
     env = np.sin(np.pi * np.clip(t / .75, 0, 1)) ** 2 * np.where(t > .75, np.exp(-(t - .75) * 14), 1)
@@ -346,6 +363,12 @@ if HAS_VO:
     duck = 1 - .6 * np.clip(env / .04, 0, 1)       # music steps well back under the voices
     ml, mr = ml * duck, mr * duck
     vr = convolve(vo, ir(3, .45)); vol_, vor_ = .96 * vo + .035 * vr, .96 * vo + .035 * vr   # just a little room, no echo
+bduck = np.ones(N, np.float32)
+for bt in BELL_TIMES:
+    i0 = int(max(0, bt - .2) * SR); i1 = min(N, int((bt + 2.6) * SR))
+    if i0 < N: bduck[i0:i1] = np.minimum(bduck[i0:i1], .35)
+bduck = np.convolve(bduck, np.ones(int(.3 * SR), np.float32) / int(.3 * SR), "same")
+ml, mr, fl, fr = ml * bduck, mr * bduck, fl * (.5 + .5 * bduck), fr * (.5 + .5 * bduck)
 
 del BUSES
 bpk = max(np.abs(bl).max(), np.abs(br).max(), 1e-6)
