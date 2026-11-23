@@ -25,12 +25,12 @@ DIRECT = {
     "254-255": {"shade": True, "shake": [[1.2, .45]]},
     "282-285": {"shake": [["s284", .9]]},
     # hook: four fast shots before the title
-    "301": {"shake": [["bell", .8]]},
-    "303": {"shake": [[.5, .7]]},
-    "304": {"shade": True},
+    "302": {"shake": [["bell", .8]]},
+    "304": {"shake": [[.5, .7]]},
+    "306": {"shade": True},
 }
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
-ZOOM_IN = {"302", "303", "304", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
+ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
 GRADE = {}
 for st in "tower_fog tower_night chapel_night thana_night rosa_bed rosa_room oldwing veranda call call_mek drain clock evidence_wall rules1 sisters_ext".split(): GRADE[st] = "night"
 for st in "flash_dorm dream".split(): GRADE[st] = "flash"

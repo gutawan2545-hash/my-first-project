@@ -586,3 +586,38 @@ INS2["clues"] = ('<rect width="540" height="960" fill="#0c0a12"/><radialGradient
     + '<g id="clue1">' + _clue(230, 1, "แฝดแยกกันได้ตอนจับช้อน", "มาเรียมถนัดขวา · มาร์ธาถนัดซ้าย") + '</g>'
     + '<g id="clue2">' + _clue(346, 2, "อักเนสใช้มือซ้ายทุกครั้ง", "รินชา ป้อนยา หยิบตุ๊กตา") + '</g>'
     + '<g id="clue3">' + _clue(462, 3, "ผ้าเช็ดหน้า \"Martha\" ผืนใหม่", "อยู่ในมือป้าแดงตอนตาย ไม่มีรอยไหม้") + '</g>')
+
+# ------------------------------------------------------------------ 17. HOOK BOARD (shots 301-303): the seven rules on an old wooden board,
+# nailed to the plaster, lit by a torch; one rule lights up at a time. Fills the frame (user: open straight on the board).
+HOOK_RULES = ["ถ้าระฆังดังตอนตีสาม ห้ามออกจากห้อง", "ได้ยินเสียงเคาะห้องสารภาพบาป อย่าเปิดม่าน", "ห้ามเข้าปีกเก่าหลังสามทุ่ม",
+              "ห้ามจุดเทียนในหอเด็ก", "ก่อนนอน ต้องขานชื่อตัวเองดัง ๆ", "นับซิสเตอร์ได้สิบสาม อย่าทัก", "ห้ามเอ่ยชื่อ “มาร์ธา” เด็ดขาด"]
+def hook_board(hl=None):
+    r = _rr.Random(17)
+    o = '<rect width="540" height="960" fill="#2a2330"/>'
+    o += "".join(f'<rect x="{x}" y="0" width="{w}" height="960" fill="#2f2836" opacity=".8"/>' for x, w in ((0, 40), (500, 40)))
+    o += '<path d="M 60,0 C 70,200 40,420 64,960" stroke="#3a3242" stroke-width="30" fill="none" opacity=".35"/>'   # damp streak on the plaster
+    ly = 260 + (hl if hl is not None else 3) * 66
+    o += f'<ellipse cx="270" cy="{ly}" rx="330" ry="260" fill="url(#lg_fff0dc)" opacity=".55" style="mix-blend-mode:screen"/>'   # torch pool on the wall
+    GLOWCOLS.add("#fff0dc")
+    # the board: horizontal planks, grain, dark frame, four nails
+    o += '<rect x="44" y="96" width="452" height="752" rx="6" fill="#24170f"/><rect x="58" y="110" width="424" height="724" fill="#5a3e2c"/>'
+    for k in range(9):
+        y = 110 + k * 80.4
+        o += f'<rect x="58" y="{y:.0f}" width="424" height="80" fill="{("#5a3e2c", "#523826", "#5e422e")[k % 3]}"/><path d="M 58,{y:.0f} L 482,{y:.0f}" stroke="#3a2618" stroke-width="2"/>'
+        o += "".join(f'<path d="M {r.uniform(60, 300):.0f},{y + r.uniform(10, 70):.0f} c 40,{r.uniform(-4, 4):.0f} 80,{r.uniform(-4, 4):.0f} {r.uniform(90, 160):.0f},{r.uniform(-3, 3):.0f}" stroke="#4a3020" stroke-width="1" fill="none" opacity=".7"/>' for _ in range(3))
+    o += "".join(f'<circle cx="{x}" cy="{y}" r="6" fill="#1a120c"/><circle cx="{x - 1.5}" cy="{y - 1.5}" r="2" fill="#8a7a6a"/>' for x, y in ((76, 128), (464, 128), (76, 816), (464, 816)))
+    o += "".join(f'<path d="M {x},{y} l {r.uniform(20, 60):.0f},{r.uniform(-8, 8):.0f}" stroke="#c8b08a" stroke-width=".8" opacity=".35"/>' for x, y in ((120, 700), (300, 180), (380, 560), (150, 430)))   # scratches
+    o += '<text x="270" y="182" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="34" font-weight="700" fill="#efe0c0">กฎเจ็ดข้อ</text>'
+    o += '<text x="270" y="216" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="15" fill="#cdb894" letter-spacing="2">คอนแวนต์เซนต์เวโรนิกา</text>'
+    o += '<path d="M 140,232 L 400,232" stroke="#c8a878" stroke-width="1.2" opacity=".6"/>'
+    for i, t in enumerate(HOOK_RULES):
+        y = 260 + i * 66; on = hl == i; dim = hl is not None and not on
+        col = "#fff3cf" if on else ("#9c8a6c" if dim else "#e6d4b2")
+        if i == 6: col = "#ff9a8a" if on else ("#9a5a50" if dim else "#d8786a")   # rule 7 painted over in red, a little crooked
+        if on: o += f'<rect x="70" y="{y - 30}" width="400" height="52" rx="10" fill="#ffe2a0" opacity=".16" filter="url(#lsoft)"/>'
+        tr = ' transform="rotate(-1.5 270 ' + str(y) + ')"' if i == 6 else ""
+        o += f'<g{tr}><circle cx="96" cy="{y - 6}" r="17" fill="none" stroke="{col}" stroke-width="2"/><text x="96" y="{y + 1}" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="{col}">{i + 1}</text>'
+        o += f'<text x="126" y="{y + 1}" font-family="IBM Plex Sans Thai, sans-serif" font-size="{19 if len(t) > 30 else 20}" font-weight="{700 if on or i == 6 else 500}" fill="{col}">{t}</text></g>'
+    o += '<path d="M 300,720 c 2,20 -2,40 1,60" stroke="#6a2a22" stroke-width="3" fill="none" opacity=".7"/>'   # a drip from the red paint
+    return o
+INS2["rules_all"], INS2["rules_h1"], INS2["rules_h7"] = hook_board(None), hook_board(0), hook_board(6)

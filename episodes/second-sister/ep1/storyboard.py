@@ -467,6 +467,8 @@ def phone(lines, title="", glow=True):
 INS["clock"] = '<rect width="540" height="960" fill="#2a2630"/><rect x="120" y="360" width="300" height="160" rx="16" fill="#141218"/><text x="270" y="470" text-anchor="middle" font-family="ui-monospace, monospace" font-size="84" fill="#9fdcff">03:00</text><text x="270" y="560" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="16" fill="#c8c4d8">02:59 → 03:00</text>'
 INS["rules1"] = '<rect width="540" height="960" fill="#3a3030"/>' + rules_board(70, 260, 2.0, hl=0)
 INS["rules7"] = '<rect width="540" height="960" fill="#3a3030"/>' + rules_board(70, 260, 2.0, hl=6)
+for _k, _h in (("rules_all", None), ("rules_h1", 0), ("rules_h7", 6)):   # hook: the board, then rule 1, then rule 7 lit
+    INS[_k] = '<rect width="540" height="960" fill="#3a3030"/>' + rules_board(70, 260, 2.0, hl=_h)
 INS["title"] = '<rect width="540" height="960" fill="#120e16"/>' + stained_glass(150, 380, 240, 400) + '<text x="270" y="268" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="60" font-weight="700" fill="#fff">แม่ชีคนที่สอง</text><text x="270" y="318" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="22" fill="#e6e0f4">EP1 ระฆังตีสาม</text>'
 INS["email"] = phone(["เรียนเชิญถ่ายภาพจดหมายเหตุ", "ครบรอบ 100 ปี", "คอนแวนต์เซนต์เวโรนิกา", "", "ระยะเวลา 3 สัปดาห์", "", "ผู้เสนอชื่อ: คุณแดง", "หัวหน้าแม่ครัว"], "อีเมลใหม่")
 INS["album"] = ('<rect width="540" height="960" fill="#3a2a24"/><path d="M 40,300 L 270,280 L 270,700 L 30,720 Z" fill="#e8dfcc"/><path d="M 500,300 L 270,280 L 270,700 L 510,720 Z" fill="#ddd2bc"/>' +
@@ -513,10 +515,11 @@ INS_EXACT = {"chapel_v1": _fr}
 # ---------- panels: (shots, stage-or-insert, crop(cx,cy,h) or None, size, move, note) ----------
 F_ = None
 PANELS = {
- 0: [("301", "tower_fog", F_, "ภาพกว้าง มุมต่ำ", "in", "ระฆังที่ถูกล่ามโซ่แกว่งเองในหมอก"),
-     ("302", "doll", F_, "แทรกใกล้", "in", "ตุ๊กตาผ้าไหม้ครึ่งตัว"),
-     ("303", "kitchen", (480, 470, 300), "ภาพใกล้", "static", "อักเนสแอบมองจากหลังประตู"),
-     ("304", "tower_night", (270, 360, 480), "มุมเงยขึ้นช่องระฆัง", "static", "เงาดำในช่องระฆังค่อย ๆ หลบหาย"),
+ 0: [("301", "rules_all", F_, "แทรก เต็มป้าย", "in", "ป้ายกระดานกฎ 7 ข้อ"),
+     ("302", "rules_h1", (270, 440, 760), "แทรกใกล้ ข้อ 1", "in", "ข้อ 1 สว่างขึ้น ระฆังดัง"),
+     ("303", "rules_h7", (270, 560, 760), "แทรกใกล้ ข้อ 7", "in", "ข้อ 7 สว่างขึ้น"),
+     ("304", "kitchen", (480, 470, 300), "ภาพใกล้", "static", "อักเนสแอบมองจากหลังประตู"),
+     ("306", "tower_night", (270, 360, 480), "มุมเงยขึ้นช่องระฆัง", "static", "เงาดำในช่องระฆังค่อย ๆ หลบหาย"),
      ("31", "chapel_v1", F_, "ภาพปานกลาง สองคน", "static", "ฉากที่ผ่านแล้ว: มาเรียมหน้า อักเนสหลังในเงาถือเทียน 'เมื่อยี่สิบปีก่อน มีเด็กฝาแฝดคนหนึ่งตายในกองเพลิง'"),
      ("32", "chapel_v1", (270, 300, 600), "ดันกล้องผ่านไหล่", "in", "ดันกล้องผ่านสองซิสเตอร์ไปที่กระจกสี หน้ามาร์ธาแตกหาย"),
      ("33", "title", F_, "การ์ดชื่อเรื่อง", "static", "ชื่อเรื่องขึ้น ระฆังหนึ่งครั้ง")],

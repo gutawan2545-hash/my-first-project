@@ -19,4 +19,4 @@ CUT = {3, 4, 8, 10, 12, 15, 17, 18, 19,
        277, 279}
 _story = [n for n in range(1, 288) if n not in CUT and n not in (31, 32, 33)]
 _i = _story.index(286)
-ORDER = [301, 302, 303, 304, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]
+ORDER = [301, 302, 303, 304, 306, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]
