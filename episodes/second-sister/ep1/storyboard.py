@@ -80,7 +80,7 @@ def note(x, y, txt, w=None):
     vis = sum(1 for ch in txt if not ('\u0e31' == ch or '\u0e34' <= ch <= '\u0e3a' or '\u0e47' <= ch <= '\u0e4e'))
     w = min(vis * 7.4 + 28, 480)
     cy = 676
-    return (f'<g><rect x="{270 - w / 2:.1f}" y="{cy - 14}" width="{w:.1f}" height="28" rx="6" fill="#120e18" fill-opacity=".28" '
+    return (f'<g class="note"><rect x="{270 - w / 2:.1f}" y="{cy - 14}" width="{w:.1f}" height="28" rx="6" fill="#120e18" fill-opacity=".28" '
             f'stroke="#c9c4d4" stroke-opacity=".7" stroke-width=".8"/>'
             f'<text x="270" y="{cy + 5}" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" '
             f'fill="#f4f0fa" stroke="#140f1a" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke">{txt}</text></g>')

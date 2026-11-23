@@ -495,9 +495,10 @@ def old_photo_twins(scratched=True):
         o += '<rect x="-20" y="22" width="16" height="7" fill="#fbf8f2"/>'   # name tag
         o += '<circle cx="0" cy="-30" r="22" fill="#d8c8a8"/><path d="M -24,-30 C -26,-60 26,-60 24,-30 L 24,-12 L 18,-24 L -18,-24 L -24,-12 Z" fill="#3a3028"/><path d="M -22,-36 L 22,-36 L 22,-30 L -22,-30 Z" fill="#3a3028"/>'   # face + bob with bangs
         if not scratched_face:
-            o += '<circle cx="-7" cy="-28" r="2.2" fill="#2a2420"/><circle cx="7" cy="-28" r="2.2" fill="#2a2420"/><path d="M -6,-18 Q 0,-13 6,-18" stroke="#5a4a40" stroke-width="1.6" fill="none"/>'
+            o += '<circle cx="-7" cy="-19.5" r="2.2" fill="#2a2420"/><circle cx="7" cy="-19.5" r="2.2" fill="#2a2420"/><path d="M -5,-12 Q 0,-8 5,-12" stroke="#5a4a40" stroke-width="1.5" fill="none"/>' + '<circle cx="10" cy="-15" r="1.5" fill="#3a2e26"/>'   # eyes below the fringe, mole under the right eye
             o += '<g transform="translate(26,40)"><circle cx="0" cy="-8" r="6" fill="#d8c0c0"/><path d="M -6,0 L 6,0 L 8,16 L -8,16 Z" fill="#c8a8a8"/></g>'   # Mariam holds her doll
         else:
+            o += '<circle cx="10" cy="-15" r="1.5" fill="#3a2e26"/>'   # same mole, under the scratches
             o += '<g transform="translate(-30,38)"><rect x="-2" y="-18" width="4" height="18" fill="#f4eedc"/><path d="M 0,-26 C -3,-22 -3,-20 0,-18 C 3,-20 3,-22 0,-26 Z" fill="#fff6e0"/></g>'   # candle in her LEFT hand
             # scratched out: dense, angry pen strokes pressed into the paper, only over her face
             r = _rr.Random(5)

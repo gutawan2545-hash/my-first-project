@@ -318,9 +318,10 @@ KID_GOWN = ("#ece6da", "#f8f4ec", "#c9c1b3")
 F["mkid"] = kid("mkid", bc.mkid, ("#efc6a3", "#dba680"), KID_GOWN, "เมฆ")
 F["jan"] = kid("jan", bc.pla, ("#f2cdab", "#dfaa86"), ("#f3e4e0", "#fdf3f0", "#d8c4bf"), "จันทร์")
 DOLL = '<g transform="translate(46,170)"><path d="M -6,0 L 6,0 L 8,16 L -8,16 Z" fill="#e7b7c0"/><circle cx="0" cy="-5" r="6" fill="#f1cfd4"/><path d="M -6,-7 C -6,-13 6,-13 6,-7 Z" fill="#6a4a3a"/></g>'
-F["twinM"] = kid("twinM", bc.twinM, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาเรียม", hand_extra_R=DOLL)
+KID_MOLE = '<circle cx="17.5" cy="10.5" r="1.35" fill="#5a3830"/>'   # the twins share Mariam's mole under the right eye (user)
+F["twinM"] = kid("twinM", bc.twinM + KID_MOLE, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาเรียม", hand_extra_R=DOLL)
 CANDLE = '<g transform="translate(-40,150)"><rect x="-2.5" y="-24" width="5" height="22" fill="#f1ebdd"/><path d="M 0,-34 C -3,-30 -3,-27 0,-25 C 3,-27 3,-30 0,-34 Z" fill="#fff4dc"/></g>'
-F["twinA"] = kid("twinA", bc.twinA + bc.MARTHA_LID, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาร์ธา", hand_extra_L=CANDLE)
+F["twinA"] = kid("twinA", bc.twinA + bc.MARTHA_LID + KID_MOLE, ("#f6dcc4", "#e4b89c"), KID_GOWN, "มาร์ธา", hand_extra_L=CANDLE)
 
 DEFS = NUN_DEFS + "".join(F.values())
 

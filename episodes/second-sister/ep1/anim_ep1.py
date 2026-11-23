@@ -600,6 +600,8 @@ window.render = function (si, t) {
   }
   if (shot.stage) [ccx, ccy, ch] = [270, 480, 960];
   const cw = ch * 9 / 16;
+  const noteOn = ch > 955 ? 'inline' : 'none';   // captions belong to the full frame; in a closer framing they would slide into the subtitles
+  if (noteOn !== window._noteOn) { document.querySelectorAll('.note').forEach(n => n.setAttribute('display', noteOn)); window._noteOn = noteOn; }
   $('view').setAttribute('viewBox', `${(ccx - cw / 2).toFixed(1)} ${(ccy - ch / 2).toFixed(1)} ${cw.toFixed(1)} ${ch.toFixed(1)}`);
   // camera
   const p = Math.min(1, t / Math.max(seg.dur, .1)), e = ease(p);
