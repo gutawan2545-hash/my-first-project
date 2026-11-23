@@ -15,12 +15,12 @@ CUT = {1, 3, 4, 8, 10, 12, 15, 17, 19,
        149, 150, 151, 152, 153, 154, 155, 156, 157, 158,   # Mother Lucia's words: later episode (she is introduced in the roll call)
        160, 161, 163, 164, 165, 166, 167, 169, 172,
        182,
-       190, 193, 194, 195, 198, 199, 210, 211, 212, 213,
-       216, 217, 218, 219, 220, 222, 224, 228, 230, 235,
+       190, 193, 194, 195, 198, 199, 213,              # Agnes gets her answers (206, 210-212 back in, user)
+       216, 217, 218, 219, 220, 221, 222, 224, 228, 230, 235,   # 221: dream picture of the two children with no words over it (user)
        263, 264, 267, 276,                              # the missing tower key waits
        277, 279,
        92, 104,                                         # graves: just Martha's stone and a joke
-       197, 206}                                        # kitchen: straight to the twins and the song
+       197}                                        # kitchen: straight to the twins and the song
 _story = [n for n in range(1, 288) if n not in CUT and n not in (31, 32, 33)]
 _story = _story[:_story.index(86) + 1] + [320, 310, 341, 311, 342, 312, 343, 313, 344, 314, 345, 315, 346, 316, 347, 317, 348, 318] + _story[_story.index(86) + 1:]   # roll call comes from Rosa's tour
 _story.insert(_story.index(96) + 1, 330)
