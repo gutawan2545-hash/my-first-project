@@ -1,4 +1,4 @@
-# สร้าง storyboard.html: สตอรี่บอร์ดเต็มทั้งคลิป (ตาม script.md v8) เฟรม 9:16 (540x960)
+# สร้าง storyboard.html: สตอรี่บอร์ดเต็มทั้งคลิป (ตาม script.md v9) เฟรม 9:16 (540x960)
 # ฉากละเอียด มีเฟอร์นิเจอร์และของประกอบเยอะ · กรุงเทพโทนสว่างพาสเทล · โลกเวทมนตร์กลางคืน
 # เม็ดฟิล์มละเอียดเฉพาะพื้นหลัง เห็นชัดขึ้นในบริเวณสีเข้ม (blend แบบ screen)
 # ใช้ตัวละครจาก cast.html (ดึงบล็อก <defs> มาใช้ซ้ำ ไม่วาดหน้าใหม่)
@@ -526,45 +526,45 @@ def great_hall(blur="bgblur2"):
     <rect y="620" width="540" height="340" fill="#2e2430"/>
     {BGGRAIN}'''
 
-# =================== ช็อต ===================
-p1 = frame(f'''{bedroom()}
-  {shafts((330, 420, 500), 100, 700, .6)}
-  {BGGRAIN}
-  {dust(380, 420, 280, 360, 20, 11)}
-  {mattress(110, 556, 330)}
-  <g transform="translate(470,572) rotate(-90) scale(.6)"><use href="#c_sing"/></g>
-  {blanket(250, 568, 200)}
-  {snacks(60, 700)}{fan(500, 760, .8)}
-  {card(320, 380, 190, "06:30 ยังไม่ตื่น", "กอดหมอนข้างอยู่เลย", 200, 540)}
-  {badge("เยาวราช · 06:30")}{EYE}
-  {subs(["ถ้าพรุ่งนี้คุณได้จดหมายเชิญไปเรียน", "ฮอกวอตส์ สาขาประเทศไทย", "คุณจะไปไหมครับ"], ["If you got invited to Hogwarts,", "Thailand branch, tomorrow, would you go?"])}''')
+# =================== ช็อต (บท v9) ===================
+exec((HERE / "sb_thai.py").read_text())   # ฉากไทยย่านพระนคร + ตุ๊กตุ๊กไทย
+WARMGRAIN = BGGRAIN
 
-p2 = frame(f'''{bedroom()}
-  {shafts((330, 420, 500), 100, 700, .6)}
-  {BGGRAIN}
-  {dust(380, 420, 280, 360, 16, 12)}
-  {mattress(110, 660, 330)}
-  {fan(400, 760, 1.15)}
-  <g transform="translate(404,536) scale(1.15)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
-  {pop(30, 130, "เอ้กอี๊เอ้กกก!!", 40)}
-  <path d="M 330,330 L 300,312 M 326,352 L 290,350 M 330,372 L 300,388" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round"/>
-  <g transform="translate(440,500) rotate(-120) scale(.7)"><use href="#c_sing"/></g>
-  <g transform="translate(150,420) rotate(18)"><rect x="-26" y="-18" width="52" height="36" fill="#f4ecd8"/><path d="M -26,-18 L 0,4 L 26,-18" fill="none" stroke="#d8ccb6" stroke-width="2"/><circle cx="0" cy="2" r="6" fill="#8e1b24"/></g>
-  {pop(250, 470, "!?", 36, 0)}
-  {badge("06:31")}{EYE}
-  {subs(["เช้านี้ไก่ชนบินเข้ามาเกาะพัดลม", "แล้วขันใส่หน้าผม"], ["This morning a fighting rooster landed", "on my fan and crowed in my face."])}''')
+p1 = frame(f'''{phranakhon_street()}
+  {WARMGRAIN}
+  {dust(420, 300, 220, 400, 18, 11, "#fff2d8")}
+  {card(30, 400, 200, "บ้านซิ่ง ชั้นบนร้านทอง", "ตึกแถวเก่าย่านพระนคร", 200, 300)}
+  {badge("พระนคร · 05:00")}{EYE}
+  {subs(["ถ้าฮอกวอตส์มาเปิดสาขาที่ไทย", "มันจะเป็นแบบนี้ครับ"], ["If Hogwarts opened a branch in Thailand,", "this is how it’d go."])}''')
+
+p2 = frame(f'''{bedroom2()}
+  {WARMGRAIN}
+  {dust(360, 520, 300, 400, 22, 12, "#fff2d8")}
+  {mattress2(60, 660, 330)}
+  {axe_pillow(70, 664, .9)}
+  {thai_blanket(170, 676, 210)}
+  {old_fan(470, 800, .9)}{slippers(60, 830)}
+  <g transform="translate(330,388) scale(1.2)"><use href="#c_rooster"/><path d="M -26,-145 L -42,-136 L -27,-140 Z" fill="#c4922a"/></g>
+  {pop(24, 130, "เอ้กอี๊เอ้กกก!!", 40)}
+  <path d="M 260,190 L 230,172 M 256,212 L 220,210 M 260,232 L 230,248" stroke="#fff4d0" stroke-width="3.4" stroke-linecap="round"/>
+  <g transform="translate(470,560) rotate(-118) scale(.72)"><use href="#c_sing"/></g>
+  <g transform="translate(110,560) rotate(-24)">{axe_pillow(0, 0, .7)}</g>
+  <g transform="translate(240,440) rotate(16)"><rect x="-26" y="-18" width="52" height="36" fill="#f4ecd8"/><path d="M -26,-18 L 0,4 L 26,-18" fill="none" stroke="#d8ccb6" stroke-width="2"/><circle cx="0" cy="2" r="6" fill="#8e1b24"/></g>
+  {card(330, 120, 190, "ที่อังกฤษ: นกฮูก", "ที่ไทย: ไก่ชน ตีห้าตรง", 360, 300)}
+  {badge("05:00")}{EYE}
+  {subs(["ที่อังกฤษ จดหมายมากับนกฮูก…", "ที่ไทย มากับไก่ชน ตีห้า!"], ["In England, letters come by owl.", "In Thailand, by fighting rooster. At 5 a.m.!"])}''')
 
 coins = "".join(f'<g transform="translate({x},{y}) rotate({r})"><ellipse rx="13" ry="12" fill="#e8c24a"/><ellipse rx="9" ry="8" fill="#f4d878"/><text y="4" text-anchor="middle" font-family="serif" font-size="10" font-weight="700" fill="#c49a2a">H</text></g>' for x, y, r in [(410,600,10),(436,626,-20),(392,640,30),(450,580,-10),(420,666,15)])
-p3 = frame(f'''{bedroom("bgblur2")}
-  {shafts((360, 470), 60, 700, .5)}
-  {BGGRAIN}
-  <g transform="translate(90,380) scale(.75)" filter="url(#bgblur)"><use href="#c_rooster"/></g>
+p3 = frame(f'''{bedroom2("bgblur2")}
+  {WARMGRAIN}
+  <g transform="translate(380,380) scale(.8)" filter="url(#bgblur)"><use href="#c_rooster"/></g>
   <g transform="translate(270,320) scale(3.6)">
     <path d="M -54,72 C -52,58 -32,50 -12,49 L 12,49 C 32,50 52,58 54,72 L 58,120 L -58,120 Z" fill="#eeeef2"/>
     <path d="M -54,72 C -52,60 -36,52 -20,50 C -26,60 -28,90 -28,120 L -58,120 Z" fill="#fbfbfd"/>
     <path d="M 24,50 C 38,53 52,60 54,72 L 58,120 L 32,120 C 32,90 30,56 24,50 Z" fill="#d4d4dc"/>
     <clipPath id="hc"><rect x="-80" y="-90" width="160" height="150"/></clipPath><g clip-path="url(#hc)"><use href="#c_sing" transform="translate(0,480)"/></g>
   </g>
+  {sunpoly([(0,300),(200,180),(260,960),(0,960)], .35)}
   {shadow(290, 600, 150, 16, .25)}
   <g transform="rotate(-4 270 500)">
     <rect x="120" y="420" width="300" height="170" rx="4" fill="#f4ecd8"/><rect x="120" y="420" width="300" height="10" fill="#e6dcc4"/>
@@ -573,18 +573,16 @@ p3 = frame(f'''{bedroom("bgblur2")}
     <rect x="140" y="472" width="230" height="4" fill="#b8aa90"/>
     <rect x="136" y="484" width="150" height="22" fill="#ffd84a" opacity=".55"/><text x="142" y="500" {TH} font-size="14" font-weight="600" fill="#3a2a22">ไม่พิจารณาเกรด</text>
     <text x="142" y="526" {TH} font-size="12" fill="#5a4a3a">แนบทุนการศึกษา: เหรียญทอง 10 เหรียญ</text>
-    <rect x="140" y="540" width="200" height="4" fill="#b8aa90"/>
-    <path d="M 112,560 C 100,540 104,520 118,512 L 132,590 C 120,592 114,580 112,560 Z" fill="{SK}"/>
-    <path d="M 428,560 C 440,540 436,520 422,512 L 408,590 C 420,592 426,580 428,560 Z" fill="{SKS}"/>
+    <path d="M 112,560 C 100,540 104,520 118,512 L 132,590 C 120,592 114,580 112,560 Z" fill="#d9a47a"/>
+    <path d="M 428,560 C 440,540 436,520 422,512 L 408,590 C 420,592 426,580 428,560 Z" fill="#bf8a62"/>
   </g>
   {coins}
   {card(340, 110, 170, "เกรดเฉลี่ย 1.50", "ผ่านแบบเฉียดฉิว", 330, 230)}
-  {badge("06:33")}{EYE}
-  {subs(["ฮอกวอตส์ สาขาประเทศไทย… ไม่ดูเกรด!", "เกรดผมหนึ่งจุดห้าเองนะ"], ["Hogwarts Thailand… grades don’t matter!", "Mine’s a 1.5."])}''')
+  {badge("05:02")}{EYE}
+  {subs(["ไม่ดูเกรดด้วย!", "เกรดผมหนึ่งจุดห้าเองนะเว้ย"], ["And they don’t check grades!", "Mine’s a 1.5!"])}''')
 
-p4 = frame(f'''{gold_shop()}
-  {shafts((220, 300), 360, 600, .5)}
-  {BGGRAIN}
+p4 = frame(f'''{gold_shop2()}
+  {WARMGRAIN}
   {shadow(220, 640, 110)}
   <g transform="translate(220,700) scale(1.15)"><use href="#c_ama"/></g>
   {counter(0, 520, 400)}
@@ -593,31 +591,27 @@ p4 = frame(f'''{gold_shop()}
   <path d="M 214,300 l -10,-8 M 214,312 l -12,2 M 250,296 l 10,-8" stroke="#fff4d0" stroke-width="2.4" stroke-linecap="round"/>
   {shadow(460, 700, 70)}
   <g transform="translate(460,770)"><use href="#c_sing"/></g>
-  <rect x="412" y="430" width="44" height="30" fill="#f4ecd8" transform="rotate(-10 434 445)"/>
-  {pop(290, 210, "งั่ม!", 30, -6)}
-  {card(20, 360, 170, "ม๊าเช็กทองแท้", "กัดก่อน ชั่งทีหลัง", 222, 304)}
+  {pop(286, 214, "แท้!", 32, -6)}
+  {card(20, 360, 180, "ทอง 96.5%", "มาตรฐานทองไทย", 222, 304)}
   {badge("ร้านทองชั้นล่าง · 07:00")}{EYE}
-  {subs(["เหรียญทองเวทมนตร์เหรอ", "ขอม๊ากัดดูก่อนว่าแท้ไหม!"], ["Magic gold coins? Let Ma bite one", "first and check it’s real!"])}''')
+  {subs(["(ซิ่ง) ที่อังกฤษ เหรียญทองเอาไปฝากธนาคาร…", "ที่ไทย อาม้าขอกัดก่อน", "(อาม้า) แท้! ทองเก้าสิบหกจุดห้า!"], ["In England, gold goes to the bank. In Thailand,", "Ma bites it first. (Ma) Real! 96.5% gold!"])}''')
 
-p5 = frame(f'''{yaowarat_street()}
-  {shafts((100, 260, 420), 0, 760, .45)}
-  {BGGRAIN}
-  {speed(400, 380, 540, 9, 4)}
-  {shadow(290, 640, 190, 14)}
-  <g transform="translate(290,610) rotate(-16)">
-    <g transform="translate(58,-18) scale(.36)"><use href="#c_giant"/></g>
-    <g transform="translate(6,-22) scale(.34)"><use href="#c_sing"/></g>
-    {tuktuk(0, 0, 1.25)}
-    {driver(-80, -18, 1.0)}
+p5 = frame(f'''{phranakhon_street()}
+  {WARMGRAIN}
+  {speed(420, 380, 540, 9, 4, "#fff4e0")}
+  {shadow(290, 650, 200, 14)}
+  <g transform="translate(300,620) rotate(-14)">
+    {tuktuk_thai(0, 0, 1.15)}
+    <clipPath id="tkc"><rect x="-220" y="-420" width="440" height="335"/></clipPath>
+    <g clip-path="url(#tkc)"><g transform="translate(66,-30) scale(.36)"><use href="#c_giant"/></g><g transform="translate(20,-40) scale(.34)"><use href="#c_sing"/></g>{tuk_driver(-76, -76, .95)}</g>
   </g>
   {pop(26, 220, "หัวรถลอย!", 34, -10)}
-  {card(330, 110, 180, "ลุงโตนั่งหลัง", "หนักเกิน หัวรถลอย", 330, 470)}
-  {badge("ถนนเยาวราช · 08:00")}{EYE}
-  {subs(["แล้วลุงโตภารโรงโรงเรียนก็มารับด้วยตุ๊กตุ๊ก", "ลุงนั่งข้างหลัง หัวรถเลยลอยทั้งทาง"], ["Then Uncle To picked me up in a tuk-tuk.", "He sat in back, so the front wheel floated."])}''')
+  {card(320, 110, 190, "ที่อังกฤษ: รถไฟ", "ที่ไทย: ตุ๊กตุ๊ก + ลุงโต", 300, 420)}
+  {badge("ย่านพระนคร · 08:00")}{EYE}
+  {subs(["ที่อังกฤษ ไปโรงเรียนด้วยรถไฟ… ที่ไทย", "ลุงโตมารับด้วยตุ๊กตุ๊ก หัวรถลอยทั้งทาง"], ["In England, you take a train. In Thailand,", "Uncle To brings a tuk-tuk. Front wheel up all the way."])}''')
 
-p6 = frame(f'''{soi_entrance()}
-  {shafts((140, 300), 0, 760, .45)}
-  {BGGRAIN}
+p6 = frame(f'''{soi2()}
+  {WARMGRAIN}
   {shadow(140, 670, 70, 10)}
   {spirit_house(140, 500, 1.15)}
   {garland(100, 410, .9)}{garland(180, 410, .9)}
@@ -626,18 +620,17 @@ p6 = frame(f'''{soi_entrance()}
   <g transform="translate(214,492)"><rect x="-8" y="-40" width="16" height="40" rx="4" fill="#c8243a" opacity=".85"/><path d="M 2,-40 L 10,-62" stroke="#f4f4f4" stroke-width="2.4"/></g>
   {shadow(380, 690, 120)}
   <g transform="translate(390,960) scale(.98)"><use href="#c_giant"/></g>
-  <g transform="translate(306,370)"><rect x="-10" y="-46" width="20" height="46" rx="5" fill="#c8243a"/><rect x="-10" y="-30" width="20" height="10" fill="#f4f4f4" opacity=".8"/><path d="M 2,-46 L 12,-70" stroke="#f4f4f4" stroke-width="3"/></g>
   {shadow(254, 690, 60, 10)}
   <g transform="translate(256,720) scale(.9)"><use href="#c_sing"/></g>
-  <path d="M 250,400 C 246,380 254,360 260,358 C 266,360 272,380 268,400 Z" fill="{SK}"/><path d="M 259,360 L 259,400" stroke="{SKS}" stroke-width="1.4"/>
-  {card(20, 110, 190, "น้ำแดงเสียบหลอด", "ของไหว้ยอดนิยม", 214, 450)}
+  <path d="M 250,400 C 246,380 254,360 260,358 C 266,360 272,380 268,400 Z" fill="#d9a47a"/><path d="M 259,360 L 259,400" stroke="#bf8a62" stroke-width="1.4"/>
+  {card(20, 110, 210, "ที่อังกฤษ: วิ่งชนกำแพง", "ที่ไทย: ถวายน้ำแดง", 214, 450)}
   {badge("ปากซอย")}{EYE}
-  {subs(["ทางเข้าโลกเวทมนตร์ ต้องถวายน้ำแดง", "ศาลพระภูมิก่อนนะไอ้หนู"], ["To enter the magic world, first offer", "red soda to the spirit house, kid."])}''')
+  {subs(["ที่อังกฤษ ต้องวิ่งชนกำแพงชานชาลา…", "ที่ไทย ต้องถวายน้ำแดงศาลพระภูมิ"], ["In England, you run through a wall.", "In Thailand, you offer red soda to the spirit house."])}''')
 
-rays = "".join(f'<path d="M 270,330 L {270 + 900*math.cos(a/24*6.283):.0f},{330 + 900*math.sin(a/24*6.283):.0f}" stroke="#ffffff" stroke-width="{8 if a%2 else 3}" opacity=".5"/>' for a in range(24))
-p7 = frame(f'''<rect width="540" height="960" fill="#efe4fb"/>
+rays = "".join(f'<path d="M 270,330 L {270 + 900*math.cos(a/24*6.283):.0f},{330 + 900*math.sin(a/24*6.283):.0f}" stroke="#fff4d8" stroke-width="{8 if a%2 else 3}" opacity=".5"/>' for a in range(24))
+p7 = frame(f'''<rect width="540" height="960" fill="#f4dcb0"/>
   {rays}<circle cx="270" cy="330" r="280" fill="url(#portal)"/>
-  {BGGRAIN}
+  {WARMGRAIN}
   {spirit_house(270, 470, 2.2, True)}
   {garland(190, 300, 1.6)}{garland(350, 300, 1.6)}
   {zebra(150, 640, 2.6, True)}{zebra(270, 660, 2.6, True)}{zebra(390, 640, 2.6, True)}
@@ -656,15 +649,16 @@ p8 = frame(f'''{magic_market()}
   <rect x="220" y="560" width="320" height="100" fill="#5a3e28"/><rect x="220" y="560" width="320" height="10" fill="#7a5638"/>{wandpile}
   <rect x="400" y="500" width="120" height="48" rx="4" fill="#f2ead8"/><text x="460" y="532" text-anchor="middle" {TH} font-size="20" font-weight="700" fill="#c43a3a">3 อัน 100</text>
   {pop(380, 200, "จ้าาา!", 34, 6)}
+  {card(20, 110, 200, "ที่อังกฤษ: ไม้ราคาแพง", "ที่ไทย: สามอันร้อย", 330, 330)}
   {badge("ตลาดนัดเวทมนตร์")}{EYE}
-  {subs(["ไม้กายสิทธิ์ สามอันร้อยจ้า", "เลือกเลยจ้า!"], ["Magic wands, three for a hundred baht!", "Pick one!"])}''')
+  {subs(["(ซิ่ง) ที่อังกฤษ ไม้กายสิทธิ์ราคาแพง…", "(ป้าแต๋ว) สามอันร้อยจ้า!"], ["(Sing) In England, wands are expensive…", "(Vendor) Three for a hundred!"])}''')
 
 fallen = "".join(f'<path d="M {x},{y} L {x+60*math.cos(a):.0f},{y+60*math.sin(a):.0f}" stroke="#8a6a44" stroke-width="5" stroke-linecap="round"/>' for x, y, a in [(150,780,-.3),(240,820,.4),(380,800,-.8)])
 p9 = frame(f'''{magic_market()}
   <g filter="url(#bgblur2)">{stall(120, 420, 220, "#8e1b24", "meatball", "ลูกชิ้นปิ้ง")}<g transform="translate(330,1120) scale(2.2)"><use href="#c_sing"/></g></g>
-  <path d="M 250,700 C 236,640 246,560 270,540 L 320,540 C 330,580 330,650 320,700 Z" fill="{SK}"/>
-  <path d="M 300,540 L 320,540 C 330,580 330,650 320,700 L 306,700 C 312,640 310,580 300,540 Z" fill="{SKS}"/>
-  <path d="M 268,560 C 256,552 254,540 264,534 L 300,540 L 296,566 Z" fill="{SK}"/>
+  <path d="M 250,700 C 236,640 246,560 270,540 L 320,540 C 330,580 330,650 320,700 Z" fill="#d9a47a"/>
+  <path d="M 300,540 L 320,540 C 330,580 330,650 320,700 L 306,700 C 312,640 310,580 300,540 Z" fill="#bf8a62"/>
+  <path d="M 268,560 C 256,552 254,540 264,534 L 300,540 L 296,566 Z" fill="#d9a47a"/>
   <path d="M 282,550 L 300,180" stroke="#d8c09a" stroke-width="7" stroke-linecap="round"/><path d="M 280,550 L 296,190" stroke="#efe0c0" stroke-width="2"/>
   <circle cx="298" cy="230" r="30" fill="#9a5a3a"/><circle cx="290" cy="222" r="11" fill="#b8784e"/><path d="M 278,240 C 290,248 306,248 318,236" fill="none" stroke="#7a4228" stroke-width="3"/>
   <circle cx="298" cy="230" r="80" fill="url(#portal)" opacity=".5"/>
@@ -672,7 +666,7 @@ p9 = frame(f'''{magic_market()}
   {fallen}{pop(380, 860, "ร่วง…", 22, 0)}
   {card(30, 110, 200, "ไม้มะขาม?", "ไม่ใช่ ไม้ลูกชิ้นร้านข้าง ๆ", 270, 230)}
   {badge("ร้านไม้กายสิทธิ์")}{EYE}
-  {subs(["ซื้อมาสามอัน แต่ไม้ที่เลือกผม", "ดันเป็นไม้ลูกชิ้นร้านข้าง ๆ"], ["I bought three, but the wand that chose me", "was a meatball skewer from the next stall."])}''')
+  {subs(["แต่ไม้ที่เลือกผม…", "ดันเป็นไม้ลูกชิ้น"], ["But the wand that chose me…", "was a meatball skewer."])}''')
 
 p10 = frame(f'''{magic_market()}
   {dust(270, 300, 500, 200, 12, 31, "#ffe8c8")}
@@ -686,27 +680,9 @@ p10 = frame(f'''{magic_market()}
   {pop(200, 180, "เสี่ยวว!", 32, -6)}
   {card(300, 110, 210, "ไม้ข้าวเหนียวปิ้ง", "ไม้กายสิทธิ์ของต้น", 130, 260)}
   {badge("ตลาดนัดเวทมนตร์")}{EYE}
-  {subs(["เสี่ยว! ไม้ลูกชิ้นคือกันบ่", "ของข้อยได้ไม้ข้าวเหนียวปิ้ง"], ["Buddy! Meatball stick too?", "Mine’s a grilled sticky-rice stick."])}''')
+  {subs(["เสี่ยว! ของข้อยได้", "ไม้ข้าวเหนียวปิ้ง!"], ["Buddy! Mine’s a", "grilled sticky-rice stick!"])}''')
 
-stars = "".join(f'<circle cx="{x}" cy="{y}" r="1.2" fill="#e8e6f4" opacity=".7"/>' for x, y in [(40,60),(120,40),(200,90),(300,50),(360,160),(80,180),(250,200),(500,260),(30,300)])
-p11 = frame(f'''<rect width="540" height="960" fill="url(#nightsky)"/>
-  <circle cx="440" cy="130" r="56" fill="#efeef8"/><circle cx="440" cy="130" r="90" fill="url(#warm)" opacity=".25"/>{stars}
-  <g filter="url(#bgblur)">{castle(380, 560, .7)}</g>
-  {rice_fields(560)}
-  {BGGRAIN}
-  {speed(400, 330, 540, 8, 9)}
-  <g transform="translate(250,420) rotate(-10)">
-    {songthaew(0, 0, 1.15)}
-    <clipPath id="stw"><rect x="-34" y="-138" width="196" height="58"/></clipPath>
-    <g clip-path="url(#stw)"><g transform="translate(10,40) scale(.42)"><use href="#c_kidboy"/></g><g transform="translate(60,40) scale(.42)"><use href="#c_kidgirl"/></g><g transform="translate(110,40) scale(.42)"><use href="#c_harry"/></g></g>
-    <g transform="translate(212,-16) scale(.34)"><use href="#c_ton"/></g><g transform="translate(190,-14) scale(.34)"><use href="#c_sing_robe"/></g>
-  </g>
-  {pop(26, 250, "ปู๊นนน!!", 40, -8)}
-  {card(300, 690, 210, "สองแถวแดงบินได้", "สาย กรุงเทพ–ฮอกวอตส์", 180, 470)}
-  {badge("คืนแรก · 23:00")}{EYE}
-  {subs(["รถไปโรงเรียน คือสองแถวแดงบินได้", "คนขับซิ่งกว่าผมอีก"], ["Our ride to school: a flying red songthaew.", "The driver goes even faster than me."])}''')
-
-p12 = frame(f'''{great_hall()}
+p11 = frame(f'''{great_hall()}
   <g filter="url(#bgblur2)" opacity=".85"><g transform="translate(200,610) scale(.7)"><use href="#c_harry"/></g><g transform="translate(270,610) scale(.7)"><use href="#c_ron"/></g><g transform="translate(340,610) scale(.7)"><use href="#c_hermione"/></g></g>
   {shadow(150, 690, 100)}
   <g transform="translate(150,770) scale(1.12)"><use href="#c_draco"/></g>
@@ -715,18 +691,18 @@ p12 = frame(f'''{great_hall()}
   {pop(230, 190, "ฮึ!", 28, 0)}{pop(440, 200, "ฮ่าๆ", 22, 0)}
   {card(20, 110, 190, "โลว์ = ดูไม่มีระดับ", "ศัพท์วัยรุ่นตอนนี้", 160, 300)}
   {badge("ห้องโถงใหญ่")}{EYE}
-  {subs(["(เดรโก) มาโรงเรียนด้วยสองแถวเนี่ยนะ ดูโลว์ชะมัด", "(ต้น) โลว์แต่มีนาสามร้อยไร่เด้อ"], ["(Draco) You came in a songthaew? So low.", "(Ton) Low, with a 300-acre rice farm."])}''')
+  {subs(["(เดรโก) มาโรงเรียนด้วยตุ๊กตุ๊กเนี่ยนะ โลว์ชะมัด", "(ต้น) โลว์แต่มีนาสามร้อยไร่เด้อ"], ["(Draco) You came in a tuk-tuk? So low.", "(Ton) Low, with a 300-acre rice farm."])}''')
 
-p13 = frame(f'''{great_hall()}
+p12 = frame(f'''{great_hall()}
   {shadow(450, 700, 90)}
   <g transform="translate(450,780) scale(1.05)" filter="url(#bgblur)"><use href="#c_strict"/></g>
   <rect x="190" y="570" width="160" height="20" rx="4" fill="#6a4a32"/><rect x="200" y="590" width="14" height="80" fill="#4a3222"/><rect x="326" y="590" width="14" height="80" fill="#4a3222"/>
   <g transform="translate(270,980) scale(1.7)"><use href="#c_sing_robe"/></g>
   <g transform="translate(272,128) scale(1.15) rotate(-4)"><use href="#c_hat"/></g>
   {pop(30, 210, "อืมมม…", 30, -6)}
-  {card(330, 230, 180, "ใจกล้า เจ้าเล่ห์", "แต่กวนเกิน", 300, 90)}
+  {card(330, 230, 190, "ที่อังกฤษ: หมวกเลือกให้", "ที่ไทย: โยนให้คนดู", 300, 90)}
   {badge("พิธีคัดบ้าน")}{EYE}
-  {subs(["ต้นน่ะง่าย ฮัฟเฟิลพัฟ! ส่วนคนนี้…", "ใจกล้า เจ้าเล่ห์ หัวไว แต่กวนเกิน…", "ให้คนดูเลือกแล้วกัน"], ["Ton’s easy, Hufflepuff! This one… brave,", "cunning, clever, way too cheeky… you decide."])}''')
+  {subs(["(ซิ่ง) ที่อังกฤษ หมวกเลือกบ้านให้…", "(หมวก) อืม… กวนขนาดนี้", "ให้คนดูเลือกเองแล้วกัน!"], ["(Sing) In England, the hat picks your house…", "(Hat) Hmm… this cheeky? Let the viewers pick!"])}''')
 
 opts = [("A", "กริฟฟินดอร์", "#8e1b24", "#d9b24a", True), ("B", "สลิธีริน", "#2a5e40", "#c4c8d4", False), ("C", "เรเวนคลอ", "#2a3e6e", "#b8905a", False), ("D", "ฮัฟเฟิลพัฟ", "#c99a2a", "#1a1a20", False)]
 oc = ""
@@ -737,29 +713,29 @@ for i, (k, name, c1, c2, on) in enumerate(opts):
     <rect width="200" height="120" rx="14" fill="{f1}"/><rect y="100" width="200" height="20" fill="{f2}" opacity="{.9 if on else .55}"/>
     <circle cx="34" cy="40" r="20" fill="#15121c" opacity=".45"/><text x="34" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="{tc}">{k}</text>
     <text x="64" y="50" {TH} font-size="20" font-weight="700" fill="{tc}">{name}</text></g>'''
-p14 = frame(f'''<g opacity=".6">{great_hall("bgblur2")}</g><rect width="540" height="960" fill="#15121c" opacity=".55"/>
+p13 = frame(f'''<g opacity=".6">{great_hall("bgblur2")}</g><rect width="540" height="960" fill="#15121c" opacity=".55"/>
   <text x="270" y="190" text-anchor="middle" {TH} font-size="32" font-weight="700" fill="#fff">ซิ่งควรอยู่บ้านไหน?</text>
   {oc}
   <path d="M 250,350 l 0,30 l 8,-8 l 6,14 l 6,-3 l -6,-13 l 11,0 Z" fill="#fff" stroke="#15121c" stroke-width="1.5"/>
   <g transform="translate(270,578)"><rect x="-150" y="-20" width="300" height="38" rx="19" fill="#2a2440" stroke="#8a6cd8"/><text y="5" text-anchor="middle" {TH} font-size="15" font-weight="600" fill="#e8e2f4">พิมพ์ A B C หรือ D ในคอมเมนต์</text></g>
-  {subs(["ผมควรอยู่บ้านไหนดีครับ", "โหวตในคอมเมนต์เลย"], ["Which house should I be in?", "Vote in the comments."])}''')
+  {subs(["ผมควรอยู่บ้านไหน", "คอมเมนต์มาเลยครับ"], ["Which house should I be in?", "Tell me in the comments."])}''')
 
 PANELS = [
-  ("1", "4", p1, "Wide · ห้องนอนชั้นสาม ตึกแถวเยาวราช", "แดดเช้าส่องผ่านเหล็กดัด ห้องเต็มไปด้วยโปสเตอร์ ถ้วยรางวัล ราวเสื้อ ทีวี ตู้เย็นเล็ก ไฟประดับ · ซิ่งนอนกอดหมอนข้าง · กล้องซูมเข้าช้า ๆ", "เสียงเมืองตอนเช้าลอยเข้าหน้าต่าง · ดนตรีขี้เล่นเบา ๆ · เสียงบรรยายซิ่ง"),
-  ("2", "3.5", p2, "Medium Wide · ห้องนอน", "ไอ้เหลืองบินเข้ามาเกาะหัวพัดลมแล้วขันใส่ · ซิ่งตกฟูก จดหมายลอยตกใส่หน้า · กล้องสั่นสั้น ๆ", "ดนตรีหยุดหนึ่งจังหวะ → ไก่ขันดังลั่น + เสียงตุ้บ"),
-  ("3", "3.5", p3, "Close-up · ซิ่งอ่านจดหมาย", "ซิ่งยิ้มกวน เหรียญทองไหลออกจากซอง · ไอ้เหลืองเบลอด้านหลัง", "ปากซิ่งขยับ · เสียงเหรียญกรุ๊งกริ๊ง · เสียง 'ติ๊ง' ตอนกล่องเด้ง"),
-  ("4", "4", p4, "Medium · ร้านทองชั้นล่าง", "ตู้ทอง สร้อยแขวนเต็มผนัง ป้ายราคาทอง ศาลเจ้า แมวกวัก ลูกคิด ตาชั่ง ประตูเหล็กยืดเห็นถนน · อาม้ากัดเหรียญ ซิ่งยืนข้างตู้", "ปากอาม้าขยับ · เสียง 'งั่ม' · เสียงลูกคิดกระทบ"),
-  ("5", "4.5", p5, "Wide · ถนนเยาวราช", "ตึกแถว ป้ายร้านเรียงตึก โคมแดง สายไฟ รถเข็นโจ๊ก เก้าอี้พลาสติก · ตุ๊กตุ๊กหัวลอยทั้งคัน ลุงโตตัวโตจนหัวโผล่ทะลุหลังคา ซิ่งเบียดข้าง ๆ คนขับหน้าเหวอ · กล้องแพนตาม", "เสียงตุ๊กตุ๊ก 'ปั๊ด ๆ ๆ' + แตรรถ · เสียงบรรยายซิ่ง"),
-  ("6", "3.5", p6, "Medium · ศาลพระภูมิปากซอย", "พวงมาลัย ธูป ตุ๊กตาม้าลาย น้ำแดง ป้ายซอย ต้นไม้ · วินมอไซค์เสื้อส้มยืนมองอยู่ด้านหลัง · ลุงโตยื่นน้ำแดง ซิ่งพนมมือไหว้", "ปากลุงโตขยับ · ดนตรีเบาลง ลึกลับนิด ๆ"),
-  ("7", "3", p7, "Close-up → ซูมเบลอ", "ม้าลายกะพริบตาพร้อมกัน ประตูศาลเปิด แสงพุ่ง ทั้งสองคนหดตัวถูกดูดเข้าไป", "เงียบหนึ่งจังหวะ → เสียงวูบ (ใช้ครั้งเดียวทั้งคลิป)"),
-  ("8", "4", p8, "Medium · ตลาดนัดเวทมนตร์", "ไฟปิงปอง โคมลอย ไม้กวาดบิน คนใส่หมวกแหลมเดินเต็มตลาด ร้านยาปรุง ร้านไม้กวาดมือสอง ร้านลูกชิ้นปิ้ง · ป้าแต๋วตะโกนหน้าแผง", "เสียงตลาดคึกคัก · ปากป้าแต๋วขยับ · ดนตรีตื่นตา"),
-  ("9", "3", p9, "Close-up มือ", "ไม้ลูกชิ้นจากร้านข้าง ๆ ลอยเข้ามือซิ่งเองพร้อมแสงวูบ · ไม้กายสิทธิ์สามอันที่ซื้อร่วงพื้น", "เสียงเวทมนตร์ใส ๆ แล้วเสียงไม้ร่วง 'ก๊อก ๆ' · เสียงบรรยายซิ่ง"),
-  ("10", "4", p10, "Medium · ต้นเดินเข้าเฟรมจากซ้าย", "ต้นชูไม้ข้าวเหนียวปิ้งที่มีแสงเวทมนตร์ ผ้าขาวม้าพาดคอ ถือกระติบ · ซิ่งถือไม้ลูกชิ้นหันไปมอง", "เสียงแคนสั้น ๆ ตอนต้นเข้าเฟรม · ปากต้นขยับ"),
-  ("11", "4", p11, "Wide · ฟ้ากลางคืนเหนือทุ่งนา", "สองแถวแดงบินเอียงโค้ง ป้ายสาย 'กรุงเทพ–ฮอกวอตส์' · ซิ่ง (เปลี่ยนเป็นผ้าคลุม) กับต้นเกาะท้าย เพื่อนปี 1 นั่งข้างใน · ปราสาทไกล ๆ", "เสียงเครื่องยนต์สองแถว + แตร 'ปู๊น' · เสียงบรรยายซิ่ง"),
-  ("12", "4.5", p12, "Medium · ห้องโถงใหญ่ (ตัดสลับ)", "ผนังหิน หน้าต่างโค้ง ธง โต๊ะยาวมีอาหาร เทียนลอย นักเรียนนั่งเต็ม · เดรโกยิ้มเยาะ → ตัดไปต้นยิ้มแป้น · แฮร์รี่ รอน เฮอร์ไมโอนี่แอบขำ", "ปากเดรโกขยับก่อน แล้วปากต้น · กล้องตามคนพูด"),
-  ("13", "4.5", p13, "Medium Close-up · พิธีคัดบ้าน", "หมวกบนหัวซิ่ง ครูมาลัยเบลอด้านข้าง · ซูมเข้าช้า ๆ · หมวกหันมองกล้อง ภาพหยุด", "ปากหมวกขยับ · ดนตรีลุ้นค่อย ๆ ดังขึ้นแล้วหยุด"),
-  ("14", "4", p14, "การ์ดโหวต (พื้นหลังห้องโถงเบลอ)", "ไฮไลต์เลื่อนวน A → B → C → D ช้าพอให้อ่าน ตัวที่ถูกเลือกขึ้นสีบ้าน ตัวอื่นเป็นสีเทา ไม่มีกรอบทอง · ไม่เฉลย", "เสียงคลิก UI ทุกครั้งที่สลับ · เสียงบรรยายซิ่ง · ต่อด้วยโลโก้ปิดท้าย 2.6 วิ"),
+  ("1", "3.5", p1, "Wide · ตึกแถวเก่าย่านพระนครตอนเช้า", "ตึกแถวชิโน-โปรตุกีส หน้าต่างโค้งบานไม้สีเขียว บานเฟี้ยม ป้ายร้านภาษาไทย สายไฟ ยอดวัดสีทองไกล ๆ · แดดเช้าเฉียง เงาอมฟ้า · ซูมเข้าหน้าต่างชั้นบนร้านทอง", "เสียงเมืองตอนเช้า ระฆังวัดไกล ๆ · ดนตรีขี้เล่น · เสียงบรรยายซิ่ง"),
+  ("2", "4", p2, "Medium Wide · ห้องนอนชั้นบน", "ผนังเขียวหัวเป็ด ไม้บุผนัง พื้นไม้กระดาน ตู้ไม้มีกระจก โปสเตอร์มวยไทย รูปอากง วิทยุเก่า พัดลมตั้งพื้น · ไอ้เหลืองเกาะหน้าต่างบานเกล็ดขันใส่ ซิ่งตกฟูก หมอนขวานกระเด็น · กล้องสั่นสั้น ๆ", "เว้นครึ่งวิก่อน 'ที่ไทย' · ไก่ขันลั่น + เสียงตุ้บ"),
+  ("3", "3.5", p3, "Close-up · ซิ่งอ่านจดหมาย", "ตาตี๋ยิ้มกวน คิ้วยก · เหรียญทองไหลออกจากซอง · ไอ้เหลืองเบลอด้านหลัง", "ปากซิ่งขยับ · เสียงเหรียญกรุ๊งกริ๊ง"),
+  ("4", "5", p4, "Medium · ร้านทองชั้นล่าง", "ผนังแดง กระเบื้องเก่าครึ่งล่าง โปสเตอร์กระดาษแปะเต็มผนัง ตู้ทอง พัดลมเพดาน นาฬิกาลูกตุ้ม ศาลเจ้า แมวกวัก บานเฟี้ยมเปิดรับแดด · อาม้ากัดเหรียญแล้วชูขึ้นตาวาว", "เสียงบรรยายซิ่ง → ปากอาม้าขยับ · เสียง 'งั่ม' แล้ว 'วิ้ง'"),
+  ("5", "4", p5, "Wide · ถนนย่านพระนคร", "ตุ๊กตุ๊กไทยหน้ากากขาวแถบน้ำเงิน ไฟกลมโครเมียม ล้อหน้าขอบแดง หลังคาผ้าระบายเงิน ป้าย TAXI · หัวรถลอย ลุงโตเบียดเบาะหลัง คนขับเกาะแฮนด์แน่น", "เสียงตุ๊กตุ๊ก 'ปั๊ด ๆ ๆ' + แตร · เสียงบรรยายซิ่ง"),
+  ("6", "4", p6, "Medium · ศาลพระภูมิปากซอย", "พวงมาลัย ธูป ม้าลาย น้ำแดงเสียบหลอด ป้ายซอย ต้นไม้ วินมอไซค์ · ลุงโตวางน้ำแดง ซิ่งพนมมือไหว้", "ดนตรีเบาลง ลึกลับนิด ๆ · เสียงบรรยายซิ่ง"),
+  ("7", "3", p7, "Close-up → ซูมเบลอ", "ม้าลายกะพริบตาพร้อมกัน ประตูศาลเปิด แสงทองพุ่ง ดูดทั้งสองคนเข้าไป", "เงียบหนึ่งจังหวะ → เสียงวูบ (ใช้ครั้งเดียว)"),
+  ("8", "4", p8, "Medium · ตลาดนัดเวทมนตร์", "ไฟปิงปอง โคมลอย ไม้กวาดบิน ร้านลูกชิ้นปิ้งข้าง ๆ · ป้าแต๋วตะโกน ป้าย '3 อัน 100'", "เสียงบรรยายซิ่ง → ปากป้าแต๋วขยับ · เสียงตลาด"),
+  ("9", "3.5", p9, "Close-up มือ", "ไม้ลูกชิ้นลอยเข้ามือซิ่งเองพร้อมแสงวูบ · ไม้สามอันที่ซื้อร่วงพื้น", "เสียงเวทมนตร์ใส ๆ แล้วเสียงไม้ร่วง 'ก๊อก ๆ'"),
+  ("10", "4", p10, "Medium · ต้นเดินเข้าเฟรมจากซ้าย", "ต้นชูไม้ข้าวเหนียวปิ้งเรืองแสง ผ้าขาวม้าพาดคอ ถือกระติบ · ซิ่งหันไปมอง", "เสียงแคนสั้น ๆ · ปากต้นขยับ"),
+  ("11", "4.5", p11, "Medium · ห้องโถงใหญ่ (ตัดสลับ)", "เดรโกแซะเรื่องตุ๊กตุ๊ก (โยงกลับช็อต 5) → ต้นยิ้มแป้นตอบ เดรโกหน้าเหวอ · แฮร์รี่ รอน เฮอร์ไมโอนี่แอบขำ", "ปากเดรโกขยับก่อน แล้วปากต้น"),
+  ("12", "5", p12, "Medium Close-up · พิธีคัดบ้าน", "หมวกบนหัวซิ่ง ครูมาลัยเบลอด้านข้าง · ซูมเข้าช้า ๆ · หมวกหันมองกล้อง ภาพหยุด", "เสียงบรรยายซิ่ง → ปากหมวกขยับ · ดนตรีลุ้นแล้วหยุด"),
+  ("13", "4", p13, "การ์ดโหวต", "ไฮไลต์วน A → B → C → D ตัวที่เลือกขึ้นสีบ้าน ตัวอื่นสีเทา · ไม่เฉลย", "เสียงคลิกทุกครั้งที่สลับ · ต่อด้วยโลโก้ปิดท้าย 2.6 วิ"),
 ]
+
 total = sum(float(d) for _, d, *_ in PANELS)
 
 cards = "".join(f'''<figure class="panel">
@@ -792,11 +768,11 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 .cam {{ color:var(--ink); font-weight:500; }}
 .note {{ font-size:13px; color:var(--muted); max-width:72ch; line-height:1.6; margin:0; }}
 </style>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}</defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}{DEFS_THAI}</defs></svg>
 <div class="wrap">
-  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v4 สีสดสมจริงขึ้น + ตุ๊กตุ๊กไทย</span></h1>
+  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v5 ย่านพระนคร · แดดอุ่นแบบแอนิเมชันวาดมือ · บท v9</span></h1>
   <div class="grid">{cards}</div>
-  <p class="note">ท่าทางพิเศษ (นอน ตกฟูก นั่งตุ๊กตุ๊ก เกาะสองแถว พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนหมุนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
+  <p class="note">ท่าทางพิเศษ (ตกฟูก นั่งตุ๊กตุ๊ก พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนหมุนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
 </div>'''
 (HERE / "storyboard.html").write_text(page)
 print(len(PANELS), "panels", total, "sec")
