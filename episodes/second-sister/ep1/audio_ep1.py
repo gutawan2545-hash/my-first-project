@@ -438,7 +438,7 @@ rest_pk = max(np.abs(ml).max(), np.abs(fl).max(), 1e-6)
 if AI:   # level the AI score on its own: music RMS ~ -22 dBFS before ducking; effects keep their own peak level
     rest_pk = max(np.abs(fl).max(), 1e-6)
     _m = np.sqrt(np.mean(ml[np.abs(ml) > 1e-4] ** 2)) if (np.abs(ml) > 1e-4).any() else 1
-    ml, mr = ml * (.08 * rest_pk / .38 / _m), mr * (.08 * rest_pk / .38 / _m)
+    ml, mr = ml * (.055 * rest_pk / .38 / _m), mr * (.055 * rest_pk / .38 / _m)   # user: music a little lower (-3 dB)
 k = .95 / bpk                                    # bells reach full scale
 outL = bl * k + (fl * .80 + ml * .38) / rest_pk + al * .9
 outR = br * k + (fr * .80 + mr * .38) / rest_pk + ar * .9

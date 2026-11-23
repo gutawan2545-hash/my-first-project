@@ -23,7 +23,7 @@ DIRECT = {
     "247-248": {"shake": [[.3, .8]]},
     "249-253": {"shake": [["s250", 1.0]]},
     "254-255": {"shade": True, "shake": [[1.2, .45]]},
-    "282-285": {"shake": [["s284", .9]]},
+    "282-285": {"shake": [["s284", .9]], "fright": ["mek", "s284"]},   # Mek's face: shock when the voice answers (user)
     # hook: four fast shots before the title
     "302": {},                                   # no shake on the board: the camera holds still (user: no bouncing)
     "304": {"shake": [[.5, .7]]},

@@ -54,6 +54,15 @@ def face_fx(cid, talk):
                   f'<animateTransform attributeName="transform" type="translate" values="{x - 2 + 4 * i},{ey + 6};{x - 2 + 4 * i},{ey + 26}" dur="1.8s" begin="-{b:.2f}s" repeatCount="indefinite"/>'
                   f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.75;1" dur="1.8s" begin="-{b:.2f}s" repeatCount="indefinite"/></path>')
     o += c + '</g>'
+    # fright (hidden; the player shows it on cue): eyes wide open with small pupils, brows shot up, mouth dropped open
+    f = '<g class="fright" display="none">'
+    for x in (-13, 13):
+        f += (f'<ellipse cx="{x}" cy="{ey - .5}" rx="10.5" ry="10" fill="{SKIN[cid]}"/><ellipse cx="{x}" cy="{ey - .5}" rx="8.6" ry="8.4" fill="#ffffff"/>'
+              f'<path d="M {x - 8.6},{ey - .5} A 8.6,8.4 0 0 1 {x + 8.6},{ey - .5}" stroke="#1b1316" stroke-width="1.8" fill="none"/>'
+              f'<circle cx="{x}" cy="{ey}" r="2.1" fill="#1b1316"/><circle cx="{x + .8}" cy="{ey - .8}" r=".6" fill="#ffffff"/>'
+              f'<path d="M {x - 9},{ey - 15} Q {x},{ey - 21} {x + 9},{ey - 15.5}" stroke="#1b1316" stroke-width="2.8" fill="none" stroke-linecap="round"/>')
+    f += f'<ellipse cx="0" cy="24.5" rx="7" ry="4.5" fill="{SKIN[cid]}"/><ellipse cx="0" cy="26" rx="4.2" ry="5.6" fill="#3e1c22"/><ellipse cx="0" cy="29" rx="2.6" ry="1.6" fill="#b8606a"/></g>'
+    o += f
     if talk:              # lips part and close in an irregular rhythm
         o += (f'<ellipse cx="0" cy="24.6" rx="3.4" ry=".4" fill="#5a2a2e"><animate attributeName="ry" values=".4;2.6;.8;3;.5;2;1.2;2.8;.4" dur="1.1s" repeatCount="indefinite"/>'
               f'<animate attributeName="rx" values="3.4;4.2;3.6;4.4;3.4" dur=".8s" repeatCount="indefinite"/></ellipse>')
@@ -346,6 +355,14 @@ for seg in segments:
     if sk: seg["shakes"] = sk
     if d.get("shade"): seg["shade"] = True
     if d.get("clatter") is not None: seg["clatter"] = d["clatter"]
+    if d.get("fright"):   # e.g. ["mek", "s284"]: his face changes the moment the voice answers; camera pushes in on him
+        cid_, ref = d["fright"]; sh_ = next((x for x in seg["shots"] if x["n"] == int(ref[1:])), None)
+        if sh_ and cid_ in pos:
+            at = sh_["t0"] + ((sh_["vo"][0] + .25) if sh_.get("vo") else .3)
+            seg["fright"] = [cid_, round(at, 2)]
+            mx, my, mk = pos[cid_]
+            for x in seg["shots"]:
+                if x["t0"] >= sh_["t0"]: x["cam"] = frame(mx, my, mk, "cu")   # stay on his face to the end
     if d.get("blow"):   # old-wing child: walks in with the candle, turns to us on 16, lifts and blows it out on 18
         _st = {s_["n"]: s_["t0"] for s_ in seg["shots"]}
         t16 = _st.get(16, seg["dur"] - 6); t18 = _st.get(18, seg["dur"] - 3)
@@ -411,6 +428,8 @@ function setActs(seg) {
   const mod = (el, attr) => ACT.mods.push([el, attr, el.getAttribute(attr)]);
   setBodies(seg, mod);
   (seg.cry || []).forEach(c => poseDefs(c).forEach(d => d.querySelectorAll('.cry').forEach(g => { mod(g, 'display'); g.setAttribute('display', 'inline'); })));
+  ACT.fright = seg.fright ? poseDefs(seg.fright[0]).flatMap(d => [...d.querySelectorAll('.fright')]) : [];
+  ACT.fright.forEach(g => mod(g, 'display'));
   const g = seg.kind === 'stage' ? $('st_' + seg.stage) : null; if (!g) return;
   (seg.walk || []).forEach(([c, mode, run]) => {
     const u = [...g.querySelectorAll('use')].find(u => { const h = (u.getAttribute('href') || '').slice(1).replace(/_talk$/, ''); return (POSE_CID[h] || '').replace('mek_back', 'mek') === c; });
@@ -637,6 +656,7 @@ window.render = function (si, t) {
     $('towerShade').setAttribute('opacity', o.toFixed(3));
     $('towerShadeFig').setAttribute('transform', `translate(${(40 * sm((t - 2.9) / 1.9)).toFixed(1)},0)`);
   } else if ($('towerShade')) $('towerShade').setAttribute('opacity', 0);
+  if (seg.fright) (ACT.fright || []).forEach(g => g.setAttribute('display', t >= seg.fright[1] ? 'inline' : 'none'));
   // old wing: the child carries the candle in, turns to us, lifts it under her chin and blows it out
   if (seg.blow && $('owKid')) {
     const B = seg.blow, w = sm((t - B.walk[0]) / (B.walk[1] - B.walk[0]));
