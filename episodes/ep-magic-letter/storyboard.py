@@ -38,7 +38,8 @@ def pop(x, y, t, size=34, rot=-8):
     return f'<text x="{x}" y="{y}" font-size="{size}" transform="rotate({rot} {x} {y})" {POP}>{t}</text>'
 
 EYE = '<g transform="translate(500,40)" opacity=".75"><path d="M -14,0 C -8,-8 8,-8 14,0 C 8,8 -8,8 -14,0 Z" fill="#b18cff"/><circle r="4" fill="#1b1f2b"/></g>'
-BGGRAIN = '<rect width="540" height="960" filter="url(#fgrain)" style="mix-blend-mode:screen" opacity=".22"/>'
+VIGN = '<rect width="540" height="960" fill="url(#vign)"/>'
+BGGRAIN = VIGN + '<rect width="540" height="960" filter="url(#fgrain)" style="mix-blend-mode:screen" opacity=".22"/>'
 
 def dust(cx, cy, w, h, n=14, seed=1, col="#fff8f0"):
     r = random.Random(seed); out = ""
@@ -58,7 +59,7 @@ def speed(x0, y0, x1, n=6, seed=2, col="#ffffff"):
     return "".join(f'<path d="M {x0},{y0 + i*22} L {x1 + r.uniform(-30,30):.0f},{y0 + i*22}" stroke="{col}" stroke-width="{r.uniform(1.5,3):.1f}" stroke-linecap="round" opacity=".6"/>' for i in range(n))
 
 def shafts(xs, top=0, h=760, o=.55):
-    return "".join(f'<path d="M {x-40},{top} L {x+40},{top} L {x+120},{top+h} L {x-10},{top+h} Z" fill="url(#shaft)" opacity="{o}"/>' for x in xs)
+    return "".join(f'<path d="M {x-40},{top} L {x+40},{top} L {x+120},{top+h} L {x-10},{top+h} Z" fill="url(#shaft)" opacity="{o*.45:.2f}"/>' for x in xs)
 
 def clouds(seed=1, n=4, y0=40, y1=200, x0=0, x1=540):
     r = random.Random(seed); out = ""
@@ -74,18 +75,20 @@ DEFS_SB = '''
 <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
 <filter id="glow"><feGaussianBlur stdDeviation=".7"/></filter>
 <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
-<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c4ee"/><stop offset=".55" stop-color="#bfe2f8"/><stop offset="1" stop-color="#f2f8ff"/></linearGradient>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8ee0"/><stop offset=".6" stop-color="#7cc0f0"/><stop offset="1" stop-color="#cfe8fa"/></linearGradient>
 <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".8"/><stop offset=".5" stop-color="#fff2fa" stop-opacity=".35"/><stop offset="1" stop-color="#e8f4ff" stop-opacity="0"/></linearGradient>
 <radialGradient id="cloud"><stop offset=".55" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
-<linearGradient id="roomwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ddd6f2"/><stop offset="1" stop-color="#efe8f8"/></linearGradient>
-<linearGradient id="shopwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6d0da"/><stop offset="1" stop-color="#ecc0cc"/></linearGradient>
+<linearGradient id="roomwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9c2a6"/><stop offset="1" stop-color="#ecdcc4"/></linearGradient>
+<linearGradient id="shopwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e1620"/><stop offset="1" stop-color="#a82430"/></linearGradient>
 <linearGradient id="nightsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a36"/><stop offset="1" stop-color="#34447a"/></linearGradient>
 <linearGradient id="hall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e1a2c"/><stop offset="1" stop-color="#3e3240"/></linearGradient>
 <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".6"/><stop offset="1" stop-color="#fff4fa" stop-opacity="0"/></linearGradient>
 <radialGradient id="portal"><stop offset="0" stop-color="#fff6e0"/><stop offset=".35" stop-color="#f4d6a0" stop-opacity=".9"/><stop offset="1" stop-color="#b18cff" stop-opacity="0"/></radialGradient>
 <radialGradient id="warm"><stop offset="0" stop-color="#fff4dc"/><stop offset=".5" stop-color="#ffe2b8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe2b8" stop-opacity="0"/></radialGradient>
-<pattern id="tiles" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#e4d8e4"/><rect width="20" height="20" fill="#d6c8d8"/><rect x="20" y="20" width="20" height="20" fill="#d6c8d8"/></pattern>
-<pattern id="terrazzo" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#ece0e6"/><circle cx="6" cy="8" r="1.6" fill="#c8b0bc"/><circle cx="20" cy="4" r="1.2" fill="#b8c4d8"/><circle cx="14" cy="20" r="1.8" fill="#d0a8b0"/><circle cx="26" cy="24" r="1.2" fill="#c8b0bc"/></pattern>
+<linearGradient id="wallshade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5a3a2a" stop-opacity=".18"/><stop offset=".35" stop-color="#5a3a2a" stop-opacity="0"/><stop offset=".75" stop-color="#5a3a2a" stop-opacity="0"/><stop offset="1" stop-color="#5a3a2a" stop-opacity=".2"/></linearGradient>
+<radialGradient id="vign" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#1a1220" stop-opacity="0"/><stop offset="1" stop-color="#1a1220" stop-opacity=".35"/></radialGradient>
+<pattern id="tiles" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#e2d8c8"/><rect width="20" height="20" fill="#c8baa4"/><rect x="20" y="20" width="20" height="20" fill="#c8baa4"/><rect width="40" height="1" fill="#a89a86"/><rect width="1" height="40" fill="#a89a86"/></pattern>
+<pattern id="terrazzo" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#e2d6c8"/><circle cx="6" cy="8" r="1.6" fill="#c8b0bc"/><circle cx="20" cy="4" r="1.2" fill="#b8c4d8"/><circle cx="14" cy="20" r="1.8" fill="#d0a8b0"/><circle cx="26" cy="24" r="1.2" fill="#c8b0bc"/></pattern>
 <pattern id="stone" width="60" height="34" patternUnits="userSpaceOnUse"><rect width="60" height="34" fill="#3a3346"/><rect x="1" y="1" width="58" height="15" fill="#443c52"/><rect x="-29" y="18" width="58" height="15" fill="#40384e"/><rect x="31" y="18" width="58" height="15" fill="#40384e"/></pattern>
 '''
 
@@ -127,9 +130,9 @@ def window_view(x, y, w, h, grille=True, curtain=True):
     """หน้าต่างตึกแถว เห็นตึกฝั่งตรงข้าม ป้าย แอร์ สายไฟ ฟ้าอ่อน"""
     g = [f'<clipPath id="wv{x}_{y}"><rect x="{x}" y="{y}" width="{w}" height="{h}"/></clipPath><g clip-path="url(#wv{x}_{y})">',
          f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#sky)"/>', clouds(x, 2, y + 10, y + 50, x, x + w),
-         f'<rect x="{x-10}" y="{y+h*.35:.0f}" width="{w*.55:.0f}" height="{h}" fill="#f2d6dc"/><rect x="{x+w*.5:.0f}" y="{y+h*.25:.0f}" width="{w*.6:.0f}" height="{h}" fill="#dcd8f2"/>',
-         "".join(f'<rect x="{x+6+k*30}" y="{y+h*.45:.0f}" width="18" height="24" fill="#a8c8e8"/>' for k in range(int(w*.5/30))),
-         "".join(f'<rect x="{x+w*.55+k*30:.0f}" y="{y+h*.35:.0f}" width="18" height="24" fill="#a8c8e8"/>' for k in range(int(w*.5/30))),
+         f'<rect x="{x-10}" y="{y+h*.35:.0f}" width="{w*.55:.0f}" height="{h}" fill="#d98f7a"/><rect x="{x+w*.5:.0f}" y="{y+h*.25:.0f}" width="{w*.6:.0f}" height="{h}" fill="#e9d8b8"/>',
+         "".join(f'<rect x="{x+6+k*30}" y="{y+h*.45:.0f}" width="18" height="24" fill="#5f8cbc"/>' for k in range(int(w*.5/30))),
+         "".join(f'<rect x="{x+w*.55+k*30:.0f}" y="{y+h*.35:.0f}" width="18" height="24" fill="#5f8cbc"/>' for k in range(int(w*.5/30))),
          f'<rect x="{x+w*.56:.0f}" y="{y+h*.6:.0f}" width="34" height="22" fill="#f4f4f6"/><circle cx="{x+w*.56+12:.0f}" cy="{y+h*.6+11:.0f}" r="8" fill="#c8ccd6"/>',
          f'<rect x="{x+8}" y="{y+h*.62:.0f}" width="20" height="54" fill="#c8323a"/><text x="{x+18}" y="{y+h*.62+22:.0f}" text-anchor="middle" font-family="serif" font-size="12" fill="#f0d070">金</text>',
          f'<path d="M {x},{y+h*.3:.0f} C {x+w*.4:.0f},{y+h*.4:.0f} {x+w*.7:.0f},{y+h*.36:.0f} {x+w},{y+h*.3:.0f}" stroke="#6a6280" stroke-width="1.5" fill="none"/>',
@@ -138,10 +141,10 @@ def window_view(x, y, w, h, grille=True, curtain=True):
         bars = "".join(f'<rect x="{x+k*w/8:.0f}" y="{y}" width="3" height="{h}"/>' for k in range(1, 8)) + "".join(f'<rect x="{x}" y="{y+k*h/5:.0f}" width="{w}" height="3"/>' for k in range(1, 5))
         g.append(f'<g fill="#ffffff">{bars}</g>')
     g.append(f'<path d="M {x-8},{y-8} L {x+w+8},{y-8} L {x+w+8},{y+h+8} L {x-8},{y+h+8} Z M {x},{y} L {x},{y+h} L {x+w},{y+h} L {x+w},{y} Z" fill="#ffffff" fill-rule="evenodd"/>')
-    g.append(f'<rect x="{x-14}" y="{y+h+6}" width="{w+28}" height="10" fill="#f4eef8"/>')
+    g.append(f'<rect x="{x-14}" y="{y+h+6}" width="{w+28}" height="10" fill="#f2ece2"/><rect x="{x-14}" y="{y+h+14}" width="{w+28}" height="4" fill="#b8a488"/>')
     if curtain:
-        g.append(f'<path d="M {x-24},{y-14} L {x+30},{y-14} C {x+20},{y+h*.4:.0f} {x+10},{y+h*.7:.0f} {x+2},{y+h+10} L {x-24},{y+h+10} Z" fill="#f6c8d8" opacity=".9"/><path d="M {x-24},{y-14} L {x-6},{y-14} L {x-10},{y+h+10} L {x-24},{y+h+10} Z" fill="#fadce6"/>')
-        g.append(f'<path d="M {x+w+24},{y-14} L {x+w-30},{y-14} C {x+w-20},{y+h*.4:.0f} {x+w-10},{y+h*.7:.0f} {x+w-2},{y+h+10} L {x+w+24},{y+h+10} Z" fill="#eab4c8" opacity=".9"/>')
+        g.append(f'<path d="M {x-24},{y-14} L {x+30},{y-14} C {x+20},{y+h*.4:.0f} {x+10},{y+h*.7:.0f} {x+2},{y+h+10} L {x-24},{y+h+10} Z" fill="#d8566e" opacity=".95"/><path d="M {x-24},{y-14} L {x-6},{y-14} L {x-10},{y+h+10} L {x-24},{y+h+10} Z" fill="#e8748a"/>')
+        g.append(f'<path d="M {x+w+24},{y-14} L {x+w-30},{y-14} C {x+w-20},{y+h*.4:.0f} {x+w-10},{y+h*.7:.0f} {x+w-2},{y+h+10} L {x+w+24},{y+h+10} Z" fill="#b8405a" opacity=".95"/>')
         g.append(f'<rect x="{x-30}" y="{y-20}" width="{w+60}" height="6" rx="3" fill="#b8a8c8"/>')
     return "".join(g)
 
@@ -207,14 +210,14 @@ def snacks(x, y):
 
 def floor(y, kind="tiles"):
     fill = {"tiles": "url(#tiles)", "terrazzo": "url(#terrazzo)"}[kind]
-    return f'<rect y="{y}" width="540" height="{960-y}" fill="{fill}"/><rect y="{y}" width="540" height="6" fill="#c8b8cc"/><rect y="{y}" width="540" height="300" fill="url(#beam)" opacity=".25"/>'
+    return f'<rect y="{y}" width="540" height="{960-y}" fill="{fill}"/><rect y="{y}" width="540" height="6" fill="#8a7a66"/><rect y="{y}" width="540" height="300" fill="url(#beam)" opacity=".1"/>'
 
 def bedroom(blur="bgblur"):
     """ห้องนอนชั้นสามของซิ่ง: หน้าต่างเหล็กดัด ม่าน โปสเตอร์ ชั้นถ้วยรางวัล นาฬิกา ปฏิทินจีน ราวเสื้อ ทีวี ตู้เย็นเล็ก ไฟประดับ ต้นไม้"""
-    stripes = "".join(f'<rect x="{k*36}" y="0" width="18" height="600" fill="#ffffff" opacity=".18"/>' for k in range(16))
+    stripes = '<rect width="540" height="600" fill="url(#wallshade)"/>'
     return f'''<g filter="url(#{blur})">
     <rect width="540" height="960" fill="url(#roomwall)"/>{stripes}
-    <rect y="560" width="540" height="40" fill="#e8dcef"/><rect y="560" width="540" height="4" fill="#ffffff"/>
+    <rect y="560" width="540" height="40" fill="#b89a7a"/><rect y="560" width="540" height="4" fill="#d8c0a0"/>
     {window_view(300, 110, 190, 240)}
     {string_lights(20, 520, 70, 26, 12)}
     {poster(30, 120, 90, 120, "idol")}{poster(140, 150, 80, 100, "game")}
@@ -236,8 +239,8 @@ def counter(x, y, w):
     trays = ""
     for k in range(int((w - 20) / 58)):
         trays += f'<rect x="{x+14+k*58}" y="{y+22}" width="48" height="26" rx="3" fill="#2a2030"/>' + "".join(f'<path d="M {x+18+k*58+j*10},{y+28} C {x+18+k*58+j*10},{y+44} {x+26+k*58+j*10},{y+44} {x+26+k*58+j*10},{y+28}" fill="none" stroke="#f0cc60" stroke-width="2"/>' for j in range(4))
-    return f'''<rect x="{x}" y="{y}" width="{w}" height="70" fill="#f8eef4" opacity=".55"/><rect x="{x}" y="{y}" width="{w}" height="4" fill="#ffffff"/>
-    {trays}<rect x="{x}" y="{y+70}" width="{w}" height="90" fill="#c87a8a"/><rect x="{x}" y="{y+70}" width="{w}" height="10" fill="#e0a0ac"/><rect x="{x}" y="{y+150}" width="{w}" height="10" fill="#a85a6a"/>'''
+    return f'''<rect x="{x}" y="{y}" width="{w}" height="70" fill="#e8f0f4" opacity=".45"/><rect x="{x}" y="{y}" width="{w}" height="4" fill="#ffffff"/>
+    {trays}<rect x="{x}" y="{y+70}" width="{w}" height="90" fill="#6a2a1e"/><rect x="{x}" y="{y+70}" width="{w}" height="10" fill="#8a4030"/><rect x="{x}" y="{y+150}" width="{w}" height="10" fill="#4a1a12"/>'''
 
 def lucky_cat(x, y, s=1.0):
     return f'''<g transform="translate({x},{y}) scale({s})"><ellipse cx="0" cy="0" rx="20" ry="6" fill="#c8a8b8"/><path d="M -18,0 C -20,-30 20,-30 18,0 Z" fill="#fffaf6"/>
@@ -270,9 +273,9 @@ def shrine(x, y):
 def shutter_door(x, y, w, h, open_frac=.6):
     oh = h * (1 - open_frac)
     slats = "".join(f'<rect x="{x}" y="{y+k*8}" width="{w}" height="2" fill="#a8a4b8"/>' for k in range(int(oh/8)))
-    return f'''<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#sky)"/><rect x="{x}" y="{y+h*.5:.0f}" width="{w}" height="{h*.5:.0f}" fill="#dcd6e8"/>
-    <rect x="{x+20}" y="{y+h*.3:.0f}" width="50" height="{h*.4:.0f}" fill="#f2d6dc"/><rect x="{x+w-80}" y="{y+h*.25:.0f}" width="60" height="{h*.45:.0f}" fill="#dcd8f2"/>
-    <rect x="{x}" y="{y}" width="{w}" height="{oh:.0f}" fill="#c8c4d4"/>{slats}
+    return f'''<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#sky)"/><rect x="{x}" y="{y+h*.5:.0f}" width="{w}" height="{h*.5:.0f}" fill="#7a7a84"/>
+    <rect x="{x+20}" y="{y+h*.3:.0f}" width="50" height="{h*.4:.0f}" fill="#d98f7a"/><rect x="{x+w-80}" y="{y+h*.25:.0f}" width="60" height="{h*.45:.0f}" fill="#e9d8b8"/>
+    <rect x="{x}" y="{y}" width="{w}" height="{oh:.0f}" fill="#a9a6a0"/>{slats}
     <rect x="{x-6}" y="{y}" width="6" height="{h}" fill="#a8a4b8"/><rect x="{x+w}" y="{y}" width="6" height="{h}" fill="#a8a4b8"/>'''
 
 def gold_shop(blur="bgblur"):
@@ -284,7 +287,7 @@ def gold_shop(blur="bgblur"):
     {lantern(120, 60)}{lantern(420, 60)}
     {shrine(450, 340)}{price_board(30, 270)}{clock(300, 300, 20, 7, 0)}{calendar_cn(200, 268)}
     {shutter_door(196, 360, 150, 200, .7)}
-    <rect x="20" y="380" width="160" height="12" fill="#c8a8b8"/>{plant(60, 380, .8, "#c8323a")}{lucky_cat(140, 380, .9)}
+    <rect x="20" y="380" width="160" height="12" fill="#5a2a1e"/>{plant(60, 380, .8, "#c8323a")}{lucky_cat(140, 380, .9)}
     {floor(600, "terrazzo")}
     </g>'''
 
@@ -295,22 +298,22 @@ def vsign(x, y, w, h, text, bg="#c8323a", fg="#f4d878"):
 
 def street_facades(horizon=640, seed=5):
     r = random.Random(seed)
-    cols = ["#f2d6dc", "#dcd8f2", "#f6e6d2", "#d4e8f4", "#f0dce8"]
-    awn = ["#e86a7a", "#6a9ad8", "#8fd19e", "#e8a0b0", "#b18cff"]
+    cols = ["#e9d8b8", "#d98f7a", "#7fb4b0", "#c9c3b8", "#e6a88e"]
+    awn = ["#c8323a", "#1f5fbf", "#2f8a5a", "#e8743a", "#7a3aa8"]
     g = []
     for i, bx in enumerate(range(-60, 600, 130)):
         top = horizon - 520 + r.randint(-30, 30)
         g.append(f'<rect x="{bx}" y="{top}" width="130" height="{horizon-top}" fill="{cols[i % 5]}"/><rect x="{bx}" y="{top}" width="130" height="10" fill="#ffffff" opacity=".6"/>')
         for fy in range(top + 40, horizon - 200, 110):
-            g.append(f'<rect x="{bx+16}" y="{fy}" width="98" height="70" fill="#a8c8e8"/><rect x="{bx+16}" y="{fy}" width="40" height="70" fill="#c8e0f4"/>')
+            g.append(f'<rect x="{bx+16}" y="{fy}" width="98" height="70" fill="#5f8cbc"/><rect x="{bx+16}" y="{fy}" width="40" height="70" fill="#8ab4dc"/>')
             g.append("".join(f'<rect x="{bx+16+k*14}" y="{fy}" width="2" height="70" fill="#ffffff"/>' for k in range(8)))
             g.append(f'<rect x="{bx+10}" y="{fy+72}" width="110" height="6" fill="#ffffff" opacity=".8"/>')
             if r.random() < .5:
                 g.append(f'<rect x="{bx+80}" y="{fy+40}" width="30" height="20" fill="#f4f4f6"/><circle cx="{bx+91}" cy="{fy+50}" r="7" fill="#c8ccd6"/>')
             if r.random() < .5:
                 g.append(f'<path d="M {bx+18},{fy+20} L {bx+70},{fy+20}" stroke="#8a7a9a" stroke-width="1"/>' + "".join(f'<rect x="{bx+22+k*14}" y="{fy+20}" width="10" height="{14+(k%2)*6}" fill="{["#f4a8b8","#8ab8e0","#f4f4f6","#8fd19e"][k%4]}"/>' for k in range(4)))
-        g.append(f'<rect x="{bx}" y="{horizon-190}" width="130" height="190" fill="#d6cfe0"/>' + "".join(f'<rect x="{bx}" y="{horizon-190+k*12}" width="130" height="2" fill="#bfb6cc"/>' for k in range(8)))
-        g.append(f'<rect x="{bx+10}" y="{horizon-92}" width="110" height="92" fill="#f4e4ea"/><rect x="{bx+20}" y="{horizon-80}" width="90" height="40" fill="#f0d488" opacity=".6"/>')
+        g.append(f'<rect x="{bx}" y="{horizon-190}" width="130" height="190" fill="#a9a6a0"/>' + "".join(f'<rect x="{bx}" y="{horizon-190+k*12}" width="130" height="2" fill="#8a8780"/>' for k in range(8)))
+        g.append(f'<rect x="{bx+10}" y="{horizon-92}" width="110" height="92" fill="#5a4a4a"/><rect x="{bx+20}" y="{horizon-80}" width="90" height="40" fill="#f0c860" opacity=".75"/>')
         g.append(f'<path d="M {bx},{horizon-196} L {bx+130},{horizon-196} L {bx+120},{horizon-170} L {bx+10},{horizon-170} Z" fill="{awn[i % 5]}"/>')
     for k, (t, bgc) in enumerate([("ห้างทอง", "#c8323a"), ("ยาจีน", "#2f6b4a"), ("โจ๊ก", "#c8432e"), ("ขนมเปี๊ยะ", "#a8222e"), ("ข้าวมันไก่", "#2a3a6a")]):
         g.append(vsign(20 + k * 108, horizon - 470 + (k % 2) * 40, 34, 22 + 18 * len(t), t, bgc))
@@ -338,19 +341,34 @@ def stools(x, y, n=3):
     return "".join(f'<g transform="translate({x+k*34},{y})"><rect x="-14" y="-26" width="28" height="6" rx="3" fill="{cols[k%3]}"/><path d="M -12,-20 L -14,0 M 12,-20 L 14,0" stroke="{cols[k%3]}" stroke-width="4"/></g>' for k in range(n))
 
 def tuktuk(x, y, s=1.0, rot=0):
-    """ตุ๊กตุ๊ก หันข้างเต็ม หน้ารถไปทางซ้าย"""
-    fringe = "".join(f'<path d="M {-60+k*18},-136 L {-52+k*18},-126 L {-44+k*18},-136 Z" fill="#f0cc60"/>' for k in range(10))
+    """ตุ๊กตุ๊กไทย หันข้างเต็ม หน้ารถไปทางซ้าย: จมูกรถไฟหน้าดวงเดียว กระจกหน้าเอียง หลังคายาวขอบโครเมียม ป้าย TAXI ราวโครเมียมข้างเบาะ เบาะแดง ล้อหลังมีบังโคลนโครเมียม"""
+    stripes = "".join(f'<rect x="{-6+k*14}" y="-34" width="8" height="3" fill="#f4d878"/>' for k in range(8))
     return f'''<g transform="translate({x},{y}) rotate({rot}) scale({s})">
-    <circle cx="-96" cy="0" r="22" fill="#1a1a22"/><circle cx="-96" cy="0" r="10" fill="#c8ccd6"/>
-    <circle cx="74" cy="0" r="24" fill="#1a1a22"/><circle cx="74" cy="0" r="11" fill="#c8ccd6"/>
-    <path d="M -120,-20 C -120,-60 -96,-80 -70,-80 L -40,-80 L -40,-10 L -110,-10 C -118,-10 -120,-14 -120,-20 Z" fill="#2f9ab0"/>
-    <path d="M -120,-20 C -120,-50 -106,-70 -90,-76 L -90,-10 L -110,-10 C -118,-10 -120,-14 -120,-20 Z" fill="#4ab4c8"/>
-    <circle cx="-112" cy="-40" r="8" fill="#fff4c8"/><rect x="-118" y="-18" width="14" height="6" fill="#f0cc60"/>
-    <path d="M -40,-80 L 110,-80 L 112,-10 L -40,-10 Z" fill="#2f9ab0"/><path d="M 20,-80 L 110,-80 L 112,-10 L 40,-10 Z" fill="#26829a"/>
-    <path d="M -60,-150 L 120,-150 L 124,-136 L -64,-136 Z" fill="#2a3a5c"/>{fringe}
-    <rect x="-56" y="-136" width="6" height="58" fill="#c8ccd6"/><rect x="104" y="-136" width="6" height="58" fill="#c8ccd6"/>
-    <path d="M -10,-60 L 100,-60 L 100,-40 L -10,-40 Z" fill="#c8323a"/>
-    <text x="40" y="-22" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#f0cc60">BANGKOK</text></g>'''
+    <path d="M 76,-4 L 132,-4 L 132,4 L 76,4 Z" fill="#9aa0aa"/><circle cx="136" cy="0" r="4" fill="#5a5e6a"/>
+    <circle cx="-118" cy="0" r="20" fill="#16161c"/><circle cx="-118" cy="0" r="9" fill="#d8dde6"/><circle cx="-118" cy="0" r="3" fill="#16161c"/>
+    <circle cx="84" cy="0" r="24" fill="#16161c"/><circle cx="84" cy="0" r="11" fill="#d8dde6"/><circle cx="84" cy="0" r="4" fill="#16161c"/>
+    <path d="M -144,-8 C -146,-30 -138,-52 -122,-66 L -100,-66 L -100,-14 L -134,-14 C -140,-14 -144,-12 -144,-8 Z" fill="#1f5fbf"/>
+    <path d="M -144,-8 C -146,-28 -140,-46 -128,-60 L -120,-60 C -130,-46 -134,-28 -132,-14 L -134,-14 C -140,-14 -144,-12 -144,-8 Z" fill="#4a86e0"/>
+    <circle cx="-138" cy="-38" r="9" fill="#d8dde6"/><circle cx="-138" cy="-38" r="6" fill="#fff6d0"/>
+    <path d="M -146,-20 L -130,-20 M -146,-14 L -132,-14" stroke="#d8dde6" stroke-width="2"/>
+    <path d="M -142,-16 C -142,-34 -94,-34 -94,-16" fill="none" stroke="#d8dde6" stroke-width="5"/>
+    <path d="M -122,-66 L -102,-150 L -94,-150 L -112,-66 Z" fill="#d8dde6"/><path d="M -116,-68 L -98,-146 L -78,-146 L -78,-70 Z" fill="#a8d4f0" opacity=".75"/>
+    <path d="M -100,-66 L 60,-66 L 64,-14 L -100,-14 Z" fill="#1f5fbf"/><path d="M 0,-66 L 60,-66 L 64,-14 L 10,-14 Z" fill="#174a98"/>
+    <path d="M -100,-48 L 62,-48" stroke="#d8dde6" stroke-width="2.4"/>
+    <path d="M 60,-74 C 80,-80 110,-76 118,-56 L 120,-14 L 60,-14 Z" fill="#1f5fbf"/><path d="M 96,-76 C 108,-72 116,-66 118,-56 L 120,-14 L 100,-14 Z" fill="#174a98"/>
+    <path d="M 58,-20 C 58,-46 112,-46 112,-20" fill="none" stroke="#d8dde6" stroke-width="6"/>
+    {stripes}<rect x="70" y="-34" width="40" height="3" fill="#f4d878"/>
+    <circle cx="116" cy="-44" r="4" fill="#e8323e"/>
+    <path d="M -96,-66 L -96,-110 L -80,-110 L -80,-66 Z" fill="#2a2a32"/>
+    <path d="M -10,-66 L -10,-118 C -10,-124 0,-126 6,-124 L 6,-66 Z" fill="#c8243a"/><path d="M 6,-104 L 58,-104 L 58,-66 L 6,-66 Z" fill="#c8243a"/><path d="M 6,-104 L 58,-104 L 58,-98 L 6,-98 Z" fill="#e8434e"/>
+    <path d="M -100,-158 L 122,-158 C 126,-158 128,-154 126,-150 L 120,-140 L -104,-140 L -108,-150 C -108,-155 -104,-158 -100,-158 Z" fill="#14264a"/>
+    <path d="M -108,-150 L 126,-150 L 124,-146 L -108,-146 Z" fill="#d8dde6"/><path d="M -104,-140 L 120,-140 L 120,-136 L -104,-136 Z" fill="#d8dde6"/>
+    <rect x="-34" y="-176" width="56" height="18" rx="3" fill="#f4f4f6"/><text x="-6" y="-162" text-anchor="middle" font-family="Inter" font-size="12" font-weight="800" fill="#c8243a">TAXI</text>
+    <path d="M -12,-136 L -12,-66 M 116,-136 L 116,-74" stroke="#d8dde6" stroke-width="4"/>
+    <path d="M 6,-84 L 60,-84 M 6,-74 L 60,-74" stroke="#d8dde6" stroke-width="2.4"/>
+    <path d="M -94,-128 L -14,-128" stroke="#f4d878" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="-40" y="-24" text-anchor="middle" font-family="Inter" font-size="10" font-weight="800" fill="#f4d878">BANGKOK</text>
+    </g>'''
 
 def driver(x, y, s=1.0):
     return f'''<g transform="translate({x},{y}) scale({s})"><path d="M -18,0 L 18,0 L 16,-40 C 10,-48 -10,-48 -16,-40 Z" fill="#e88a3a"/>
@@ -361,7 +379,7 @@ def yaowarat_street(blur="bgblur", horizon=640):
     return f'''<g filter="url(#{blur})">
     <rect width="540" height="960" fill="url(#sky)"/>{clouds(2, 4, 20, 140)}
     {street_facades(horizon)}{pole(470, horizon)}
-    <rect y="{horizon}" width="540" height="{960-horizon}" fill="#dcd6e8"/><rect y="{horizon}" width="540" height="40" fill="#ece6f2"/><rect y="{horizon+40}" width="540" height="4" fill="#c8c0d8"/>
+    <rect y="{horizon}" width="540" height="{960-horizon}" fill="#7a7a84"/><rect y="{horizon}" width="540" height="40" fill="#c8c0b0"/><rect y="{horizon+40}" width="540" height="4" fill="#9a948a"/>
     <path d="M 0,{horizon+150} L 540,{horizon+150}" stroke="#ffffff" stroke-width="5" stroke-dasharray="44 28"/>
     {food_cart(70, horizon+30, .8, "โจ๊ก")}{stools(140, horizon+36, 3)}
     </g>'''
@@ -416,7 +434,7 @@ def soi_entrance(blur="bgblur", horizon=660):
     {street_facades(horizon, 9)}
     <rect x="300" y="{horizon-150}" width="200" height="40" rx="4" fill="#2a5aa8"/><text x="400" y="{horizon-123}" text-anchor="middle" {TH} font-size="16" font-weight="700" fill="#fff">ซอยเยาวราช 6</text>
     {tree(500, horizon, .9)}
-    <rect y="{horizon}" width="540" height="{960-horizon}" fill="#dcd6e8"/><rect y="{horizon}" width="540" height="30" fill="#ece6f2"/>
+    <rect y="{horizon}" width="540" height="{960-horizon}" fill="#7a7a84"/><rect y="{horizon}" width="540" height="30" fill="#c8c0b0"/>
     {win_riders(330, horizon+10)}
     </g>'''
 
@@ -714,11 +732,11 @@ opts = [("A", "กริฟฟินดอร์", "#8e1b24", "#d9b24a", True), 
 oc = ""
 for i, (k, name, c1, c2, on) in enumerate(opts):
     x, y = 60 + (i % 2) * 220, 250 + (i // 2) * 150
-    ring = '<rect x="-6" y="-6" width="212" height="132" rx="18" fill="none" stroke="#ffd84a" stroke-width="4"/>' if on else ''
-    oc += f'''<g transform="translate({x},{y})" opacity="{1 if on else .75}">{ring}
-    <rect width="200" height="120" rx="14" fill="{c1}"/><rect y="96" width="200" height="24" fill="{c2}" opacity=".85"/>
-    <circle cx="34" cy="40" r="20" fill="#15121c" opacity=".55"/><text x="34" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="#fff">{k}</text>
-    <text x="64" y="50" {TH} font-size="20" font-weight="700" fill="#fff">{name}</text></g>'''
+    f1, f2, tc = (c1, c2, "#fff") if on else ("#3c3c46", c1, "#b8b8c4")
+    oc += f'''<g transform="translate({x},{y})">
+    <rect width="200" height="120" rx="14" fill="{f1}"/><rect y="100" width="200" height="20" fill="{f2}" opacity="{.9 if on else .55}"/>
+    <circle cx="34" cy="40" r="20" fill="#15121c" opacity=".45"/><text x="34" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="22" font-weight="800" fill="{tc}">{k}</text>
+    <text x="64" y="50" {TH} font-size="20" font-weight="700" fill="{tc}">{name}</text></g>'''
 p14 = frame(f'''<g opacity=".6">{great_hall("bgblur2")}</g><rect width="540" height="960" fill="#15121c" opacity=".55"/>
   <text x="270" y="190" text-anchor="middle" {TH} font-size="32" font-weight="700" fill="#fff">ซิ่งควรอยู่บ้านไหน?</text>
   {oc}
@@ -740,7 +758,7 @@ PANELS = [
   ("11", "4", p11, "Wide · ฟ้ากลางคืนเหนือทุ่งนา", "สองแถวแดงบินเอียงโค้ง ป้ายสาย 'ฮอกวอตส์–เยาวราช' · ซิ่ง (เปลี่ยนเป็นผ้าคลุม) กับต้นเกาะท้าย เพื่อนปี 1 นั่งข้างใน · ปราสาทไกล ๆ", "เสียงเครื่องยนต์สองแถว + แตร 'ปู๊น' · เสียงบรรยายซิ่ง"),
   ("12", "4.5", p12, "Medium · ห้องโถงใหญ่ (ตัดสลับ)", "ผนังหิน หน้าต่างโค้ง ธง โต๊ะยาวมีอาหาร เทียนลอย นักเรียนนั่งเต็ม · เดรโกยิ้มเยาะ → ตัดไปต้นยิ้มแป้น · แฮร์รี่ รอน เฮอร์ไมโอนี่แอบขำ", "ปากเดรโกขยับก่อน แล้วปากต้น · กล้องตามคนพูด"),
   ("13", "4.5", p13, "Medium Close-up · พิธีคัดบ้าน", "หมวกบนหัวซิ่ง ครูมาลัยเบลอด้านข้าง · ซูมเข้าช้า ๆ · หมวกหันมองกล้อง ภาพหยุด", "ปากหมวกขยับ · ดนตรีลุ้นค่อย ๆ ดังขึ้นแล้วหยุด"),
-  ("14", "4", p14, "การ์ดโหวต (พื้นหลังห้องโถงเบลอ)", "ไฮไลต์เลื่อนวน A → B → C → D ช้าพอให้อ่าน ตัวที่ถูกเลือกสว่างขึ้น · ไม่เฉลย", "เสียงคลิก UI ทุกครั้งที่สลับ · เสียงบรรยายซิ่ง · ต่อด้วยโลโก้ปิดท้าย 2.6 วิ"),
+  ("14", "4", p14, "การ์ดโหวต (พื้นหลังห้องโถงเบลอ)", "ไฮไลต์เลื่อนวน A → B → C → D ช้าพอให้อ่าน ตัวที่ถูกเลือกขึ้นสีบ้าน ตัวอื่นเป็นสีเทา ไม่มีกรอบทอง · ไม่เฉลย", "เสียงคลิก UI ทุกครั้งที่สลับ · เสียงบรรยายซิ่ง · ต่อด้วยโลโก้ปิดท้าย 2.6 วิ"),
 ]
 total = sum(float(d) for _, d, *_ in PANELS)
 
@@ -776,7 +794,7 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}</defs></svg>
 <div class="wrap">
-  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v3 ฉากละเอียด + เม็ดฟิล์มเฉพาะพื้นหลัง</span></h1>
+  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v4 สีสดสมจริงขึ้น + ตุ๊กตุ๊กไทย</span></h1>
   <div class="grid">{cards}</div>
   <p class="note">ท่าทางพิเศษ (นอน ตกฟูก นั่งตุ๊กตุ๊ก เกาะสองแถว พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนหมุนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
 </div>'''
