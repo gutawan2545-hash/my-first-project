@@ -21,7 +21,7 @@ R = random.Random(42)
 
 # ---------------- 1. living poses: breathing, blinking, talking ----------------
 SKIN = {"mek": "#eec4a2", "daeng": "#e3b088", "cat": "#f1d3bd", "luc": "#efd6c6", "rosa": "#f5d3b4", "jos": "#ebc6a6", "thana": "#d9a37c",
-        "mariam": "#f6dcc4", "agnes": "#f8f2ef", "james": "#fbe7d8", "mkid": "#efc6a3", "jan": "#f2cdab", "twinM": "#f6dcc4", "twinA": "#f6dcc4"}
+        "mariam": "#f6dcc4", "agnes": "#f7ebe4", "james": "#fbe7d8", "mkid": "#efc6a3", "jan": "#f2cdab", "twinM": "#f6dcc4", "twinA": "#f6dcc4"}
 KIDS = {"mkid", "jan", "twinM", "twinA"}
 POSE_CID = {}
 
