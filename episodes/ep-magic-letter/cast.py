@@ -72,7 +72,10 @@ def eyes_squint(col="#1d1717"):
 
 # ---------- ชุดคลุมโรงเรียน ----------
 def robe(c, light, shade, trim, inner, hem=455, w=62):
+    dia = "".join(f'<path d="M {sx*-10},{y} l 2.6,4 l -2.6,4 l -2.6,-4 Z"/>' for y in range(70, hem-20, 26) for sx in (1,-1))
     return f'''
+    <path d="M -38,62 C -40,36 40,36 38,62 Z" fill="{shade}"/>
+    <path d="M -30,58 C -30,44 30,44 30,58 Z" fill="{trim}" opacity=".55"/>
     <path d="M -47,64 L -36,74 L -44,196 L -76,206 C -78,170 -66,110 -47,64 Z" fill="{light}"/>
     <path d="M 47,64 L 36,74 L 44,196 L 76,206 C 78,170 66,110 47,64 Z" fill="{shade}"/>
     <path d="M -12,49 L 12,49 C 28,51 42,56 47,66 L {w},{hem} L {-w},{hem} L -47,66 C -42,56 -28,51 -12,49 Z" fill="{c}"/>
@@ -83,7 +86,13 @@ def robe(c, light, shade, trim, inner, hem=455, w=62):
     <path d="M 13,50 L 8,50 L 6,{hem} L 12,{hem} Z" fill="{trim}" opacity=".8"/>
     <path d="M {-w},{hem-6} L {w},{hem-6} L {w},{hem} L {-w},{hem} Z" fill="{trim}" opacity=".85"/>
     <path d="M -76,206 L -44,196 L -45,202 L -75,212 Z" fill="{trim}"/>
-    <path d="M 76,206 L 44,196 L 45,202 L 75,212 Z" fill="{trim}" opacity=".8"/>'''
+    <path d="M 76,206 L 44,196 L 45,202 L 75,212 Z" fill="{trim}" opacity=".8"/>
+    <path d="M -76,212 L -45,202 L -46,208 C -58,214 -68,216 -76,216 Z" fill="{shade}"/>
+    <path d="M 76,212 L 45,202 L 46,208 C 58,214 68,216 76,216 Z" fill="{shade}"/>
+    <path d="M -60,120 C -66,150 -70,180 -72,200 L -66,202 C -64,180 -62,150 -58,124 Z" fill="{c}"/>
+    <path d="M 60,120 C 66,150 70,180 72,200 L 66,202 C 64,180 62,150 58,124 Z" fill="{c}" opacity=".6"/>
+    <g fill="{inner}" opacity=".9">{dia}</g>
+    <g fill="{trim}">{"".join(f'<path d="M {x},{hem-14} l 3,3 l -3,3 l -3,-3 Z"/>' for x in range(-w+8, w-4, 14))}</g>'''
 
 def hand(x, y, sk, sh, flip=1):
     return f'<path d="M {x-7},{y} L {x+7},{y} C {x+8},{y+12} {x+5},{y+22} {x},{y+23} C {x-5},{y+22} {x-8},{y+12} {x-7},{y} Z" fill="{sk if flip<0 else sh}"/>'
@@ -92,7 +101,6 @@ def shoes(c, cl, y):
     return f'''<path d="M -40,{y} L -8,{y} C -6,{y+8} -8,{y+13} -12,{y+14} L -42,{y+14} C -46,{y+13} -45,{y+4} -40,{y} Z" fill="{cl}"/>
     <path d="M 40,{y} L 8,{y} C 6,{y+8} 8,{y+13} 12,{y+14} L 42,{y+14} C 46,{y+13} 45,{y+4} 40,{y} Z" fill="{c}"/>'''
 
-ROBE = dict(c="#352f57", light="#4a4378", shade="#231f3d", trim="#b7a0e0")  # ชุดคลุมโรงเรียนยามวิกาล: ม่วงคราม ขอบลาเวนเดอร์
 
 C = {}
 
@@ -215,49 +223,93 @@ C["giant"] = f'''<g id="c_giant"><g transform="scale(1.32) translate(0,-490)">
   {blush("#c9705e",.3)}
   </g></g></g>'''
 
-# 5 น้องภูมิ ปี 1 (ชาย 11 ขวบ)
+# ---------- ชุดนักเรียน: ผ้าคลุมดำ มีฮูด ซับในสีบ้าน เสื้อสเวตเตอร์คอวี เชิ้ตขาว เนกไท ----------
+HOUSES = {
+  # lining, lining เงา, เนกไท, แถบ
+  "gry":  ("#9a2230", "#6e1622", "#8e1b24", "#d9b24a"),
+  "sly":  ("#2f6b4a", "#1f4a33", "#2a5e40", "#c4c8d4"),
+  "none": ("#4a4858", "#34323f", "#34323f", "#8a8898"),   # ยังไม่คัดบ้าน
+}
+RB, RL, RS = "#1d1c24", "#2e2d39", "#111016"   # ผ้าคลุมดำ: กลาง แสง เงา
+
+def student_robe(h, hem=455, w=56, arm_up=False, skirt=False, sk="#f3cfa8", sh="#dcae86"):
+    lin, lind, tie, st = HOUSES[h]
+    if arm_up:
+        rsleeve = f'''<path d="M 40,60 L 52,76 L 76,-60 L 56,-66 Z" fill="{RS}"/>
+    <path d="M 56,-66 L 76,-60 L 75,-53 L 55,-59 Z" fill="{lind}"/>
+    <path d="M 58,-64 L 72,-60 C 74,-74 72,-90 66,-92 C 60,-92 56,-78 58,-64 Z" fill="{sh}"/>'''
+    else:
+        rsleeve = f'''<path d="M 47,64 C 64,110 74,170 78,210 L 42,200 L 36,74 Z" fill="{RS}"/>
+    <path d="M 60,120 C 66,150 70,180 72,204 L 66,206 C 64,180 62,150 58,124 Z" fill="{RB}"/>
+    <path d="M 78,210 L 42,200 L 43,207 C 56,213 68,216 78,216 Z" fill="{lind}"/>'''
+    lower = (f'''<path d="M -16,228 L 16,228 L 21,330 L -21,330 Z" fill="#4a4d5a"/>
+    <path d="M -8,232 L -10,330 M 0,232 L 0,330 M 8,232 L 10,330" stroke="#3a3c48" stroke-width="2"/>
+    <path d="M -20,330 L 20,330 L 24,{hem} L -24,{hem} Z" fill="#2a2932"/>''' if skirt else
+             f'<path d="M -16,228 L 16,228 L 24,{hem} L -24,{hem} Z" fill="#3a3d48"/><path d="M -1,300 L 1,300 L 2,{hem} L -2,{hem} Z" fill="#2a2c35"/>')
+    return f'''
+    <path d="M -36,60 C -38,38 38,38 36,60 Z" fill="{RS}"/>
+    <path d="M -47,64 C -64,110 -74,170 -78,210 L -42,200 L -36,74 Z" fill="{RL}"/>
+    <path d="M -60,120 C -66,150 -70,180 -72,204 L -66,206 C -64,180 -62,150 -58,124 Z" fill="{RB}"/>
+    <path d="M -78,210 L -42,200 L -43,207 C -56,213 -68,216 -78,216 Z" fill="{lin}"/>
+    {rsleeve}
+    {lower}
+    <path d="M -13,52 L 13,52 L 16,232 L -16,232 Z" fill="#5d606c"/>
+    <path d="M -13,52 L -4,52 L -6,232 L -16,232 Z" fill="#6d707c"/>
+    <path d="M -16,222 L 16,222 L 16,226 L -16,226 Z M -16,228 L 16,228 L 16,231 L -16,231 Z" fill="{st}"/>
+    <path d="M -12,49 C -28,51 -42,56 -47,66 L {-w},{hem} L -26,{hem} L -11,52 Z" fill="{RB}"/>
+    <path d="M -47,66 C -42,56 -28,51 -18,50 C -28,120 -34,300 -38,{hem} L {-w},{hem} Z" fill="{RL}"/>
+    <path d="M -40,200 L -37,200 L -45,{hem} L -50,{hem} Z M -20,260 L -18,260 L -22,{hem} L -26,{hem} Z" fill="{RB}"/>
+    <path d="M 12,49 C 28,51 42,56 47,66 L {w},{hem} L 26,{hem} L 11,52 Z" fill="{RB}"/>
+    <path d="M 20,50 C 32,53 43,58 47,66 L {w},{hem} L 38,{hem} C 34,300 30,120 20,50 Z" fill="{RS}"/>
+    <path d="M 28,180 L 31,180 L 40,{hem} L 34,{hem} Z" fill="{RB}"/>
+    <path d="M -12,49 L -8,50 L -22,{hem} L -29,{hem} Z" fill="{lin}"/>
+    <path d="M 12,49 L 8,50 L 22,{hem} L 29,{hem} Z" fill="{lind}"/>
+    <path d="M {-w},{hem-3} L -26,{hem-3} L -26,{hem} L {-w},{hem} Z M {w},{hem-3} L 26,{hem-3} L 26,{hem} L {w},{hem} Z" fill="#2a2934"/>'''
+
+def student_collar(h):
+    """ชิ้นหน้าที่ต้องวาดทับคอ: สเวตเตอร์ช่วงบน คอวี ปกเชิ้ต เนกไท ตะขอผ้าคลุม"""
+    lin, lind, tie, st = HOUSES[h]
+    return f'''
+    <path d="M -14,48 L 14,48 L 15,84 L -15,84 Z" fill="#5d606c"/><path d="M -14,48 L -4,48 L -5,84 L -15,84 Z" fill="#6d707c"/>
+    <path d="M -10,48 L 10,48 L 0,92 Z" fill="#f4f1ea"/><path d="M 0,48 L 10,48 L 0,92 Z" fill="#dcd8d0"/>
+    <path d="M -12,48 L -10,48 L 0,90 L 10,48 L 12,48 L 0,96 Z" fill="{st}"/>
+    <path d="M -3.6,55 L 3.6,55 L 4.4,90 L 0,94 L -4.4,90 Z" fill="{tie}"/>
+    <path d="M -4,64 L 4,60 L 4,63.5 L -4,67.5 Z M -4.2,76 L 4.2,72 L 4.3,75.5 L -4.3,79.5 Z" fill="{st}"/>
+    <path d="M -4,49 L 4,49 L 3.4,56 L -3.4,56 Z" fill="{tie}"/>
+    <path d="M -11,44 L -1,52 L -5,60 L -15,52 Z" fill="#f4f1ea"/><path d="M 11,44 L 1,52 L 5,60 L 15,52 Z" fill="#dcd8d0"/>
+    <path d="M -15,48 L -10,49 L -12.5,84 L -17,84 Z" fill="{lin}"/><path d="M 15,48 L 10,49 L 12.5,84 L 17,84 Z" fill="{lind}"/>
+    <path d="M -15,66 L 15,66" stroke="#c4c8d4" stroke-width="1.4" stroke-dasharray="2 1.5"/>
+    <circle cx="-15" cy="66" r="2.6" fill="#c4c8d4"/><circle cx="15" cy="66" r="2.6" fill="#9aa0aa"/>'''
+
+def kid(cid, h, head_svg, sk, sh, ty=-385, sy=0.8, hand_l=None, hand_r=None, arm_up=False, skirt=False, back=""):
+    shoes_svg = shoes("#1a191f", "#2a2830", 453)
+    return f'''<g id="{cid}"><g transform="translate(0,{ty})">
+  {back}
+  <g transform="translate(0,6) scale(0.86,{sy})">
+    {student_robe(h, arm_up=arm_up, skirt=skirt, sk=sk, sh=sh)}
+    {hand_l if hand_l is not None else hand(-60,206,sk,sh,-1)}{"" if arm_up else (hand_r if hand_r is not None else hand(60,206,sk,sh))}
+    {shoes_svg}
+  </g>
+  <g transform="scale(1.18)">{head_svg}</g>
+  <g transform="translate(0,6) scale(0.86,{sy})">{student_collar(h)}</g>
+  </g></g>'''
+
+BROW = '<path d="M -22,-12 Q -14,-15 -6,-12.5 L -6,-10.5 Q -14,-13 -22,-10 Z M 22,-12 Q 14,-15 6,-12.5 L 6,-10.5 Q 14,-13 22,-10 Z" fill="{c}"/>'
+
+# 5 น้องภูมิ ปี 1 (ยังไม่คัดบ้าน)
 sk, sh, hl, dp = "#f3cfa8", "#dcae86", "#fde3c6", "#c99a72"
-def kid_body(extra_hand_r=""):
-    return f'''<g transform="translate(0,6) scale(0.86,0.8)">
-    {robe(**ROBE, inner="#f1ebe2", hem=455, w=56)}
-    <path d="M -6,52 L 6,52 L 4,130 L 0,138 L -4,130 Z" fill="#8e1b24"/>
-    {hand(-60,206,sk,sh,-1)}{extra_hand_r or hand(60,206,sk,sh)}
-    {shoes("#d9dde6","#f4f6fa",453)}
-    <path d="M -42,465 L -6,465 L -6,467 L -42,467 Z M 6,465 L 42,465 L 42,467 L 6,467 Z" fill="#b7a0e0"/>
-    </g>'''
-C["kidboy"] = f'''<g id="c_kidboy"><g transform="translate(0,-385)">
-  {kid_body(f'<g transform="translate(60,206)"><rect x="-4" y="6" width="34" height="46" rx="4" fill="#1e2230"/><rect x="0" y="10" width="26" height="36" rx="2" fill="#6f8fd6"/><path d="M 0,10 L 26,10 L 0,40 Z" fill="#8fa9e6"/>{hand(0,0,sk,sh)}</g>')}
-  <g transform="scale(1.18)">
+C["kidboy"] = kid("c_kidboy", "none", f'''
   {face("kb",sk,sh,hl,dp)}
   <path d="M -34,-8 C -38,-50 38,-50 34,-8 L 31,-18 L 26,-24 L 16,-22 L 8,-26 L 0,-23 L -8,-26 L -16,-22 L -26,-24 L -31,-18 Z" fill="#221c20"/>
   <path d="M -30,-24 C -26,-40 -12,-46 2,-46 C -10,-40 -20,-34 -24,-24 Z" fill="#4a4048"/>
-  {eyes_round("kb", big=1.08)}
-  <path d="M -22,-12 Q -14,-15 -6,-12.5 L -6,-10.5 Q -14,-13 -22,-10 Z M 22,-12 Q 14,-15 6,-12.5 L 6,-10.5 Q 14,-13 22,-10 Z" fill="#221c20"/>
+  {eyes_round("kb", big=1.08)}{BROW.format(c="#221c20")}
   {blush("#ef8f7e",.45)}
-  <path d="M -10,21 Q 0,32 10,21 Z" fill="#8a3a3a"/><path d="M -8,21.5 L -1,21.5 L -1,24.5 L -7,24 Z M 2,21.5 L 8,21.5 L 7,24 L 2,24.5 Z" fill="#fff8ee"/>
-  </g></g></g>'''
+  <path d="M -10,21 Q 0,32 10,21 Z" fill="#8a3a3a"/><path d="M -8,21.5 L -1,21.5 L -1,24.5 L -7,24 Z M 2,21.5 L 8,21.5 L 7,24 L 2,24.5 Z" fill="#fff8ee"/>''',
+  sk, sh, hand_r=f'<g transform="translate(60,206)"><rect x="-4" y="6" width="34" height="46" rx="4" fill="#1e2230"/><rect x="0" y="10" width="26" height="36" rx="2" fill="#6f8fd6"/><path d="M 0,10 L 26,10 L 0,40 Z" fill="#8fa9e6"/>{hand(0,0,sk,sh)}</g>')
 
-# 6 น้องใบเตย ปี 1 (หญิง 11 ขวบ ยกมือตอบทุกข้อ)
+# 6 น้องใบเตย ปี 1 (ยังไม่คัดบ้าน ยกมือ)
 sk, sh, hl, dp = "#f7d6b3", "#e2b48f", "#fde6cf", "#cc9e7c"
-C["kidgirl"] = f'''<g id="c_kidgirl"><g transform="translate(0,-385)">
-  <g transform="translate(0,6) scale(0.86,0.8)">
-    <path d="M -47,64 L -36,74 L -44,196 L -76,206 C -78,170 -66,110 -47,64 Z" fill="{ROBE['light']}"/>
-    <path d="M 40,60 L 50,74 L 74,-60 L 56,-66 Z" fill="{ROBE['shade']}"/>
-    <path d="M 56,-66 L 74,-60 L 73,-54 L 55,-60 Z" fill="{ROBE['trim']}"/>
-    <path d="M 58,-64 L 72,-60 C 74,-74 72,-90 66,-92 C 60,-92 56,-78 58,-64 Z" fill="{sh}"/>
-    <path d="M -12,49 L 12,49 C 28,51 42,56 47,66 L 56,455 L -56,455 L -47,66 C -42,56 -28,51 -12,49 Z" fill="{ROBE['c']}"/>
-    <path d="M -47,66 C -42,56 -28,51 -18,50 C -28,120 -34,300 -38,455 L -56,455 Z" fill="{ROBE['light']}"/>
-    <path d="M 20,50 C 32,53 43,58 47,66 L 56,455 L 38,455 C 34,300 30,120 20,50 Z" fill="{ROBE['shade']}"/>
-    <path d="M -11,52 L 11,52 L 9,455 L -9,455 Z" fill="#f1ebe2"/>
-    <path d="M -13,50 L -8,50 L -6,455 L -12,455 Z M 13,50 L 8,50 L 6,455 L 12,455 Z M -56,449 L 56,449 L 56,455 L -56,455 Z" fill="{ROBE['trim']}"/>
-    <path d="M -6,52 L 6,52 L 4,130 L 0,138 L -4,130 Z" fill="#8e1b24"/>
-    <path d="M -76,206 L -44,196 L -45,202 L -75,212 Z" fill="{ROBE['trim']}"/>
-    <g transform="translate(-62,186) rotate(-6)"><rect x="-6" y="0" width="40" height="52" rx="3" fill="#7a2f3a"/><rect x="-6" y="0" width="6" height="52" fill="#5a1f2a"/><rect x="4" y="10" width="22" height="6" fill="#e0c27a"/><rect x="32" y="2" width="3" height="48" fill="#efe5d2"/></g>
-    {hand(-60,206,sk,sh,-1)}
-    {shoes("#e9a8b8","#f4c2ce",453)}
-  </g>
-  <g transform="scale(1.18)">
-  <path d="M -36,-10 C -42,30 -38,52 -30,56 L 30,56 C 38,52 42,30 36,-10 Z" fill="#1c1418"/>
+C["kidgirl"] = kid("c_kidgirl", "none", f'''
   {face("kg",sk,sh,hl,dp)}
   <path d="M -36,-6 C -42,-50 42,-50 36,-6 L 30,-12 L 28,-22 L 18,-18 L 10,-24 L 0,-18 L -10,-24 L -18,-18 L -28,-22 L -30,-12 Z" fill="#1c1418"/>
   <path d="M -30,-30 C -22,-42 -8,-46 4,-46 C -8,-40 -18,-34 -24,-24 Z" fill="#3a2e36"/>
@@ -265,9 +317,74 @@ C["kidgirl"] = f'''<g id="c_kidgirl"><g transform="translate(0,-385)">
   <circle cx="-33" cy="-34" r="3" fill="#7fb59a"/><circle cx="33" cy="-34" r="3" fill="#6a9e86"/>
   {eyes_round("kg", iris="#4a2a1f", big=1.12)}
   <path d="M -21,-14 Q -14,-17 -7,-14 L -7,-12.6 Q -14,-15 -21,-12.6 Z M 21,-14 Q 14,-17 7,-14 L 7,-12.6 Q 14,-15 21,-12.6 Z" fill="#1c1418"/>
-  {blush("#f08a8a",.45)}
-  <path d="M -7,22 Q 0,29 7,22 Z" fill="#b0545a"/>
-  </g></g></g>'''
+  {blush("#f08a8a",.45)}<path d="M -7,22 Q 0,29 7,22 Z" fill="#b0545a"/>''',
+  sk, sh, arm_up=True, skirt=True,
+  back='<g transform="scale(1.18)"><path d="M -36,-10 C -42,30 -38,52 -30,56 L 30,56 C 38,52 42,30 36,-10 Z" fill="#1c1418"/></g>',
+  hand_l=f'<g transform="translate(-62,186) rotate(-6)"><rect x="-6" y="0" width="40" height="52" rx="3" fill="#7a2f3a"/><rect x="-6" y="0" width="6" height="52" fill="#5a1f2a"/><rect x="4" y="10" width="22" height="6" fill="#e0c27a"/><rect x="32" y="2" width="3" height="48" fill="#efe5d2"/>{hand(2,20,sk,sh,-1)}</g>')
+
+# 9 แฮร์รี่ (ล้อเลียน)
+sk, sh, hl, dp = "#f6dcc4", "#e2b89c", "#fdeadb", "#cc9e84"
+C["harry"] = kid("c_harry", "gry", f'''
+  {face("hp",sk,sh,hl,dp)}
+  {eyes_round("hp", iris="#3f8a4a", big=1.02)}{BROW.format(c="#141217")}
+  <path d="M -36,-6 C -44,-40 -26,-58 -4,-58 L 0,-64 L 6,-57 L 14,-62 L 14,-55 C 30,-52 44,-38 36,-6 L 32,-18 L 28,-12 L 25,-26 L 18,-14 L 13,-28 L 7,-16 L 2,-24 L -4,-15 L -10,-28 L -15,-14 L -20,-26 L -24,-12 L -30,-20 Z" fill="#141217"/>
+  <path d="M -42,-30 L -34,-24 L -38,-12 Z M 42,-30 L 34,-24 L 38,-12 Z M -10,-62 L -4,-54 L -14,-54 Z" fill="#141217"/>
+  <path d="M -26,-44 C -18,-52 -6,-56 4,-55 C -6,-50 -14,-44 -20,-36 Z" fill="#33303c"/>
+  <path d="M 6,-26 L 1,-20 L 4,-20 L -1,-13 L 7,-21 L 4,-21 L 8,-26 Z" fill="#c95a5a"/>
+  <g fill="#ffffff" fill-opacity=".07" stroke="#1a1a1e" stroke-width="2.2"><circle cx="-13" cy="-1" r="9.4"/><circle cx="13" cy="-1" r="9.4"/></g>
+  <path d="M -3.6,-2.4 Q 0,-4.6 3.6,-2.4 M -22.4,-2 L -31,-3.4 M 22.4,-2 L 31,-3.4" fill="none" stroke="#1a1a1e" stroke-width="2"/>
+  <path d="M -21.6,-5 A 9.4,9.4 0 0 1 -14,-10.2" fill="none" stroke="#5a5a66" stroke-width="1.2"/>
+  {blush("#ef8f7e",.38)}<path d="M -7,23 Q 0,27 7,23" fill="none" stroke="#a05a54" stroke-width="2" stroke-linecap="round"/>''',
+  sk, sh, hand_r=f'<g transform="translate(60,206)"><path d="M 2,4 L 6,4 L 14,-70 L 11,-71 Z" fill="#6a4a2c"/><path d="M 11,-71 L 14,-70 L 13,-62 L 10,-63 Z" fill="#8a6a44"/>{hand(0,0,sk,sh)}</g>')
+
+# 10 เฮอร์ไมโอนี่ (ล้อเลียน)
+sk, sh, hl, dp = "#f7d9c0", "#e4b898", "#fde8d6", "#cfa080"
+books = f'''<g transform="translate(-62,168)"><rect x="-26" y="0" width="52" height="16" rx="2" fill="#7a2f3a"/><rect x="-24" y="16" width="48" height="18" rx="2" fill="#2f4a6b"/><rect x="-28" y="34" width="56" height="16" rx="2" fill="#5a6b2f"/><rect x="-26" y="50" width="52" height="20" rx="2" fill="#6b4a2f"/><g fill="#e0c27a"><rect x="-10" y="6" width="20" height="3"/><rect x="-8" y="23" width="16" height="3"/><rect x="-12" y="40" width="24" height="3"/><rect x="-10" y="58" width="20" height="3"/></g>{hand(-16,46,sk,sh,-1)}{hand(18,46,sk,sh)}</g>'''
+C["hermione"] = kid("c_hermione", "gry", f'''
+  {face("hg",sk,sh,hl,dp)}
+  {eyes_round("hg", iris="#6b3e22", big=1.1)}
+  <path d="M -21,-13 Q -14,-16 -7,-13 L -7,-11.6 Q -14,-14 -21,-11.6 Z M 21,-13 Q 14,-16 7,-13 L 7,-11.6 Q 14,-14 21,-11.6 Z" fill="#4e2e1c"/>
+  <g fill="#6b4228"><circle cx="-20" cy="-36" r="14"/><circle cx="0" cy="-42" r="15"/><circle cx="20" cy="-36" r="14"/><circle cx="-32" cy="-24" r="10"/><circle cx="32" cy="-24" r="10"/></g>
+  <g fill="#8a5a3a"><circle cx="-18" cy="-42" r="6"/><circle cx="-2" cy="-49" r="5"/></g><g fill="#4e2e1c"><circle cx="26" cy="-30" r="6"/><circle cx="33" cy="-20" r="5"/></g>
+  {blush("#f08a8a",.42)}<path d="M -8,22 Q 0,29 8,22 Z" fill="#a8545a"/><rect x="-3.4" y="22" width="6.8" height="3.6" rx="1" fill="#fff8ee"/>''',
+  sk, sh, skirt=True, hand_l=books, hand_r="",
+  back='''<g transform="scale(1.18)"><g fill="#6b4228"><circle cx="-34" cy="-20" r="20"/><circle cx="34" cy="-20" r="20"/><circle cx="-40" cy="8" r="20"/><circle cx="40" cy="8" r="20"/><circle cx="-36" cy="34" r="18"/><circle cx="36" cy="34" r="18"/><circle cx="-24" cy="50" r="14"/><circle cx="24" cy="50" r="14"/></g><g fill="#4e2e1c"><circle cx="40" cy="8" r="12"/><circle cx="36" cy="34" r="11"/><circle cx="24" cy="50" r="8"/></g><g fill="#8a5a3a"><circle cx="-44" cy="0" r="8"/><circle cx="-38" cy="-26" r="7"/></g></g>''')
+
+# 11 รอน (ล้อเลียน)
+sk, sh, hl, dp = "#fbe2d0", "#eabca4", "#fff0e6", "#d4a088"
+C["ron"] = kid("c_ron", "gry", f'''
+  {face("rn",sk,sh,hl,dp)}<path d="M 1,0 L 5,18 L 0,19 Z" fill="{sh}"/>
+  {eyes_round("rn", iris="#3a6aa0", big=1.0)}{BROW.format(c="#a8401c")}
+  <path d="M -35,-4 C -42,-42 -24,-56 0,-56 C 24,-56 42,-42 35,-4 L 31,-20 L 24,-14 L 20,-26 L 10,-18 L 4,-28 L -4,-18 L -12,-28 L -18,-16 L -24,-24 L -30,-14 Z" fill="#c8562a"/>
+  <path d="M -26,-42 C -18,-52 -6,-55 4,-54 C -6,-48 -14,-42 -20,-34 Z" fill="#e2783e"/><path d="M 20,-26 L 24,-14 L 31,-20 L 35,-4 C 38,-24 32,-40 22,-46 Z" fill="#a8401c"/>
+  <g fill="#c87a54" opacity=".7"><circle cx="-18" cy="6" r="1.2"/><circle cx="-14" cy="9" r="1.1"/><circle cx="-21" cy="10" r="1"/><circle cx="-10" cy="7" r="1"/><circle cx="18" cy="6" r="1.2"/><circle cx="14" cy="9" r="1.1"/><circle cx="21" cy="10" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="-2" cy="4" r=".9"/><circle cx="3" cy="5" r=".9"/></g>
+  {blush("#ef8f7e",.32)}<path d="M -8,24 Q 0,30 8,24 Q 0,27 -8,24 Z" fill="#a8545a"/><ellipse cx="9" cy="23" rx="2" ry="1.4" fill="#e6c48a"/>''',
+  sk, sh, ty=-425, sy=0.88,
+  hand_r=f'<g transform="translate(60,200)"><path d="M -6,-8 L 26,-8 L 10,-30 Z" fill="#e6c48a"/><path d="M -4,-10 L 24,-10 L 22,-13 L -2,-13 Z" fill="#7bb36a"/><path d="M -6,-14 L 26,-14 L 10,-34 Z" fill="#f0d6a0"/><circle cx="20" cy="-14" r="5" fill="#1b1f2b"/>{hand(0,0,sk,sh)}</g>')
+
+# 12 เดรโก (ล้อเลียน) หน้าเดิมที่ผ่านแล้ว
+sk, sh, hl, dp = "#fbeee4", "#e8d2c2", "#fffaf5", "#d2b6a4"
+C["draco"] = kid("c_draco", "sly", f'''
+  {face("dm",sk,sh,hl,dp)}
+  <path d="M -24,16 C -16,30 -8,36 0,40 C -12,38 -22,30 -26,18 Z" fill="{sh}" opacity=".6"/>
+  {eyes_stern("dm", iris="#6a7480", lid="#d8c9a0")}
+  <path d="M -23,-12 L -6,-10 L -6,-7.5 L -22,-9 Z" fill="#c9b886"/><path d="M 23,-15 C 17,-15 11,-13 6,-10.5 L 6,-8 C 11,-10 17,-11.6 22,-11.6 Z" fill="#c9b886"/>
+  <path d="M -34,-8 C -38,-44 -18,-54 2,-54 C 24,-54 40,-42 34,-8 C 32,-22 26,-30 14,-34 C 4,-37 -8,-36 -18,-30 C -26,-26 -30,-18 -34,-8 Z" fill="#e8dfc6"/>
+  <path d="M -30,-26 C -26,-42 -10,-50 6,-50 C 0,-46 -14,-40 -22,-30 Z" fill="#fbf6e6"/><path d="M 14,-34 C 26,-30 32,-22 34,-8 C 38,-30 30,-46 18,-50 Z" fill="#c9b886"/>
+  <path d="M -12,-50 C -4,-44 8,-42 20,-46 M -16,-44 C -6,-38 8,-37 22,-40" fill="none" stroke="#c9b886" stroke-width="1.4"/>
+  {blush("#e8a0a0",.22)}<path d="M -6,25 Q 2,26 8,21" fill="none" stroke="#b07a7a" stroke-width="1.8" stroke-linecap="round"/>''',
+  sk, sh, ty=-392, sy=0.81)
+
+# 13 เจมในชุดนักเรียน (ยังไม่คัดบ้าน) ใช้หัวจากแผ่นตัวละครที่ผ่านแล้ว
+sk, sh = "#fbe7d8", "#efc7b0"
+C["james_robe"] = f'''<g id="c_james_robe"><g transform="translate(0,-482)">
+  {student_robe("none", hem=468, w=60, sk=sk, sh=sh)}
+  {hand(-60,206,sk,sh,-1)}
+  <g transform="translate(60,206)"><path d="M -6,6 L 30,6 L 26,-24 L -2,-24 Z" fill="#e8dcc8"/><path d="M -2,-24 L 26,-24 L 12,-10 Z" fill="#d8ccb6"/><circle cx="12" cy="-12" r="4" fill="#8e1b24"/>{hand(0,0,sk,sh)}</g>
+  {shoes("#1a191f","#2a2830",466)}
+  <use href="#j_jhead"/>
+  {student_collar("none")}
+  </g></g>'''
 
 # 7 พี่ฮูก นกฮูกส่งจดหมาย (ง่วง เหนื่อยจากรอบส่งดึก)
 C["owl"] = '''<g id="c_owl"><g transform="translate(0,-96)">
@@ -329,11 +446,18 @@ C["guard"] = f'''<g id="c_guard"><g transform="translate(0,-495)">
   {blush("#d07a68",.25)}
   </g></g>'''
 
+
+
 INFO = [
   ("head", "อาจารย์ใหญ่ทองหล่อ", "ครูใหญ่ อายุราว 90 · ใจดี ยิ้มตาหยี เคราขาวยาวถึงอก แว่นกรอบกระ · ผ้าขาวม้าพาดไหล่แทนผ้าพันคอ ไม้เท้าตะเกียงทอง", 1.0),
   ("strict", "ครูมาลัย", "ครูประจำชั้นปี 1 · เข้มงวดสุดในโรงเรียน ผมเกล้ามวยสูงมีปอยหงอก แว่นเหลี่ยมกรอบแดง · ถือไม้เรียวแทนไม้กายสิทธิ์", 1.0),
   ("potion", "ป้าแช่ม", "ครูวิชาปรุงยา · ผมดัดหยิก ยิ้มกว้าง ผ้ากันเปื้อนเปื้อนยาเขียว · ปรุงยาด้วยครกกับสากแบบตำส้มตำ", 1.0),
   ("giant", "ลุงโต", "ภารโรงร่างยักษ์ สูงกว่าเจมราวหนึ่งในสาม · เสื้อม่อฮ่อม ผ้าขาวม้าคาดเอว รองเท้าบูทยาง ไม้กวาดทางมะพร้าว · หน้าดุแต่ใจดี", 1.0),
+  ("james_robe", "เจม (ชุดนักเรียน)", "ผ้าคลุมดำ ซับในเทา เนกไทเทา เพราะยังไม่ได้คัดบ้าน · สีซับในและเนกไทจะเปลี่ยนตามบ้านที่คนดูโหวต · ถือจดหมายเชิญ", 1.0),
+  ("harry", "แฮร์รี่ (ฉบับล้อเลียน)", "เด็กชายผู้มีชื่อเสียง อายุ 11 · ผมดำยุ่ง แว่นกลมกรอบดำหนา ตาเขียว แผลสายฟ้าที่หน้าผาก · งงว่าทำไมมีผู้ใหญ่ใส่แว่นกลมเหมือนตัวเองมานั่งเรียนด้วย", 1.0),
+  ("hermione", "เฮอร์ไมโอนี่ (ฉบับล้อเลียน)", "หัวหน้าห้องตัวจริง อายุ 11 · ผมน้ำตาลฟูฟ่อง ฟันหน้าเด่นนิด ๆ กอดหนังสือสี่เล่ม · ชอบแก้คำร่ายคาถาของเจมที่ออกเสียงแบบไทย", 1.0),
+  ("ron", "รอน (ฉบับล้อเลียน)", "เพื่อนซี้ อายุ 11 · ผมแดง กระเต็มหน้า ตัวสูงเก้งก้าง แทะแซนด์วิชตลอด · ตื่นเต้นกับหม้อหุงข้าวของเจมมากกว่าเวทมนตร์", 1.0),
+  ("draco", "เดรโก (ฉบับล้อเลียน)", "คู่ปรับ อายุ 11 · ผมบลอนด์ทองซีดหวีเสย หน้าแหลม ยิ้มเยาะ เนกไทเขียวเงิน · เรียกเจมว่า \"ลุง\"", 1.0),
   ("kidboy", "น้องภูมิ", "เพื่อนร่วมชั้นปี 1 อายุ 11 · ผมเกรียน ฟันหลอ ติดแท็บเล็ต ชอบถามเจมว่า \"พี่ซ้ำชั้นมากี่ปีครับ\"", 1.0),
   ("kidgirl", "น้องใบเตย", "เพื่อนร่วมชั้นปี 1 อายุ 11 · ผมหน้าม้า มัดจุกสองข้าง ยกมือตอบทุกข้อ หอบหนังสือเล่มหนาไปทุกที่", 1.0),
   ("owl", "พี่ฮูก", "นกฮูกส่งจดหมาย · ตาปรือเพราะวิ่งรอบดึก ใส่หมวกกันน็อกสีแดง สะพายกระเป๋าจดหมาย · ตัวเล็กเท่าแมวนั่ง", 1.0),
@@ -352,8 +476,8 @@ def card(key, name, desc):
   <figcaption><b>{name}</b><span>{desc}</span></figcaption>
 </figure>'''
 
-lineup_order = [("j_full", "เจม", 1), ("t_full", "ตะวัน", 1), ("c_head","ทองหล่อ",1), ("c_strict","มาลัย",1), ("c_potion","ป้าแช่ม",1), ("c_giant","ลุงโต",1), ("c_kidboy","ภูมิ",1), ("c_kidgirl","ใบเตย",1), ("c_guard","ลุงยาม",1), ("c_owl","พี่ฮูก",1)]
-gaps = {"c_giant": 260, "c_potion": 190}
+lineup_order = [("j_full", "เจม", 1), ("t_full", "ตะวัน", 1), ("c_head","ทองหล่อ",1), ("c_strict","มาลัย",1), ("c_potion","ป้าแช่ม",1), ("c_giant","ลุงโต",1), ("c_harry","แฮร์รี่",1), ("c_hermione","เฮอร์ไมโอนี่",1), ("c_ron","รอน",1), ("c_draco","เดรโก",1), ("c_kidboy","ภูมิ",1), ("c_kidgirl","ใบเตย",1), ("c_guard","ลุงยาม",1), ("c_owl","พี่ฮูก",1)]
+gaps = {"c_giant": 260, "c_potion": 190, "c_hermione": 175}
 x = 90; uses = ""; labels = ""
 for ref, nm, _ in lineup_order:
     w = gaps.get(ref, 160 if ref != "c_owl" else 120)
@@ -363,7 +487,7 @@ for ref, nm, _ in lineup_order:
     x += w
 LW = x + 70
 
-html = f'''<title>แคสต์โรงเรียนเวทมนตร์</title>
+html = f'''<title>แคสต์ฮอกวอตส์สาขาไทย</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
 <style>
@@ -401,7 +525,7 @@ figcaption span {{ color: var(--muted); }}
 </defs></svg>
 
 <div class="wrap">
-  <h1>ตัวละครโรงเรียนยามวิกาล · ภาพร่าง v1<span>ตอน "ถ้าพรุ่งนี้ตื่นมาเจอจดหมายตอบรับจากฮอกวอตส์" · หน้าตรง · แสงกลางจากซ้าย · ลายเส้นเดียวกับเจมและตะวัน</span></h1>
+  <h1>ตัวละครฮอกวอตส์ สาขาประเทศไทย · ภาพร่าง v3<span>ตอน "ถ้าพรุ่งนี้ตื่นมาเจอจดหมายตอบรับจากฮอกวอตส์ สาขาประเทศไทย" · หน้าตรง · แสงกลางจากซ้าย · ลายเส้นเดียวกับเจมและตะวัน</span></h1>
   <h2>เทียบความสูงทั้งแคสต์</h2>
   <div class="lineup"><svg viewBox="0 120 {LW} 890" role="img" aria-label="ตัวละครทุกตัวยืนเรียงเทียบความสูง">
     <rect x="0" y="120" width="{LW}" height="890" fill="#1b1f2b"/><rect x="0" y="950" width="{LW}" height="60" fill="#161a24"/>
@@ -411,7 +535,7 @@ figcaption span {{ color: var(--muted); }}
   <div class="grid">
     {''.join(card(k,n,d) for k,n,d,_ in INFO)}
   </div>
-  <p class="note"><b>ชุดคลุมนักเรียน</b> สีม่วงครามขอบลาเวนเดอร์ เข้ากับโทนของช่อง เจมจะได้ชุดนี้ด้วยตอนเข้าเรียน · ตัวละครทุกตัวเป็นตัวละครของเราเอง เล่นมุกล้อบทบาทในหนัง (ครูใหญ่เคราขาว ครูเข้มงวด ภารโรงยักษ์ เพื่อนเด็กขยัน) แต่หน้าตา ชื่อ และชุดไม่ซ้ำกับหนัง</p>
+  <p class="note"><b>ชุดนักเรียน</b> ผ้าคลุมดำมีฮูด ซับในกับเนกไทเป็นสีบ้าน (แดงทองกับเขียวเงิน) ข้างในเป็นสเวตเตอร์เทาคอวี เชิ้ตขาว เด็กที่ยังไม่คัดบ้านใช้ซับในเทา · แฮร์รี่ เฮอร์ไมโอนี่ รอน และเดรโก วาดเป็นฉบับล้อเลียนด้วยลายเส้นของช่อง อ้างอิงลักษณะจากหนังสือ ไม่ใช้หน้านักแสดง ไม่ใช้ตราบ้านหรือตราโรงเรียน ใช้แค่สีเนกไทบอกฝั่ง · ตัวละครอื่นเป็นตัวละครของเราเอง</p>
 </div>
 '''
 OUT.write_text(html)
