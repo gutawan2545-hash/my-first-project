@@ -10,7 +10,7 @@
    "scene": 0,
    "stage": "rules_all",
    "crop": null,
-   "move": "in",
+   "move": "in4",
    "kind": "ins",
    "chip": "",
    "t0": 0.0,
@@ -78,12 +78,8 @@
    "rng": "302",
    "scene": 0,
    "stage": "rules_h1",
-   "crop": [
-    270,
-    440,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 4.86,
@@ -146,12 +142,6 @@
    "day": false,
    "dur": 6.3,
    "walk": [],
-   "shakes": [
-    [
-     0.05,
-     0.8
-    ]
-   ],
    "grade": "base"
   },
   {
@@ -159,12 +149,8 @@
    "rng": "361",
    "scene": 0,
    "stage": "rules_h2",
-   "crop": [
-    270,
-    460,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 11.16,
@@ -222,12 +208,8 @@
    "rng": "362",
    "scene": 0,
    "stage": "rules_h3",
-   "crop": [
-    270,
-    480,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 16.27,
@@ -291,12 +273,8 @@
    "rng": "363",
    "scene": 0,
    "stage": "rules_h4",
-   "crop": [
-    270,
-    500,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 19.509999999999998,
@@ -350,12 +328,8 @@
    "rng": "364",
    "scene": 0,
    "stage": "rules_h5",
-   "crop": [
-    270,
-    520,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 22.339999999999996,
@@ -407,12 +381,8 @@
    "rng": "365",
    "scene": 0,
    "stage": "rules_h6",
-   "crop": [
-    270,
-    540,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 26.179999999999996,
@@ -464,12 +434,8 @@
    "rng": "303",
    "scene": 0,
    "stage": "rules_h7",
-   "crop": [
-    270,
-    560,
-    760
-   ],
-   "move": "in",
+   "crop": null,
+   "move": "hold",
    "kind": "ins",
    "chip": "",
    "t0": 29.859999999999996,

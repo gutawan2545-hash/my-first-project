@@ -611,6 +611,8 @@ window.render = function (si, t) {
   const p = Math.min(1, t / Math.max(seg.dur, .1)), e = ease(p);
   let s = 1 + .02 * e, tx = 0, ty = 0;
   if (seg.move === 'in') s = 1 + .08 * e;
+  else if (seg.move === 'in4') s = 1 + .04 * e;          // hook: one slow push onto the board...
+  else if (seg.move === 'hold') s = 1.04;               // ...then the camera holds still while each rule lights up (no bouncing, user)
   else if (seg.move === 'out') s = 1.08 - .08 * e;
   else if (seg.move === 'pan-l') { s = 1.08; tx = 22 - 44 * e; }
   else if (seg.move === 'pan-r') { s = 1.08; tx = -22 + 44 * e; }

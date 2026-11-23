@@ -25,7 +25,7 @@ DIRECT = {
     "254-255": {"shade": True, "shake": [[1.2, .45]]},
     "282-285": {"shake": [["s284", .9]]},
     # hook: four fast shots before the title
-    "302": {"shake": [["bell", .8]]},
+    "302": {},                                   # no shake on the board: the camera holds still (user: no bouncing)
     "304": {"shake": [[.5, .7]]},
     "306": {"shade": True},
     "13-18": {"blow": True},                     # the child in the old wing blows her candle out
