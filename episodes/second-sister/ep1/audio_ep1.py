@@ -342,6 +342,50 @@ for i_, s in enumerate(segs):
     elif st == "school": add(kids(s["dur"], i_), s["t0"], pan=.2, vol=.2)
     for c in s.get("clicks", []): add(click(), s["t0"] + c, pan=.1, vol=.3)                  # choice UI clicks, dry and close
 
+# ---------------- AI score (user): ElevenLabs Music cues replace the synth layers; loudness rises and falls all the time ----------------
+AI_DIR = os.path.join(HERE, "music_ai")
+AI_TRACK = {"calm": "calm", "grotto": "calm", "sacred": "test_chant", "title": "test_chant", "eerie": "test_night",
+            "memory": "memory", "tension": "tension", "shock": "tension", "police": "aftermath", "choice": "ending"}
+AI_LEVEL = {"calm": .5, "grotto": .5, "sacred": .85, "title": 1.0, "eerie": .7, "memory": .65, "tension": .8, "shock": 1.0, "police": .5, "choice": .9}
+AI = all(os.path.exists(os.path.join(AI_DIR, f + ".mp3")) for f in set(AI_TRACK.values()))
+if AI:
+    import subprocess as _sp
+    def _load(name):
+        raw = _sp.run(["ffmpeg", "-v", "error", "-i", os.path.join(AI_DIR, name + ".mp3"), "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"], capture_output=True).stdout
+        x = np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
+        x = x[int(.3 * SR):len(x) - int(1.2 * SR)]                       # skip the silent lead-in and the fade at the end
+        return x / max(1e-4, np.sqrt(np.mean(x ** 2)))                  # one loudness for every cue
+    TR = {n: _load(n) for n in set(AI_TRACK.values())}
+    def _loop(x, n, off, xf=int(2.0 * SR)):
+        out = np.zeros((n, 2), np.float32); pos = 0; i = off % (len(x) - xf)
+        while pos < n:
+            take = min(len(x) - i, n - pos)
+            piece = x[i:i + take].copy()
+            if pos > 0:
+                k = min(xf, take); piece[:k] *= np.linspace(0, 1, k)[:, None]
+            if take == len(x) - i and pos + take < n:
+                k = min(xf, take); piece[-k:] *= np.linspace(1, 0, k)[:, None]
+            out[pos:pos + take] += piece
+            pos += take - (xf if take == len(x) - i else 0); i = 0
+        return out
+    runs = []
+    for sg in segs:
+        tr = AI_TRACK.get(sg["mood"], "calm")
+        if runs and runs[-1][0] == tr: runs[-1][2] = sg["t0"] + sg["dur"]
+        else: runs.append([tr, sg["t0"], sg["t0"] + sg["dur"], sg["mood"]])
+    mus = np.zeros((N, 2), np.float32); rr = np.random.default_rng(9)
+    for tr, a, b, md in runs:
+        i0 = int(max(0, a - .8) * SR); i1 = min(N, int((b + 1.2) * SR)); n = i1 - i0
+        if n <= 0: continue
+        x = _loop(TR[tr], n, int(rr.uniform(0, len(TR[tr]) * .6)))
+        fi, fo = min(n, int(1.6 * SR)), min(n, int(2.0 * SR))
+        x[:fi] *= np.linspace(0, 1, fi)[:, None]; x[-fo:] *= np.linspace(1, 0, fo)[:, None]
+        mus[i0:i1] += x * AI_LEVEL.get(md, .6)
+    tt = np.arange(N) / SR
+    wave_ = 10 ** ((5 * np.sin(2 * np.pi * tt / 23) + 2.5 * np.sin(2 * np.pi * tt / 9.5 + 1.1)) / 20)   # always rising or falling, never one flat level
+    cur = np.interp(tt, np.arange(nc) / CR, smooth(build, 1.6) * hush_s).astype(np.float32)          # scene build-ups and the silences before scares
+    mus *= (wave_ * cur)[:, None].astype(np.float32)
+    BUSES["music"] = [mus[:, 0].copy(), mus[:, 1].copy()]; del mus
 # ---------------- stone-church reverb (FFT convolution, decorrelated L/R) ----------------
 def ir(seed, rt=3.6):
     n = int(rt * SR); t = np.arange(n) / SR; r = np.random.default_rng(seed)
@@ -359,7 +403,7 @@ def convolve(x, h, block=1 << 20):
 # levels (user): bells very loud and clear, scares at full level, music clearly underneath
 def wet(bus, dry=.62, rev=.55):
     l, r = BUSES[bus]; return dry * l + rev * convolve(l, ir(1)), dry * r + rev * convolve(r, ir(2))
-bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music"); al, ar = BUSES["amb"]
+bl, br = wet("bell", .8, .45); fl, fr = wet("fx"); ml, mr = wet("music", 1.0, .12) if AI else wet("music"); al, ar = BUSES["amb"]   # the AI cues bring their own church room
 # ---- dialogue (ElevenLabs takes listed in the timeline): per-line loudness matched, a touch of room, music ducks under it
 import subprocess
 vo = np.zeros(N, np.float32)
@@ -391,6 +435,10 @@ ml, mr, fl, fr = ml * bduck, mr * bduck, fl * (.5 + .5 * bduck), fr * (.5 + .5 *
 del BUSES
 bpk = max(np.abs(bl).max(), np.abs(br).max(), 1e-6)
 rest_pk = max(np.abs(ml).max(), np.abs(fl).max(), 1e-6)
+if AI:   # level the AI score on its own: music RMS ~ -22 dBFS before ducking; effects keep their own peak level
+    rest_pk = max(np.abs(fl).max(), 1e-6)
+    _m = np.sqrt(np.mean(ml[np.abs(ml) > 1e-4] ** 2)) if (np.abs(ml) > 1e-4).any() else 1
+    ml, mr = ml * (.08 * rest_pk / .38 / _m), mr * (.08 * rest_pk / .38 / _m)
 k = .95 / bpk                                    # bells reach full scale
 outL = bl * k + (fl * .80 + ml * .38) / rest_pk + al * .9
 outR = br * k + (fr * .80 + mr * .38) / rest_pk + ar * .9
