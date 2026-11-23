@@ -285,6 +285,35 @@ assert _kt_old in ST["kitchen"] and _kd in ST["kitchen"]
 ST["kitchen"] = ST["kitchen"].replace(_kroom, _kroom.replace(_rice, "") + KITCHEN_EXTRA).replace(_kt_old, "").replace(_kd, kitchen_table3() + _kd)
 
 # ------------------------------------------------------------------ 7. FOYER where Mek finds the doll (shots 182-189): furnished, dim, door light
+def staircase():
+    """Wooden staircase against the left wall, seen from the side: a wide bottom step, then eight steps rising to the
+    upper left; each tread shows its top face going back into the room, closed side panel underneath, newel post,
+    handrail parallel to the slope, one baluster per step."""
+    o = ""
+    steps = [(230, 640, 60, 36)] + [(170 - k * 20, 604 - k * 38, 20, 38) for k in range(8)]   # (right x, bottom y, run, rise)
+    prof = [(232, 640)]
+    for (xr, yb, run, rise) in steps:
+        prof += [(xr, yb - rise), (xr - run, yb - rise)]
+    prof += [(0, prof[-1][1]), (0, 640)]
+    o += '<path d="M ' + " L ".join(f"{x},{y}" for x, y in prof) + ' Z" fill="#4e362c"/>'   # closed side panel under the stairs
+    o += '<path d="M 0,300 L 18,300 L 230,640 L 0,640 Z" fill="#46302a" opacity=".0"/>'
+    o += "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="#3e2a22" stroke-width="2"/>' for x, y, w, h in ((14, 470, 60, 150), (90, 540, 60, 84), (160, 590, 50, 40)))   # panelling on the side
+    D = 14   # depth of each tread going back into the room (drawn up and to the right)
+    for (xr, yb, run, rise) in steps:
+        yt = yb - rise
+        o += f'<path d="M {xr - run},{yt} L {xr},{yt} L {xr + D},{yt - D * .6:.1f} L {xr - run + D},{yt - D * .6:.1f} Z" fill="#8a6650"/>'   # tread top
+        o += f'<path d="M {xr - run},{yt} L {xr},{yt}" stroke="#a88068" stroke-width="2.4"/>'                                       # rounded nosing catches the light
+        o += f'<path d="M {xr},{yt} L {xr + D},{yt - D * .6:.1f} L {xr + D},{yb - D * .6:.1f} L {xr},{yb} Z" fill="#5e4234"/>'      # end of the step
+    # newel post, handrail parallel to the slope, balusters
+    o += '<rect x="214" y="560" width="16" height="80" fill="#3a281e"/><rect x="210" y="552" width="24" height="10" rx="2" fill="#5a3e2a"/><circle cx="222" cy="546" r="9" fill="#5a3e2a"/>'
+    o += '<path d="M 222,556 L 168,522 L 10,222" stroke="#4a3428" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M 222,553 L 168,519 L 10,219" stroke="#7a5a44" stroke-width="2" fill="none"/>'
+    for (xr, yb, run, rise) in steps[1:]:
+        x = xr - run / 2; yt = yb - rise
+        yr = 522 + (x - 168) * (522 - 222) / (168 - 10)   # rail height above this tread
+        o += f'<rect x="{x - 2}" y="{yr:.0f}" width="4" height="{yt - yr:.0f}" fill="#3a281e"/>'
+    o += '<rect x="196" y="533" width="4" height="71" fill="#3a281e"/><rect x="178" y="523" width="4" height="81" fill="#3a281e"/>'
+    return o
+
 def foyer_room():
     o = '<rect width="540" height="960" fill="#8a7e80"/>'
     o += '<rect width="540" height="60" fill="#5a4e52"/><rect y="56" width="540" height="10" fill="#a89a98"/>'
@@ -299,22 +328,12 @@ def foyer_room():
     # front door on the right, open: dusk outside, light spills in a long wedge across the tiles
     o += '<rect x="410" y="250" width="130" height="392" fill="#3a2a24"/><rect x="424" y="262" width="116" height="380" fill="#6a72a8"/><rect x="424" y="262" width="116" height="200" fill="#8a8ec0"/>'
     o += '<path d="M 424,560 L 540,540 L 540,642 L 424,642 Z" fill="#3a4a3a"/><path d="M 424,262 L 470,280 L 470,642 L 424,642 Z" fill="#4a3428"/><path d="M 470,280 L 470,642" stroke="#2a1e18" stroke-width="2"/><circle cx="462" cy="460" r="3" fill="#c8a860"/>'   # door leaf swung in
-    # staircase on the left: treads rising to the left, banister and balusters
-    st = ""
-    for k in range(9):
-        y = 640 - k * 44; x0 = 0; x1 = 150 - k * 14
-        st += f'<rect x="{x0}" y="{y - 44}" width="{x1}" height="44" fill="{"#5a4036" if k % 2 else "#624438"}"/><rect x="{x0}" y="{y - 44}" width="{x1 + 8}" height="7" fill="#7a5a48"/>'
-    o += st
-    o += '<path d="M 0,700 L 0,960" stroke="#000" stroke-width="0"/>'
-    # bottom steps in front (where the doll sits), coming toward us
-    o += '<path d="M 196,640 L 190,300" stroke="#3a281e" stroke-width="10"/><path d="M 196,640 L 20,250" stroke="#4a3428" stroke-width="12" stroke-linecap="round"/>' + "".join(f'<path d="M {196 - k * 19.5:.0f},{640 - k * 43:.0f} L {196 - k * 19.5:.0f},{600 - k * 43:.0f}" stroke="#3a281e" stroke-width="4"/>' for k in range(1, 9))
-    o += '<circle cx="196" cy="296" r="8" fill="#5a3e2a"/><rect x="188" y="300" width="16" height="10" fill="#3a281e"/>'
     # tiled floor (old patterned cement tiles) in perspective
     o += '<path d="M 0,640 L 540,640 L 540,960 L 0,960 Z" fill="#8a7a72"/>'
     o += "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#6a5a54" stroke-width="2"/>' for y in (664, 694, 732, 782, 846, 926))
     o += "".join(f'<path d="M {270 + (x - 270) * .3:.0f},640 L {x},960" stroke="#6a5a54" stroke-width="2"/>' for x in range(-330, 900, 66))
     o += "".join(f'<rect x="{270 + (x - 270) * .55:.0f}" y="{y}" width="10" height="5" fill="#a8968a" transform="rotate(45 {270 + (x - 270) * .55:.0f} {y})" opacity=".55"/>' for x in range(-200, 760, 66) for y in (712, 812))
-    o += '<path d="M 0,640 L 190,640 L 200,700 L 0,700 Z" fill="#6a4a3c"/><path d="M 0,640 L 190,640 L 192,650 L 0,650 Z" fill="#8a6a54"/><path d="M 0,700 L 210,700 L 220,770 L 0,770 Z" fill="#5a3e32"/><path d="M 0,700 L 210,700 L 212,710 L 0,710 Z" fill="#7a5a48"/>'
+    o += staircase()
     # side table with a little lamp (lit, peach-white), a chair, an umbrella stand, a coat rack with a hat
     o += '<g transform="translate(300,640)"><rect x="-44" y="-96" width="88" height="10" fill="#5a3e2e"/><rect x="-40" y="-86" width="6" height="86" fill="#3a281e"/><rect x="34" y="-86" width="6" height="86" fill="#3a281e"/><rect x="-36" y="-60" width="72" height="5" fill="#4a3428"/>'
     o += '<rect x="-4" y="-130" width="8" height="34" fill="#c8a860"/><path d="M -22,-130 L 22,-130 L 14,-160 L -14,-160 Z" fill="#f2e2d6"/><path d="M -2,-130 L 22,-130 L 14,-160 L 4,-160 Z" fill="#dcc8bc"/>'
@@ -331,7 +350,7 @@ FOYER_CAB = ('<g transform="translate(214,510)"><rect x="0" y="0" width="60" hei
              + '<path d="M 6,12 L 26,12 L 6,40 Z M 34,12 L 52,12 L 34,38 Z" fill="#ffffff" opacity=".12"/><rect x="4" y="90" width="52" height="36" fill="#3a2820"/><circle cx="30" cy="98" r="2.4" fill="#c8a860"/>'
              '<path d="M 30,100 C 26,108 28,116 30,120 C 32,116 34,108 30,100" stroke="#8a2a32" stroke-width="1" fill="none"/></g>')
 ST["steps"] = (foyer_room() + FOYER_CAB + C("agnes_left", 470, 646, .64) + C("mek", 300, 916, .94)
-               + '<g transform="translate(112,654) scale(.42)">' + ragdoll() + '</g>')
+               + '<g transform="translate(200,560) scale(.42)">' + ragdoll() + '</g>')
 L("steps", .4, holes=((470, 420, 150), (300, 640, 160), (130, 760, 90)), beams=(("424,300 540,280 540,960 150,960", "#c8ccf0", .38),),
   glows=((300, 490, 90, WARM, .6),), motes=(200, 420, 540, 880, 20, "#eef0ff"), shadows=(("300,916 360,916 440,960 330,960", .4),))
 
