@@ -28,6 +28,7 @@ POSE_CID = {}
 def face_fx(cid, talk):
     if cid not in SKIN: return ""
     tr = "" if cid in KIDS else ' transform="translate(0,9) scale(.82)"'
+    if cid == "luc": tr = ' transform="translate(0,69) scale(.82)"'   # seated: her face sits 60 lower
     ey = 3 if cid in KIDS else -0.5
     # blinks you can see: every 2.4-3.8 s, eyes stay shut ~0.12 s, every other character sometimes double-blinks
     per, off = R.uniform(2.4, 3.8), R.uniform(0, 4)

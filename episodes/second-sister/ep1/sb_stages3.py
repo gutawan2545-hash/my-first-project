@@ -147,8 +147,7 @@ def grotto_bg():
         o += f'<path d="M {x:.0f},{y:.0f} l {w * .5:.0f},{-h * .3:.0f} l {w * .5:.0f},{h * .2:.0f} l {-w * .1:.0f},{h * .8:.0f} l {-w * .8:.0f},{h * .1:.0f} Z" fill="{col}"/>'
         o += f'<path d="M {x:.0f},{y:.0f} l {w * .5:.0f},{-h * .3:.0f} l {w * .5:.0f},{h * .2:.0f}" stroke="#b4aec6" stroke-width="1.2" fill="none" opacity=".55"/>'
     o += '<path d="M 130,700 C 120,560 170,420 270,390 C 370,420 420,560 410,700 Z" fill="#2a2436"/><path d="M 300,400 C 380,440 420,560 410,700 L 360,700 C 370,580 350,470 300,400 Z" fill="#1e1a28"/>'   # deep recess
-    o += "".join(f'<path d="M {x},{y} c {r.uniform(-4, 4):.0f},20 {r.uniform(-4, 4):.0f},40 0,{r.uniform(40, 80):.0f}" stroke="#4a6a4a" stroke-width="3" fill="none" opacity=".8"/>' for x, y in ((90, 380), (120, 330), (430, 360), (460, 420), (200, 290), (350, 296)))   # ivy and ferns hanging
-    o += "".join(clump(x, y, 18, "#5a7a50", "#4a6a44", "#3a5a38") for x, y in ((70, 500), (470, 540), (180, 300), (380, 310)))
+    # (no ivy or creeping leaves on the rock: user)
     # the statue niche with Our Lady: white veil and robe, blue sash, hands joined, gold halo
     o += '<path d="M 220,500 L 220,380 Q 270,330 320,380 L 320,500 Z" fill="#3a3448"/><path d="M 210,500 L 330,500 L 336,512 L 204,512 Z" fill="#a8a2b8"/>'
     o += '<g transform="translate(270,500)">'
@@ -267,7 +266,23 @@ KITCHEN_EXTRA = (
     '<rect x="452" y="470" width="36" height="6" fill="#8a7a68" opacity="0"/>'
     '<path d="M 20,640 L 120,640 L 116,650 L 24,650 Z" fill="#4a3a30" opacity=".5"/>')
 _kroom = kitchen_room()
-ST["kitchen"] = ST["kitchen"].replace(_kroom, _kroom.replace(_rice, "") + KITCHEN_EXTRA)
+def kitchen_table3():
+    """Plain wooden kitchen table standing on the floor at mid-depth: top in perspective, apron, four legs, two chairs, soup bowls."""
+    o = soft_shadow(270, 806, 190, 12, .4)
+    o += '<g transform="translate(150,700)"><rect x="-4" y="-60" width="6" height="106" fill="#3a2a20"/><rect x="34" y="-60" width="6" height="106" fill="#2e2018"/><rect x="-4" y="-62" width="44" height="8" fill="#5a4030"/><rect x="-4" y="-40" width="44" height="5" fill="#4a3428"/></g>'   # chair back, far side
+    o += '<path d="M 128,700 L 412,700 L 440,726 L 100,726 Z" fill="#9a7458"/><path d="M 128,700 L 412,700 L 416,704 L 124,704 Z" fill="#b08a6a"/>'   # top
+    o += '<path d="M 100,726 L 440,726 L 440,740 L 100,740 Z" fill="#6a4a36"/>'   # apron
+    o += '<rect x="108" y="740" width="12" height="66" fill="#4a3428"/><rect x="420" y="740" width="12" height="66" fill="#3a281e"/>'   # front legs
+    o += '<rect x="136" y="726" width="8" height="54" fill="#3a281e"/><rect x="398" y="726" width="8" height="54" fill="#2e2018"/>'   # back legs (shorter: further away)
+    o += '<path d="M 0,0" fill="none"/>'
+    o += '<ellipse cx="200" cy="710" rx="26" ry="6" fill="#efe8dc"/><ellipse cx="200" cy="708" rx="19" ry="3.6" fill="#d8c48e"/><ellipse cx="300" cy="712" rx="34" ry="7" fill="#9a9aa4"/><ellipse cx="300" cy="709" rx="28" ry="4.6" fill="#d8c48e"/>'
+    o += '<path d="M 226,712 l 22,-3" stroke="#d8d4dc" stroke-width="2.4"/><rect x="356" y="700" width="10" height="12" rx="2" fill="#e8e2ea"/>'
+    o += '<g transform="translate(400,740)"><rect x="-4" y="-56" width="6" height="96" fill="#3a2a20"/><rect x="30" y="-20" width="6" height="60" fill="#2e2018"/><rect x="-4" y="-22" width="40" height="7" fill="#5a4030"/><rect x="-4" y="-58" width="8" height="10" fill="#5a4030"/></g>'   # chair pulled out, near side
+    return o
+_kt_old = kitchen_table()
+_kd = C("daeng_whisper", 250, 900, .98)
+assert _kt_old in ST["kitchen"] and _kd in ST["kitchen"]
+ST["kitchen"] = ST["kitchen"].replace(_kroom, _kroom.replace(_rice, "") + KITCHEN_EXTRA).replace(_kt_old, "").replace(_kd, kitchen_table3() + _kd)
 
 # ------------------------------------------------------------------ 7. FOYER where Mek finds the doll (shots 182-189): furnished, dim, door light
 def foyer_room():
@@ -292,7 +307,6 @@ def foyer_room():
     o += st
     o += '<path d="M 0,700 L 0,960" stroke="#000" stroke-width="0"/>'
     # bottom steps in front (where the doll sits), coming toward us
-    o += '<path d="M 0,640 L 190,640 L 200,700 L 0,700 Z" fill="#6a4a3c"/><path d="M 0,640 L 190,640 L 192,650 L 0,650 Z" fill="#8a6a54"/><path d="M 0,700 L 210,700 L 220,770 L 0,770 Z" fill="#5a3e32"/><path d="M 0,700 L 210,700 L 212,710 L 0,710 Z" fill="#7a5a48"/>'
     o += '<path d="M 196,640 L 190,300" stroke="#3a281e" stroke-width="10"/><path d="M 196,640 L 20,250" stroke="#4a3428" stroke-width="12" stroke-linecap="round"/>' + "".join(f'<path d="M {196 - k * 19.5:.0f},{640 - k * 43:.0f} L {196 - k * 19.5:.0f},{600 - k * 43:.0f}" stroke="#3a281e" stroke-width="4"/>' for k in range(1, 9))
     o += '<circle cx="196" cy="296" r="8" fill="#5a3e2a"/><rect x="188" y="300" width="16" height="10" fill="#3a281e"/>'
     # tiled floor (old patterned cement tiles) in perspective
@@ -300,6 +314,7 @@ def foyer_room():
     o += "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#6a5a54" stroke-width="2"/>' for y in (664, 694, 732, 782, 846, 926))
     o += "".join(f'<path d="M {270 + (x - 270) * .3:.0f},640 L {x},960" stroke="#6a5a54" stroke-width="2"/>' for x in range(-330, 900, 66))
     o += "".join(f'<rect x="{270 + (x - 270) * .55:.0f}" y="{y}" width="10" height="5" fill="#a8968a" transform="rotate(45 {270 + (x - 270) * .55:.0f} {y})" opacity=".55"/>' for x in range(-200, 760, 66) for y in (712, 812))
+    o += '<path d="M 0,640 L 190,640 L 200,700 L 0,700 Z" fill="#6a4a3c"/><path d="M 0,640 L 190,640 L 192,650 L 0,650 Z" fill="#8a6a54"/><path d="M 0,700 L 210,700 L 220,770 L 0,770 Z" fill="#5a3e32"/><path d="M 0,700 L 210,700 L 212,710 L 0,710 Z" fill="#7a5a48"/>'
     # side table with a little lamp (lit, peach-white), a chair, an umbrella stand, a coat rack with a hat
     o += '<g transform="translate(300,640)"><rect x="-44" y="-96" width="88" height="10" fill="#5a3e2e"/><rect x="-40" y="-86" width="6" height="86" fill="#3a281e"/><rect x="34" y="-86" width="6" height="86" fill="#3a281e"/><rect x="-36" y="-60" width="72" height="5" fill="#4a3428"/>'
     o += '<rect x="-4" y="-130" width="8" height="34" fill="#c8a860"/><path d="M -22,-130 L 22,-130 L 14,-160 L -14,-160 Z" fill="#f2e2d6"/><path d="M -2,-130 L 22,-130 L 14,-160 L 4,-160 Z" fill="#dcc8bc"/>'
@@ -316,7 +331,7 @@ FOYER_CAB = ('<g transform="translate(214,510)"><rect x="0" y="0" width="60" hei
              + '<path d="M 6,12 L 26,12 L 6,40 Z M 34,12 L 52,12 L 34,38 Z" fill="#ffffff" opacity=".12"/><rect x="4" y="90" width="52" height="36" fill="#3a2820"/><circle cx="30" cy="98" r="2.4" fill="#c8a860"/>'
              '<path d="M 30,100 C 26,108 28,116 30,120 C 32,116 34,108 30,100" stroke="#8a2a32" stroke-width="1" fill="none"/></g>')
 ST["steps"] = (foyer_room() + FOYER_CAB + C("agnes_left", 470, 646, .64) + C("mek", 300, 916, .94)
-               + '<g transform="translate(118,760) scale(.42)">' + ragdoll() + '</g>')
+               + '<g transform="translate(112,654) scale(.42)">' + ragdoll() + '</g>')
 L("steps", .4, holes=((470, 420, 150), (300, 640, 160), (130, 760, 90)), beams=(("424,300 540,280 540,960 150,960", "#c8ccf0", .38),),
   glows=((300, 490, 90, WARM, .6),), motes=(200, 420, 540, 880, 20, "#eef0ff"), shadows=(("300,916 360,916 440,960 330,960", .4),))
 
@@ -381,9 +396,28 @@ CONDO_EXTRA = (
     + '<g transform="translate(300,150)"><rect x="0" y="0" width="60" height="70" fill="#1e1a3a"/><rect x="4" y="4" width="52" height="62" fill="#5a3aa8"/><path d="M 10,50 L 30,14 L 50,50 Z" fill="#ffb05a"/><text x="30" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="700" fill="#fff">LEVEL 99</text></g>'
     + '<g transform="translate(232,480)"><path d="M -8,20 L 8,20 L 4,0 L -4,0 Z" fill="#2a2440"/><path d="M -10,-2 C -10,-18 10,-18 10,-2" stroke="#1a1828" stroke-width="4" fill="none"/><rect x="-12" y="-6" width="6" height="10" rx="2" fill="#1a1828"/><rect x="6" y="-6" width="6" height="10" rx="2" fill="#1a1828"/></g>'   # headphone stand
 )
+_cr_old = condo_room()
+def photo_frame(x, y, w, h, r=0):
+    """Framed snapshot: James and Tawan from the waist up (shoulders, shirts, arms), the cat in front."""
+    s_ = w / 120
+    jx, tx = -w * .18, w * .16
+    o = f'<g transform="translate({x},{y}) rotate({r})"><rect x="{-w / 2}" y="{-h / 2}" width="{w}" height="{h}" fill="#2a2420"/>'
+    o += f'<clipPath id="pf{int(x)}{int(y)}"><rect x="{-w / 2 + 5}" y="{-h / 2 + 5}" width="{w - 10}" height="{h - 10}"/></clipPath><g clip-path="url(#pf{int(x)}{int(y)})">'
+    o += f'<rect x="{-w / 2 + 5}" y="{-h / 2 + 5}" width="{w - 10}" height="{h - 10}" fill="#c8d8e8"/><rect x="{-w / 2 + 5}" y="{h * .1:.0f}" width="{w - 10}" height="{h * .4:.0f}" fill="#a8b0a0"/>'
+    for cx, top, cols in ((jx, h * .02, ("#2b3768", "#3d4b8a")), (tx, h * .04, ("#ecdcc0", "#f6ecd8"))):
+        y0 = top + 9 * s_
+        o += (f'<path d="M {cx - 6 * s_:.1f},{y0:.1f} L {cx + 6 * s_:.1f},{y0:.1f} L {cx + 20 * s_:.1f},{y0 + 8 * s_:.1f} L {cx + 22 * s_:.1f},{h / 2:.1f} L {cx - 22 * s_:.1f},{h / 2:.1f} L {cx - 20 * s_:.1f},{y0 + 8 * s_:.1f} Z" fill="{cols[0]}"/>'
+              f'<path d="M {cx - 20 * s_:.1f},{y0 + 8 * s_:.1f} L {cx - 12 * s_:.1f},{y0 + 4 * s_:.1f} L {cx - 12 * s_:.1f},{h / 2:.1f} L {cx - 22 * s_:.1f},{h / 2:.1f} Z" fill="{cols[1]}"/>'
+              f'<rect x="{cx - 3 * s_:.1f}" y="{y0 - 3 * s_:.1f}" width="{6 * s_:.1f}" height="{5 * s_:.1f}" fill="#efc7b0"/>')
+    o += f'<path d="M {jx + 18 * s_:.1f},{h * .02 + 20 * s_:.1f} L {tx - 14 * s_:.1f},{h * .04 + 22 * s_:.1f}" stroke="#2b3768" stroke-width="{5 * s_:.1f}" stroke-linecap="round"/>'   # his arm round her shoulders
+    o += f'<g transform="translate({jx:.0f},{h * .02:.0f}) scale({.3 * s_:.2f})"><use href="#jhead"/></g>'
+    o += f'<g transform="translate({tx:.0f},{h * .04:.0f}) scale({.28 * s_:.2f})"><use href="#tback"/><use href="#thead"/></g>'
+    o += f'<g transform="translate({-w * .02:.0f},{h * .32:.0f}) scale({.16 * s_:.2f})"><ellipse cx="0" cy="34" rx="46" ry="30" fill="#e79a4a"/><circle r="40" fill="#e79a4a"/><circle cx="-14" cy="-6" r="6" fill="#3a2a22"/><circle cx="14" cy="-6" r="6" fill="#3a2a22"/><ellipse cx="0" cy="16" rx="18" ry="12" fill="#f7e3c4"/></g>'
+    return o + '</g></g>'
 _cr = condo_room()
+ST["call"] = ST["call"].replace(_cr_old, _cr)
 _oldcat = f'<g transform="translate(220,640) scale(.9)">{v1.CAT}</g>'
-ST["condo"] = ST["condo"].replace(_cr, _cr + CONDO_EXTRA).replace(_oldcat, dean_lying(424, 784, .34))
+ST["condo"] = ST["condo"].replace(_cr_old, _cr + CONDO_EXTRA).replace(_oldcat, dean_lying(424, 784, .34))
 
 # ------------------------------------------------------------------ 10. VIDEO CALL: no floating light blobs; Mek-speaking variant
 CALL_BLOBS = ('<circle cx="380" cy="300" r="320" fill="url(#lg_b4a8ff)" opacity=".6" style="mix-blend-mode:screen"/>',)
@@ -497,3 +531,15 @@ INS2["question"] = (
     + '<text id="qCta" x="270" y="636" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="18" font-weight="500" fill="#d8d0ec">เลือกคำตอบในคอมเมนต์ · A หรือ B</text>'
     + '<text x="270" y="900" text-anchor="middle" font-family="IBM Plex Sans Thai, sans-serif" font-size="15" fill="#8a80a8">ตอนต่อไป · EP2 ห้องสารภาพบาป</text>'
 )
+
+# ------------------------------------------------------------------ 14. CEMETERY: Mek next to Rosa, nobody standing on a grave
+_cbg = cemetery_bg() if False else None
+ST["cemetery"] = ST["cemetery"].replace(C("mek", 400, 790, .88), C("mek", 300, 792, .88))
+_cw = ST["cemetery_wide"]
+_r_old, _m_old = C("rosa", 380, 700, .6), C("mek_back", 250, 960, 1.05)
+assert _r_old in _cw and _m_old in _cw
+_cw = _cw.replace(_r_old, "").replace(_m_old, "")
+_g3 = child_graves3()
+_ins = _cw.index(_g3) + len(_g3) if _g3 in _cw else None
+_pair = C("rosa_point", 352, 952, .9) + C("mek_back", 236, 958, .96)   # both in front of the first row of stones, on the grass, side by side
+ST["cemetery_wide"] = (_cw[:_ins] + _pair + _cw[_ins:]) if _ins else _cw + _pair

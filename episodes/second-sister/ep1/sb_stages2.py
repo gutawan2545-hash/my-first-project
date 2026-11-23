@@ -758,9 +758,6 @@ def ragdoll():
     o += '<path d="M -40,72 L 40,72" stroke="#5a5260" stroke-width="1.2" stroke-dasharray="3 2.4"/>'
     o += '<path d="M -18,0 C -12,10 12,10 18,0 L 14,-4 L -14,-4 Z" fill="#f0e8dc"/><path d="M -16,1 C -10,8 10,8 16,1" stroke="#a89a8a" stroke-width=".8" stroke-dasharray="2 1.6" fill="none"/>'
     o += "".join(f'<circle cx="0" cy="{y}" r="2.8" fill="#050406"/><circle cx="-.9" cy="{y - .9}" r=".7" fill="#fff" opacity=".35"/><path d="M -1,{y} l 2,0 M 0,{y - 1} l 0,2" stroke="#3a3440" stroke-width=".5"/>' for y in (12, 26, 40, 54))
-    # scorch: right side of the dress and right arm burnt, ragged singed edge, two burn holes
-    o += '<path d="M 12,30 L 28,24 L 42,76 L 14,76 L 20,64 L 10,56 L 18,44 Z" fill="#0e0a0a"/><path d="M 12,30 L 18,44 L 10,56 L 20,64 L 14,76" stroke="#8a4a2a" stroke-width="1.8" fill="none" opacity=".8"/>'
-    o += '<path d="M 24,50 c 3,-3 7,0 5,4 c -2,3 -6,1 -5,-4 Z M 8,66 c 3,-2 6,1 4,4" fill="#2a1a14" stroke="#7a3a22" stroke-width=".8"/>'
     # head: cloth face, seam lines, stitched-on smile, button eyes, faint cheek dye
     o += f'<circle cx="0" cy="-28" r="25" fill="{SK}"/><path d="M 10,-51 A 25,25 0 0 1 10,-5 C 18,-18 18,-38 10,-51 Z" fill="{SKS}"/>'
     o += '<path d="M -25,-28 C -18,-26 -18,-30 -25,-28 M 25,-28 C 18,-26 18,-30 25,-28" stroke="#a8988a" stroke-width=".8" fill="none"/>'
@@ -768,21 +765,62 @@ def ragdoll():
     for x in (-10, 10):
         o += (f'<circle cx="{x}" cy="-27" r="5.4" fill="#050406"/><circle cx="{x}" cy="-27" r="5.4" fill="none" stroke="#2a2430" stroke-width="1"/>'
               f'<circle cx="{x - 1.5}" cy="-28.5" r=".7" fill="#3a3440"/><circle cx="{x + 1.5}" cy="-28.5" r=".7" fill="#3a3440"/><circle cx="{x - 1.5}" cy="-25.5" r=".7" fill="#3a3440"/><circle cx="{x + 1.5}" cy="-25.5" r=".7" fill="#3a3440"/>'
-              f'<path d="M {x - 1.5},-28.5 L {x + 1.5},-25.5 M {x + 1.5},-28.5 L {x - 1.5},-25.5" stroke="#8a7a6a" stroke-width=".5"/><circle cx="{x - 2.2}" cy="-29.4" r="1" fill="#fff" opacity=".35"/>')
+              f'<circle cx="{x - 2.2}" cy="-29.4" r="1" fill="#fff" opacity=".35"/>')
     o += '<ellipse cx="-15" cy="-18" rx="4" ry="2" fill="#d88a86" opacity=".35"/><ellipse cx="15" cy="-18" rx="4" ry="2" fill="#d88a86" opacity=".25"/>'
     o += '<path d="M -7,-15 Q 0,-10 7,-15" stroke="#4a1a1e" stroke-width="1.3" fill="none"/>' + "".join(f'<path d="M {x},-15.6 l .6,2.4" stroke="#4a1a1e" stroke-width=".7"/>' for x in (-5, -2, 1, 4))
-    o += '<path d="M 14,-20 C 18,-16 22,-18 23,-22" stroke="#4a4040" stroke-width="2.4" fill="none" opacity=".35"/>'   # soot on the burnt cheek
     # hair on top: crown, centre-less fringe straight across the forehead, side curtains down the face
     o += f'<path d="M -27,-30 C -30,-56 -10,-60 0,-58 C 10,-60 30,-56 27,-30 L 22,-38 L -22,-38 Z" fill="{H}"/>'
     o += f'<path d="M -22,-40 L 22,-40 L 22,-35 L 17,-33 L 13,-36 L 8,-33 L 3,-36 L -2,-33 L -7,-36 L -12,-33 L -17,-36 L -22,-33 Z" fill="{H}"/>'
     o += f'<path d="M -27,-34 C -28,-20 -27,-6 -25,4 L -19,2 C -21,-10 -22,-24 -21,-36 Z" fill="{H}"/><path d="M 27,-34 C 28,-20 27,-6 25,4 L 19,2 C 21,-10 22,-24 21,-36 Z" fill="{H2}"/>'
     o += f'<path d="M -16,-54 C -8,-58 6,-58 14,-55" stroke="{HL}" stroke-width="2" fill="none" opacity=".8"/>' + "".join(f'<path d="M {x},-52 L {x + 1},-38" stroke="{HL}" stroke-width=".8" opacity=".6"/>' for x in (-14, -6, 2, 10))
-    o += '<path d="M 22,-40 c 4,-2 6,2 4,5 c 3,1 2,5 -1,5" stroke="#3a2418" stroke-width="1.6" fill="none"/>'   # singed tips on the burnt side
     o += '<path d="M -24,-46 l 4,4 M -20,-46 l -4,4" stroke="#8a2a32" stroke-width="1.6"/>'   # small red cross-stitch hair tie
+    # real fire damage on one side (viewer's right): the cloth is burnt AWAY (arm below the elbow, the leg, a ragged bite out of the
+    # skirt, a hole in the cheek, the hair ends), every burnt edge is charred and curled with a thin ember rim, soot spreads from the
+    # edges, stuffing pokes out of the holes. The rest of the doll stays clean.
+    _br = _rr.Random(9)
+    def _ragged(pts, jit=2.2, step=3.0):
+        out = []
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+            n = max(1, int(((x1 - x0) ** 2 + (y1 - y0) ** 2) ** .5 / step))
+            for k in range(n):
+                t = k / n
+                out.append((x0 + (x1 - x0) * t + _br.uniform(-jit, jit), y0 + (y1 - y0) * t + _br.uniform(-jit, jit)))
+        out.append(pts[-1])
+        return "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in out)
+    def _blob(cx, cy, r, n=14):
+        pts = []
+        for k in range(n):
+            a = k / n * 6.2832; rr = r * _br.uniform(.65, 1.15)
+            pts.append((cx + rr * _m.cos(a), cy + rr * _m.sin(a) * .85))
+        return "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts) + " Z"
+    EDGE = _ragged([(46, -12), (30, -12), (24, 2), (21, 12), (19, 24), (15, 36), (11, 48), (9, 60), (6, 72), (5, 84), (2, 96), (3, 112)], 2.6)
+    HOLES = (_blob(6, 40, 4.2), _blob(23, -22, 5), _blob(12, 18, 3.4),
+             _ragged([(16, -60), (19, -53), (24, -48), (30, -42), (34, -38)], 1.6) + " L 70,-36 L 70,-62 Z")
+    eaten = f'M -90,-90 L 90,-90 L 90,130 L -90,130 Z {EDGE} L 60,112 Z ' + " ".join(HOLES)
+    body = o.split('filter="url(#lsoft)"/>', 1)
+    o = body[0] + 'filter="url(#lsoft)"/>' + ('<clipPath id="dollSil"><circle cx="0" cy="-28" r="27"/><path d="M -27,-30 C -30,-56 -10,-60 0,-58 C 10,-60 30,-56 27,-30 Z"/>'
+          '<path d="M -30,-40 C -40,-6 -42,40 -36,74 L 36,74 C 42,40 40,-6 30,-40 Z"/><path d="M -28,-4 L 28,-4 L 42,76 L -42,76 Z"/>'
+          '<path d="M -30,8 C -48,20 -54,38 -50,56 L -41,56 C -43,40 -38,28 -26,18 Z"/><path d="M 30,8 C 46,22 50,38 46,54 L 38,54 C 40,40 34,28 26,18 Z"/>'
+          '<path d="M -20,72 L -9,72 L -11,100 L -23,100 Z"/><path d="M 9,72 L 20,72 L 23,100 L 11,100 Z"/><path d="M 10,98 L 25,98 C 27,100 28,104 26,107 L 14,107 C 10,107 9,104 10,98 Z"/>'
+          '<path d="M -25,98 L -9,98 C -8,104 -10,107 -14,107 L -26,107 C -28,104 -27,100 -25,98 Z"/></clipPath>') + f'<clipPath id="dollEaten"><path clip-rule="evenodd" d="{eaten}"/></clipPath><g clip-path="url(#dollEaten)">' + body[1]
+    o += '<g clip-path="url(#dollSil)">'
+    o += ('<radialGradient id="dollSoot"><stop offset="0" stop-color="#140a06" stop-opacity=".85"/><stop offset=".55" stop-color="#3a1e10" stop-opacity=".55"/><stop offset="1" stop-color="#6a3a1e" stop-opacity="0"/></radialGradient>')
+    o += '<radialGradient id="dollScorch"><stop offset="0" stop-color="#8a5030" stop-opacity=".75"/><stop offset=".6" stop-color="#9a6a48" stop-opacity=".35"/><stop offset="1" stop-color="#9a6a48" stop-opacity="0"/></radialGradient>'
+    o += '<ellipse cx="18" cy="-26" rx="16" ry="20" fill="url(#dollScorch)"/>'   # singed brown across that half of the face
+    o += "".join(f'<ellipse cx="{x}" cy="{y}" rx="{rx}" ry="{ry}" fill="url(#dollSoot)"/>' for x, y, rx, ry in ((16, 30, 16, 30), (8, 72, 12, 22), (22, -20, 9, 11), (24, -44, 10, 8), (20, -6, 10, 8), (8, 40, 7, 8), (12, 18, 6, 6)))
+    o += "".join(f'<path d="M {x},{y} l {dx},{dy}" stroke="#6a6060" stroke-width=".8" opacity=".7"/>' for x, y, dx, dy in ((10, 28, 3, 2), (14, 44, -2, 3), (6, 56, 3, 1), (4, 66, 2, 3), (12, 8, 3, -1)))   # grey ash flecks on the char
+    for d in (EDGE,) + HOLES[:2]:   # charred, curled rim + ember line along every burnt edge
+        o += f'<path d="{d}" fill="none" stroke="#120806" stroke-width="5" stroke-linejoin="round"/><path d="{d}" fill="none" stroke="#4a2410" stroke-width="2.4" stroke-linejoin="round"/><path d="{d}" fill="none" stroke="#c8642a" stroke-width=".7" stroke-linejoin="round" opacity=".75"/>'
+    o += '</g></g>'
+    # stuffing poking out of the arm stump, the skirt and the cheek hole; frizzy singed hair ends
+    o += "".join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#efe8dc"/><circle cx="{x - .6}" cy="{y - .6}" r="{r * .5:.1f}" fill="#fffaf2"/>' for x, y, r in ((21, 10, 2.2), (24, 6, 1.6), (6, 40, 1.4), (23, -23, 1.6), (25, -16, 1.3), (12, 18, 1.2)))
+    o += "".join(f'<path d="M {x},{y} l {dx},{dy}" stroke="#2a1810" stroke-width="1.2" stroke-linecap="round"/>' for x, y, dx, dy in ((24, -12, 3, 3), (28, -13, 4, 1), (21, -10, 1, 4), (32, -12, 3, -2), (26, -40, 4, -2), (23, -47, 3, -3)))
+    o += '<path d="M 10,-22 C 10,-19 11,-17 10,-14" stroke="#050406" stroke-width="1.6" fill="none"/>'   # the button eye on that side has started to melt and drip
     return o + '</g>'
+
 INS2["doll"] = ('<rect width="540" height="960" fill="#3a3448"/><rect y="640" width="540" height="320" fill="#4a4250"/><rect y="640" width="540" height="10" fill="#5a5060"/>'
                 '<polygon points="380,0 540,0 540,700 300,700" fill="#d8d0e8" opacity=".08" filter="url(#lhaze)"/>'
-                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าเด็กผู้หญิง ผมดำยาว ชุดดำ ตากระดุมดำ"))
+                '<g transform="translate(270,520) scale(3.6)">' + ragdoll() + '</g>' + note(150, 840, "ตุ๊กตาผ้าเด็กผู้หญิง ชุดดำ ตากระดุมดำ ไหม้หายไปซีกหนึ่ง"))
 ST["steps"] = ST["steps"].replace(ST["steps"][ST["steps"].index('<g transform="translate(270,820) scale(1.8)">'):ST["steps"].index('</g>', ST["steps"].index('<g transform="translate(270,820) scale(1.8)">')) + 4], '<g transform="translate(300,880) scale(.5)">' + ragdoll() + '</g>')
 
 # ---- final scene: embroidered handkerchief "Martha" (replaces the name tag) ----

@@ -291,14 +291,15 @@ def garden_bg():
     o += "".join(f'<rect x="{x}" y="372" width="10" height="34" fill="#f6f2ea"/>' for x in (24, 30, 140, 146, 152))   # habits drying on a line inside the arcade
     o += '<path d="M 10,370 Q 90,380 170,368" stroke="#5a5660" stroke-width="1" fill="none"/>'
     o += haze(290, 170, "#e8e4f0", .45)
-    # lawn + brick paths
-    o += '<path d="M 0,450 L 540,450 L 540,960 L 0,960 Z" fill="#5e7a58"/>'
-    for i in range(-5, 7):
-        x0 = 270 + i * 46; x1 = 270 + i * 220
-        o += f'<path d="M {x0},450 L {x0 + 46},450 L {x1 + 220},960 L {x1},960 Z" fill="{"#68845e" if i % 2 else "#5a7454"}"/>'
-    o += '<path d="M 230,450 L 310,450 L 420,960 L 120,960 Z" fill="#a88a7a"/>' + "".join(f'<path d="M {230 - (y - 450) * .21:.0f},{y} L {310 + (y - 450) * .21:.0f},{y}" stroke="#8a6e60" stroke-width="1.6"/>' for y in range(470, 960, 26))
+    # paved concrete courtyard (no lawn): large slabs in perspective, joints converging, a few hairline cracks
+    o += '<path d="M 0,450 L 540,450 L 540,960 L 0,960 Z" fill="#c2bec8"/><path d="M 0,450 L 540,450 L 540,470 L 0,470 Z" fill="#d2ced8"/>'
+    o += "".join(f'<path d="M 0,{y} L 540,{y}" stroke="#a8a4b0" stroke-width="1.6"/>' for y in (474, 504, 546, 604, 682, 786, 920))
+    o += "".join(f'<path d="M {270 + (x - 270) * .22:.0f},450 L {x},960" stroke="#a8a4b0" stroke-width="1.4"/>' for x in range(-560, 1120, 140))
+    o += '<path d="M 120,700 l 14,10 l 6,16 M 420,820 l -10,14 l 4,18 M 300,560 l 8,6" stroke="#9a96a2" stroke-width="1" fill="none"/>'
+    o += "".join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#b4b0bc" opacity=".35"/>' for x, y, w, h in ((60, 610, 70, 30), (380, 700, 90, 40), (180, 850, 110, 50)))   # damp patches
     # flower beds, bougainvillea on the arcade, Mary statue, birdbath, bench, watering can, pots
     o += "".join(clump(x, 470, r, "#c88aa8", "#a86a88", "#8a5a74") for x, r in ((70, 40), (480, 44)))
+    o += "".join(f'<path d="M {x - 40},520 L {x + 40},520 L {x + 42},548 L {x - 42},548 Z" fill="#9a94a2"/><path d="M {x - 40},520 L {x + 40},520 L {x + 40},526 L {x - 40},526 Z" fill="#d8d4de"/>' for x in (60, 170, 370, 480))
     o += "".join(clump(x, 520, 30, "#5e8a58", "#4e7448", "#3e5e3a") + "".join(f'<circle cx="{x + RR.uniform(-22, 22):.0f}" cy="{520 + RR.uniform(-16, 8):.0f}" r="3.4" fill="{c}"/>' for c in ("#e88a8a", "#f4d080", "#e8e0f0", "#e88a8a")) for x in (40, 120, 430, 510))
     o += '<g transform="translate(470,600)"><rect x="-14" y="-6" width="28" height="40" fill="#d8d4dc"/><path d="M -9,-6 L -7,-58 L 7,-58 L 9,-6 Z" fill="#f2eef4"/><circle cx="0" cy="-64" r="7" fill="#f2eef4"/><path d="M -10,-62 C -10,-74 10,-74 10,-62 L 12,-30 L -12,-30 Z" fill="#9aaad8" opacity=".9"/><circle cx="0" cy="-70" r="11" fill="none" stroke="#e8d890" stroke-width="1.4" opacity=".8"/></g>'
     o += '<g transform="translate(90,640)"><path d="M -24,0 C -24,-10 24,-10 24,0 C 24,6 -24,6 -24,0 Z" fill="#c8c4cc"/><ellipse cx="0" cy="-3" rx="20" ry="4" fill="#8aa0c8"/><rect x="-5" y="0" width="10" height="34" fill="#b8b4bc"/><rect x="-12" y="34" width="24" height="5" fill="#a8a4ac"/>' + pigeon(10, -12, .55) + '</g>'
@@ -314,7 +315,8 @@ def garden_bg():
     o += "".join(f'<circle cx="{RR.uniform(0, 540):.0f}" cy="{RR.uniform(0, 280):.0f}" r="{RR.uniform(2, 5):.0f}" fill="#e8b0c8" opacity=".75"/>' for _ in range(40))   # pink rain-tree blossoms
     # dappled light on the lawn
     o += "".join(f'<ellipse cx="{RR.uniform(0, 540):.0f}" cy="{RR.uniform(640, 950):.0f}" rx="{RR.uniform(14, 34):.0f}" ry="{RR.uniform(4, 9):.0f}" fill="#f8f0d0" opacity=".22"/>' for _ in range(18))
-    o += "".join(tuft(RR.uniform(0, 540), RR.uniform(760, 950), RR.uniform(1, 1.6), "#4a6644") for _ in range(16))
+    for (x, y, k) in ((470, 900, 1.3), (40, 940, 1.5), (520, 760, 1.0)):   # potted plants standing on the paving
+        o += f'<g transform="translate({x},{y}) scale({k})"><path d="M -16,0 L 16,0 L 12,-28 L -12,-28 Z" fill="#b8745a"/><rect x="-18" y="-32" width="36" height="6" rx="2" fill="#c88466"/>' + clump(0, -44, 22, "#6a9a5e", "#4e7a4a", "#3e6040") + '</g>'
     return o
 
 ST["garden"] = garden_bg() + C("luc", 200, 860, .95) + C("agnes_left", 360, 860, .95) + C("mek", 500, 900, .9) + \
@@ -545,8 +547,8 @@ PANELS = {
      ("87", "school", (270, 560, 800), "ภาพกว้าง สำรวจสถานที่", "pan-r", "โรงเรียนประถมยามบ่าย เกือบไม่มีคน ชิงช้าว่างไกวเบา ๆ เสียงโรซาเล่าต่อ"),
      ("88-89", "grotto", F_, "ภาพกว้าง ดันเข้าหารูปปั้น", "in", "ถ้ำแม่พระริมคลอง เทียนละลายเป็นกอง แสงอ่อนที่รูปปั้น ขั้นบันไดลงน้ำ"),
      ("90-91", "cemetery_wide", F_, "ภาพกว้าง", "pan-l", "หอระฆังมีโซ่คล้อง โรซาเล่าว่าระฆังดังจริง"),
-     ("92-96", "cemetery", (175, 860, 340), "ภาพใกล้ หลุมศพ", "in", "หลุมเด็กสามหลุม หลุมหนึ่งไม่มีชื่อ ป้าย 'มาร์ธา'"),
-     ("97-102", "cemetery", (400, 640, 460), "ภาพปานกลาง", "static", "โรซาถามว่าเคยมีเด็กถือเทียนเดินไหม เมฆนิ่ง"),
+     ("92-96", "cemetery", (200, 780, 340), "ภาพใกล้ หลุมศพ", "in", "หลุมเด็กสามหลุม หลุมหนึ่งไม่มีชื่อ ป้าย 'มาร์ธา'"),
+     ("97-102", "cemetery", (236, 650, 500), "ภาพปานกลาง", "static", "โรซาถามว่าเคยมีเด็กถือเทียนเดินไหม เมฆนิ่ง"),
      ("103-106", "cemetery_wide", F_, "ภาพกว้าง", "out", "ระฆังหกโมง โรซารีบกลับหลังรั้ว เมฆยืนคนเดียว")],
  8: [("107-110", "music", F_, "ภาพกว้าง มุมข้าง", "in", "มาเรียมนั่งบนม้านั่งเปียโน มองจากด้านข้าง มือวางบนคีย์ เทียนบนเปียโน"),
      ("109", "hand", F_, "แทรกใกล้มือ", "static", "แผลไฟไหม้หลังมือซ้ายบนคีย์เปียโน"),

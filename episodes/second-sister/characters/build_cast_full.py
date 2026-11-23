@@ -226,23 +226,35 @@ F["thana"] = figure("thana", "",
 
 # Mother Lucia: seated in a wheelchair (front view)
 LUC_SKIN = ("#efd6c6", "#d9b5a2")
-chair_back = ('<path d="M -62,40 L -54,40 L -52,250 L -60,250 Z M 54,40 L 62,40 L 60,250 L 52,250 Z" fill="#3a3238"/><rect x="-62" y="36" width="124" height="8" rx="4" fill="#4a4248"/>'
-  '<rect x="-56" y="70" width="112" height="120" fill="#2a2428"/>')
-chair_front = ('<ellipse cx="-66" cy="250" rx="10" ry="62" fill="#1e1a1e"/><ellipse cx="-66" cy="250" rx="5" ry="52" fill="#3a3238"/>'
-  '<ellipse cx="66" cy="250" rx="10" ry="62" fill="#141216"/><ellipse cx="66" cy="250" rx="5" ry="52" fill="#2a2428"/>'
-  '<rect x="-56" y="200" width="112" height="10" fill="#3a3238"/><rect x="-40" y="330" width="80" height="6" fill="#4a4248"/>'
-  '<circle cx="-34" cy="344" r="6" fill="#1e1a1e"/><circle cx="34" cy="344" r="6" fill="#1e1a1e"/>')
-luc_body = (robe(HABIT, hem=210, flare=44)
-  + '<path d="M -44,200 L 44,200 L 40,236 L -40,236 Z" fill="#d8d2c6"/>'  # lap / knees seen from the front
-  + '<path d="M -40,236 L -6,236 L -8,324 L -36,324 Z" fill="#f2ede4"/><path d="M 6,236 L 40,236 L 36,324 L 8,324 Z" fill="#bfb6a9"/>'
-  + '<path d="M -54,70 C -40,60 -24,58 -10,60 L -16,206 L -50,206 Z" fill="#a6a4ae"/><path d="M 54,70 C 40,60 24,58 10,60 L 16,206 L 50,206 Z" fill="#6c6a74"/>'
-  + '<path d="M -10,190 C -12,210 -4,222 0,226 C 4,222 12,210 10,190" fill="none" stroke="#4a3328" stroke-width="2.6" stroke-dasharray="2.6 1.6" stroke-linecap="round"/>'
-  + '<rect x="-1.4" y="226" width="2.8" height="14" fill="#3a2a22"/><rect x="-5" y="230" width="10" height="2.8" fill="#3a2a22"/>')
-luc_arms = (part("luc-armL", '<path d="M -46,68 L -30,68 L -22,150 L -8,186 L -18,196 L -38,156 Z" fill="#a6a4ae"/><ellipse cx="-10" cy="190" rx="9" ry="7" fill="#efd6c6"/>', (-42, 66))
-  + part("luc-armR", '<path d="M 46,68 L 30,68 L 22,150 L 8,186 L 18,196 L 38,156 Z" fill="#6c6a74"/><ellipse cx="10" cy="190" rx="9" ry="7" fill="#d9b5a2"/>', (42, 66)))
-luc_legs = (part("luc-legL", f'<path d="M -34,324 L -10,324 L -10,336 L -34,336 Z" fill="{SHOE_BLACK}"/>', (-20, 236))
-  + part("luc-legR", f'<path d="M 10,324 L 34,324 L 34,336 L 10,336 Z" fill="{SHOE_BLACK}"/>', (20, 236)))
-F["luc"] = figure("luc", chair_back + hs(bc.habit_back()), luc_legs, luc_body, luc_arms, hs(bc.habit_over() + bc.luc_head), chair_front)
+# seated for real (revised): head and torso sit ~60 lower than a standing figure, thighs come toward us (lap + knees),
+# shins drop to the footrest, big wheels in three-quarter view, armrests and push handles; same face, habit and hands.
+SEAT = 60
+chair_back = ('<path d="M -58,96 L -50,96 L -48,262 L -56,262 Z M 50,96 L 58,96 L 56,262 L 48,262 Z" fill="#3a3238"/>'
+  '<path d="M -66,92 L -50,92 L -50,100 L -66,100 Z M 50,92 L 66,92 L 66,100 L 50,100 Z" fill="#1e1a1e"/>'   # push-handle grips
+  '<rect x="-52" y="112" width="104" height="104" rx="4" fill="#2a2428"/><rect x="-52" y="112" width="104" height="8" fill="#3a3238"/>')
+chair_front = ('<g><ellipse cx="-70" cy="262" rx="18" ry="66" fill="#1e1a1e"/><ellipse cx="-70" cy="262" rx="12" ry="56" fill="none" stroke="#6a646c" stroke-width="2.4"/>'
+  + "".join(f'<path d="M -70,262 L {-70 + 11 * c:.1f},{262 + 54 * sn:.1f}" stroke="#8a848c" stroke-width=".9"/>' for c, sn in ((1, 0), (.7, .7), (0, 1), (-.7, .7), (-1, 0), (-.7, -.7), (0, -1), (.7, -.7)))
+  + '<circle cx="-70" cy="262" r="4" fill="#9a949c"/>'
+  '<ellipse cx="70" cy="262" rx="18" ry="66" fill="#141216"/><ellipse cx="70" cy="262" rx="12" ry="56" fill="none" stroke="#4a444c" stroke-width="2.4"/>'
+  + "".join(f'<path d="M 70,262 L {70 + 11 * c:.1f},{262 + 54 * sn:.1f}" stroke="#5a545c" stroke-width=".9"/>' for c, sn in ((1, 0), (.7, .7), (0, 1), (-.7, .7), (-1, 0), (-.7, -.7), (0, -1), (.7, -.7)))
+  + '<circle cx="70" cy="262" r="4" fill="#6a646c"/></g>'
+  '<path d="M -66,196 L -44,196 L -44,204 L -66,204 Z" fill="#2a2428"/><path d="M 44,196 L 66,196 L 66,204 L 44,204 Z" fill="#1e1a1e"/>'   # armrest pads
+  '<path d="M -60,204 L -56,204 L -54,248 L -58,248 Z M 56,204 L 60,204 L 58,248 L 54,248 Z" fill="#3a3238"/>'
+  '<path d="M -44,322 L -30,322 L -30,330 L -44,334 Z M 30,322 L 44,322 L 44,334 L 30,330 Z" fill="#4a4248"/><rect x="-44" y="330" width="88" height="6" fill="#4a4248"/>'   # footrests
+  '<circle cx="-40" cy="346" r="7" fill="#1e1a1e"/><circle cx="40" cy="346" r="7" fill="#141216"/>')
+def _down(svg): return f'<g transform="translate(0,{SEAT})">{svg}</g>'
+luc_body = (_down(robe(HABIT, hem=150, flare=42)
+    + '<path d="M -54,70 C -40,60 -24,58 -10,60 L -16,150 L -50,150 Z" fill="#a6a4ae"/><path d="M 54,70 C 40,60 24,58 10,60 L 16,150 L 50,150 Z" fill="#6c6a74"/>')
+  + '<path d="M -46,204 L 46,204 L 48,246 L -48,246 Z" fill="#e6e0d5"/><path d="M -46,204 L 46,204 L 46,214 L -46,214 Z" fill="#f6f1e8"/>'   # lap: tops of the thighs catch the light
+  + '<ellipse cx="-22" cy="242" rx="20" ry="9" fill="#efe9df"/><ellipse cx="22" cy="242" rx="20" ry="9" fill="#d8d0c4"/><path d="M -48,246 L 48,246 L 46,254 L -46,254 Z" fill="#bfb6a9"/>'   # knees + shadow under them
+  + '<path d="M -40,254 L -6,254 L -8,324 L -36,324 Z" fill="#f2ede4"/><path d="M 6,254 L 40,254 L 36,324 L 8,324 Z" fill="#bfb6a9"/><path d="M -6,254 L 6,254 L 4,324 L -4,324 Z" fill="#a89e92"/>'
+  + '<path d="M -10,200 C -12,220 -4,232 0,236 C 4,232 12,220 10,200" fill="none" stroke="#4a3328" stroke-width="2.6" stroke-dasharray="2.6 1.6" stroke-linecap="round"/>'
+  + '<rect x="-1.4" y="236" width="2.8" height="14" fill="#3a2a22"/><rect x="-5" y="240" width="10" height="2.8" fill="#3a2a22"/>')
+luc_arms = (part("luc-armL", '<path d="M -46,128 L -30,128 L -24,180 L -8,206 L -18,216 L -38,184 Z" fill="#a6a4ae"/><ellipse cx="-10" cy="210" rx="9" ry="7" fill="#efd6c6"/>', (-42, 126))
+  + part("luc-armR", '<path d="M 46,128 L 30,128 L 24,180 L 8,206 L 18,216 L 38,184 Z" fill="#6c6a74"/><ellipse cx="10" cy="210" rx="9" ry="7" fill="#d9b5a2"/>', (42, 126)))
+luc_legs = (part("luc-legL", f'<path d="M -34,324 L -10,324 L -10,334 L -34,334 Z" fill="{SHOE_BLACK}"/>', (-20, 254))
+  + part("luc-legR", f'<path d="M 10,324 L 34,324 L 34,334 L 10,334 Z" fill="{SHOE_BLACK}"/>', (20, 254)))
+F["luc"] = figure("luc", chair_back + _down(hs(bc.habit_back())), luc_legs, luc_body, luc_arms, _down(hs(bc.habit_over() + bc.luc_head)), chair_front).replace('id="luc-head" data-pivot="0,52"', f'id="luc-head" data-pivot="0,{52 + SEAT}"')
 
 # ---------------- children (2549 flashback) ----------------
 KH, KK, KA = 140, 214, 286  # hip, knee, ankle for kids
