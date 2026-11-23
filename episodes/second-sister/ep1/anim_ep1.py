@@ -345,6 +345,7 @@ for seg in segments:
         sk.append([round(t, 2), amp])
     if sk: seg["shakes"] = sk
     if d.get("shade"): seg["shade"] = True
+    if d.get("clatter") is not None: seg["clatter"] = d["clatter"]
     if d.get("blow"):   # old-wing child: walks in with the candle, turns to us on 16, lifts and blows it out on 18
         _st = {s_["n"]: s_["t0"] for s_ in seg["shots"]}
         t16 = _st.get(16, seg["dur"] - 6); t18 = _st.get(18, seg["dur"] - 3)

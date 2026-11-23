@@ -686,3 +686,58 @@ def oldwing_win():
     o += "".join(f'<path d="M {x},662 C {x + 2},680 {x - 2},700 {x + 1},{720 + d}" stroke="#0e0b12" stroke-width="{w}" fill="none" opacity=".6"/>' for x, d, w in ((180, 20, 5), (240, 0, 3), (330, 40, 6), (372, 10, 3)))   # soot drips below the sill
     return o
 ST["oldwing_win"] = oldwing_win()
+
+# ------------------------------------------------------------------ 19. WRITING ON THE CHAPEL WALL (shot 280, user): a child's left-slanted
+# scrawl on the old white plaster beside the altar, "หนูยังอยู่ตรงนี้", Mek's hand holding the album note up to compare; a cream caption card
+# with a dashed pointer says what it is.
+def _clusters(t):
+    out = []
+    for ch in t:
+        if out and ('ั' == ch or 'ำ' == ch or 'ิ' <= ch <= 'ฺ' or '็' <= ch <= '๎'): out[-1] += ch
+        else: out.append(ch)
+    return out
+def scrawl(x, y, txt, size, seed, col="#2a2028", op=.88):
+    r = _rr.Random(seed); o = ""; cx = x
+    for c in _clusters(txt):
+        if c == " ": cx += size * .4; continue
+        dy = r.uniform(-3, 3) * size / 40; rot = r.uniform(-7, 7) - 8
+        o += (f'<text x="0" y="0" transform="translate({cx:.1f},{y + dy:.1f}) rotate({rot:.1f}) skewX(-12)" font-family="IBM Plex Sans Thai, sans-serif" '
+              f'font-size="{size * r.uniform(.92, 1.08):.1f}" font-weight="500" fill="{col}" opacity="{op}" stroke="{col}" stroke-width="{size / 40:.2f}" stroke-opacity=".35">{c}</text>')
+        cx += size * (.6 if c[0] not in "แไใโเ" else .5) * r.uniform(.95, 1.05)
+    return o
+def wall_note():
+    o = '<rect width="540" height="960" fill="#d9d2dc"/>'
+    o += '<rect width="540" height="960" fill="#6a5f8a" opacity=".3"/>'                                              # night: cool shade over the white plaster
+    o += '<path d="M 330,0 L 540,0 L 540,520 L 170,960 L 60,960 Z" fill="#eef0ff" opacity=".22" filter="url(#lsoft)"/>'   # moonlight from the high window (one beam)
+    # pilaster with a scroll capital, cornice moulding, marble wainscot
+    o += '<rect x="0" y="0" width="74" height="960" fill="#cfc8d4"/><rect x="56" y="0" width="18" height="960" fill="#b4acbc"/><rect x="8" y="0" width="6" height="960" fill="#e4dee8"/>'
+    o += '<path d="M -6,150 C 10,128 40,128 50,146 C 60,164 40,178 26,168 C 16,160 24,148 34,152" stroke="#a8a0b4" stroke-width="5" fill="#ddd6e2"/><rect x="-4" y="168" width="84" height="12" fill="#bcb4c6"/>'
+    o += '<rect x="0" y="60" width="540" height="22" fill="#e6e0ea"/><rect x="0" y="82" width="540" height="8" fill="#b8b0c2"/><rect x="0" y="90" width="540" height="4" fill="#a49cae"/>'
+    o += '<rect x="0" y="720" width="540" height="240" fill="#c8c0cc"/><rect x="0" y="716" width="540" height="10" fill="#e8e2ec"/><rect x="0" y="726" width="540" height="4" fill="#9a92a6"/>'
+    o += '<path d="M 120,760 C 200,790 260,740 340,800 C 380,830 460,790 540,830" stroke="#aaa2b4" stroke-width="2" fill="none" opacity=".7"/><path d="M 80,880 C 160,850 240,900 330,870" stroke="#aaa2b4" stroke-width="1.5" fill="none" opacity=".6"/>'
+    # age: peeling plaster, a damp stain, a cobweb in the corner
+    o += '<path d="M 400,120 C 430,110 470,130 480,170 C 470,200 430,210 410,190 C 396,170 390,140 400,120 Z" fill="#b8b0c0"/><path d="M 404,128 C 428,122 460,138 468,166" stroke="#9a92a6" stroke-width="2" fill="none"/>'
+    o += '<ellipse cx="160" cy="250" rx="90" ry="60" fill="#a89eb4" opacity=".25" filter="url(#lsoft)"/>'
+    o += '<path d="M 540,94 L 470,94 M 540,94 L 486,150 M 540,94 L 520,170 M 476,94 C 500,108 522,104 540,112 M 492,94 C 508,124 526,130 540,136" stroke="#f4f2f8" stroke-width=".8" fill="none" opacity=".7"/>'
+    # the candle on the altar edge (warm white, right)
+    o += '<rect x="470" y="660" width="70" height="60" fill="#b8b0bc"/><rect x="470" y="656" width="70" height="6" fill="#ddd6e0"/>'
+    o += '<rect x="496" y="604" width="12" height="52" rx="2" fill="#f2ece6"/><path d="M 502,588 C 507,596 508,602 506,606 C 504,610 500,610 498,606 C 496,602 497,596 502,588 Z" fill="#ffe6d8"/>'
+    o += '<circle cx="502" cy="600" r="70" fill="url(#lg_fff0dc)" opacity=".55" style="mix-blend-mode:screen"/>'
+    GLOWCOLS.add("#fff0dc")
+    # the writing: low on the wall, at a child's height, slanting down to the left, pencil smudged
+    o += '<g opacity=".9">' + scrawl(132, 480, "หนูยังอยู่", 58, 280, col="#3a2e3e") + scrawl(176, 566, "ตรงนี้", 62, 281, col="#3a2e3e") + '</g>'
+    o += '<path d="M 150,598 C 200,606 270,604 380,616" stroke="#3a2e3e" stroke-width="2" fill="none" opacity=".35"/>'   # a dragged pencil line under it
+    o += '<ellipse cx="250" cy="520" rx="170" ry="70" fill="#3a3040" opacity=".06" filter="url(#lsoft)"/>'                 # graphite smudge
+    # Mek's hand holding the album note up beside it (same words, same hand)
+    o += '<g transform="translate(372,640) rotate(-8)"><rect x="-6" y="6" width="132" height="86" fill="#05040a" opacity=".25" filter="url(#lsoft)"/>'
+    o += '<rect x="-10" y="0" width="132" height="86" fill="#f4efe0"/><path d="M -10,43 L 122,43" stroke="#d8d0bc" stroke-width="1"/>' + scrawl(2, 40, "หนูยังอยู่", 20, 282, op=.8) + scrawl(14, 72, "ตรงนี้", 21, 283, op=.8)
+    o += '<path d="M 96,60 C 112,58 140,64 158,80 L 170,120 L 120,128 C 104,110 92,92 96,60 Z" fill="#f0cdb0"/><path d="M 96,60 C 104,58 112,62 116,70 L 108,92 Z" fill="#e2b896"/>'
+    o += '<rect x="138" y="100" width="70" height="40" rx="8" fill="#3a4a6a"/></g>'                                      # thumb and cuff
+    # caption card: cream, dashed pointer to the writing
+    o += '<path d="M 270,250 C 272,320 262,380 256,420" stroke="#f6f1e6" stroke-width="2" stroke-dasharray="5 5" fill="none"/><circle cx="256" cy="424" r="4" fill="#f6f1e6"/>'
+    o += '<rect x="96" y="176" width="348" height="74" rx="10" fill="#f6f1e6"/><rect x="96" y="176" width="6" height="74" rx="3" fill="#8e1b24"/>'
+    o += '<text x="118" y="206" font-family="IBM Plex Sans Thai, sans-serif" font-size="17" font-weight="700" fill="#2a2230">รอยเขียนใหม่บนผนังโบสถ์น้อย</text>'
+    o += '<text x="118" y="232" font-family="IBM Plex Sans Thai, sans-serif" font-size="14" font-weight="500" fill="#5a5060">ลายมือเด็ก เอียงซ้าย เหมือนกระดาษในอัลบั้ม</text>'
+    return o
+INS2["wall_note"] = wall_note()
+INS.update({"wall_note": INS2["wall_note"]}) if "INS" in globals() else None

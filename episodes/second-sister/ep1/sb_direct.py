@@ -14,7 +14,7 @@ DIRECT = {
     # kitchen: Agnes only exists from her first look round the door
     "190-193": {"hide": ["agnes"]},
     "194-203": {"hide": ["agnes"]},
-    "204-208": {"peek": {"cid": "agnes", "door": [408, 300, 512, 640], "walk": [430, 690, .7]}, "shake": [[2.0, .5]], "rack": True},
+    "204-208": {"clatter": .35, "peek": {"cid": "agnes", "door": [408, 300, 512, 640], "walk": [430, 690, .7]}, "shake": [[2.0, .5]], "rack": True},
     "214-215": {"hide": ["agnes"]},
     # foyer: Mek finds the doll; Agnes peeks round the front door, then walks in toward the stairs
     "185-189": {"peek": {"cid": "agnes", "door": [424, 262, 540, 642], "walk": [360, 720, .74]}, "shake": [[2.0, .45]], "rack": True},
@@ -39,7 +39,7 @@ DIRECT = {
     "318": {"focus": "daeng", "noname": True},
 }
 # segments that open with a fast zoom-blur + whoosh instead of a dip to black
-ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-281"}
+ZOOM_IN = {"304", "306", "31", "33", "49-53", "87", "88-89", "165-171", "217-221", "244-246", "256-262", "277-279"}
 GRADE = {}
 for st in "oldwing_win tower_fog tower_night chapel_night thana_night rosa_bed rosa_room oldwing veranda call call_mek drain clock evidence_wall rules1 sisters_ext".split(): GRADE[st] = "night"
 for st in "flash_dorm dream".split(): GRADE[st] = "flash"

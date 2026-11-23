@@ -312,10 +312,20 @@ def kids(dur, seed=5):    # far-away schoolchildren fading out, wind, one gecko 
         tone = np.sign(np.sin(2 * np.pi * (330 if k % 2 == 0 else 260) * tt)) * np.exp(-tt * 18) * .35
         out[a:a + m] += tone[:max(0, min(m, n - a))]
     return out.astype(np.float32)
+def clatter(seed=11):   # a metal tray dropped on a tiled floor: hit, two bounces, a rattle that settles
+    n = int(1.4 * SR); t = np.arange(n) / SR; out = np.zeros(n, np.float32); r = np.random.default_rng(seed)
+    for at, g in ((0, 1.0), (.17, .55), (.29, .35), (.37, .2)):
+        a = int(at * SR); m = n - a; tt = np.arange(m) / SR
+        ring = sum(np.sin(2 * np.pi * f * tt + r.uniform(0, 6)) * np.exp(-tt * d) for f, d in ((1240, 9), (1873, 11), (2710, 14), (3420, 18), (610, 7)))
+        out[a:] += (ring * .22 + bandnoise(m, 1500, 8000, seed + a) * np.exp(-tt * 40) * .8) * g
+    rat = int(.42 * SR); m = n - rat; tt = np.arange(m) / SR
+    out[rat:] += bandnoise(m, 2000, 6000, seed + 7) * (.5 + .5 * np.sign(np.sin(2 * np.pi * (28 + 30 * tt) * tt))) * np.exp(-tt * 6) * .25
+    return out
 BUS = "fx"
 for i_, s in enumerate(segs):
     if s.get("zb"): add(whoosh(seed=i_), max(0, s["t0"] - .3), pan=0, vol=.5)               # zoom-blur cut
     for ts, amp in s.get("shakes", []): add(impact(), s["t0"] + ts, vol=.9 * amp)            # bass hit on the shake
+    if s.get("clatter") is not None: add(clatter(), s["t0"] + s["clatter"], pan=.35, vol=.75)   # tray dropped outside the kitchen door
     if s.get("blow"):   # the child blows her candle out: a soft breath "fuu", then the wick's tiny hiss
         n = int(.7 * SR); t = np.linspace(0, 1, n)
         puff = bandnoise(n, 500, 4200, 77) * np.sin(np.pi * np.clip(t / .35, 0, 1)) ** 2 * np.where(t > .35, np.exp(-(t - .35) * 7), 1)
@@ -324,7 +334,10 @@ for i_, s in enumerate(segs):
 BUS = "amb"
 for i_, s in enumerate(segs):
     st = s.get("stage")
-    if st == "police": add(siren(s["dur"], i_), s["t0"], pan=-.3, vol=.22)
+    if st == "police":   # loud as the police pull in, then down low under the talk (user)
+        sr = siren(s["dur"], i_); tt = np.arange(len(sr)) / SR
+        sr *= np.interp(tt, [0, 3.5, 6.5, s["dur"]], [1.0, 1.0, .25, .18]).astype(np.float32)
+        add(sr, s["t0"], pan=-.3, vol=.42)
     elif st == "grotto": add(water(s["dur"], i_), s["t0"], vol=.22)
     elif st == "school": add(kids(s["dur"], i_), s["t0"], pan=.2, vol=.2)
     for c in s.get("clicks", []): add(click(), s["t0"] + c, pan=.1, vol=.3)                  # choice UI clicks, dry and close

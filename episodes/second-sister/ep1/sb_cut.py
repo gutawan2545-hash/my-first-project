@@ -15,7 +15,7 @@ CUT = {1, 3, 4, 8, 10, 12, 15, 17, 19,
        149, 150, 151, 152, 153, 154, 155, 156, 157, 158,   # Mother Lucia's words: later episode (she is introduced in the roll call)
        160, 161, 163, 164, 165, 166, 167, 169, 172,
        182,
-       190, 193, 194, 195, 198, 199, 213,              # Agnes gets her answers (206, 210-212 back in, user)
+       190, 193, 194, 195, 198, 199, 211, 212, 213,    # Agnes gets her answers: Daeng (206), Mek excuses himself (210)
        216, 217, 218, 219, 220, 221, 222, 224, 228, 230, 235,   # 221: dream picture of the two children with no words over it (user)
        263, 264, 267, 276,                              # the missing tower key waits
        277, 279,
@@ -26,4 +26,4 @@ _story = _story[:_story.index(86) + 1] + [320, 310, 341, 311, 342, 312, 343, 313
 _story.insert(_story.index(96) + 1, 330)
 _story.insert(_story.index(192) + 1, 331)
 _i = _story.index(286)
-ORDER = [301, 302, 361, 362, 363, 364, 365, 303, 304, 306, 31, 32, 33] + _story[:_i] + [305] + _story[_i:]
+ORDER = [301, 302, 361, 362, 363, 364, 365, 303, 304, 306, 31, 32, 33] + _story   # clue card 305 cut (user: too early to sum up)
