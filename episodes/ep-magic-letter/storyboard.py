@@ -584,15 +584,14 @@ p3 = frame(f'''{bedroom2("bgblur2")}
 p4 = frame(f'''{gold_shop2()}
   {WARMGRAIN}
   {shadow(220, 640, 110)}
-  <g transform="translate(220,700) scale(1.15)"><use href="#c_ama"/></g>
+  <g transform="translate(220,700) scale(.95)"><use href="#c_ama"/></g>
   {counter(0, 520, 400)}
   {abacus(30, 486)}<g transform="translate(300,500)"><rect x="-30" y="-6" width="60" height="22" rx="3" fill="#e8e4f0"/><rect x="-24" y="-2" width="30" height="12" fill="#8fd19e"/><text x="-9" y="8" text-anchor="middle" font-family="Inter" font-size="9" fill="#1a3a20">15.2g</text><rect x="-20" y="-14" width="40" height="8" rx="2" fill="#c8c4d4"/></g>
-  <g transform="translate(232,302)"><circle r="12" fill="#e8c24a"/><circle r="8" fill="#f4d878"/></g>
-  <path d="M 214,300 l -10,-8 M 214,312 l -12,2 M 250,296 l 10,-8" stroke="#fff4d0" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M 230,330 l -10,-8 M 230,342 l -12,2 M 262,326 l 10,-8" stroke="#fff4d0" stroke-width="2.4" stroke-linecap="round"/>
   {shadow(460, 700, 70)}
   <g transform="translate(460,770)"><use href="#c_sing"/></g>
-  {pop(286, 214, "แท้!", 32, -6)}
-  {card(20, 360, 180, "ทอง 96.5%", "มาตรฐานทองไทย", 222, 304)}
+  {pop(290, 250, "แท้!", 32, -6)}
+  {card(20, 360, 180, "ทอง 96.5%", "มาตรฐานทองไทย", 250, 336)}
   {badge("ร้านทองชั้นล่าง · 07:00")}{EYE}
   {subs(["(ซิ่ง) ที่อังกฤษ เหรียญทองเอาไปฝากธนาคาร…", "ที่ไทย อาม้าขอกัดก่อน", "(อาม้า) แท้! ทองเก้าสิบหกจุดห้า!"], ["In England, gold goes to the bank. In Thailand,", "Ma bites it first. (Ma) Real! 96.5% gold!"])}''')
 
@@ -603,7 +602,7 @@ p5 = frame(f'''{phranakhon_street()}
   <g transform="translate(300,620) rotate(-14)">
     {tuktuk_thai(0, 0, 1.15)}
     <clipPath id="tkc"><rect x="-220" y="-420" width="440" height="335"/></clipPath>
-    <g clip-path="url(#tkc)"><g transform="translate(66,-30) scale(.36)"><use href="#c_giant"/></g><g transform="translate(20,-40) scale(.34)"><use href="#c_sing"/></g>{tuk_driver(-76, -76, .95)}</g>
+    <g clip-path="url(#tkc)"><g transform="translate(70,-24) scale(.34)"><use href="#c_giant"/></g><g transform="translate(22,-34) scale(.34)"><use href="#c_sing"/></g><g transform="translate(-72,-40) scale(.32)"><use href="#c_tukdriver"/></g></g>
   </g>
   {pop(26, 220, "หัวรถลอย!", 34, -10)}
   {card(320, 110, 190, "ที่อังกฤษ: รถไฟ", "ที่ไทย: ตุ๊กตุ๊ก + ลุงโต", 300, 420)}
@@ -618,8 +617,8 @@ p6 = frame(f'''{soi2()}
   {zebra(96, 494, 1.2)}{zebra(138, 494, 1.2)}{zebra(180, 494, 1.2)}
   {incense(60, 494)}
   <g transform="translate(214,492)"><rect x="-8" y="-40" width="16" height="40" rx="4" fill="#c8243a" opacity=".85"/><path d="M 2,-40 L 10,-62" stroke="#f4f4f4" stroke-width="2.4"/></g>
-  {shadow(380, 690, 120)}
-  <g transform="translate(390,960) scale(.98)"><use href="#c_giant"/></g>
+  {shadow(380, 710, 90)}
+  <g transform="translate(380,720) scale(.9)"><use href="#c_giant"/></g>
   {shadow(254, 690, 60, 10)}
   <g transform="translate(256,720) scale(.9)"><use href="#c_sing"/></g>
   <path d="M 250,400 C 246,380 254,360 260,358 C 266,360 272,380 268,400 Z" fill="#d9a47a"/><path d="M 259,360 L 259,400" stroke="#bf8a62" stroke-width="1.4"/>
@@ -635,7 +634,7 @@ p7 = frame(f'''<rect width="540" height="960" fill="#f4dcb0"/>
   {garland(190, 300, 1.6)}{garland(350, 300, 1.6)}
   {zebra(150, 640, 2.6, True)}{zebra(270, 660, 2.6, True)}{zebra(390, 640, 2.6, True)}
   <g transform="translate(250,420) rotate(25) scale(.3)" opacity=".85"><use href="#c_sing"/></g>
-  <g transform="translate(300,410) rotate(-30) scale(.28)" opacity=".85"><use href="#c_giant"/></g>
+  <g transform="translate(300,410) rotate(-30) scale(.3)" opacity=".85"><use href="#c_giant"/></g>
   {pop(40, 150, "วู้บบบ!!", 44, -6)}
   {card(320, 700, 200, "ม้าลายกะพริบตา", "พร้อมกันทั้งสามตัว", 300, 590)}
   {EYE}''')
@@ -725,7 +724,7 @@ PANELS = [
   ("2", "4", p2, "Medium Wide · ห้องนอนชั้นบน", "ผนังเขียวหัวเป็ด ไม้บุผนัง พื้นไม้กระดาน ตู้ไม้มีกระจก โปสเตอร์มวยไทย รูปอากง วิทยุเก่า พัดลมตั้งพื้น · ไอ้เหลืองเกาะหน้าต่างบานเกล็ดขันใส่ ซิ่งตกฟูก หมอนขวานกระเด็น · กล้องสั่นสั้น ๆ", "เว้นครึ่งวิก่อน 'ที่ไทย' · ไก่ขันลั่น + เสียงตุ้บ"),
   ("3", "3.5", p3, "Close-up · ซิ่งอ่านจดหมาย", "ตาตี๋ยิ้มกวน คิ้วยก · เหรียญทองไหลออกจากซอง · ไอ้เหลืองเบลอด้านหลัง", "ปากซิ่งขยับ · เสียงเหรียญกรุ๊งกริ๊ง"),
   ("4", "5", p4, "Medium · ร้านทองชั้นล่าง", "ผนังแดง กระเบื้องเก่าครึ่งล่าง โปสเตอร์กระดาษแปะเต็มผนัง ตู้ทอง พัดลมเพดาน นาฬิกาลูกตุ้ม ศาลเจ้า แมวกวัก บานเฟี้ยมเปิดรับแดด · อาม้ากัดเหรียญแล้วชูขึ้นตาวาว", "เสียงบรรยายซิ่ง → ปากอาม้าขยับ · เสียง 'งั่ม' แล้ว 'วิ้ง'"),
-  ("5", "4", p5, "Wide · ถนนย่านพระนคร", "ตุ๊กตุ๊กไทยหน้ากากขาวแถบน้ำเงิน ไฟกลมโครเมียม ล้อหน้าขอบแดง หลังคาผ้าระบายเงิน ป้าย TAXI · หัวรถลอย ลุงโตเบียดเบาะหลัง คนขับเกาะแฮนด์แน่น", "เสียงตุ๊กตุ๊ก 'ปั๊ด ๆ ๆ' + แตร · เสียงบรรยายซิ่ง"),
+  ("5", "4", p5, "Wide · ถนนย่านพระนคร", "ตุ๊กตุ๊กไทยหน้ากากขาวแถบน้ำเงิน ไฟกลมโครเมียม ล้อหน้าขอบแดง หลังคาผ้าระบายเงิน ป้าย TAXI · หัวรถลอย ลุงโตเบียดเบาะหลัง ลุงเปี๊ยกคนขับเกาะแฮนด์แน่น", "เสียงตุ๊กตุ๊ก 'ปั๊ด ๆ ๆ' + แตร · เสียงบรรยายซิ่ง"),
   ("6", "4", p6, "Medium · ศาลพระภูมิปากซอย", "พวงมาลัย ธูป ม้าลาย น้ำแดงเสียบหลอด ป้ายซอย ต้นไม้ วินมอไซค์ · ลุงโตวางน้ำแดง ซิ่งพนมมือไหว้", "ดนตรีเบาลง ลึกลับนิด ๆ · เสียงบรรยายซิ่ง"),
   ("7", "3", p7, "Close-up → ซูมเบลอ", "ม้าลายกะพริบตาพร้อมกัน ประตูศาลเปิด แสงทองพุ่ง ดูดทั้งสองคนเข้าไป", "เงียบหนึ่งจังหวะ → เสียงวูบ (ใช้ครั้งเดียว)"),
   ("8", "4", p8, "Medium · ตลาดนัดเวทมนตร์", "ไฟปิงปอง โคมลอย ไม้กวาดบิน ร้านลูกชิ้นปิ้งข้าง ๆ · ป้าแต๋วตะโกน ป้าย '3 อัน 100'", "เสียงบรรยายซิ่ง → ปากป้าแต๋วขยับ · เสียงตลาด"),
