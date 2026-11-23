@@ -10,7 +10,7 @@ Local coordinates: face centre = (0,0), feet on y≈372 (adults), y≈300 (child
 Heads come from build_cast.py (approved faces) and nuns-test-frame.html (Mariam, Agnes).
 Writes cast.html (the sheet) and is imported by scene builders.
 """
-import os, sys, importlib.util
+import os, sys, re, importlib.util
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 spec = importlib.util.spec_from_file_location("bc", os.path.join(HERE, "build_cast.py"))
@@ -201,17 +201,40 @@ def _into_body(fig, cid, svg):
     i = fig.index(f'<g id="{cid}-body">'); j = fig.index('</g>', i)
     return fig[:j] + svg + fig[j:]
 # a plain sister for crowds (no accessories), so the background never looks like a named character
-F["nunx"] = nun("nunx", MARIAM_HEAD.replace("#f6dcc4", "#efd8c4"), ("#efd8c4", "#ddb8a0"))
+def _plain_face(h):
+    """Ordinary sister for crowds: plain, not pretty: no blush, small dot eyes without lash wings or sparkle, straight heavier brows, flat mouth."""
+    h = h.replace("#f6dcc4", "#e9caae").replace("#fff0e2", "#f4dcc6").replace("#e4b89c", "#d6aa8c")
+    h = h.replace('opacity=".45"/>', 'opacity="0"/>')
+    h = re.sub(r'<circle cx="-?1[14]\.\d" cy="-?1\.8" r="[\d.]+" fill="#(fff|ffe2bf)"/>', "", h)
+    h = h.replace('r="4.9" fill="#4a2c22"', 'r="3.4" fill="#3a2a22"')
+    h = re.sub(r'<path d="M -?20\.5,-1\.5 L -?24\.5,-4 L -?21\.5,0\.5 Z" fill="#1d1418"/>', "", h)
+    h = h.replace('<path d="M -22,-11.5 C -17,-13 -11,-15 -6,-17" fill="none" stroke="#3a2a26" stroke-width="2.1"', '<path d="M -22,-12 L -6,-13" fill="none" stroke="#3a2a26" stroke-width="2.8"')
+    h = h.replace('<path d="M 6,-17 C 11,-15 17,-13 22,-11.5" fill="none" stroke="#3a2a26" stroke-width="2.1"', '<path d="M 6,-13 L 22,-12" fill="none" stroke="#3a2a26" stroke-width="2.8"')
+    h = h.replace('<path d="M -5.5,23.2 Q 0,21.8 5.5,23.2" fill="none" stroke="#b5767a"', '<path d="M -6,23.6 L 6,23.6" fill="none" stroke="#9a6a62"')
+    return h
+F["nunx"] = nun("nunx", _plain_face(MARIAM_HEAD), ("#e9caae", "#d6aa8c"))
 # Mariam: a long pale-blue scapular down the front and a blue rosary in her hand
 F["mariam"] = _into_body(F["mariam"], "mariam",
     '<path d="M -13,62 L 13,62 L 16,352 L -16,352 Z" fill="#a9c6e8"/><path d="M 4,62 L 13,62 L 16,352 L 6,352 Z" fill="#87a8d0"/><path d="M -16,346 L 16,346" stroke="#6a8ab8" stroke-width="2"/>')
 F["mariam"] = F["mariam"].replace(SCAR, SCAR + ''.join(f'<circle cx="{48 + 4 * __import__("math").sin(k * .6):.1f}" cy="{228 + k * 4.2:.1f}" r="1.9" fill="#4a7ac8"/>' for k in range(9))
     + '<path d="M 49,266 L 49,278 M 45,270 L 53,270" stroke="#c8b07a" stroke-width="2"/>', 1)
+F["mariam"] = F["mariam"].replace("<!-- small, unsure mouth -->", '<circle cx="17.5" cy="7.5" r="1.25" fill="#5a3830"/><!-- small, unsure mouth -->', 1)   # mole under the right eye
 # Agnes: grey-blue infirmary apron with a red cross on the bib (the nurse)
 F["agnes"] = _into_body(F["agnes"], "agnes",
     '<path d="M -22,96 L 22,96 L 24,150 L 40,300 L -40,300 L -24,150 Z" fill="#b4c2d4"/><path d="M 8,96 L 22,96 L 24,150 L 40,300 L 14,300 Z" fill="#94a4ba"/>'
     '<path d="M -22,96 L -32,64 M 22,96 L 32,64" stroke="#94a4ba" stroke-width="4"/><path d="M -24,150 L 24,150" stroke="#8494aa" stroke-width="3"/>'
     '<rect x="-7" y="106" width="14" height="14" rx="2" fill="#f4f0f2"/><path d="M 0,108 L 0,118 M -5,113 L 5,113" stroke="#c8323c" stroke-width="3.2"/>')
+_lash = "".join(f'<path d="{d}" fill="none" stroke="#1b1316" stroke-width="1.05" stroke-linecap="round"/>' for d in (
+    "M -20.4,-2.6 C -21.8,-3.4 -22.8,-4.4 -23.4,-5.8", "M -18.6,-5.2 C -19.6,-6.4 -20.2,-7.6 -20.4,-9", "M -16.2,-6.8 C -16.8,-8 -17,-9.2 -16.8,-10.4",
+    "M 20.4,-2.6 C 21.8,-3.4 22.8,-4.4 23.4,-5.8", "M 18.6,-5.2 C 19.6,-6.4 20.2,-7.6 20.4,-9", "M 16.2,-6.8 C 16.8,-8 17,-9.2 16.8,-10.4"))
+_r = F["rosa"]
+_r = _r.replace('<ellipse cx="-18" cy="12" rx="6.5" ry="3.4" fill="#ec8f88" opacity="0.55"/><ellipse cx="18" cy="12" rx="6.5" ry="3.4" fill="#e0857e" opacity="0.55"/>',
+    '<ellipse cx="-18" cy="12" rx="8" ry="4.3" fill="#f597a6" opacity=".72"/><ellipse cx="18" cy="12" rx="8" ry="4.3" fill="#ec8c9c" opacity=".72"/><ellipse cx="-20" cy="10.6" rx="2.4" ry="1.1" fill="#fff" opacity=".45"/><ellipse cx="16" cy="10.6" rx="2.4" ry="1.1" fill="#fff" opacity=".4"/>', 1)
+_r = _r.replace('<circle cx="-14.8" cy="-1.8" r="1.7249999999999999" fill="#fff"/><circle cx="11.2" cy="-1.8" r="1.7249999999999999" fill="#fff"/>',
+    _lash + '<circle cx="-14.8" cy="-1.8" r="2.2" fill="#fff"/><circle cx="11.2" cy="-1.8" r="2.2" fill="#fff"/><circle cx="-10.6" cy="-2.6" r=".9" fill="#fff"/><circle cx="15.4" cy="-2.6" r=".9" fill="#fff"/>', 1)
+_r = _r.replace('<ellipse cx="0" cy="24" rx="4" ry="3.2" fill="#8e4a4c"/><ellipse cx="0" cy="25.4" rx="2.4" ry="1.4" fill="#d27e7e"/>',
+    '<ellipse cx="0" cy="24" rx="4.2" ry="3.2" fill="#c85466"/><ellipse cx="0" cy="25.4" rx="2.6" ry="1.4" fill="#f08a98"/><ellipse cx="-1.2" cy="25" rx="1" ry=".5" fill="#fff" opacity=".7"/>', 1)
+assert _r != F["rosa"]; F["rosa"] = _r
 # Mother Catharina: deep purple cincture with a hanging end, the superior's large cross already on her chest
 F["cat"] = _into_body(F["cat"], "cat",
     '<path d="M -37,144 L 37,144 L 38,156 L -38,156 Z" fill="#5a2a6e"/><path d="M -30,156 L -22,156 L -24,236 L -32,236 Z" fill="#5a2a6e"/><path d="M -32,236 L -24,236 L -22,244 L -34,244 Z" fill="#7a4a8e"/>')
