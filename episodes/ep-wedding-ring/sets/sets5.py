@@ -29,6 +29,10 @@ VARIANTS = {
               wall=('#e6cdc3', '#f5e6df', '#eedad1'), floor=('#f6f0ea', '#eae1d9', '#d8cbbf'),
               glass=('#24345c', '#3a5490', '#6884ba'), ceil='#ddc3b8', med='#fbf6f2', vig='#3a2626', shadow='#6e4a44'),
 }
+VARIANTS['S'] = dict(VARIANTS['A'], name='งาช้างกับเงิน', note='แบบ A แต่เปลี่ยนทองเป็นเงินทั้งหมด: โคมระย้า เชิงเทียน หัวเสา กรอบหน้าต่าง ขอบลายพื้น และสายรวบม่าน',
+                     GLD='#c3c8cf', GLD_L='#f4f6f9', GLD_D='#868d97', med='#fbfaf8')
+VARIANTS['A'] = dict(VARIANTS['A'], name='งาช้างกับทอง (แบบ A เดิม)', note='ไว้เทียบกับแบบเงิน')
+SHOW = ['S', 'A']
 KEYS = ['CRM_L', 'CRM', 'CRM_M', 'CRM_D', 'CRM_DD', 'GLD', 'GLD_L', 'GLD_D', 'RED', 'RED_L', 'RED_D', 'RED_DD']
 
 def variant_svg(k, v):
@@ -58,14 +62,14 @@ def variant_svg(k, v):
     svg = svg[:j] + ''.join(veins) + svg[j:]
     return svg.replace('role="img"', 'role="img"', 1).replace('>', '>' + defs, 1)
 
-CSS = S.CSS.replace('<title>ฉากงานแต่งโทนอบอุ่น</title>', '<title>โทนสีห้องพิธี</title>').replace('repeat(auto-fit,minmax(260px,1fr))', 'repeat(auto-fit,minmax(220px,1fr))').replace('max-width:1000px', 'max-width:1240px')
+CSS = S.CSS.replace('<title>ฉากงานแต่งโทนอบอุ่น</title>', '<title>ห้องพิธีโทนเงิน</title>').replace('repeat(auto-fit,minmax(260px,1fr))', 'repeat(auto-fit,minmax(220px,1fr))').replace('max-width:1000px', 'max-width:1240px')
 
 def build():
-    cards = ''.join(f'<figure>{variant_svg(k, v)}<figcaption><b>{k} · {v["name"]}</b><small>{v["note"]}</small></figcaption></figure>' for k, v in VARIANTS.items())
-    page = CSS + S.DEFS + f'''<div class="wrap" id="wrap"><header><h1>เลือกโทนสีห้องพิธี<span>Odd Hours · ถ้าวันนี้เป็นวันแต่งงานของคุณ · ฉากเดียวกัน 4 โทน เลือกหนึ่งโทน หรือบอกว่าอยากผสมโทนไหนกับโทนไหน</span></h1><button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button></header>
+    cards = ''.join(f'<figure>{variant_svg(k, v)}<figcaption><b>{k} · {v["name"]}</b><small>{v["note"]}</small></figcaption></figure>' for k, v in ((k, VARIANTS[k]) for k in SHOW))
+    page = CSS + S.DEFS + f'''<div class="wrap" id="wrap"><header><h1>ห้องพิธีโทนงาช้าง · เงินเทียบทอง<span>Odd Hours · ถ้าวันนี้เป็นวันแต่งงานของคุณ · ซ้ายคือแบบเงิน ขวาคือแบบ A เดิม</span></h1><button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button></header>
 <div class="grid">{cards}</div></div>
 <script>const b=document.getElementById('toggle'),w=document.getElementById('wrap');b.addEventListener('click',()=>{{const on=w.classList.toggle('show-guide');b.setAttribute('aria-pressed',String(on));b.textContent=on?'ซ่อนพื้นที่ซับ':'แสดงพื้นที่ซับ';}});</script>'''
-    open('sets5.html', 'w').write(page); print('ok', len(page))
+    open('sets6.html', 'w').write(page); print('ok', len(page))
 
 if __name__ == '__main__':
     build()
