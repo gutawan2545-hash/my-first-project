@@ -29,14 +29,14 @@ ART = f'''
   <rect x="0" y="660" width="140" height="300" fill="#2a1a2e"/><rect x="400" y="660" width="140" height="300" fill="#22182e"/>
   {windows}
 </g>
-<ellipse cx="300" cy="760" rx="280" ry="260" fill="url(#halo)" style="mix-blend-mode:screen"/>
+<ellipse cx="300" cy="700" rx="280" ry="260" fill="url(#halo)" style="mix-blend-mode:screen"/>
 <!-- ซิ่ง ชุดคลุมดำ ยิ้มกวน (ครึ่งตัว) -->
-<g transform="translate(300,1195) scale(1.36)"><use href="#c_sing_robe"/></g>
+<g transform="translate(300,1135) scale(1.36)"><use href="#c_sing_robe"/></g>
 <!-- ไอ้เหลืองเกาะไหล่ ขันใส่ -->
-<g transform="translate(150,650) scale(-.7,.7)"><use href="#c_rooster"/></g>
+<g transform="translate(150,590) scale(-.7,.7)"><use href="#c_rooster"/></g>
 <!-- จดหมายเรืองแสง ตราครั่งแดง -->
-<circle cx="380" cy="800" r="130" fill="url(#glow)" style="mix-blend-mode:screen"/>
-<g transform="translate(382,806) rotate(-12)">
+<circle cx="384" cy="752" r="95" fill="url(#glow)" style="mix-blend-mode:screen"/>
+<g transform="translate(384,758) rotate(-12) scale(.66)">
   <rect x="-92" y="-62" width="184" height="124" rx="6" fill="#05040a" opacity=".45" transform="translate(10,12)" filter="url(#soft6)"/>
   <rect x="-92" y="-62" width="184" height="124" rx="6" fill="#f4ecd8"/>
   <path d="M -92,-62 L 0,10 L 92,-62" fill="none" stroke="#d8ccb6" stroke-width="3"/>
