@@ -875,6 +875,16 @@ def step_card(k):
     <text x="-92" y="-16" {TH} font-size="20" font-weight="600" fill="#c9a8ff">ขั้นที่ {k} จาก 5</text>
     <text x="-92" y="30" {TH} font-size="{30 if len(STEPS[k-1]) < 12 else 24}" font-weight="700" fill="#ffffff">{STEPS[k-1]}</text></g></svg>'''
 
+# ===== v12f: ตัดมุกครั้งแรกของโลก · หมวกสะดุดที่เกรด 1.5 =====
+p10 = swap_subs(p10, "ขั้นที่สี่ หาเพื่อนใหม่", ["ขั้นที่สี่ หาเพื่อนใหม่", "(ต้น) เสี่ยว! ไม้ลูกชิ้นคือกันบ่", "ของข้อยได้ไม้ข้าวเหนียวปิ้ง!"], ["Step four: make a friend.", "(Ton) Buddy! Meatball stick too? Mine\u2019s a sticky-rice stick!"])
+p10 = p10.replace("ขนคิงลุก!", "เสี่ยวว!").replace("ครั้งแรกของโลก!", "ไม้ข้าวเหนียวปิ้ง").replace("สิพ้อ = จะได้เจอ", "ไม้กายสิทธิ์ของต้น")
+p10 = re.sub(r'<g data-ui="1">(<path d="M \d+,\d+ l -?\d+,-?\d+" stroke="#fff4d0" stroke-width="3" stroke-linecap="round"/>)+</g>', "", p10, count=1)
+p12 = swap_subs(p12, "(หมวก) อืมม", ["(หมวก) อืมม… ใจกล้า เจ้าเล่ห์ หัวไว…", "แต่เกรดหนึ่งจุดห้า…", "ขอปรึกษาคนดูก่อนแล้วกัน!"], ["(Hat) Hmm\u2026 brave, cunning, clever\u2026", "but a 1.5 GPA\u2026 let me ask the viewers first!"])
+p12 = p12.replace("หัวมีแต่เพลงหมอลำ", "เกรดเฉลี่ย 1.50").replace("คัดไม่ได้ โยนให้คนดู", "หมวกยังลังเล").replace("ฟังไม่ออก!", "เอ่อ…")
+PANELS = [(n, d, {"10": p10, "13": p12}.get(n, svg), cam, act, snd) for n, d, svg, cam, act, snd in PANELS]
+PANELS[9] = ("10", "4.5", p10, "ขั้นที่ 4 · ต้นเดินเข้าเฟรม", "การ์ด 'ขั้นที่ 4' · ไม้กวาดบินผ่านหัว · ต้นชูไม้ข้าวเหนียวปิ้งเรืองแสงอวดซิ่ง", "แคน · ปากต้นขยับ · เพลงอีสานเริ่ม")
+PANELS[12] = ("13", "5", p12, "Medium Close-up · ซิ่งคัดบ้าน", "หมวกชมทีละข้อ แล้วสะดุดตอน 'เกรดหนึ่งจุดห้า' หันมองกล้อง ภาพหยุด", "ปากหมวกขยับ · ดนตรีหยุด + เสียง 'ตึ่ง ตึ่ง'")
+
 total = sum(float(d) for _, d, *_ in PANELS)
 
 cards = "".join(f'''<figure class="panel">
@@ -909,7 +919,7 @@ figcaption b {{ color:var(--ink); font-weight:500; margin-right:4px; }}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}{DEFS_SB}{DEFS_THAI}</defs></svg>
 <div class="wrap">
-  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v8 · บท v12e · 5 ขั้นตอน</span></h1>
+  <h1>สตอรี่บอร์ดเต็ม · ซิ่งไปฮอกวอตส์ สาขาประเทศไทย<span>{len(PANELS)} ช็อต · {total:g} วิ + โลโก้ปิดท้าย 2.6 วิ ≈ {total+2.6:.0f} วิ · เฟรม 9:16 ซับอยู่ช่วง 74% ของความสูง · ร่าง v9 · บท v12f · 5 ขั้นตอน</span></h1>
   <div class="grid">{cards}</div>
   <p class="note">ท่าทางพิเศษ (ตกฟูก นั่งตุ๊กตุ๊ก พนมมือ นั่งเก้าอี้) ยังใช้ท่ายืนหมุนแทน จะวาดท่าจริงในขั้นทำภาพนิ่ง</p>
 </div>'''

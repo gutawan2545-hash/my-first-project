@@ -20,7 +20,7 @@ for d in ("vo", "seg", "out"):
 VOICES = {  # espeak-ng: variant, pitch, speed
     "ซิ่ง": ("th+m3", 52, 265), "อาม้า": ("th+f2", 64, 250), "ลุงเปี๊ยก": ("th+m7", 34, 262),
     "ลุงโต": ("th+m1", 18, 230), "ป้าแต๋ว": ("th+f4", 72, 275), "ต้น": ("th+m4", 50, 258),
-    "เดรโก": ("th+m2", 62, 255), "หมวก": ("th+croak", 26, 228),
+    "เดรโก": ("th+m2", 62, 255), "หมวก": ("th+croak", 26, 228), "ไก่": ("th+m2", 80, 260),
 }
 def who_of(s):
     s = s.replace("หมวกคัดสรร", "หมวก")
@@ -121,6 +121,34 @@ def noise_hit(d, dec, g):
 def kick(at): x = np.arange(int(.22*SR))/SR; add(music, (np.sin(2*np.pi*(150*np.exp(-x*18)+70)*x)*np.exp(-x*14)).astype(np.float32), at, .55)
 def snare(at): add(music, noise_hit(.16, 28, .28), at); add(music, tone(330, .12, "sine", 25), at, .2)
 def hat(at, g=.07): y = noise_hit(.04, 120, g); add(music, y - np.concatenate([[0], y[:-1]]), at)
+def thai_comic(t0, t1, bpm=132, root=1.0, light=False):
+    """เพลงตลกแบบไทย: ระนาดเดินทำนองตีคู่แปด เบสเด้งแบบอุ้มปา ฉิ่งฉับ กลองโทน และแคนกระแทกเป็นช่วง ๆ"""
+    b = 60 / bpm; k = 0; tt = t0
+    pent = [1, 9/8, 5/4, 3/2, 5/3, 2, 9/4]
+    mel = [4, 3, 2, 3, 4, 5, 4, 2, 1, 2, 3, 2, 1, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 4, 2, 1, 0, 1, 2, 3, 2, 0]
+    def ranat(f, at, g):
+        x = np.arange(int(.22 * SR)) / SR
+        y = (np.sin(2*np.pi*f*x) + .35*np.sin(2*np.pi*3.98*f*x)*np.exp(-x*30)) * np.exp(-x*14) * env(len(x), .002, .03)
+        add(music, y.astype(np.float32), at, g)
+    while tt < t1:
+        bass = C/2*root * (1 if k % 2 == 0 else 3/2)
+        add(music, tone(bass, .28, "pluck", 9), tt, .55 if not light else .35)          # เบสอุ้มปา
+        add(music, tone(bass*2, .12, "pluck", 18), tt + b/2, .18)
+        for sub in range(2):                                                             # ระนาดตีคู่แปด
+            n = mel[(k*2 + sub) % len(mel)]; f = C*2*root*pent[n]
+            ranat(f, tt + sub*b/2, .26 if not light else .16); ranat(f*2, tt + sub*b/2 + .012, .1)
+        if k % 2 == 0: add(music, tone(3520, .4, "sine", 7), tt, .09)                    # ฉิ่ง
+        else: add(music, noise_hit(.05, 70, .13), tt)                                    # ฉับ
+        if not light:
+            if k % 4 == 0: add(music, tone(140, .2, "sine", 16), tt, .5)                 # กลองโทน ตุ๊บ
+            if k % 4 == 2: add(music, tone(230, .1, "sine", 26), tt + b/2, .35)          # ป๊ะ
+        if k % 8 == 3 and not light:                                                     # แคนกระแทก
+            xx = np.arange(int(.45*SR))/SR
+            for ff in (C*root, C*root*3/2, C*2*root):
+                ph = 2*np.pi*ff*xx + .25*np.sin(2*np.pi*6*xx)
+                add(music, ((np.sign(np.sin(ph))*.3 + np.sin(ph)*.7)*env(len(xx), .02, .15)).astype(np.float32), tt + b/2, .07)
+        tt += b; k += 1
+
 def groove(t0, t1, bpm=124, root=1.0, bells=False, light=False):
     b = 60 / bpm; k = 0; tt = t0
     prog = [1, 4/3, 3/2, 4/3]
@@ -164,15 +192,15 @@ def isan(t0, t1, bpm=138):
         tt += b; k += 1
 s = {p["n"]: p for p in plan}
 C = 261.6
-groove(0, s[7]["start"], 124)
-groove(s[8]["start"], s[10]["start"] + .1, 124, 9/8, bells=True)
+thai_comic(0, s[7]["start"])
+thai_comic(s[8]["start"], s[10]["start"] + .1, 136, 9/8)
 isan(s[10]["start"], s[13]["start"] + 1.2)
 cut14 = s[13]["start"] + s[13]["clips"][-1]["at"] + s[13]["clips"][-1]["len"]
 for i, f in enumerate([C, C*9/8, C*5/4, C*4/3, C*3/2, C*5/3]):
     a = s[13]["start"] + 1.2 + i * 0.45
     if a < cut14:
         add(music, tone(f, 0.8, "saw", 1.4) * 0.22, a, .35); hat(a, .06)
-groove(s[14]["start"] + 0.2, TOTAL, 118, light=True)
+thai_comic(s[14]["start"] + 0.2, TOTAL, 120, light=True)
 
 # เสียงประกอบ
 sfx = np.zeros(N, np.float32)
@@ -203,10 +231,24 @@ def khaen(at):
 def click(at):
     add(sfx, tone(2400, .05, "sine", 60), at, .35)
 
-_cr = s[2]["start"] + s[2]["clips"][0]["at"] + s[2]["clips"][0]["len"] + .05
-crow(_cr); thud(_cr + .38)
+_cr = s[2]["start"] + next(c["at"] for c in s[2]["clips"] if c["who"] == "ไก่")   # เสียงคนร้อง "เอ้กอี๊เอ้ก" อยู่ในเสียงพากย์แล้ว
+thud(_cr + .38)
 for k in range(5): add(sfx, (np.random.randn(int(.04*SR))*np.exp(-np.arange(int(.04*SR))/SR*60)).astype(np.float32), _cr + .42 + k*.08, .35)   # ปีกตีพั่บ ๆ
-thud(_cr + .86); crow(_cr + .95)
+thud(_cr + .86)
+def slide(at, f0, f1, d=.6, g=.35):                               # นกหวีดสไลด์ (เสียงตลก)
+    x = np.arange(int(d*SR))/SR; f = np.geomspace(f0, f1, len(x)) * (1 + .02*np.sin(2*np.pi*7*x))
+    add(sfx, (np.sin(2*np.pi*np.cumsum(f)/SR)*env(len(x), .02, .08)).astype(np.float32), at, g)
+def tung(at):                                                      # "ตึ่ง ตึ่ง" หลังมุก
+    for k_, f in enumerate((196, 147)):
+        x = np.arange(int(.3*SR))/SR; y = (np.sign(np.sin(2*np.pi*f*x))*.4 + np.sin(2*np.pi*f*x)*.6)*np.exp(-x*7)*env(len(x), .005, .05)
+        add(sfx, y.astype(np.float32), at + k_*.28, .3)
+def end_of(n, i=-1): c = s[n]["clips"][i]; return s[n]["start"] + c["at"] + c["len"]
+slide(_cr + .3, 1400, 320, .5)                                      # ซิ่งล้ม
+tung(end_of(5) + .1)                                                # ลุงเปี๊ยก คิดสองที่
+slide(s[7]["start"] - .3, 300, 1500, .7)                            # ดูดเข้าศาล
+tung(end_of(9) + .1)                                                # ไม้ลูกชิ้น
+tung(end_of(12) + .05)                                              # ตำปลาแดก
+tung(end_of(13) + .1)                                               # เกรดหนึ่งจุดห้า
 for i in range(3): add(sfx, tone(1500 + 300*i, .3, "sine", 8), s[3]["start"] + .3 + i*.12, .12)
 boing(s[4]["start"] + s[4]["clips"][-1]["at"] + 1.2); ding(s[5]["start"] + .5, 2200)
 whoosh(s[7]["start"] - .4, 1.3)

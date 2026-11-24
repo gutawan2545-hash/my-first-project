@@ -15,7 +15,7 @@ os.chdir(HERE)
 os.makedirs("anim", exist_ok=True); os.makedirs("seg24", exist_ok=True)
 
 TL = json.load(open("out/timeline.json"))
-KEY = {"ซิ่ง": "sing", "อาม้า": "ama", "ลุงเปี๊ยก": "tukdriver", "ลุงโต": "giant", "ป้าแต๋ว": "vendor", "ต้น": "ton", "เดรโก": "draco", "หมวก": "hat"}
+KEY = {"ซิ่ง": "sing", "อาม้า": "ama", "ลุงเปี๊ยก": "tukdriver", "ลุงโต": "giant", "ป้าแต๋ว": "vendor", "ต้น": "ton", "เดรโก": "draco", "หมวก": "hat", "ไก่": "rooster"}
 
 # ช็อตไหนเป็นเสียงบรรยาย (ซิ่ง VO) ดูจากคอลัมน์ผู้พูดใน script.md
 vo_shots = {}
@@ -52,7 +52,7 @@ for sh in TL:
     shots.append(dict(n=n, dur=d, frames=int(round(d * FPS)), talk=talk))
 
 # เวลาไก่ขัน (หลังประโยคแรกของช็อต 2)
-s2 = TL[1]["lines"][0]; CROW = s2[2] + s2[3] + 0.05
+s2 = next(l for l in TL[1]["lines"] if l[0] == "ไก่"); CROW = s2[2]
 
 # ท่าเดินเข้าเฟรม: ช็อต: [(href, ระยะเริ่ม (หน่วยในตัวละคร), วินาที)]
 WALK = {10: [("#c_ton", -560, 1.1)]}
@@ -168,7 +168,6 @@ window.setShot = function (n, f) {{
   // ขยับปากตามเสียง
   KEYS.forEach(k => show("an-mouth-" + k, false));
   sh.talk.forEach(x => {{ const i = f - x.start; if (i >= 0 && i < x.flags.length && x.flags[i]) show("an-mouth-" + x.key, true); }});
-  if (n === 2 && ((t > CROW && t < CROW + 0.4) || (t > CROW + 0.9 && t < CROW + 1.5))) show("an-mouth-rooster", Math.floor(t * 8) % 2 === 0);
 }};
 window.FRAMES = SHOTS.map(s => s.frames);
 </script>'''

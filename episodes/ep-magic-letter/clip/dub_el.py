@@ -10,10 +10,10 @@ os.makedirs("el", exist_ok=True); os.makedirs("vo_el", exist_ok=True)
 VOICE = {   # เสียงสำเร็จรูปของ ElevenLabs + เสียงประจำช่อง (เจม/ตะวัน) เป็นตัวสำรอง
     "ซิ่ง": "TX3LPaxmHKxFdv7VOQHJ", "อาม้า": "XrExE9yKIg1WjnnlVkGX", "ลุงเปี๊ยก": "pqHfZKP75CVOlQylNhV4",
     "ลุงโต": "nPczCjzI2devNBz1zQrb", "ป้าแต๋ว": "FGY2WhTYpPnrIDTdsKH5", "ต้น": "IKne3meq5aSn9XLyUdCD",
-    "เดรโก": "N2lVS1w4EtoT3dr4eOWO", "หมวก": "JBFqnCBsd6RMkjVDRZzb",
+    "เดรโก": "N2lVS1w4EtoT3dr4eOWO", "หมวก": "JBFqnCBsd6RMkjVDRZzb", "ไก่": "N2lVS1w4EtoT3dr4eOWO",
 }
 FALLBACK = {"ซิ่ง": "S2oNPNuiP27Jy2lVX5uZ", "อาม้า": "IM6pYHlwZQDuZqGBrSYI", "ป้าแต๋ว": "IM6pYHlwZQDuZqGBrSYI"}
-TAG = {"ซิ่ง": "", "อาม้า": "[excited] ", "ลุงเปี๊ยก": "[cheerful] ", "ลุงโต": "", "ป้าแต๋ว": "[shouting] ", "ต้น": "[cheerful] ", "เดรโก": "[smug] ", "หมวก": ""}
+TAG = {"ซิ่ง": "", "อาม้า": "[excited] ", "ลุงเปี๊ยก": "[cheerful] ", "ลุงโต": "", "ป้าแต๋ว": "[shouting] ", "ต้น": "[cheerful] ", "เดรโก": "[smug] ", "หมวก": "", "ไก่": "[shouting] "}
 used_path = pathlib.Path("el/used.json")
 used = json.loads(used_path.read_text())["used"] if used_path.exists() else 0
 
