@@ -8,7 +8,7 @@ EXTRA_DEFS = '''
 <filter id="dofLite" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="0.9"/></filter>
 <linearGradient id="wallDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6cfa8"/><stop offset="1" stop-color="#f2e0c0"/></linearGradient>
 <linearGradient id="tileDay" gradientUnits="userSpaceOnUse" x1="0" y1="640" x2="0" y2="800"><stop offset="0" stop-color="#e9d6b4"/><stop offset="1" stop-color="#f4e6cc"/></linearGradient>
-<linearGradient id="sunWall" gradientUnits="userSpaceOnUse" x1="0" y1="80" x2="420" y2="760"><stop offset="0" stop-color="#fff2cc" stop-opacity=".55"/><stop offset=".6" stop-color="#ffd98e" stop-opacity=".22"/><stop offset="1" stop-color="#ffd98e" stop-opacity="0"/></linearGradient>
+<linearGradient id="sunWall" gradientUnits="userSpaceOnUse" x1="0" y1="80" x2="420" y2="760"><stop offset="0" stop-color="#fff2cc" stop-opacity=".38"/><stop offset=".6" stop-color="#ffd98e" stop-opacity=".14"/><stop offset="1" stop-color="#ffd98e" stop-opacity="0"/></linearGradient>
 <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f4f2" stop-opacity=".55"/><stop offset=".5" stop-color="#cfe6e2" stop-opacity=".22"/><stop offset="1" stop-color="#bcd8d2" stop-opacity=".4"/></linearGradient>
 '''
 
@@ -205,7 +205,7 @@ def frame_int2(dust):
     # ===== sunlight from the shop door (left, out of frame) =====
     s += '<path d="M0,80 L150,80 L470,800 L0,800 Z" fill="url(#sunWall)" style="mix-blend-mode:screen"/>'
     s += '<path d="M60,80 L84,80 L404,800 L380,800 Z" fill="#7a4a2a" opacity=".10"/><path d="M0,330 L0,300 L250,800 L220,800 Z" fill="#7a4a2a" opacity=".08"/>'
-    s += '<path d="M150,80 L540,80 L540,800 L470,800 Z" fill="#6a3a1e" opacity=".10"/>'
+    s += '<path d="M150,80 L540,80 L540,800 L470,800 Z" fill="#6a3a1e" opacity=".16"/>'
 
     # ===== foreground: glass display counter (y 770-960) =====
     fg = rr(0, 770, 540, 16, '#f4e8d2') + rr(0, 770, 540, 4, '#fffaf0') + rr(0, 786, 540, 6, '#b8946c')

@@ -17,6 +17,7 @@ DEFS = '''
 <filter id="moteBlur" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.1"/></filter>
 <filter id="moteGlow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <radialGradient id="gVig" gradientUnits="userSpaceOnUse" cx="270" cy="420" r="640"><stop offset=".55" stop-color="#5a2a10" stop-opacity="0"/><stop offset="1" stop-color="#5a2a10" stop-opacity=".42"/></radialGradient>
+<filter id="grade" x="0" y="0" width="540" height="960" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="1.4"/><feComponentTransfer><feFuncR type="linear" slope="1.12" intercept="-0.08"/><feFuncG type="linear" slope="1.12" intercept="-0.09"/><feFuncB type="linear" slope="1.1" intercept="-0.08"/></feComponentTransfer><feComponentTransfer><feFuncR type="gamma" exponent="1.18"/><feFuncG type="gamma" exponent="1.22"/><feFuncB type="gamma" exponent="1.2"/></feComponentTransfer></filter>
 <!-- exterior -->
 <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec6e0"/><stop offset="1" stop-color="#f4dcae"/></linearGradient>
 <linearGradient id="ground" gradientUnits="userSpaceOnUse" x1="0" y1="590" x2="0" y2="960"><stop offset="0" stop-color="#b89a7c"/><stop offset="1" stop-color="#e6c79a"/></linearGradient>
@@ -26,7 +27,7 @@ DEFS = '''
 <radialGradient id="lampGlow" gradientUnits="userSpaceOnUse" cx="30" cy="150" r="200"><stop offset="0" stop-color="#cfd8ff" stop-opacity=".45"/><stop offset="1" stop-color="#9fb0ff" stop-opacity="0"/></radialGradient>
 <linearGradient id="lampBeam" gradientUnits="userSpaceOnUse" x1="30" y1="150" x2="120" y2="600"><stop offset="0" stop-color="#d8dfff" stop-opacity=".22"/><stop offset="1" stop-color="#d8dfff" stop-opacity="0"/></linearGradient>
 <radialGradient id="tubeGlow" gradientUnits="userSpaceOnUse" cx="400" cy="300" r="110"><stop offset="0" stop-color="#eef0ff" stop-opacity=".5"/><stop offset="1" stop-color="#cfd8ff" stop-opacity="0"/></radialGradient>
-<linearGradient id="sunRay" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="960"><stop offset="0" stop-color="#fff0c8" stop-opacity=".34"/><stop offset=".6" stop-color="#ffd890" stop-opacity=".12"/><stop offset="1" stop-color="#ffd890" stop-opacity="0"/></linearGradient>
+<linearGradient id="sunRay" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="960"><stop offset="0" stop-color="#fff0c8" stop-opacity=".26"/><stop offset=".6" stop-color="#ffd890" stop-opacity=".08"/><stop offset="1" stop-color="#ffd890" stop-opacity="0"/></linearGradient>
 <radialGradient id="sunPatch" gradientUnits="userSpaceOnUse" cx="200" cy="820" r="420"><stop offset="0" stop-color="#fff2d0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe0a8" stop-opacity=".1"/></radialGradient>
 <linearGradient id="winBeam" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="360" y2="900"><stop offset="0" stop-color="#ffeec4" stop-opacity=".36"/><stop offset=".55" stop-color="#ffd48a" stop-opacity=".12"/><stop offset="1" stop-color="#ffd48a" stop-opacity="0"/></linearGradient>
 <!-- interior -->'''+EXTRA_DEFS+'''
@@ -413,7 +414,7 @@ FRAMES = [
 
 def page():
     cards = ''.join(
-        f'<figure><div class="frame"><svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{t}">{svg}'
+        f'<figure><div class="frame"><svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{t}"><g filter="url(#grade)">{svg}</g>'
         f'<g class="guide"><rect x="24" y="576" width="492" height="144" fill="none" stroke="#fff" stroke-opacity=".75" stroke-dasharray="6 5" stroke-width="1.5"/>'
         f'<text x="270" y="652" text-anchor="middle" {FONT} font-size="15" fill="#fff" fill-opacity=".8">พื้นที่ซับ</text></g></svg></div>'
         f'<figcaption><b>{t}</b><small>{n}</small></figcaption></figure>' for t, n, svg in FRAMES)
