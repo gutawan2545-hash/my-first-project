@@ -1,6 +1,7 @@
 # ฉากร้านวัสดุ (อิงร้านจริงจาก ref/) -> sets.html
 # เฟรม 540x960 แนวตั้ง เว้นช่วง y 576-720 ไว้วางซับ
 import random
+from interior import frame_int2, EXTRA_DEFS
 
 FONT = 'font-family="IBM Plex Sans Thai, Noto Sans Thai, sans-serif"'
 
@@ -28,7 +29,7 @@ DEFS = '''
 <linearGradient id="sunRay" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="960"><stop offset="0" stop-color="#fff0c8" stop-opacity=".34"/><stop offset=".6" stop-color="#ffd890" stop-opacity=".12"/><stop offset="1" stop-color="#ffd890" stop-opacity="0"/></linearGradient>
 <radialGradient id="sunPatch" gradientUnits="userSpaceOnUse" cx="200" cy="820" r="420"><stop offset="0" stop-color="#fff2d0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe0a8" stop-opacity=".1"/></radialGradient>
 <linearGradient id="winBeam" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="360" y2="900"><stop offset="0" stop-color="#ffeec4" stop-opacity=".36"/><stop offset=".55" stop-color="#ffd48a" stop-opacity=".12"/><stop offset="1" stop-color="#ffd48a" stop-opacity="0"/></linearGradient>
-<!-- interior -->
+<!-- interior -->'''+EXTRA_DEFS+'''
 <linearGradient id="inWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2c9a4"/><stop offset="1" stop-color="#f0dcba"/></linearGradient>
 <linearGradient id="floor" gradientUnits="userSpaceOnUse" x1="0" y1="470" x2="0" y2="960"><stop offset="0" stop-color="#e2cba8"/><stop offset="1" stop-color="#c9a47a"/></linearGradient>
 <linearGradient id="ftBeam" gradientUnits="userSpaceOnUse" x1="450" y1="120" x2="230" y2="760"><stop offset="0" stop-color="#fff3ea" stop-opacity=".30"/><stop offset=".6" stop-color="#ffe9dc" stop-opacity=".10"/><stop offset="1" stop-color="#ffe9dc" stop-opacity="0"/></linearGradient>
@@ -406,7 +407,7 @@ def frame_int():
 
 FRAMES = [
     ('ฉาก 1 · หน้าร้านตอนบ่าย', 'ร้านรุ่งเจริญฮาร์ดแวร์ ห้องแถวสองชั้น แดดบ่ายสีทองส่องเฉียงจากซ้าย ป้ายผ้าขาดรุ่ย ห้องข้าง ๆ ปิดและติดป้ายให้เช่า มีโต๊ะหินกับรถเข็นปูนอยู่หน้าร้าน', frame_ext()),
-    ('ฉาก 2 · ทางเดินในร้าน', 'แผงแขวนของมีท่อ PVC ปักอยู่ด้านบน ชั้นเหล็กวางกล่องอุปกรณ์ประปาเรียงลึกไปทางขวา ถังสีกับกระสอบปูนอยู่ฉากหน้า แดดบ่ายส่องเข้ามาจากหน้าร้าน เห็นฝุ่นลอยในลำแสง', frame_int()),
+    ('ฉาก 2 · หลังเคาน์เตอร์', 'มองตรงจากหน้าเคาน์เตอร์เข้าหาผนังหลังร้าน ซ้ายเป็นชั้นสี กลางเป็นแผงแขวนเครื่องมือ ขวาเป็นตู้ลิ้นชักน็อตกับสายยาง ฉากหน้าเป็นตู้กระจกกับของบนเคาน์เตอร์ แดดบ่ายส่องเข้ามาจากประตูร้านทางซ้าย', frame_int2(dust)),
 ]
 
 
