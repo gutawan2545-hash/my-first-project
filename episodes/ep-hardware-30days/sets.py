@@ -9,29 +9,32 @@ DEFS = '''
 <filter id="dof2" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3.4"/></filter>
 <filter id="haze" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="9"/></filter>
 <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
-<filter id="dsh" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx="9" dy="13" stdDeviation="6" flood-color="#14081a" flood-opacity=".55"/></filter>
-<filter id="dshS" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx="4" dy="6" stdDeviation="3" flood-color="#14081a" flood-opacity=".5"/></filter>
+<filter id="dsh" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx="9" dy="13" stdDeviation="6" flood-color="#6a3418" flood-opacity=".38"/></filter>
+<filter id="dshS" x="-30%" y="-30%" width="170%" height="170%"><feDropShadow dx="4" dy="6" stdDeviation="3" flood-color="#6a3418" flood-opacity=".34"/></filter>
 <filter id="grain" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="7" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
 <filter id="stipple" filterUnits="userSpaceOnUse" x="0" y="0" width="540" height="960"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="3"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="discrete" tableValues="0 0 1"/><feFuncG type="discrete" tableValues="0 0 1"/><feFuncB type="discrete" tableValues="0 0 1"/></feComponentTransfer></filter>
 <filter id="moteBlur" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.1"/></filter>
 <filter id="moteGlow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<radialGradient id="gVig" gradientUnits="userSpaceOnUse" cx="270" cy="420" r="640"><stop offset=".5" stop-color="#05060a" stop-opacity="0"/><stop offset="1" stop-color="#05060a" stop-opacity=".72"/></radialGradient>
+<radialGradient id="gVig" gradientUnits="userSpaceOnUse" cx="270" cy="420" r="640"><stop offset=".55" stop-color="#5a2a10" stop-opacity="0"/><stop offset="1" stop-color="#5a2a10" stop-opacity=".42"/></radialGradient>
 <!-- exterior -->
-<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141838"/><stop offset="1" stop-color="#2e3466"/></linearGradient>
-<linearGradient id="ground" gradientUnits="userSpaceOnUse" x1="0" y1="590" x2="0" y2="960"><stop offset="0" stop-color="#4a4658"/><stop offset="1" stop-color="#262434"/></linearGradient>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec6e0"/><stop offset="1" stop-color="#f4dcae"/></linearGradient>
+<linearGradient id="ground" gradientUnits="userSpaceOnUse" x1="0" y1="590" x2="0" y2="960"><stop offset="0" stop-color="#b89a7c"/><stop offset="1" stop-color="#e6c79a"/></linearGradient>
 <linearGradient id="spill" gradientUnits="userSpaceOnUse" x1="0" y1="580" x2="0" y2="900"><stop offset="0" stop-color="#ffeedd" stop-opacity=".5"/><stop offset="1" stop-color="#f6cdb8" stop-opacity="0"/></linearGradient>
 <linearGradient id="doorBeam" gradientUnits="userSpaceOnUse" x1="280" y1="420" x2="220" y2="860"><stop offset="0" stop-color="#fff2e6" stop-opacity=".30"/><stop offset="1" stop-color="#fff2e6" stop-opacity="0"/></linearGradient>
 <radialGradient id="doorGlow" gradientUnits="userSpaceOnUse" cx="282" cy="470" r="230"><stop offset="0" stop-color="#fff0e2" stop-opacity=".55"/><stop offset=".5" stop-color="#f3cbb8" stop-opacity=".18"/><stop offset="1" stop-color="#f3cbb8" stop-opacity="0"/></radialGradient>
 <radialGradient id="lampGlow" gradientUnits="userSpaceOnUse" cx="30" cy="150" r="200"><stop offset="0" stop-color="#cfd8ff" stop-opacity=".45"/><stop offset="1" stop-color="#9fb0ff" stop-opacity="0"/></radialGradient>
 <linearGradient id="lampBeam" gradientUnits="userSpaceOnUse" x1="30" y1="150" x2="120" y2="600"><stop offset="0" stop-color="#d8dfff" stop-opacity=".22"/><stop offset="1" stop-color="#d8dfff" stop-opacity="0"/></linearGradient>
 <radialGradient id="tubeGlow" gradientUnits="userSpaceOnUse" cx="400" cy="300" r="110"><stop offset="0" stop-color="#eef0ff" stop-opacity=".5"/><stop offset="1" stop-color="#cfd8ff" stop-opacity="0"/></radialGradient>
+<linearGradient id="sunRay" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="960"><stop offset="0" stop-color="#fff0c8" stop-opacity=".34"/><stop offset=".6" stop-color="#ffd890" stop-opacity=".12"/><stop offset="1" stop-color="#ffd890" stop-opacity="0"/></linearGradient>
+<radialGradient id="sunPatch" gradientUnits="userSpaceOnUse" cx="200" cy="820" r="420"><stop offset="0" stop-color="#fff2d0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe0a8" stop-opacity=".1"/></radialGradient>
+<linearGradient id="winBeam" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="360" y2="900"><stop offset="0" stop-color="#ffeec4" stop-opacity=".36"/><stop offset=".55" stop-color="#ffd48a" stop-opacity=".12"/><stop offset="1" stop-color="#ffd48a" stop-opacity="0"/></linearGradient>
 <!-- interior -->
-<linearGradient id="inWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3240"/><stop offset="1" stop-color="#4b4250"/></linearGradient>
-<linearGradient id="floor" gradientUnits="userSpaceOnUse" x1="0" y1="470" x2="0" y2="960"><stop offset="0" stop-color="#6c6476"/><stop offset="1" stop-color="#3b3546"/></linearGradient>
+<linearGradient id="inWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2c9a4"/><stop offset="1" stop-color="#f0dcba"/></linearGradient>
+<linearGradient id="floor" gradientUnits="userSpaceOnUse" x1="0" y1="470" x2="0" y2="960"><stop offset="0" stop-color="#e2cba8"/><stop offset="1" stop-color="#c9a47a"/></linearGradient>
 <linearGradient id="ftBeam" gradientUnits="userSpaceOnUse" x1="450" y1="120" x2="230" y2="760"><stop offset="0" stop-color="#fff3ea" stop-opacity=".30"/><stop offset=".6" stop-color="#ffe9dc" stop-opacity=".10"/><stop offset="1" stop-color="#ffe9dc" stop-opacity="0"/></linearGradient>
 <radialGradient id="ftGlow" gradientUnits="userSpaceOnUse" cx="452" cy="112" r="200"><stop offset="0" stop-color="#fff4ec" stop-opacity=".6"/><stop offset=".5" stop-color="#f4d6c8" stop-opacity=".18"/><stop offset="1" stop-color="#f4d6c8" stop-opacity="0"/></radialGradient>
 <radialGradient id="floorPool" gradientUnits="userSpaceOnUse" cx="300" cy="720" r="260"><stop offset="0" stop-color="#f6e2d8" stop-opacity=".35"/><stop offset="1" stop-color="#f6e2d8" stop-opacity="0"/></radialGradient>
-<linearGradient id="dustFilm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8aab0" stop-opacity=".22"/><stop offset="1" stop-color="#b8aab0" stop-opacity="0"/></linearGradient>
+<linearGradient id="dustFilm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4e0" stop-opacity=".25"/><stop offset="1" stop-color="#fff4e0" stop-opacity="0"/></linearGradient>
 '''
 
 TEX = ('<rect width="540" height="960" filter="url(#stipple)" opacity=".10" style="mix-blend-mode:overlay"/>'
@@ -60,10 +63,10 @@ def box3(x, y, w, h, c):
 
 
 # ================= FRAME 1: storefront at dusk =================
-def shutter(x, y, w, h, base='#6d6a78', dark='#56535f'):
+def shutter(x, y, w, h, base='#8fb2ac', dark='#739690'):
     s = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{base}"/>'
     s += ''.join(f'<rect x="{x}" y="{yy}" width="{w}" height="2" fill="{dark}"/>' for yy in range(int(y)+6, int(y+h), 7))
-    s += f'<rect x="{x}" y="{y}" width="{w}" height="10" fill="#4a4754"/>'
+    s += f'<rect x="{x}" y="{y}" width="{w}" height="10" fill="#8e7c6a"/>'
     s += f'<rect x="{x+w-14}" y="{y}" width="14" height="{h}" fill="#000" opacity=".12"/>'
     return s
 
@@ -93,43 +96,43 @@ def wheelbarrow(tx, ty, sc, tray, trayL, trayD, flip=False):
 
 
 def frame_ext():
-    s = '<rect width="540" height="960" fill="#1c1a28"/>'
+    s = '<rect width="540" height="960" fill="#e8d2ae"/>'
     # sky + upper floor (blurred background)
     s += '<g filter="url(#dof)">'
     s += '<rect x="0" y="0" width="540" height="90" fill="url(#sky)"/>'
-    s += '<rect x="20" y="40" width="440" height="190" fill="#bdb7c6"/><rect x="20" y="40" width="440" height="190" fill="#4a4464" opacity=".55"/>'
+    s += '<rect x="20" y="40" width="440" height="190" fill="#f2e4c8"/><rect x="20" y="40" width="70" height="190" fill="#fff4dc"/><rect x="380" y="40" width="80" height="190" fill="#d9c09c"/>'
     for x in (40, 360):  # framed windows
-        s += f'<rect x="{x}" y="70" width="80" height="120" fill="#8f899c"/><rect x="{x+12}" y="84" width="56" height="80" fill="#262a4a"/><rect x="{x+38}" y="84" width="3" height="80" fill="#8f899c"/>'
-    s += '<rect x="372" y="84" width="24" height="80" fill="#ffe2c8" opacity=".75"/>'  # upstairs light on
+        s += f'<rect x="{x}" y="70" width="80" height="120" fill="#cdb08a"/><rect x="{x+12}" y="84" width="56" height="80" fill="#6fa6c4"/><path d="M{x+12},150 L{x+68},100 L{x+68},120 L{x+12},164 Z" fill="#bfe2f0" opacity=".7"/><rect x="{x+38}" y="84" width="3" height="80" fill="#cdb08a"/>'
+    s += ''  # upstairs light on
     for x in (150, 250):  # vertical slat windows
-        s += f'<rect x="{x}" y="60" width="86" height="160" fill="#2a2838"/>' + ''.join(f'<rect x="{x+4+i*10}" y="64" width="5" height="152" fill="#4a4658"/>' for i in range(8))
-    s += '<rect x="460" y="0" width="80" height="250" fill="#7a2a38"/><rect x="470" y="30" width="60" height="70" fill="#c9a24a" opacity=".55"/>'  # neighbour sign, out of focus
+        s += f'<rect x="{x}" y="60" width="86" height="160" fill="#5a4436"/>' + ''.join(f'<rect x="{x+4+i*10}" y="64" width="5" height="152" fill="#a8825e"/>' for i in range(8))
+    s += '<rect x="460" y="0" width="80" height="250" fill="#d2443a"/><rect x="470" y="30" width="60" height="70" fill="#ffd36a" opacity=".85"/>'  # neighbour sign, out of focus
     s += '</g>'
     # awning underside
-    s += '<path d="M0,226 L540,226 L540,300 L0,300 Z" fill="#2e2b3a"/>'
-    s += ''.join(f'<path d="M{x},226 L{270+(x-270)*1.25:.0f},300" stroke="#211f2c" stroke-width="4"/>' for x in range(-40, 600, 60))
-    s += '<rect x="0" y="292" width="540" height="10" fill="#1d1b27"/><rect x="0" y="222" width="540" height="6" fill="#3e3a4c"/>'
+    s += '<path d="M0,226 L540,226 L540,300 L0,300 Z" fill="#8a6a54"/>'
+    s += ''.join(f'<path d="M{x},226 L{270+(x-270)*1.25:.0f},300" stroke="#6a4e3e" stroke-width="4"/>' for x in range(-40, 600, 60))
+    s += '<rect x="0" y="292" width="540" height="10" fill="#5e4434"/><rect x="0" y="222" width="540" height="6" fill="#b48c6a"/>'
     # wall below awning
-    s += '<rect x="0" y="302" width="540" height="290" fill="#5d5968"/>'
-    s += '<rect x="0" y="302" width="540" height="40" fill="#4c4857"/>'
+    s += '<rect x="0" y="302" width="540" height="290" fill="#c9ad8c"/>'
+    s += '<rect x="0" y="302" width="540" height="40" fill="#a98c70"/>'
     # pillars
     for x in (128, 406):
-        s += f'<rect x="{x}" y="302" width="26" height="290" fill="#6e6a7a"/><rect x="{x}" y="302" width="8" height="290" fill="#7c7888"/><rect x="{x+20}" y="302" width="6" height="290" fill="#55515f"/>'
+        s += f'<rect x="{x}" y="302" width="26" height="290" fill="#dcc3a0"/><rect x="{x}" y="302" width="8" height="290" fill="#f0dcbc"/><rect x="{x+20}" y="302" width="6" height="290" fill="#b49474"/>'
     # neighbours: closed shutters + for-rent sign
     s += shutter(0, 380, 128, 212)
     s += shutter(432, 380, 108, 212)
     s += f'<g transform="translate(26,440)" filter="url(#dshS)"><rect width="52" height="64" fill="#f1ece4"/><rect width="52" height="18" fill="#c7454a"/><text x="26" y="14" text-anchor="middle" {FONT} font-size="11" font-weight="600" fill="#fff">ให้เช่า</text><rect x="8" y="28" width="36" height="3" fill="#a9a2a8"/><rect x="8" y="38" width="30" height="3" fill="#a9a2a8"/><rect x="8" y="48" width="34" height="3" fill="#a9a2a8"/></g>'
-    s += '<text x="40" y="374" ' + FONT + ' font-size="9" fill="#cfcad6" opacity=".7">15/16</text><text x="452" y="374" ' + FONT + ' font-size="9" fill="#cfcad6" opacity=".7">15/14</text>'
+    s += '<text x="40" y="374" ' + FONT + ' font-size="9" fill="#6a5040" opacity=".8">15/16</text><text x="452" y="374" ' + FONT + ' font-size="9" fill="#6a5040" opacity=".8">15/14</text>'
     # meter boxes + CCTV
     s += '<rect x="410" y="330" width="16" height="24" rx="2" fill="#cfcad6"/><rect x="412" y="358" width="16" height="24" rx="2" fill="#bfbac6"/>'
     s += '<g transform="translate(372,320)"><rect x="-2" y="0" width="4" height="14" fill="#d8d4de"/><rect x="-10" y="12" width="20" height="12" rx="5" fill="#ecebf0"/><circle cx="-6" cy="18" r="3" fill="#22202c"/></g>'
     # ---- the shop opening ----
     ox, oy, ow, oh = 154, 376, 252, 216
-    s += f'<rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" fill="#cfc6cc"/>'
+    s += f'<rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" fill="#e2cfb4"/>'
     # interior back wall + shelves (blurred)
-    s += f'<g filter="url(#dof)"><rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" fill="#d9d0d2"/>'
+    s += f'<g filter="url(#dof)"><rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" fill="#ecdcc2"/>'
     for i, yy in enumerate((440, 478, 516)):
-        s += f'<rect x="{ox+30}" y="{yy}" width="190" height="4" fill="#8a8290"/>'
+        s += f'<rect x="{ox+30}" y="{yy}" width="190" height="4" fill="#a8866a"/>'
         r = random.Random(i)
         xx = ox + 32
         while xx < ox + 214:
@@ -146,20 +149,20 @@ def frame_ext():
         s += f'<rect x="{hx-w/2+1:.0f}" y="{oy+8+h*.4:.0f}" width="{w:.0f}" height="{h:.0f}" rx="4" fill="{c}"/><rect x="{hx-w/2+1:.0f}" y="{oy+8+h*.4:.0f}" width="{w*.35:.0f}" height="{h:.0f}" rx="3" fill="#fff" opacity=".25"/>'
         hx += w + r.uniform(2, 6)
     # rolling shutter rolled up
-    s += f'<rect x="{ox}" y="{oy-2}" width="{ow}" height="12" fill="#55515f"/><rect x="{ox}" y="{oy-2}" width="{ow}" height="3" fill="#6e6a7a"/>'
+    s += f'<rect x="{ox}" y="{oy-2}" width="{ow}" height="12" fill="#9a8270"/><rect x="{ox}" y="{oy-2}" width="{ow}" height="3" fill="#c2a88e"/>'
     # counter + display stand in doorway
-    s += f'<g filter="url(#dshS)"><rect x="{ox+24}" y="520" width="70" height="72" fill="#bfb7c0"/><rect x="{ox+24}" y="520" width="70" height="8" fill="#e6e0e4"/>'
+    s += f'<g filter="url(#dshS)"><rect x="{ox+24}" y="520" width="70" height="72" fill="#d8c4a6"/><rect x="{ox+24}" y="520" width="70" height="8" fill="#f4e6cc"/>'
     s += f'<rect x="{ox+30}" y="500" width="34" height="22" rx="2" fill="#2a2834"/><rect x="{ox+33}" y="503" width="28" height="15" fill="#6f7ab8"/></g>'
     s += f'<g filter="url(#dshS)"><rect x="318" y="460" width="64" height="132" fill="#2c3c86"/><rect x="318" y="460" width="64" height="16" fill="#3a4ca0"/><text x="350" y="472" text-anchor="middle" {FONT} font-size="8" fill="#e8ecff">ก๊อก · ฝักบัว</text>'
     s += ''.join(f'<rect x="{324+(i%3)*19}" y="{482+(i//3)*24}" width="15" height="20" rx="2" fill="#dfe4f0"/><circle cx="{331.5+(i%3)*19}" cy="{492+(i//3)*24}" r="4" fill="none" stroke="#8a93a8" stroke-width="1.6"/>' for i in range(12))
     s += '<rect x="318" y="460" width="10" height="132" fill="#000" opacity=".15"/></g>'
     # rack of seed/sundry packs left of door
-    s += f'<g filter="url(#dshS)"><rect x="160" y="526" width="40" height="66" fill="#8a8a96"/>' + ''.join(f'<rect x="{163+(i%3)*12}" y="{530+(i//3)*15}" width="10" height="12" fill="{c}"/>' for i, c in enumerate(['#6ab07a', '#e8d88a', '#6ab07a', '#d86a6a', '#6ab07a', '#e8d88a', '#6aa0c0', '#6ab07a', '#d86a6a', '#e8d88a', '#6ab07a', '#6aa0c0'])) + '</g>'
+    s += f'<g filter="url(#dshS)"><rect x="160" y="526" width="40" height="66" fill="#b0a08e"/>' + ''.join(f'<rect x="{163+(i%3)*12}" y="{530+(i//3)*15}" width="10" height="12" fill="{c}"/>' for i, c in enumerate(['#6ab07a', '#e8d88a', '#6ab07a', '#d86a6a', '#6ab07a', '#e8d88a', '#6aa0c0', '#6ab07a', '#d86a6a', '#e8d88a', '#6ab07a', '#6aa0c0'])) + '</g>'
     # door glow
     s += f'<rect x="{ox}" y="{oy}" width="{ow}" height="{oh}" fill="url(#doorGlow)" style="mix-blend-mode:screen"/>'
     # shop sign (muted cream-yellow, no phone number)
     s += f'<g transform="translate(188,316)" filter="url(#dshS)"><rect width="122" height="48" fill="#e6d48a"/><rect width="122" height="48" fill="none" stroke="#c9b468" stroke-width="2"/><text x="61" y="20" text-anchor="middle" {FONT} font-size="13.5" font-weight="700" fill="#b02a2a">ร้านรุ่งเจริญฮาร์ดแวร์</text><text x="61" y="34" text-anchor="middle" {FONT} font-size="7.5" fill="#2a2a6a">ขายอุปกรณ์ก่อสร้างทุกชนิด</text><rect x="20" y="39" width="82" height="3" fill="#2a2a6a" opacity=".5"/></g>'
-    s += f'<text x="280" y="372" {FONT} font-size="9" fill="#cfcad6" opacity=".8">15/15</text>'
+    s += f'<text x="280" y="372" {FONT} font-size="9" fill="#6a5040" opacity=".85">15/15</text>'
     # fluorescent tube under awning
     s += '<rect x="360" y="304" width="70" height="5" rx="2" fill="#f4f6ff"/><circle cx="395" cy="306" r="110" fill="url(#tubeGlow)" style="mix-blend-mode:screen"/>'
     # banner: faded paint-shop banner, torn strips (generic, no brand logo)
@@ -177,39 +180,40 @@ def frame_ext():
     s += '</g>'
     s += '<path d="M240,198 L246,270" stroke="#b8a878" stroke-width="2"/>'  # seam
     # grey faded cloth hanging at left
-    s += '<path d="M60,206 L102,204 L150,420 L118,436 Z" fill="#a8a2ac" filter="url(#dshS)"/><path d="M60,206 L76,206 L124,432 L118,436 Z" fill="#bdb8c0"/>'
+    s += '<path d="M60,206 L102,204 L150,420 L118,436 Z" fill="#d4c6b4" filter="url(#dshS)"/><path d="M60,206 L76,206 L124,432 L118,436 Z" fill="#ece0ce"/>'
     # step / sidewalk tiles
-    s += '<rect x="0" y="592" width="540" height="18" fill="#9c96a6"/><rect x="0" y="592" width="540" height="4" fill="#bdb7c6"/>'
-    s += ''.join(f'<rect x="{x}" y="596" width="2" height="14" fill="#7a7486"/>' for x in range(30, 540, 64))
+    s += '<rect x="0" y="592" width="540" height="18" fill="#e4d4bc"/><rect x="0" y="592" width="540" height="4" fill="#fff2dc"/>'
+    s += ''.join(f'<rect x="{x}" y="596" width="2" height="14" fill="#bca486"/>' for x in range(30, 540, 64))
     # concrete forecourt
     s += '<rect x="0" y="610" width="540" height="350" fill="url(#ground)"/>'
-    s += '<path d="M0,690 L540,700" stroke="#3a3648" stroke-width="2" opacity=".6"/><path d="M0,820 L540,836" stroke="#2e2a3c" stroke-width="2" opacity=".6"/>'
-    s += '<ellipse cx="250" cy="830" rx="120" ry="34" fill="#1c1a26" opacity=".55" filter="url(#soft)"/>'  # old stain
-    s += '<path d="M60,760 q40,-10 80,6 q30,12 60,-4" fill="none" stroke="#2a2836" stroke-width="3" opacity=".7"/>'
-    # warm light spill out of the door onto ground
-    s += '<path d="M160,610 L400,610 L520,940 L60,940 Z" fill="url(#spill)" style="mix-blend-mode:screen"/>'
+    s += '<path d="M0,690 L540,700" stroke="#a48868" stroke-width="2" opacity=".6"/><path d="M0,820 L540,836" stroke="#b8946c" stroke-width="2" opacity=".6"/>'
+    s += '<ellipse cx="250" cy="830" rx="120" ry="34" fill="#9a7a5a" opacity=".35" filter="url(#soft)"/>'  # old stain
+    s += '<path d="M60,760 q40,-10 80,6 q30,12 60,-4" fill="none" stroke="#a07e5c" stroke-width="3" opacity=".6"/>'
+    # awning shade on forecourt, sunlit beyond
+    s += '<path d="M0,610 L540,610 L540,690 L0,668 Z" fill="#7a5238" opacity=".28"/>'
+    s += '<path d="M0,668 L540,690 L540,960 L0,960 Z" fill="url(#sunPatch)" style="mix-blend-mode:screen"/>'
+    s += '<path d="M0,302 L540,302 L540,360 L0,420 Z" fill="#6a3a20" opacity=".16"/>'
+    s += '<path d="M154,376 L250,376 L190,592 L154,592 Z" fill="#6a3a20" opacity=".14"/>'
     # stone table + benches (left)
     s += '<g filter="url(#dsh)">'
-    s += '<path d="M36,600 L150,600 L156,612 L30,612 Z" fill="#e6e2ea"/><rect x="30" y="612" width="126" height="6" fill="#b8b2c0"/><rect x="82" y="618" width="22" height="46" fill="#cfcad6"/><rect x="82" y="618" width="7" height="46" fill="#e2dee8"/>'
-    s += '<rect x="0" y="640" width="70" height="10" fill="#e2dee8"/><rect x="0" y="650" width="70" height="4" fill="#aaa4b4"/><rect x="10" y="654" width="12" height="26" fill="#c6c0cc"/><rect x="48" y="654" width="12" height="26" fill="#bab4c2"/>'
-    s += '<rect x="120" y="646" width="78" height="10" fill="#e2dee8"/><rect x="120" y="656" width="78" height="4" fill="#aaa4b4"/><rect x="130" y="660" width="12" height="28" fill="#c6c0cc"/><rect x="176" y="660" width="12" height="28" fill="#bab4c2"/>'
+    s += '<path d="M36,600 L150,600 L156,612 L30,612 Z" fill="#fbf2e2"/><rect x="30" y="612" width="126" height="6" fill="#d2bfa4"/><rect x="82" y="618" width="22" height="46" fill="#e6d6be"/><rect x="82" y="618" width="7" height="46" fill="#fbf2e2"/>'
+    s += '<rect x="0" y="640" width="70" height="10" fill="#fbf2e2"/><rect x="0" y="650" width="70" height="4" fill="#cdb698"/><rect x="10" y="654" width="12" height="26" fill="#e2d0b6"/><rect x="48" y="654" width="12" height="26" fill="#d4c0a2"/>'
+    s += '<rect x="120" y="646" width="78" height="10" fill="#fbf2e2"/><rect x="120" y="656" width="78" height="4" fill="#cdb698"/><rect x="130" y="660" width="12" height="28" fill="#e2d0b6"/><rect x="176" y="660" width="12" height="28" fill="#d4c0a2"/>'
     s += '</g>'
     # broom stand right of door
     s += '<g filter="url(#dshS)">' + brooms(414, 520, 4, 3) + '<rect x="408" y="560" width="44" height="40" fill="#3e5a9a" opacity=".9"/><rect x="408" y="560" width="44" height="5" fill="#5a78b8"/></g>'
     # ladders wrapped in plastic (right edge)
-    s += '<g filter="url(#dsh)"><rect x="492" y="430" width="44" height="300" fill="#d9d6e0"/><rect x="492" y="430" width="12" height="300" fill="#eceaf0"/>'
+    s += '<g filter="url(#dsh)"><rect x="492" y="430" width="44" height="300" fill="#ece2d2"/><rect x="492" y="430" width="12" height="300" fill="#fff8ec"/>'
     s += ''.join(f'<rect x="496" y="{y}" width="36" height="4" fill="#9a96a6"/>' for y in range(450, 720, 34))
     s += '<rect x="492" y="500" width="44" height="22" fill="#c8484a" opacity=".85"/><rect x="492" y="610" width="44" height="22" fill="#c8484a" opacity=".85"/><rect x="492" y="430" width="44" height="300" fill="#fff" opacity=".18"/></g>'
     # wheelbarrows (foreground, blue + orange)
     s += wheelbarrow(500, 800, 1.0, '#2f6fd0', '#5a92ea', '#1f4fa0')
     s += wheelbarrow(420, 930, 1.2, '#e2683a', '#f08c5a', '#b44a24')
-    # light beam from doorway + dust in it
-    s += '<path d="M180,420 L380,420 L470,880 L110,880 Z" fill="url(#doorBeam)" filter="url(#haze)" style="mix-blend-mode:screen"/>'
-    s += dust(31, (180, 420, 380, 640), 22)
-    # cool street lamp glow from left, out of frame
-    s += '<circle cx="30" cy="150" r="200" fill="url(#lampGlow)" style="mix-blend-mode:screen"/>'
-    s += '<path d="M10,150 L60,140 L200,620 L40,640 Z" fill="url(#lampBeam)" filter="url(#haze)" style="mix-blend-mode:screen"/>'
-    s += dust(32, (20, 180, 140, 420), 9, '#e6ecff')
+    # afternoon sun from upper left: slanted rays + dust
+    s += '<path d="M-40,0 L120,0 L420,960 L160,960 Z" fill="url(#sunRay)" filter="url(#haze)" style="mix-blend-mode:screen"/>'
+    s += '<path d="M150,0 L210,0 L560,800 L470,860 Z" fill="url(#sunRay)" opacity=".6" filter="url(#haze)" style="mix-blend-mode:screen"/>'
+    s += dust(31, (40, 120, 360, 560), 26, '#fff4dc')
+    s += '<rect width="540" height="960" fill="#ffa850" opacity=".10" style="mix-blend-mode:multiply"/>'
     s += VIG + TEX
     return s
 
@@ -239,12 +243,12 @@ def quad(p, c, extra=''):
 def frame_int():
     s = '<rect width="540" height="960" fill="url(#inWall)"/>'
     # ceiling
-    s += '<path d="M0,0 L540,0 L540,110 L432,300 L250,300 L0,110 Z" fill="#2a2430"/>'
+    s += '<path d="M0,0 L540,0 L540,110 L432,300 L250,300 L0,110 Z" fill="#94684a"/>'
     # back area (far, blurred): back wall with paint shelves
     s += '<g filter="url(#dof2)">'
-    s += '<rect x="250" y="300" width="182" height="178" fill="#5a5060"/>'
+    s += '<rect x="250" y="300" width="182" height="178" fill="#d8bb94"/>'
     for yy in (340, 380, 420, 460):
-        s += f'<rect x="256" y="{yy}" width="170" height="3" fill="#2e2834"/>'
+        s += f'<rect x="256" y="{yy}" width="170" height="3" fill="#8a6a50"/>'
         r = random.Random(yy); xx = 258
         while xx < 420:
             c = r.choice(('#c94a4a', '#e8e2e8', '#3a6aa8', '#e0c070', '#4a8a5a', '#2a2a30'))
@@ -252,8 +256,8 @@ def frame_int():
             xx += 11
     s += '</g>'
     # upper loft shelf on far-left wall with boxes (blurred)
-    s += '<g filter="url(#dof)"><path d="M0,40 L250,150 L250,300 L0,260 Z" fill="#433a48"/>'
-    s += '<path d="M0,120 L250,198 L250,204 L0,128 Z" fill="#2a2430"/><path d="M0,250 L250,296 L250,302 L0,258 Z" fill="#2a2430"/>'
+    s += '<g filter="url(#dof)"><path d="M0,40 L250,150 L250,300 L0,260 Z" fill="#d2b48e"/>'
+    s += '<path d="M0,120 L250,198 L250,204 L0,128 Z" fill="#8a6a50"/><path d="M0,250 L250,296 L250,302 L0,258 Z" fill="#8a6a50"/>'
     r = random.Random(9)
     for i in range(6):
         x0 = i * 40; x1 = x0 + 36
@@ -263,9 +267,9 @@ def frame_int():
         s += quad(((x0, y0b-hb*.5), (x1, y1b-hb*.5), (x1, y1b-hb*.5-8), (x0, y0b-hb*.5-8)), '#e8e0d8', ' opacity=".7"')
     s += '</g>'
     # paint aisle behind gondola (left, blurred)
-    s += '<g filter="url(#dof)"><rect x="0" y="300" width="80" height="420" fill="#3a3240"/>'
+    s += '<g filter="url(#dof)"><rect x="0" y="300" width="80" height="420" fill="#c8a882"/>'
     for yy in (380, 450, 520, 590):
-        s += f'<rect x="0" y="{yy}" width="80" height="4" fill="#25202c"/>'
+        s += f'<rect x="0" y="{yy}" width="80" height="4" fill="#7a5a42"/>'
         r = random.Random(yy+1); xx = 2
         while xx < 76:
             c = r.choice(('#c94a4a', '#ece6ec', '#3a8a5a', '#e0c070', '#2a2a30'))
@@ -276,17 +280,17 @@ def frame_int():
     s += '<path d="M0,720 L250,478 L432,478 L540,560 L540,960 L0,960 Z" fill="url(#floor)"/>'
     for i in range(-6, 14):
         x = 340 + i * 90
-        s += f'<path d="M{VPX + (x-VPX)*0.17:.0f},478 L{x},960" stroke="#4a4354" stroke-width="1.6" opacity=".7"/>'
+        s += f'<path d="M{VPX + (x-VPX)*0.17:.0f},478 L{x},960" stroke="#b08e68" stroke-width="1.6" opacity=".7"/>'
     for y in (500, 530, 572, 630, 712, 830):
-        s += f'<path d="M0,{y} L540,{y}" stroke="#4a4354" stroke-width="1.6" opacity=".6"/>'
+        s += f'<path d="M0,{y} L540,{y}" stroke="#b08e68" stroke-width="1.6" opacity=".6"/>'
     s += '<rect width="540" height="960" fill="url(#floorPool)" style="mix-blend-mode:screen"/>'
     # ---- right wall steel shelving with boxes ----
     levels = [0, .2, .4, .6, .8, 1.0]
     posts = [0, .25, .5, .75, 1.0]
     # back panel
-    s += quad((shelf_pt(0, 0), shelf_pt(1, 0), shelf_pt(1, 1), shelf_pt(0, 1)), '#3a3442')
+    s += quad((shelf_pt(0, 0), shelf_pt(1, 0), shelf_pt(1, 1), shelf_pt(0, 1)), '#7a5038')
     r = random.Random(4)
-    boxcols = [('#c49a6c', '#a87e56', '#8a6444'), ('#b88e62', '#9c7450', '#7e5a3e'), ('#d0a878', '#b48c5e', '#94704a')]
+    boxcols = [('#eaa866', '#c8813e', '#9a5a2a'), ('#e09a58', '#bc7436', '#8e5024'), ('#f0b878', '#d08e4a', '#a46630')]
     for li in range(len(levels)-1):
         h0, h1 = levels[li], levels[li+1]
         t = 0.0
@@ -307,31 +311,31 @@ def frame_int():
                      (lerp(p3[0], p2[0], .3), lerp(lerp(p3[1], p0[1], b), lerp(p2[1], p1[1], b), .3)))
                 s += quad(q, '#a83a3a' if r.random() < .6 else '#ece4da')
             # dust film on top of box
-            s += quad((p3, p2, (p2[0], p2[1]+4), (p3[0], p3[1]+4)), '#d8ccc4', ' opacity=".35"')
+            s += quad((p3, p2, (p2[0], p2[1]+4), (p3[0], p3[1]+4)), '#fff0d8', ' opacity=".3"')
             t = tb + .01
         # shelf plank
         a0 = shelf_pt(0, h0); a1 = shelf_pt(1, h0)
-        s += quad((a0, a1, (a1[0], a1[1]+3), (a0[0], a0[1]+8)), '#5a5664')
-        s += quad(((a0[0], a0[1]+8), (a1[0], a1[1]+3), (a1[0], a1[1]+5), (a0[0], a0[1]+14)), '#2e2a36')
+        s += quad((a0, a1, (a1[0], a1[1]+3), (a0[0], a0[1]+8)), '#b8a48e')
+        s += quad(((a0[0], a0[1]+8), (a1[0], a1[1]+3), (a1[0], a1[1]+5), (a0[0], a0[1]+14)), '#6a5240')
     # top plank
     a0 = shelf_pt(0, 1); a1 = shelf_pt(1, 1)
-    s += quad((a0, a1, (a1[0], a1[1]+3), (a0[0], a0[1]+8)), '#5a5664')
+    s += quad((a0, a1, (a1[0], a1[1]+3), (a0[0], a0[1]+8)), '#b8a48e')
     for tp in posts:
         b0 = shelf_pt(tp, 0); b1 = shelf_pt(tp, 1); w = lerp(14, 4, persp(tp))
-        s += f'<path d="M{b0[0]-w:.1f},{b0[1]:.1f} L{b0[0]:.1f},{b0[1]:.1f} L{b1[0]:.1f},{b1[1]:.1f} L{b1[0]-w:.1f},{b1[1]:.1f} Z" fill="#4a4856"/>'
-        s += f'<path d="M{b0[0]-w:.1f},{b0[1]:.1f} L{b0[0]-w*.6:.1f},{b0[1]:.1f} L{b1[0]-w*.6:.1f},{b1[1]:.1f} L{b1[0]-w:.1f},{b1[1]:.1f} Z" fill="#6a6878"/>'
+        s += f'<path d="M{b0[0]-w:.1f},{b0[1]:.1f} L{b0[0]:.1f},{b0[1]:.1f} L{b1[0]:.1f},{b1[1]:.1f} L{b1[0]-w:.1f},{b1[1]:.1f} Z" fill="#8a7462"/>'
+        s += f'<path d="M{b0[0]-w:.1f},{b0[1]:.1f} L{b0[0]-w*.6:.1f},{b0[1]:.1f} L{b1[0]-w*.6:.1f},{b1[1]:.1f} L{b1[0]-w:.1f},{b1[1]:.1f} Z" fill="#c4ae96"/>'
     # pink + green baskets on a shelf (real detail)
     p = shelf_pt(.38, .4)
     s += f'<g filter="url(#dshS)"><path d="M{p[0]-44:.0f},{p[1]-26:.0f} l48,0 l-6,22 l-36,0 Z" fill="#e26aa0"/><path d="M{p[0]-44:.0f},{p[1]-26:.0f} l48,0 l0,4 l-48,0 Z" fill="#f08cbc"/></g>'
     # ---- gondola end cap (main subject) ----
     gx0, gx1, gy0, gy1 = 76, 312, 300, 770
     # side panel receding to VP
-    s += f'<path d="M{gx1},{gy0} L{gx1+28},{gy0+14} L{gx1+28},{gy1-60} L{gx1},{gy1} Z" fill="#232129"/>'
-    s += f'<g filter="url(#dsh)"><rect x="{gx0}" y="{gy0}" width="{gx1-gx0}" height="{gy1-gy0}" fill="#2a2932"/>'
-    s += f'<rect x="{gx0}" y="{gy0}" width="10" height="{gy1-gy0}" fill="#3a3944"/><rect x="{gx1-10}" y="{gy0}" width="10" height="{gy1-gy0}" fill="#1f1e26"/>'
-    s += f'<rect x="{gx0-6}" y="{gy1-40}" width="{gx1-gx0+12}" height="40" fill="#24232c"/><rect x="{gx0-6}" y="{gy1-40}" width="{gx1-gx0+12}" height="6" fill="#3e3d48"/></g>'
+    s += f'<path d="M{gx1},{gy0} L{gx1+28},{gy0+14} L{gx1+28},{gy1-60} L{gx1},{gy1} Z" fill="#2a201e"/>'
+    s += f'<g filter="url(#dsh)"><rect x="{gx0}" y="{gy0}" width="{gx1-gx0}" height="{gy1-gy0}" fill="#3a2e2c"/>'
+    s += f'<rect x="{gx0}" y="{gy0}" width="10" height="{gy1-gy0}" fill="#56443e"/><rect x="{gx1-10}" y="{gy0}" width="10" height="{gy1-gy0}" fill="#2a201e"/>'
+    s += f'<rect x="{gx0-6}" y="{gy1-40}" width="{gx1-gx0+12}" height="40" fill="#30262a"/><rect x="{gx0-6}" y="{gy1-40}" width="{gx1-gx0+12}" height="6" fill="#5a4840"/></g>'
     # pegboard holes
-    s += '<g fill="#17161c">' + ''.join(f'<circle cx="{x}" cy="{y}" r="1.2"/>' for x in range(gx0+16, gx1-10, 14) for y in range(gy0+12, gy1-50, 14)) + '</g>'
+    s += '<g fill="#1e1614">' + ''.join(f'<circle cx="{x}" cy="{y}" r="1.2"/>' for x in range(gx0+16, gx1-10, 14) for y in range(gy0+12, gy1-50, 14)) + '</g>'
     # hanging blister packs: cutting discs, pliers, tape
     r = random.Random(12)
     rows = [(316, 54), (382, 52), (446, 54), (512, 50), (574, 52), (636, 46)]
@@ -388,16 +392,21 @@ def frame_int():
     s += sack(250, 880, 220, 80, '#3a8a5a')
     # basket on sacks
     s += '<g filter="url(#dshS)"><path d="M330,690 l90,0 l-10,22 l-70,0 Z" fill="#5ac08a"/><path d="M330,690 l90,0 l0,5 l-90,0 Z" fill="#7ad8a6"/></g>'
-    # light beam from tube + dust (EP1: dusty shop)
-    s += '<path d="M420,118 L500,96 L330,800 L150,780 Z" fill="url(#ftBeam)" filter="url(#haze)" style="mix-blend-mode:screen"/>'
-    s += dust(41, (230, 150, 470, 560), 30)
+    # afternoon sun through the shop front (behind camera): warm beam + window-bar shadows + dust
+    s += '<path d="M0,120 L150,60 L470,960 L0,960 Z" fill="url(#winBeam)" filter="url(#haze)" style="mix-blend-mode:screen"/>'
+    s += '<path d="M432,300 L540,110 L540,960 L432,478 Z" fill="#5a2e14" opacity=".14"/>'
+    s += '<path d="M0,720 L250,478 L300,478 L210,960 L0,960 Z" fill="#fff0c8" opacity=".2" style="mix-blend-mode:screen"/>'
+    s += '<path d="M0,560 L120,520 L330,960 L60,960 Z" fill="#fff0c8" opacity=".18" style="mix-blend-mode:screen"/>'
+    s += '<path d="M118,520 L140,512 L360,960 L330,960 Z" fill="#7a4a2a" opacity=".12"/>'
+    s += dust(41, (40, 180, 360, 640), 34, '#fff4dc')
+    s += '<rect width="540" height="960" fill="#ffa850" opacity=".10" style="mix-blend-mode:multiply"/>'
     s += VIG + TEX
     return s
 
 
 FRAMES = [
-    ('ฉาก 1 · หน้าร้านตอนค่ำ', 'ร้านรุ่งเจริญฮาร์ดแวร์ ห้องแถวสองชั้น ป้ายผ้าขาดรุ่ย ห้องข้าง ๆ ปิดและติดป้ายให้เช่า มีโต๊ะหินกับรถเข็นปูนอยู่หน้าร้าน แสงจากในร้านส่องออกมาตกลงลานปูน', frame_ext()),
-    ('ฉาก 2 · ทางเดินในร้าน', 'แผงแขวนของมีท่อ PVC ปักอยู่ด้านบน ชั้นเหล็กวางกล่องอุปกรณ์ประปาเรียงลึกไปทางขวา ถังสีกับกระสอบปูนอยู่ฉากหน้า หลอดไฟนีออนส่องลงมา เห็นฝุ่นลอย', frame_int()),
+    ('ฉาก 1 · หน้าร้านตอนบ่าย', 'ร้านรุ่งเจริญฮาร์ดแวร์ ห้องแถวสองชั้น แดดบ่ายสีทองส่องเฉียงจากซ้าย ป้ายผ้าขาดรุ่ย ห้องข้าง ๆ ปิดและติดป้ายให้เช่า มีโต๊ะหินกับรถเข็นปูนอยู่หน้าร้าน', frame_ext()),
+    ('ฉาก 2 · ทางเดินในร้าน', 'แผงแขวนของมีท่อ PVC ปักอยู่ด้านบน ชั้นเหล็กวางกล่องอุปกรณ์ประปาเรียงลึกไปทางขวา ถังสีกับกระสอบปูนอยู่ฉากหน้า แดดบ่ายส่องเข้ามาจากหน้าร้าน เห็นฝุ่นลอยในลำแสง', frame_int()),
 ]
 
 
@@ -427,7 +436,7 @@ button:hover{{border-color:var(--muted)}} button:focus-visible{{outline:2px soli
 button[aria-pressed="true"]{{border-color:var(--accent);color:#fff}}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{DEFS}</defs></svg>
-<div class="wrap" id="wrap"><header><h1>ฉากร้านวัสดุ (อิงร้านจริง)<span>ซีรีส์ร้านแม่เหลือ 30 วัน · ฉากเปล่า ยังไม่ใส่ตัวละคร</span></h1>
+<div class="wrap" id="wrap"><header><h1>ฉากร้านวัสดุ (อิงร้านจริง)<span>ซีรีส์ร้านแม่เหลือ 30 วัน · ฉากกลางวัน โทนร้อน · ยังไม่ใส่ตัวละคร</span></h1>
 <button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button></header>
 <div class="grid">{cards}</div></div>
 <script>const b=document.getElementById('toggle'),w=document.getElementById('wrap');b.addEventListener('click',()=>{{const on=w.classList.toggle('show-guide');b.setAttribute('aria-pressed',String(on));b.textContent=on?'ซ่อนพื้นที่ซับ':'แสดงพื้นที่ซับ';}});</script>'''
