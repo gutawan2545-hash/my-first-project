@@ -30,8 +30,8 @@ ART = f'''
   {windows}
 </g>
 <ellipse cx="300" cy="760" rx="280" ry="260" fill="url(#halo)" style="mix-blend-mode:screen"/>
-<!-- ซิ่ง ยิ้มกวน (ครึ่งตัว) -->
-<g transform="translate(300,1195) scale(1.36)"><use href="#c_sing"/></g>
+<!-- ซิ่ง ชุดคลุมดำ ยิ้มกวน (ครึ่งตัว) -->
+<g transform="translate(300,1195) scale(1.36)"><use href="#c_sing_robe"/></g>
 <!-- ไอ้เหลืองเกาะไหล่ ขันใส่ -->
 <g transform="translate(150,650) scale(-.7,.7)"><use href="#c_rooster"/></g>
 <!-- จดหมายเรืองแสง ตราครั่งแดง -->
@@ -43,7 +43,6 @@ ART = f'''
   <circle cx="0" cy="8" r="20" fill="#8e1b24"/><circle cx="-4" cy="4" r="7" fill="#b8323e"/>
   <text x="0" y="48" text-anchor="middle" class="t" font-size="13" font-weight="600" fill="#5a3a2a">ฮอกวอตส์ สาขาประเทศไทย</text>
 </g>
-<path d="M 312,860 C 300,846 304,830 316,826 L 346,858 C 340,868 322,870 312,860 Z" fill="#d9a47a"/>
 <g>{motes}</g>
 <rect width="540" height="470" fill="url(#topfade)"/>
 <rect width="540" height="960" fill="url(#vig)"/>
@@ -75,6 +74,7 @@ DEFS = '''<defs>
 <filter id="grain" filterUnits="userSpaceOnUse" x="0" y="0" width="540" height="960"><feTurbulence type="fractalNoise" baseFrequency="1.9" numOctaves="1" seed="4"/><feColorMatrix type="saturate" values="0"/></filter>
 </defs>'''
 
+CHAR = re.sub(r'(<g id="c_sing_robe">.*?<g transform="translate\(60,206\)">)<path d="M 2,4 L 6,4 L 4,-62 L 1,-62 Z"[^>]*/><circle[^>]*/><circle[^>]*/>', r'\1', CHAR, count=1, flags=re.S)
 CHAR = CHAR.replace('class="an-mouth-rooster" display="none"', 'class="an-mouth-rooster" display="inline"')   # ไก่อ้าปากขัน
 html = f'''<!doctype html><meta charset="utf-8"><title>Odd Hours cover</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
