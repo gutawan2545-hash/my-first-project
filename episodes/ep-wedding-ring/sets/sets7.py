@@ -3,7 +3,7 @@
 import math, random
 import sets4 as S
 import sets3 as T
-from sets import Cam, fx
+from sets import Cam, fx, city
 from sets5 import VARIANTS
 
 V = VARIANTS['S']
@@ -80,14 +80,17 @@ def scene():
         o.append(rect(x - 3, y, 6, 6, S.CRM_M))
     o.append(f'<path d="M0,82 Q270,22 540,82" stroke="{S.CRM_L}" stroke-width="2" fill="none"/>')
     # หน้าต่าง
-    o.append(S.window(178, 362, 110, H - 8, 71))
-    o.append(S.window(-60, 112, 178, H - 8, 72))
-    o.append(S.window(428, 600, 178, H - 8, 73))
-    # พระจันทร์กับเมฆบางในหน้าต่างกลาง
+    def win_city(x0, x1, top, seed, maxh):
+        w = S.window(x0, x1, top, H - 8, seed)
+        mark = 'filter="url(#mottle4)" opacity=".16" style="mix-blend-mode:screen"/>'
+        i = w.index(mark) + len(mark)
+        sky = f'<g filter="url(#blur7)">{city(x0, x1, H - 8, seed, maxh=maxh)}</g>'
+        return w[:i] + sky + w[i:]
+    o.append(win_city(178, 362, 110, 71, 230))
+    o.append(win_city(-60, 112, 178, 72, 170))
+    o.append(win_city(428, 600, 178, 73, 170))
+    # ในหน้าต่างกลาง
     o.append(f'<clipPath id="moonC"><path d="{S.arch(178, 362, 110, H - 8)}"/></clipPath><g clip-path="url(#moonC)">')
-    o.append(f'<circle cx="318" cy="300" r="26" fill="#eef1f8" opacity=".95"/><circle cx="318" cy="300" r="60" fill="#dfe6f6" opacity=".12"/>')
-    for (x, y, w) in ((240, 310, 120), (300, 330, 140), (200, 360, 90)):
-        o.append(f'<ellipse cx="{x}" cy="{y}" rx="{w / 2}" ry="7" fill="#9aaad0" opacity=".35"/>')
     o.append('</g>')
     o.append(clock(270, 178, 40))
     # เสา + ภาพเจ้าสาวในกรอบวงรี
@@ -118,7 +121,7 @@ def scene():
     for yy in (668, 706, 760, 836, 940):
         o.append(f'<path d="M0,{yy} H540" stroke="{S.CRM_D}" stroke-width="1.1" opacity=".3"/>')
     for x0, x1 in ((178, 362), (0, 112), (428, 540)):
-        o.append(f'<path d="M{x0},{H} L{x1},{H} L{x1 + (x1 - 270) * .5},960 L{x0 + (x0 - 270) * .5},960Z" fill="url(#reflBlue)" opacity=".5"/>')
+        o.append(f'<path d="M{x0},{H} L{x1},{H} L{x1 + (x1 - 270) * .5},960 L{x0 + (x0 - 270) * .5},960Z" fill="url(#reflDusk)" opacity=".5"/>')
     # ลายพื้นกลาง: แหวนสองวงคล้องกัน ล้อมด้วยวงลาย
     mc = (270, 800)
     o.append(f'<ellipse cx="270" cy="800" rx="232" ry="72" fill="none" stroke="{SV_D}" stroke-width="4" opacity=".75"/>')
@@ -134,7 +137,7 @@ def scene():
         o.append(f'<ellipse cx="{270 + dx}" cy="799" rx="62" ry="20" fill="none" stroke="{SV_L}" stroke-width="1.6" opacity=".8"/>')
     # แสงจันทร์จากหน้าต่างตกบนลายพื้น (เย็น)
     o.append(f'<path d="M210,340 L330,340 L430,860 L110,860Z" fill="url(#moonShaft)" opacity=".55" filter="url(#bl4)" style="mix-blend-mode:screen"/>')
-    o.append(f'<ellipse cx="270" cy="800" rx="150" ry="40" fill="#e8eefc" opacity=".22" filter="url(#bl4)"/>')
+    o.append(f'<ellipse cx="270" cy="800" rx="150" ry="40" fill="#f4e6f2" opacity=".22" filter="url(#bl4)"/>')
     # แท่นดอกไม้
     for x in (196, 344):
         o.append(f'<ellipse cx="{x + 10}" cy="{H + 6}" rx="34" ry="6" fill="#3a3540" opacity=".3" filter="url(#sf4)"/>')
@@ -193,12 +196,12 @@ def scene():
 DEFS_EXTRA = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="wall7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6ccbb"/><stop offset=".45" stop-color="#f3ede2"/><stop offset="1" stop-color="#e8dfd0"/></linearGradient>
 <linearGradient id="floor7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ede7"/><stop offset=".5" stop-color="#e4ded5"/><stop offset="1" stop-color="#cdc5ba"/></linearGradient>
-<linearGradient id="moonShaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe8ff" stop-opacity=".7"/><stop offset="1" stop-color="#dfe8ff" stop-opacity="0"/></linearGradient>
-<radialGradient id="clockShade" cx=".35" cy=".3" r=".8"><stop offset=".6" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#8a8494" stop-opacity=".35"/></radialGradient>
+<linearGradient id="moonShaft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e2f2" stop-opacity=".6"/><stop offset="1" stop-color="#f3e2f2" stop-opacity="0"/></linearGradient>
+<linearGradient id="reflDusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a6d6" stop-opacity=".5"/><stop offset="1" stop-color="#c9a6d6" stop-opacity="0"/></linearGradient><radialGradient id="clockShade" cx=".35" cy=".3" r=".8"><stop offset=".6" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#8a8494" stop-opacity=".35"/></radialGradient>
 <radialGradient id="eerie7" cx=".5" cy=".5" r=".75"><stop offset=".45" stop-color="#ffffff"/><stop offset=".8" stop-color="#b9bccb"/><stop offset="1" stop-color="#6e6c80"/></radialGradient>
 <linearGradient id="drapeShadeL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{V['RED_DD']}" stop-opacity=".6"/><stop offset="1" stop-color="{V['RED_DD']}" stop-opacity="0"/></linearGradient>
 <linearGradient id="drapeShadeR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="{V['RED_DD']}" stop-opacity=".6"/><stop offset="1" stop-color="{V['RED_DD']}" stop-opacity="0"/></linearGradient>
-<linearGradient id="glass4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2650"/><stop offset=".55" stop-color="#2c4176"/><stop offset="1" stop-color="#4c679e"/></linearGradient>
+<linearGradient id="glass4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b84c9"/><stop offset=".55" stop-color="#c9a6d6"/><stop offset="1" stop-color="#f4c4cf"/></linearGradient><filter id="blur7" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.1"/></filter>
 <radialGradient id="vig4" cx=".5" cy=".45" r=".8"><stop offset=".55" stop-color="#2a2833" stop-opacity="0"/><stop offset="1" stop-color="#2a2833" stop-opacity=".5"/></radialGradient>
 </defs></svg>'''
 
@@ -208,13 +211,13 @@ def build():
     base = S.DEFS
     for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
         base = re.sub(rf'<(linear|radial)Gradient id="{gid}".*?</\1Gradient>', '', base, flags=re.S)
-    svg = S.frame(scene(), 'ห้องพิธีแต่งงานโทนงาช้างกับเงิน นาฬิกาเงินในโค้งหน้าต่างหยุดใกล้เที่ยงคืน ภาพเจ้าสาวในกรอบวงรีบนเสา เทียนแท่ง กลีบดอกร่วง หมอกเลียดพื้น และแสงจันทร์ตกบนลายแหวนกลางพื้น')
+    svg = S.frame(scene(), 'ห้องพิธีแต่งงานโทนงาช้างกับเงิน นาฬิกาเงินในโค้งหน้าต่างหยุดใกล้เที่ยงคืน ภาพเจ้าสาวในกรอบวงรีบนเสา เทียนแท่ง กลีบดอกร่วง หมอกเลียดพื้น วิวเมืองยามสนธยาสีม่วงชมพูนอกหน้าต่าง')
     css = S.CSS.replace('<title>ฉากงานแต่งโทนอบอุ่น</title>', '<title>ห้องพิธีงาช้างเงิน</title>').replace('repeat(auto-fit,minmax(260px,1fr))', 'minmax(0,480px)').replace('.grid{display:grid;', '.grid{display:grid;justify-content:center;')
     notes = ''.join(f'<li>{t}</li>' for t in [
         'นาฬิกาเงินในโค้งหน้าต่างกลาง เข็มหยุดที่ 11:59 เป็นลางเรื่องเวลาที่วนซ้ำ',
         'ภาพเจ้าสาวในกรอบวงรีเงินบนหัวเสาสองข้าง หน้าจมอยู่ในเงา เห็นแค่ผ้าคลุม',
         'เทียนแท่งหลายขนาดรอบลายพื้น มีน้ำตาเทียนไหล',
-        'ลายกลางพื้นเป็นแหวนสองวงคล้องกัน แสงจันทร์เย็น ๆ ตกลงตรงจุดนั้น',
+        'ลายกลางพื้นเป็นแหวนสองวงคล้องกัน แสงสนธยาจากหน้าต่างตกลงตรงจุดนั้น',
         'กลีบดอกร่วงบนพื้น มีกลีบแดงเข้มปนนิดหน่อย กับกุหลาบแดงหนึ่งดอก',
         'หมอกจางเลียดพื้น ขอบภาพเย็นและมืดลง ตรงกลางยังสว่างและหรู',
     ])
