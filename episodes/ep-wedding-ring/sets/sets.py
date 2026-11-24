@@ -33,15 +33,15 @@ def box(c, X0, X1, Y0, Y1, z0, z1, top, front, sideC):
 
 def fshadow(c, X0, X1, z0, z1, sx=22, sz=18, op=.35):
     """เงาตกนุ่ม ๆ บนพื้น เยื้องไปทางขวาล่าง"""
-    return f'<path d="{flat(c, X0 + sx, X1 + sx, z0 - sz, z1 - sz, 0)}" fill="#3b2550" opacity="{op}" filter="url(#soft)"/>'
+    return f'<path d="{flat(c, X0 + sx, X1 + sx, z0 - sz, z1 - sz, 0)}" fill="#3a2a28" opacity="{op}" filter="url(#soft)"/>'
 
 def softsh(d, dx=6, dy=8, op=.35):
-    return f'<path d="{d}" fill="#3b2550" opacity="{op}" transform="translate({dx},{dy})" filter="url(#soft)"/>'
+    return f'<path d="{d}" fill="#3a2a28" opacity="{op}" transform="translate({dx},{dy})" filter="url(#soft)"/>'
 
 def mix(a, b, t):
     a = [int(a[i:i + 2], 16) for i in (1, 3, 5)]; b = [int(b[i:i + 2], 16) for i in (1, 3, 5)]
     return '#' + ''.join('%02x' % round(a[i] + (b[i] - a[i]) * t) for i in range(3))
-def shade(c, t=.28): return mix(c, '#6f5a8e', t)
+def shade(c, t=.28): return mix(c, '#6a5250', t)
 def light(c, t=.45): return mix(c, '#ffffff', t)
 
 # ---------------------------------------------------------------- props
@@ -234,7 +234,7 @@ def wainscot(c, X0, X1, z, Y1, col, n):
 FRN=[0]
 def frame_svg(content, label, lc=(.5, .38), dark=.62):
     FRN[0] += 1; g = f'lm{FRN[0]}'
-    lm = (f'<radialGradient id="{g}" cx="{lc[0]}" cy="{lc[1]}" r=".85"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#d9c8e6"/><stop offset="1" stop-color="#3a2652"/></radialGradient>'
+    lm = (f'<radialGradient id="{g}" cx="{lc[0]}" cy="{lc[1]}" r=".85"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e6d8cc"/><stop offset="1" stop-color="#2e2226"/></radialGradient>'
           f'<rect width="540" height="960" fill="url(#{g})" opacity="{dark}" style="mix-blend-mode:multiply"/>')
     return (f'<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{label}">'
             f'<g filter="url(#grade)">{content}</g>{lm}{texture()}<g class="guide"><rect x="24" y="576" width="492" height="144" fill="none" stroke="#fff" stroke-opacity=".75" stroke-dasharray="6 5" stroke-width="1.5"/>'
@@ -244,27 +244,27 @@ def frame_svg(content, label, lc=(.5, .38), dark=.62):
 def scene_lobby():
     c = Cam(270, 440, 160, 660); ZB = 1000; XL, XR, YC = -380, 380, 540
     o = []
-    WALL = '#a98fbf'; CEIL = '#8a74a8'
+    WALL = '#d2b8a6'; CEIL = '#c4ab98'
     # เพดาน
     o.append(path(c.poly([(XL, YC, ZB), (XR, YC, ZB), (XR, YC, 120), (XL, YC, 120)]), CEIL))
     for X in (-380, -190, 0, 190, 380):
-        o.append(f'<path d="{c.poly([(X - 6, YC, ZB), (X + 6, YC, ZB), (X + 6, YC, 150), (X - 6, YC, 150)])}" fill="#efe6f5"/>')
+        o.append(f'<path d="{c.poly([(X - 6, YC, ZB), (X + 6, YC, ZB), (X + 6, YC, 150), (X - 6, YC, 150)])}" fill="#efe4d6"/>')
     for z in (1000, 820, 660, 540, 440, 360):
         o.append(f'<path d="{c.poly([(XL, YC, z), (XR, YC, z), (XR, YC, z - 14), (XL, YC, z - 14)])}" fill="#efe6f5"/>')
         o.append(f'<path d="{c.poly([(XL, YC, z - 14), (XR, YC, z - 14), (XR, YC, z - 17), (XL, YC, z - 17)])}" fill="#e3cd9e" opacity=".8"/>')
     mx, my = c.p(0, YC, 470)
     o.append(f'<ellipse cx="{fx(mx)}" cy="{fx(my)}" rx="70" ry="18" fill="#f3ecf8"/><ellipse cx="{fx(mx)}" cy="{fx(my)}" rx="54" ry="13" fill="none" stroke="#e3cd9e" stroke-width="2"/><ellipse cx="{fx(mx)}" cy="{fx(my)}" rx="30" ry="7" fill="#e9dff2"/>')
     # ผนังข้าง
-    o.append(path(side(c, XL, ZB, 120, 0, YC), '#8c74a6'))
-    o.append(path(side(c, XR, ZB, 120, 0, YC), '#7a6396'))
-    for X, col in ((XL, '#6f5a8c'), (XR, '#634f80')):
+    o.append(path(side(c, XL, ZB, 120, 0, YC), '#bfa391'))
+    o.append(path(side(c, XR, ZB, 120, 0, YC), '#ad917f'))
+    for X, col in ((XL, '#6e4a3a'), (XR, '#62402f')):
         o.append(path(side(c, X, ZB, 120, 0, 95), col))
         o.append(path(side(c, X, ZB, 120, 95, 102), '#efe5f5'))
         o.append(path(side(c, X, ZB, 120, YC - 30, YC), '#efe6f5'))
     # ผนังหลัง
     o.append(path(back(c, XL, XR, 0, YC, ZB), WALL))
     o.append(f'<path d="{back(c, XL, XR, 110, YC - 30, ZB)}" fill="url(#damask)"/>')
-    o.append(wainscot(c, XL, XR, ZB, 105, '#7b5f8f', 8))
+    o.append(wainscot(c, XL, XR, ZB, 105, '#7a4e3c', 8))
     o.append(path(back(c, XL, XR, YC - 32, YC, ZB), '#f6eff8'))
     o.append(path(back(c, XL, XR, YC - 36, YC - 32, ZB), '#e3cd9e'))
     for X in (-330, -200, 200, 330):
@@ -326,7 +326,7 @@ def scene_lobby():
     o.append(flowers(x, y - 38 * k, 20 * k, 15 * k, 77, 26, .8 * k))
     # ม้านั่งกำมะหยี่ผนังขวา
     o.append(fshadow(c, XR - 60, XR, 640, 860, 14, 10))
-    o.append(box(c, XR - 60, XR, 0, 46, 640, 860, '#7a4f8a', '#643d76', '#55336a'))
+    o.append(box(c, XR - 60, XR, 0, 46, 640, 860, '#8e3e4e', '#7a3242', '#682a38'))
     for zz in (660, 750, 840):
         x, y = c.p(XR - 30, 46, zz); k = c.k(zz)
         o.append(f'<circle cx="{fx(x)}" cy="{fx(y)}" r="{fx(1.6 * k)}" fill="#8e76aa"/>')
@@ -336,7 +336,7 @@ def scene_lobby():
     ax, ay = c.p(X, 0, z); k = c.k(z)
     o.append(f'<path d="M{fx(ax - 22 * k)},{fx(ay)} L{fx(ax)},{fx(ay - 160 * k)} L{fx(ax + 22 * k)},{fx(ay)}" stroke="#cfae78" stroke-width="{fx(3 * k)}" fill="none"/>')
     bx0, by0 = ax - 34 * k, ay - 150 * k
-    o.append(f'<rect x="{fx(bx0 + 3)}" y="{fx(by0 + 4)}" width="{fx(68 * k)}" height="{fx(90 * k)}" fill="#3b2550" opacity=".25" filter="url(#soft)"/>')
+    o.append(f'<rect x="{fx(bx0 + 3)}" y="{fx(by0 + 4)}" width="{fx(68 * k)}" height="{fx(90 * k)}" fill="#3a2a28" opacity=".25" filter="url(#soft)"/>')
     o.append(f'<rect x="{fx(bx0)}" y="{fx(by0)}" width="{fx(68 * k)}" height="{fx(90 * k)}" fill="#fffbf8" stroke="#e3cd9e" stroke-width="{fx(1.4 * k)}"/>')
     o.append(f'<rect x="{fx(bx0 + 5 * k)}" y="{fx(by0 + 5 * k)}" width="{fx(58 * k)}" height="{fx(80 * k)}" fill="none" stroke="#ead8b2" stroke-width="{fx(.7 * k)}"/>')
     o.append(f'<text x="{fx(ax)}" y="{fx(by0 + 34 * k)}" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="{fx(11 * k)}" fill="#8f7aa8">Welcome</text>')
@@ -349,7 +349,7 @@ def scene_lobby():
     while zs[-1] > 140: zs.append(zs[-1] - T)
     for j in range(len(zs) - 1):
         for i, X in enumerate(range(XL, XR, T)):
-            col = '#efe3e6' if (i + j) % 2 == 0 else '#6f5a8c'
+            col = '#f0e6da' if (i + j) % 2 == 0 else '#4a3532'
             tiles.append(path(flat(c, X, X + T, zs[j + 1], zs[j], 0), col))
     o.insert(0, '')
     floor_d = flat(c, XL, XR, 120, ZB, 0)
@@ -375,18 +375,18 @@ def scene_lobby():
 def chair_back(c, X, z, sash=True):
     x, y = c.p(X, 0, z); k = c.k(z)
     W, S, T = 44 * k, 46 * k, 94 * k
-    o = [f'<ellipse cx="{fx(x + 8 * k)}" cy="{fx(y + 2 * k)}" rx="{fx(W * .7)}" ry="{fx(5 * k)}" fill="#3b2550" opacity=".22" filter="url(#soft)"/>']
+    o = [f'<ellipse cx="{fx(x + 8 * k)}" cy="{fx(y + 2 * k)}" rx="{fx(W * .7)}" ry="{fx(5 * k)}" fill="#3a2a28" opacity=".22" filter="url(#soft)"/>']
     L = x - W / 2; R = x + W / 2
-    o.append(f'<rect x="{fx(L + 1 * k)}" y="{fx(y - S)}" width="{fx(W - 2 * k)}" height="{fx(4 * k)}" fill="#e5dbee"/>')
+    o.append(f'<rect x="{fx(L + 1 * k)}" y="{fx(y - S)}" width="{fx(W - 2 * k)}" height="{fx(4 * k)}" fill="#f6efe6"/>')
     for lx in (L, R - 3.4 * k):
-        o.append(f'<rect x="{fx(lx)}" y="{fx(y - T)}" width="{fx(3.4 * k)}" height="{fx(T)}" fill="#fbf8fd"/>')
-    o.append(f'<rect x="{fx(R - 3.4 * k)}" y="{fx(y - T)}" width="{fx(1.4 * k)}" height="{fx(T)}" fill="#ded3ea"/>')
+        o.append(f'<rect x="{fx(lx)}" y="{fx(y - T)}" width="{fx(3.4 * k)}" height="{fx(T)}" fill="#e4c690"/>')
+    o.append(f'<rect x="{fx(R - 3.4 * k)}" y="{fx(y - T)}" width="{fx(1.4 * k)}" height="{fx(T)}" fill="#b8955e"/>')
     for yy in (T, T - 22 * k, S + 12 * k):
-        o.append(f'<rect x="{fx(L)}" y="{fx(y - yy)}" width="{fx(W)}" height="{fx(3 * k)}" fill="#fbf8fd"/>')
+        o.append(f'<rect x="{fx(L)}" y="{fx(y - yy)}" width="{fx(W)}" height="{fx(3 * k)}" fill="#e4c690"/>')
     for i in range(1, 5):
         sx = L + W * i / 5
-        o.append(f'<rect x="{fx(sx - .8 * k)}" y="{fx(y - T + 22 * k)}" width="{fx(1.6 * k)}" height="{fx(T - S - 34 * k)}" fill="#f4eff8"/>')
-    o.append(f'<rect x="{fx(L + 6 * k)}" y="{fx(y - S + 4 * k)}" width="{fx(2 * k)}" height="{fx(S - 4 * k)}" fill="#d9cde5"/><rect x="{fx(R - 8 * k)}" y="{fx(y - S + 4 * k)}" width="{fx(2 * k)}" height="{fx(S - 4 * k)}" fill="#d9cde5"/>')
+        o.append(f'<rect x="{fx(sx - .8 * k)}" y="{fx(y - T + 22 * k)}" width="{fx(1.6 * k)}" height="{fx(T - S - 34 * k)}" fill="#d6b67c"/>')
+    o.append(f'<rect x="{fx(L + 6 * k)}" y="{fx(y - S + 4 * k)}" width="{fx(2 * k)}" height="{fx(S - 4 * k)}" fill="#c9a76c"/><rect x="{fx(R - 8 * k)}" y="{fx(y - S + 4 * k)}" width="{fx(2 * k)}" height="{fx(S - 4 * k)}" fill="#b8955e"/>')
     if sash:
         by = y - T + 30 * k
         o.append(f'<path d="M{fx(L)},{fx(by)} Q{fx(x)},{fx(by + 6 * k)} {fx(R)},{fx(by)} L{fx(R)},{fx(by + 7 * k)} Q{fx(x)},{fx(by + 13 * k)} {fx(L)},{fx(by + 7 * k)}Z" fill="#f2cbd8"/>')
@@ -398,9 +398,9 @@ def chair_back(c, X, z, sash=True):
 def scene_ballroom():
     c = Cam(270, 362, 160, 660); ZB = 1200; YC = 600
     o = []
-    WALL = '#ad94c2'
+    WALL = '#d6bcaa'
     # เพดานลายช่อง
-    o.append(path(c.poly([(-1400, YC, ZB), (1400, YC, ZB), (1400, YC, 500), (-1400, YC, 500)]), '#7c66a0'))
+    o.append(path(c.poly([(-1400, YC, ZB), (1400, YC, ZB), (1400, YC, 500), (-1400, YC, 500)]), '#c2a894'))
     for X in range(-1400, 1401, 200):
         o.append(f'<path d="{c.poly([(X - 10, YC, ZB), (X + 10, YC, ZB), (X + 10, YC, 500), (X - 10, YC, 500)])}" fill="#efe7f6"/>')
     for z in (1200, 1050, 920, 810):
@@ -412,7 +412,7 @@ def scene_ballroom():
     o.append(path(back(c, -1400, 1400, YC - 50, YC, ZB), '#f6f0f8'))
     o.append(path(back(c, -1400, 1400, YC - 56, YC - 50, ZB), '#e3cd9e'))
     o.append(path(back(c, -1400, 1400, YC - 12, YC - 6, ZB), '#e3cd9e'))
-    o.append(wainscot(c, -1400, 1400, ZB, 95, '#7b5f8f', 14))
+    o.append(wainscot(c, -1400, 1400, ZB, 95, '#7a4e3c', 14))
     # หน้าต่างโค้ง
     win = [(-150, 150, 70, 530), (-430, -300, 90, 480), (300, 430, 90, 480)]
     for idx, (a, b, y0, y1) in enumerate(win):
@@ -469,14 +469,14 @@ def scene_ballroom():
         o.append(f'<circle cx="{fx(x)}" cy="{fx(y - 140 * kk)}" r="{fx(60 * kk)}" fill="url(#chGlow)"/>')
     # พื้นหินอ่อน + พรมทางเดิน
     floor_d = flat(c, -1400, 1400, 150, 1020, 0)
-    o.append(path(floor_d, '#c9b4cf'))
+    o.append(path(floor_d, '#dccbbd'))
     o.append(f'<clipPath id="brF"><path d="{floor_d}"/></clipPath><g clip-path="url(#brF)">')
     for X in range(-1400, 1401, 120):
-        o.append(f'<path d="{c.poly([(X - 1, 0, 1020), (X + 1, 0, 1020), (X + 1, 0, 150), (X - 1, 0, 150)])}" fill="#d6c8e0"/>')
+        o.append(f'<path d="{c.poly([(X - 1, 0, 1020), (X + 1, 0, 1020), (X + 1, 0, 150), (X - 1, 0, 150)])}" fill="#c8b4a2"/>')
     for z in (1020, 880, 760, 655, 565, 488, 420, 360, 310, 268, 230, 198, 170):
-        o.append(f'<path d="{c.poly([(-1400, 0, z), (1400, 0, z), (1400, 0, z - 2), (-1400, 0, z - 2)])}" fill="#d6c8e0"/>')
+        o.append(f'<path d="{c.poly([(-1400, 0, z), (1400, 0, z), (1400, 0, z - 2), (-1400, 0, z - 2)])}" fill="#c8b4a2"/>')
     o.append(veins(8, 70, (0, 450, 540, 960), '#ffffff', .5))
-    o.append(veins(9, 30, (0, 450, 540, 960), '#c5b4d6', .3))
+    o.append(veins(9, 30, (0, 450, 540, 960), '#b49c88', .3))
     o.append(path(flat(c, -92, 92, 150, 1020, 0), '#9c3f5e'))
     o.append(path(flat(c, -82, 82, 150, 1020, 0), '#c25f7d'))
     o.append(f'<path d="{flat(c, -82, 0, 150, 1020, 0)}" fill="#d9809a" opacity=".45"/>')
@@ -499,7 +499,7 @@ def scene_ballroom():
             for side_ in (-1, 1):
                 X = side_ * 108
                 x, y = c.p(X, 0, z - 20); kk = c.k(z - 20)
-                o.append(f'<ellipse cx="{fx(x + 8 * kk)}" cy="{fx(y + 2 * kk)}" rx="{fx(14 * kk)}" ry="{fx(4 * kk)}" fill="#3b2550" opacity=".25" filter="url(#soft)"/>')
+                o.append(f'<ellipse cx="{fx(x + 8 * kk)}" cy="{fx(y + 2 * kk)}" rx="{fx(14 * kk)}" ry="{fx(4 * kk)}" fill="#3a2a28" opacity=".25" filter="url(#soft)"/>')
                 o.append(f'<path d="M{fx(x - 9 * kk)},{fx(y)} h{fx(18 * kk)} l{fx(-4 * kk)},{fx(-10 * kk)} v{fx(-62 * kk)} l{fx(5 * kk)},{fx(-8 * kk)} h{fx(-20 * kk)} l{fx(5 * kk)},{fx(8 * kk)} v{fx(62 * kk)}Z" fill="#f6f0f8"/>')
                 o.append(f'<path d="M{fx(x + 1 * kk)},{fx(y - 10 * kk)} v{fx(-62 * kk)} h{fx(4 * kk)} v{fx(62 * kk)}Z" fill="#ddd0e8"/>')
                 o.append(flowers(x, y - 88 * kk, 22 * kk, 17 * kk, 700 + zi * 3 + side_, 22, .55 * kk, trail=3))
@@ -521,15 +521,15 @@ def scene_ballroom():
 def scene_dressing():
     c = Cam(260, 330, 160, 700); ZB = 350; YC = 290
     o = []
-    WALL = '#b88aa8'
-    o.append(path(c.poly([(-300, YC, ZB), (300, YC, ZB), (300, YC, 90), (-300, YC, 90)]), '#8d6890'))
+    WALL = '#dcbcae'
+    o.append(path(c.poly([(-300, YC, ZB), (300, YC, ZB), (300, YC, 90), (-300, YC, 90)]), '#cdb0a0'))
     o.append(path(c.poly([(-300, YC, ZB), (300, YC, ZB), (300, YC, ZB - 30), (-300, YC, ZB - 30)]), '#f7eef4'))
     o.append(path(c.poly([(-300, YC, ZB - 30), (300, YC, ZB - 30), (300, YC, ZB - 34), (-300, YC, ZB - 34)]), '#e3cd9e'))
     o.append(path(back(c, -300, 300, 0, YC, ZB), WALL))
     o.append(f'<path d="{back(c, -300, 300, 92, YC - 22, ZB)}" fill="url(#damask)"/>')
     o.append(path(back(c, -300, 300, YC - 22, YC, ZB), '#f9f1f6'))
     o.append(path(back(c, -300, 300, YC - 25, YC - 22, ZB), '#e3cd9e'))
-    o.append(wainscot(c, -300, 300, ZB, 88, '#8e5f80', 5))
+    o.append(wainscot(c, -300, 300, ZB, 88, '#f1e4d8', 5))
     # หน้าต่าง
     xa, yb_ = c.p(25, 70, ZB); xb, yt_ = c.p(140, 250, ZB)
     o.append(f'<rect x="{fx(xa - 10)}" y="{fx(yt_ - 10)}" width="{fx(xb - xa + 20)}" height="{fx(yb_ - yt_ + 22)}" fill="#fbf6f8"/>')
@@ -542,17 +542,17 @@ def scene_dressing():
     for t in (.25, .5, .75):
         o.append(f'<rect x="{fx(xa)}" y="{fx(yt_ + (yb_ - yt_) * t - 2)}" width="{fx(xb - xa)}" height="4" fill="#fbf6f8"/>')
     o.append(sheer(xa - 6, yt_ - 30, yb_ + 30, 46, .38))
-    o.append(drape(xa - 70, yt_ - 40, yb_ + 140, 90, '#7e3f6c', 1, .55))
-    o.append(drape(xb - 30, yt_ - 40, yb_ + 140, 90, '#7e3f6c', -1, .55))
+    o.append(drape(xa - 70, yt_ - 40, yb_ + 140, 90, '#8e3e4e', 1, .55))
+    o.append(drape(xb - 30, yt_ - 40, yb_ + 140, 90, '#8e3e4e', -1, .55))
     o.append(f'<rect x="{fx(xa - 80)}" y="{fx(yt_ - 46)}" width="{fx(xb - xa + 170)}" height="8" rx="4" fill="#e3cd9e"/>')
     # พื้นพรมกับพรมวงรี
     floor_d = flat(c, -300, 300, 120, ZB, 0)
-    o.append(path(floor_d, '#8a6a8f'))
+    o.append(path(floor_d, '#9c8072'))
     o.append(f'<clipPath id="drF"><path d="{floor_d}"/></clipPath><g clip-path="url(#drF)">')
     for X in range(-300, 301, 18):
-        o.append(f'<path d="{c.poly([(X, 0, ZB), (X + 9, 0, ZB), (X + 9, 0, 120), (X, 0, 120)])}" fill="#7d5f84" opacity=".6"/>')
+        o.append(f'<path d="{c.poly([(X, 0, ZB), (X + 9, 0, ZB), (X + 9, 0, 120), (X, 0, 120)])}" fill="#8f7466" opacity=".6"/>')
     ex, ey = c.p(-30, 0, 230); kk = c.k(230)
-    o.append(f'<ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(150 * kk)}" ry="{fx(42 * kk)}" fill="#d8b9cc"/><ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(136 * kk)}" ry="{fx(36 * kk)}" fill="none" stroke="#e7c6d6" stroke-width="{fx(5 * kk)}"/><ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(110 * kk)}" ry="{fx(28 * kk)}" fill="none" stroke="#efd6e2" stroke-width="{fx(2 * kk)}" stroke-dasharray="6 5"/>')
+    o.append(f'<ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(150 * kk)}" ry="{fx(42 * kk)}" fill="#ead2c4"/><ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(136 * kk)}" ry="{fx(36 * kk)}" fill="none" stroke="#e7c6d6" stroke-width="{fx(5 * kk)}"/><ellipse cx="{fx(ex)}" cy="{fx(ey)}" rx="{fx(110 * kk)}" ry="{fx(28 * kk)}" fill="none" stroke="#efd6e2" stroke-width="{fx(2 * kk)}" stroke-dasharray="6 5"/>')
     o.append('</g>')
     # โต๊ะเครื่องแป้ง
     VX0, VX1, VZ0, VZ1 = -140, -15, 305, ZB
@@ -598,10 +598,10 @@ def scene_dressing():
     o.append(fshadow(c, -110, -50, 255, 290, 14, 10, .3))
     for X in (-106, -58):
         o.append(box(c, X, X + 4, 0, 40, 258, 262, '#e3cd9e', '#d9bb82', '#c9a874'))
-    o.append(box(c, -112, -48, 38, 50, 255, 292, '#a85d86', '#924b73', '#7f3f65'))
+    o.append(box(c, -112, -48, 38, 50, 255, 292, '#b8606e', '#a0505e', '#8a4350'))
     # หุ่นชุดเจ้าสาว หน้าหน้าต่าง
     bx, by = c.p(82, 0, 290); kk = c.k(290)
-    o.append(f'<ellipse cx="{fx(bx + 30 * kk)}" cy="{fx(by + 4 * kk)}" rx="{fx(75 * kk)}" ry="{fx(12 * kk)}" fill="#3b2550" opacity=".3" filter="url(#soft)"/>')
+    o.append(f'<ellipse cx="{fx(bx + 30 * kk)}" cy="{fx(by + 4 * kk)}" rx="{fx(75 * kk)}" ry="{fx(12 * kk)}" fill="#3a2a28" opacity=".3" filter="url(#soft)"/>')
     sk = f'M{fx(bx - 8 * kk)},{fx(by - 100 * kk)} C{fx(bx - 30 * kk)},{fx(by - 60 * kk)} {fx(bx - 62 * kk)},{fx(by - 20 * kk)} {fx(bx - 70 * kk)},{fx(by)} L{fx(bx + 70 * kk)},{fx(by)} C{fx(bx + 62 * kk)},{fx(by - 20 * kk)} {fx(bx + 30 * kk)},{fx(by - 60 * kk)} {fx(bx + 8 * kk)},{fx(by - 100 * kk)}Z'
     o.append(path(sk, '#fbf7fb'))
     o.append(f'<path d="M{fx(bx + 2 * kk)},{fx(by - 100 * kk)} C{fx(bx + 26 * kk)},{fx(by - 60 * kk)} {fx(bx + 52 * kk)},{fx(by - 24 * kk)} {fx(bx + 70 * kk)},{fx(by)} L{fx(bx + 26 * kk)},{fx(by)} C{fx(bx + 22 * kk)},{fx(by - 40 * kk)} {fx(bx + 10 * kk)},{fx(by - 70 * kk)} {fx(bx + 2 * kk)},{fx(by - 100 * kk)}Z" fill="#e7dcee"/>')
@@ -618,10 +618,10 @@ def scene_dressing():
     o.append(f'<path d="{sk}" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".9" filter="url(#glow)"/>')
     # อาร์มแชร์กำมะหยี่ฉากหน้าซ้าย + โต๊ะข้าง
     o.append(fshadow(c, -170, -90, 160, 220, 20, 12, .35))
-    o.append(box(c, -175, -165, 0, 95, 165, 225, '#8e4a72', '#7a3c62', '#6a3256'))
-    o.append(box(c, -175, -90, 0, 42, 165, 225, '#9c5480', '#86456d', '#743b5f'))
-    o.append(box(c, -170, -95, 42, 52, 168, 222, '#b06a92', '#9a5a80', '#874c70'))
-    o.append(box(c, -100, -88, 0, 64, 165, 225, '#9c5480', '#86456d', '#743b5f'))
+    o.append(box(c, -175, -165, 0, 95, 165, 225, '#9a4656', '#843a4a', '#70303e'))
+    o.append(box(c, -175, -90, 0, 42, 165, 225, '#a84e5e', '#904252', '#7a3646'))
+    o.append(box(c, -170, -95, 42, 52, 168, 222, '#bc6a78', '#a45a68', '#8e4c5a'))
+    o.append(box(c, -100, -88, 0, 64, 165, 225, '#a84e5e', '#904252', '#7a3646'))
     x, y = c.p(-95, 64, 165); kk = c.k(165)
     o.append(f'<path d="M{fx(x - 4 * kk)},{fx(y)} q{fx(6 * kk)},{fx(-8 * kk)} {fx(14 * kk)},0" stroke="#efd5e5" stroke-width="{fx(4 * kk)}" fill="none"/>')
     # ผ้าคลุมหน้าบนแขนเก้าอี้
@@ -637,12 +637,12 @@ def scene_dressing():
 def scene_suite():
     c = Cam(230, 360, 160, 560); ZB = 420; XL, XR, YC = -190, 200, 300
     o = []
-    WALL = '#6f5f98'
-    o.append(path(c.poly([(XL, YC, ZB), (XR, YC, ZB), (XR, YC, 80), (XL, YC, 80)]), '#a99cc6'))
-    o.append(path(c.poly([(XL, YC, ZB), (XR, YC, ZB), (XR, YC, ZB - 26), (XL, YC, ZB - 26)]), '#cfc4e2'))
+    WALL = '#66708c'
+    o.append(path(c.poly([(XL, YC, ZB), (XR, YC, ZB), (XR, YC, 80), (XL, YC, 80)]), '#4a5168'))
+    o.append(path(c.poly([(XL, YC, ZB), (XR, YC, ZB), (XR, YC, ZB - 26), (XL, YC, ZB - 26)]), '#cbbfb2'))
     o.append(path(c.poly([(XL, YC, ZB - 26), (XR, YC, ZB - 26), (XR, YC, ZB - 29), (XL, YC, ZB - 29)]), '#d9c49a'))
-    o.append(path(side(c, XR, ZB, 60, 0, YC), '#574a82'))
-    o.append(path(side(c, XL, ZB, 60, 0, YC), '#625490'))
+    o.append(path(side(c, XR, ZB, 60, 0, YC), '#535c78'))
+    o.append(path(side(c, XL, ZB, 60, 0, YC), '#5c6682'))
     # หน้าต่างผนังขวา วิวเมืองกลางคืน
     o.append(path(side(c, XR, 380, 120, 40, 270), '#cfc6e2'))
     wq = side(c, XR, 372, 128, 48, 262)
@@ -655,12 +655,12 @@ def scene_suite():
     o.append(path(back(c, XL, XR, 0, YC, ZB), WALL))
     o.append(f'<path d="{back(c, XL, XR, 90, YC - 24, ZB)}" fill="url(#damask)" opacity=".7"/>')
     o.append(path(back(c, XL, XR, YC - 24, YC, ZB), '#cdc2e0'))
-    o.append(wainscot(c, XL, XR, ZB, 86, '#5c4d86', 5))
+    o.append(wainscot(c, XL, XR, ZB, 86, '#5a4038', 5))
     # ประตูทางเข้าห้อง
     o.append(path(back(c, -186, -96, 0, 222, ZB), '#d8cfe8'))
-    o.append(path(back(c, -180, -102, 0, 216, ZB), '#5a3f5e'))
-    o.append(path(back(c, -174, -108, 20, 110, ZB), '#4e3553'))
-    o.append(path(back(c, -174, -108, 122, 204, ZB), '#4e3553'))
+    o.append(path(back(c, -180, -102, 0, 216, ZB), '#6a4a3c'))
+    o.append(path(back(c, -174, -108, 20, 110, ZB), '#5a3e32'))
+    o.append(path(back(c, -174, -108, 122, 204, ZB), '#5a3e32'))
     hx, hy = c.p(-112, 105, ZB)
     o.append(f'<rect x="{fx(hx - 9)}" y="{fx(hy - 3)}" width="12" height="4" rx="2" fill="#e0c995"/><rect x="{fx(hx - 3)}" y="{fx(hy - 22)}" width="6" height="16" rx="1.5" fill="#463f62"/><circle cx="{fx(hx)}" cy="{fx(hy - 18)}" r="1.4" fill="#9effc8"/>')
     px, py = c.p(-141, 160, ZB)
@@ -672,16 +672,16 @@ def scene_suite():
     # ภาพแขวนเหนือเตียง
     a0, a1 = c.p(-10, 250, ZB), c.p(150, 160, ZB)
     o.append(softsh(P([(a0[0], a0[1]), (a1[0], a0[1]), (a1[0], a1[1]), (a0[0], a1[1])]), 5, 6, .35))
-    o.append(f'<rect x="{fx(a0[0])}" y="{fx(a0[1])}" width="{fx(a1[0] - a0[0])}" height="{fx(a1[1] - a0[1])}" fill="#e2cd9c"/><rect x="{fx(a0[0] + 6)}" y="{fx(a0[1] + 6)}" width="{fx(a1[0] - a0[0] - 12)}" height="{fx(a1[1] - a0[1] - 12)}" fill="#e9e1f2"/>')
-    o.append(f'<path d="M{fx(a0[0] + 6)},{fx(a1[1] - 6)} C{fx(a0[0] + 50)},{fx(a1[1] - 50)} {fx(a1[0] - 60)},{fx(a0[1] + 50)} {fx(a1[0] - 6)},{fx(a0[1] + 20)} L{fx(a1[0] - 6)},{fx(a1[1] - 6)}Z" fill="#c9b6dc"/><circle cx="{fx(a1[0] - 40)}" cy="{fx(a0[1] + 28)}" r="10" fill="#f1d3dd"/>')
+    o.append(f'<rect x="{fx(a0[0])}" y="{fx(a0[1])}" width="{fx(a1[0] - a0[0])}" height="{fx(a1[1] - a0[1])}" fill="#e2cd9c"/><rect x="{fx(a0[0] + 6)}" y="{fx(a0[1] + 6)}" width="{fx(a1[0] - a0[0] - 12)}" height="{fx(a1[1] - a0[1] - 12)}" fill="#ece2d6"/>')
+    o.append(f'<path d="M{fx(a0[0] + 6)},{fx(a1[1] - 6)} C{fx(a0[0] + 50)},{fx(a1[1] - 50)} {fx(a1[0] - 60)},{fx(a0[1] + 50)} {fx(a1[0] - 6)},{fx(a0[1] + 20)} L{fx(a1[0] - 6)},{fx(a1[1] - 6)}Z" fill="#b9a08e"/><circle cx="{fx(a1[0] - 40)}" cy="{fx(a0[1] + 28)}" r="10" fill="#f1d3dd"/>')
     # พื้นพรม
     floor_d = flat(c, XL, XR, 60, ZB, 0)
-    o.append(path(floor_d, '#433867'))
+    o.append(path(floor_d, '#3e3a44'))
     o.append(f'<clipPath id="stF"><path d="{floor_d}"/></clipPath><g clip-path="url(#stF)">')
     for X in range(XL, XR, 14):
-        o.append(f'<path d="{c.poly([(X, 0, ZB), (X + 7, 0, ZB), (X + 7, 0, 60), (X, 0, 60)])}" fill="#3d3260" opacity=".7"/>')
-    o.append(path(flat(c, -150, 180, 90, 300, 0), '#7a5b8a'))
-    o.append(path(flat(c, -140, 170, 98, 292, 0), '#8c6a9a'))
+        o.append(f'<path d="{c.poly([(X, 0, ZB), (X + 7, 0, ZB), (X + 7, 0, 60), (X, 0, 60)])}" fill="#38343e" opacity=".7"/>')
+    o.append(path(flat(c, -150, 180, 90, 300, 0), '#7a5a52'))
+    o.append(path(flat(c, -140, 170, 98, 292, 0), '#8a6a60'))
     o.append(f'<path d="{flat(c, -140, 170, 98, 292, 0)}" fill="none" stroke="#d9c49a" stroke-width="2" stroke-dasharray="5 4"/>')
     o.append(f'<path d="{flat(c, -186, -96, 380, 420, 0)}" fill="#fff1dd" opacity=".35" filter="url(#haze)"/>')
     o.append('</g>')
@@ -702,13 +702,13 @@ def scene_suite():
     o.append(nightstand(164, 198))
     # เตียง
     o.append(fshadow(c, -36, 160, 210, 415, 26, 18, .45))
-    o.append(box(c, -40, 162, 0, 150, 408, 418, '#a58bc0', '#9278b0', '#7f66a0'))
+    o.append(box(c, -40, 162, 0, 150, 408, 418, '#c9b4a2', '#b49e8c', '#9e8878'))
     for i in range(4):
         for j in range(3):
             tx, ty = c.p(-25 + i * 52 + (26 if j % 2 else 0), 70 + j * 26, 408)
             if tx < c.p(150, 0, 408)[0]:
-                o.append(f'<circle cx="{fx(tx)}" cy="{fx(ty)}" r="1.6" fill="#a998c6"/>')
-    o.append(box(c, -32, 154, 0, 30, 215, 408, '#6a5590', '#5a4880', '#4d3d70'))
+                o.append(f'<circle cx="{fx(tx)}" cy="{fx(ty)}" r="1.6" fill="#8e7866"/>')
+    o.append(box(c, -32, 154, 0, 30, 215, 408, '#6a4a40', '#5a3e36', '#4c342e'))
     o.append(box(c, -34, 156, 30, 58, 212, 406, '#fbf8fe', '#efe9f6', '#e2daee'))
     # หมอน
     for X in (-22, 64):
@@ -719,10 +719,10 @@ def scene_suite():
     # ผ้าห่มพับ + ผ้าพาดปลายเตียง
     o.append(path(flat(c, -34, 156, 212, 330, 58.5), '#f5f1fa'))
     o.append(path(flat(c, -34, 156, 318, 330, 58.6), '#ffffff'))
-    o.append(path(flat(c, -34, 156, 230, 270, 58.7), '#7d4f86'))
+    o.append(path(flat(c, -34, 156, 230, 270, 58.7), '#8e3e4e'))
     o.append(path(back(c, -34, 156, 30, 58, 212), '#ebe4f3'))
     o.append(path(back(c, -34, 156, 18, 58, 212), '#a995c8', 'opacity=".0"'))
-    o.append(path(c.poly([(-34, 58.7, 230), (156, 58.7, 230), (156, 26, 228), (-34, 26, 228)]), '#6e4277'))
+    o.append(path(c.poly([(-34, 58.7, 230), (156, 58.7, 230), (156, 26, 228), (-34, 26, 228)]), '#7a3242'))
     # กลีบกุหลาบรูปหัวใจบนเตียง
     r = random.Random(14)
     hcx, hcz = 60, 290
@@ -736,9 +736,9 @@ def scene_suite():
     o.append(fshadow(c, -10, 130, 176, 200, 18, 12, .4))
     for X in (-6, 122):
         o.append(box(c, X, X + 4, 0, 30, 178, 182, '#d9c49a', '#cbb282', '#bca273'))
-    o.append(box(c, -10, 130, 30, 44, 176, 200, '#8a4f86', '#743f72', '#633562'))
+    o.append(box(c, -10, 130, 30, 44, 176, 200, '#8e3e4e', '#7a3242', '#682a38'))
     for X in (10, 40, 70, 100):
-        tx, ty = c.p(X, 44, 188); o.append(f'<circle cx="{fx(tx)}" cy="{fx(ty)}" r="2" fill="#9f80b2"/>')
+        tx, ty = c.p(X, 44, 188); o.append(f'<circle cx="{fx(tx)}" cy="{fx(ty)}" r="2" fill="#5a2430"/>')
     # ถังแชมเปญข้างหน้าต่าง
     x, y = c.p(178, 0, 230); kk = c.k(230)
     o.append(f'<ellipse cx="{fx(x + 10 * kk)}" cy="{fx(y + 2 * kk)}" rx="{fx(16 * kk)}" ry="{fx(4 * kk)}" fill="#20183a" opacity=".4" filter="url(#soft)"/>')
@@ -824,7 +824,7 @@ def scene_elevator():
             o.append(f'<ellipse cx="{fx(x)}" cy="{fx(y)}" rx="{fx(7 * kk)}" ry="{fx(2.2 * kk)}" fill="#fffdf6" filter="url(#glow)"/>')
     # พื้นหินอ่อนลายฝัง
     fl = flat(c, XL, XR, 40, ZB, 0)
-    o.append(path(fl, '#a98f9c'))
+    o.append(path(fl, '#c4b2a4'))
     o.append(f'<clipPath id="elF"><path d="{fl}"/></clipPath><g clip-path="url(#elF)">{veins(71, 30, (0, 700, 540, 960), "#ffffff", .5)}')
     o.append(path(c.poly([(0, 0, 175), (60, 0, 120), (0, 0, 75), (-60, 0, 120)]), '#cdb6c9'))
     o.append(path(c.poly([(0, 0, 165), (48, 0, 120), (0, 0, 85), (-48, 0, 120)]), '#e2cdd9'))
@@ -852,17 +852,17 @@ DEFS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"
 <filter id="glow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <filter id="moteBlur" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.1"/></filter>
 <filter id="moteGlow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<filter id="grade" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="gamma" exponent="1.3" amplitude="1"/><feFuncG type="gamma" exponent="1.4" amplitude="1"/><feFuncB type="gamma" exponent="1.25" amplitude="1"/></feComponentTransfer><feColorMatrix type="saturate" values="1.25"/></filter>
-<radialGradient id="chGlow"><stop offset="0" stop-color="#fff6ea" stop-opacity=".55"/><stop offset=".4" stop-color="#fbe6f0" stop-opacity=".22"/><stop offset="1" stop-color="#f3d6ea" stop-opacity="0"/></radialGradient>
+<filter id="grade" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="gamma" exponent="1.22" amplitude="1"/><feFuncG type="gamma" exponent="1.25" amplitude="1"/><feFuncB type="gamma" exponent="1.3" amplitude="1"/></feComponentTransfer><feColorMatrix type="saturate" values="1.08"/></filter>
+<radialGradient id="chGlow"><stop offset="0" stop-color="#fff6ea" stop-opacity=".6"/><stop offset=".4" stop-color="#fbeadc" stop-opacity=".24"/><stop offset="1" stop-color="#f5dccb" stop-opacity="0"/></radialGradient>
 <radialGradient id="lampGlow"><stop offset="0" stop-color="#fff1e2" stop-opacity=".75"/><stop offset=".5" stop-color="#ffe6dc" stop-opacity=".25"/><stop offset="1" stop-color="#ffe6dc" stop-opacity="0"/></radialGradient>
-<radialGradient id="vig" cx=".5" cy=".46" r=".75"><stop offset=".55" stop-color="#2a1f45" stop-opacity="0"/><stop offset="1" stop-color="#2a1f45" stop-opacity=".42"/></radialGradient>
-<linearGradient id="skyDusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b4796"/><stop offset=".55" stop-color="#9a78bf"/><stop offset="1" stop-color="#f0a8b8"/></linearGradient>
+<radialGradient id="vig" cx=".5" cy=".46" r=".75"><stop offset=".55" stop-color="#2a1e20" stop-opacity="0"/><stop offset="1" stop-color="#2a1e20" stop-opacity=".42"/></radialGradient>
+<linearGradient id="skyDusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d6aa6"/><stop offset=".55" stop-color="#b394bf"/><stop offset="1" stop-color="#f4bfa8"/></linearGradient>
 <linearGradient id="skyNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2050"/><stop offset="1" stop-color="#3d4282"/></linearGradient>
-<linearGradient id="mirror" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3eef8"/><stop offset=".5" stop-color="#d7cbe6"/><stop offset="1" stop-color="#efe6f3"/></linearGradient>
+<linearGradient id="mirror" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f2ef"/><stop offset=".5" stop-color="#cfd2d8"/><stop offset="1" stop-color="#eeebe6"/></linearGradient>
 <linearGradient id="beamW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6ee" stop-opacity=".55"/><stop offset="1" stop-color="#fff6ee" stop-opacity="0"/></linearGradient>
-<linearGradient id="beamP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe4ee" stop-opacity=".6"/><stop offset="1" stop-color="#f7d6ea" stop-opacity="0"/></linearGradient>
+<linearGradient id="beamP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9dc" stop-opacity=".6"/><stop offset="1" stop-color="#f8dccc" stop-opacity="0"/></linearGradient>
 <linearGradient id="beamB" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfdcff" stop-opacity=".5"/><stop offset="1" stop-color="#cfdcff" stop-opacity="0"/></linearGradient>
-<pattern id="damask" width="34" height="44" patternUnits="userSpaceOnUse"><g fill="#ffffff" opacity=".28"><path d="M17,6 C21,12 25,14 25,20 C25,26 20,28 17,34 C14,28 9,26 9,20 C9,14 13,12 17,6Z"/><circle cx="17" cy="40" r="1.6"/><circle cx="0" cy="18" r="1.6"/><circle cx="34" cy="18" r="1.6"/></g><path d="M17,12 L17,30" stroke="#b9a6d3" stroke-width=".8" opacity=".35"/></pattern>
+<pattern id="damask" width="34" height="44" patternUnits="userSpaceOnUse"><g fill="#ffffff" opacity=".28"><path d="M17,6 C21,12 25,14 25,20 C25,26 20,28 17,34 C14,28 9,26 9,20 C9,14 13,12 17,6Z"/><circle cx="17" cy="40" r="1.6"/><circle cx="0" cy="18" r="1.6"/><circle cx="34" cy="18" r="1.6"/></g><path d="M17,12 L17,30" stroke="#b8a08a" stroke-width=".8" opacity=".35"/></pattern>
 </defs></svg>'''
 
 SCENES = [
@@ -904,7 +904,7 @@ def build():
     figs = ''.join(f'<figure>{fn()}<figcaption><b>{t}</b><small>{n}</small></figcaption></figure>' for t, n, fn in SCENES)
     page = CSS + DEFS + f'''<div class="wrap" id="wrap"><header><h1>ฉากโรงแรมหรู ตอนงานแต่ง<span>Odd Hours · ถ้าวันนี้เป็นวันแต่งงานของคุณ · ฉากเปล่า 5 ฉาก ยังไม่ใส่ตัวละคร</span></h1><button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button></header>
 <div class="grid">{figs}</div>
-<p class="note">โทนสีม่วงลาเวนเดอร์อมชมพูตามภาพตัวอย่างที่ส่งมา ใช้แสงขาวอุ่นกับทองอ่อน ไม่ให้ออกเหลือง ฉากห้องพักกับลิฟต์กดให้เย็นลงตามจังหวะเรื่อง ทุกฉากมีเม็ดเกรน ลำแสงพร้อมฝุ่นลอย และเงาตกเยื้องไปทางขวาล่าง</p></div>
+<p class="note">โทนแชมเปญอมกุหลาบ ไม้เข้ม ทอง และผ้ากุหลาบเข้มตามภาพตัวอย่างที่ส่งมา ใช้แสงขาวอุ่นกับทองอ่อน ไม่ให้ออกเหลือง ฉากห้องพักกับลิฟต์กดให้เย็นลงตามจังหวะเรื่อง ทุกฉากมีเม็ดเกรน ลำแสงพร้อมฝุ่นลอย และเงาตกเยื้องไปทางขวาล่าง</p></div>
 <script>const b=document.getElementById('toggle'),w=document.getElementById('wrap');b.addEventListener('click',()=>{{const on=w.classList.toggle('show-guide');b.setAttribute('aria-pressed',String(on));b.textContent=on?'ซ่อนพื้นที่ซับ':'แสดงพื้นที่ซับ';}});</script>'''
     open('sets.html', 'w').write(page)
     print('ok', len(page))
