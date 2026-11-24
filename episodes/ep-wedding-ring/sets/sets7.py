@@ -68,6 +68,63 @@ def fog(seed, y0, y1, n, op=.18):
         o.append(f'<ellipse cx="{x:.0f}" cy="{y:.0f}" rx="{r.uniform(80, 170):.0f}" ry="{r.uniform(10, 22):.0f}" fill="#eef0f6" opacity="{r.uniform(op * .5, op):.2f}" filter="url(#bl4)"/>')
     return ''.join(o)
 
+# ---------------------------------------------------------------- ดอกไม้แบบหลอน
+E_WHITE = ('#efe9df', '#fbf8f2', '#b9afa4')
+E_DUST = ('#e2d6ca', '#f1e8de', '#a99a8c')
+E_WILT = ('#ded0b8', '#ece2cf', '#9a8068')
+E_BLOOD = ('#5a1620', '#7e2632', '#2e0a10')
+E_LEAF = (('#55634f', '#76846c', '#384236'), ('#626858', '#848a76', '#41463a'), ('#4a5446', '#68745e', '#2f382c'))
+
+def wilted(x, y, r, pal, rot, droop=False):
+    o = T.rose(x, y, r, *pal, rot=rot)
+    # ขอบกลีบเหี่ยวสีน้ำตาล
+    o += f'<path d="M{fx(x - r * .9)},{fx(y + r * .3)} A{fx(r)},{fx(r)} 0 0,0 {fx(x + r * .7)},{fx(y + r * .7)}" fill="none" stroke="#8a7058" stroke-width="{fx(r * .2)}" opacity=".55" transform="rotate({rot:.0f} {fx(x)} {fx(y)})"/>'
+    return o
+
+def bouquetE(cx, cy, rx, ry, seed, s=1.0, n=28, droop=5, vines=4):
+    r = random.Random(seed); o = []
+    # เถาไม้เลื้อยสีหม่นห้อยยาวลงมา
+    for i in range(vines):
+        x = cx + r.uniform(-rx, rx) * .8; y = cy + ry * .4; L = r.uniform(70, 150) * s
+        sway = r.uniform(-14, 14) * s
+        o.append(f'<path d="M{fx(x)},{fx(y)} q{fx(sway)},{fx(L * .5)} {fx(sway * .4)},{fx(L)}" stroke="#3f4a3a" stroke-width="{fx(1.3 * s)}" fill="none"/>')
+        for j in range(7):
+            t = (j + 1) / 8
+            o.append(T.leaf(x + sway * t * (1.2 - t), y + L * t, r.uniform(5, 8) * s, 90 + r.uniform(-70, 70), r.choice(E_LEAF)))
+    for i in range(int(n * 1.2)):
+        a = r.uniform(0, 2 * math.pi)
+        x = cx + math.cos(a) * rx * r.uniform(.75, 1.1); y = cy + math.sin(a) * ry * r.uniform(.75, 1.1)
+        o.append(T.leaf(x, y, r.uniform(9, 16) * s, math.degrees(a) + r.uniform(-30, 30) + 20, r.choice(E_LEAF)))
+    # ดอกคอตกห้อยลงจากช่อ
+    for i in range(droop):
+        x = cx + r.uniform(-rx, rx) * .9; y0 = cy + ry * .5; L = r.uniform(26, 60) * s
+        ex = x + r.uniform(-10, 10) * s
+        o.append(f'<path d="M{fx(x)},{fx(y0)} q{fx((ex - x) * 2)},{fx(L * .3)} {fx(ex - x)},{fx(L)}" stroke="#4a5644" stroke-width="{fx(1.4 * s)}" fill="none"/>')
+        pal = E_BLOOD if r.random() < .3 else r.choice((E_WILT, E_DUST))
+        o.append(wilted(ex, y0 + L + 4 * s, r.uniform(5, 7) * s, pal, 180 + r.uniform(-30, 30)))
+    fl = []
+    for i in range(n):
+        a = r.uniform(0, 2 * math.pi); d = math.sqrt(r.random())
+        p = r.random()
+        pal = E_BLOOD if p < .22 else (E_WILT if p < .45 else r.choice((E_WHITE, E_DUST)))
+        fl.append((cy + math.sin(a) * ry * d, cx + math.cos(a) * rx * d, r.uniform(5.5, 8.8) * s, pal, r.uniform(-60, 60)))
+    fl.sort()
+    for y, x, rr, pal, rot in fl:
+        o.append(wilted(x, y, rr, pal, rot) if pal in (E_WILT, E_DUST) else T.rose(x, y, rr, *pal, rot=rot))
+    # ยิปโซสีเทา
+    for i in range(int(n * .7)):
+        a = r.uniform(0, 2 * math.pi); d = r.uniform(.6, 1.15)
+        o.append(f'<circle cx="{fx(cx + math.cos(a) * rx * d)}" cy="{fx(cy + math.sin(a) * ry * d)}" r="{fx(1.3 * s)}" fill="#d9d4cc"/>')
+    return ''.join(o)
+
+def petals_at(cx, cy, w, seed, n=10):
+    r = random.Random(seed); o = []
+    for i in range(n):
+        x = cx + r.uniform(-w, w); y = cy + r.uniform(-4, 8)
+        col = r.choice(('#5a1620', '#ded0b8', '#efe9df', '#a99a8c'))
+        o.append(f'<ellipse cx="{fx(x)}" cy="{fx(y)}" rx="{fx(r.uniform(2.6, 4.4))}" ry="{fx(r.uniform(1.2, 2))}" transform="rotate({r.uniform(-50, 50):.0f} {fx(x)} {fx(y)})" fill="{col}"/>')
+    return ''.join(o)
+
 def scene():
     o = []
     H = 640
@@ -144,7 +201,8 @@ def scene():
         o.append(poly([(x - 18, H + 4), (x + 18, H + 4), (x + 12, H - 60), (x + 22, H - 70), (x - 22, H - 70), (x - 12, H - 60)], S.CRM_L))
         o.append(poly([(x + 2, H + 4), (x + 18, H + 4), (x + 12, H - 60), (x + 22, H - 70), (x + 2, H - 70)], S.CRM_D))
         o.append(rect(x - 24, H - 76, 48, 7, SV)); o.append(rect(x - 24, H - 76, 48, 2.4, SV_L))
-        o.append(S.bouquetB(x, H - 104, 44, 34, 30 + x, 1.0, 34, 9, red=.06))
+        o.append(bouquetE(x, H - 104, 46, 34, 30 + x, 1.0, 34, 6, 5))
+        o.append(petals_at(x, H + 8, 30, x))
     # เชิงเทียนตั้งพื้น
     o.append(S.floor_candelabra(92, H + 18, 210, 1.1))
     o.append(S.floor_candelabra(448, H + 18, 210, 1.1))
@@ -190,7 +248,7 @@ def scene():
     o.append(S.motes(5, (120, 240, 420, 760), 24))
     # ขอบภาพเย็นและมืดลง ให้ขลัง
     o.append(rect(0, 0, 540, 960, 'url(#eerie7)', 'style="mix-blend-mode:multiply"'))
-    o.append(f'<g filter="url(#dof4)">{S.bouquetB(10, 930, 80, 60, 91, 2.3, 24, 4, red=.06)}{S.bouquetB(530, 940, 80, 60, 92, 2.3, 24, 4, red=.06)}</g>')
+    o.append(f'<g filter="url(#dof4)">{bouquetE(10, 920, 80, 60, 91, 2.3, 22, 2, 2)}{bouquetE(530, 930, 80, 60, 92, 2.3, 22, 2, 2)}</g>')
     return ''.join(o)
 
 DEFS_EXTRA = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -219,6 +277,7 @@ def build():
         'เทียนแท่งหลายขนาดรอบลายพื้น มีน้ำตาเทียนไหล',
         'ลายกลางพื้นเป็นแหวนสองวงคล้องกัน แสงสนธยาจากหน้าต่างตกลงตรงจุดนั้น',
         'กลีบดอกร่วงบนพื้น มีกลีบแดงเข้มปนนิดหน่อย กับกุหลาบแดงหนึ่งดอก',
+        'ดอกไม้แบบหลอน: กุหลาบขาวเริ่มเหี่ยว ขอบกลีบเป็นสีน้ำตาล ปนกุหลาบแดงเลือดหมู มีดอกคอตกห้อยลงมา เถาไม้เลื้อยสีหม่นไหลลงตามแท่น และกลีบร่วงที่โคนแท่น',
         'หมอกจางเลียดพื้น ขอบภาพเย็นและมืดลง ตรงกลางยังสว่างและหรู',
     ])
     page = css + base + DEFS_EXTRA + f'''<div class="wrap" id="wrap"><header><h1>ห้องพิธี · งาช้างกับเงิน<span>Odd Hours · ถ้าวันนี้เป็นวันแต่งงานของคุณ · เพิ่มรายละเอียดให้ขลัง</span></h1><button id="toggle" type="button" aria-pressed="false">แสดงพื้นที่ซับ</button></header>
