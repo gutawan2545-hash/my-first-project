@@ -13,7 +13,7 @@ EN = {
  4: "Until the ballroom doors swung open.",
  5: "A woman in a black dress walked in, wearing a wedding ring exactly like yours.",
  6: "I'm sorry, but the man you're about to marry... is my husband.",
- 7: "Everyone, please, stay calm. This woman is my ex. She has mental health problems. Security, take her out, please.",
+ 7: "Uh... everyone! Please, calm down. This woman is my ex. She's mentally ill. Security! Get her out of here, now!",
  8: "Before she left, she turned to you and said just one thing.",
  9: "Tonight, don't let him take the ring off your finger. No matter what.",
  10: "The wedding went on, but you started noticing things.",
@@ -45,6 +45,11 @@ def thai_lines(text, n=22):
         _TRIE = Trie(set(thai_words()) | {'เดรส', 'ชุดเดรส', 'เจ้าบ่าว', 'เจ้าสาว', 'แหวนแต่งงาน', 'ห้องจัดเลี้ยง', 'แบบเดียวกับ',
                                           'แฟนเก่า', 'ทุกประการ', 'ปัญหาทางจิต', 'พนักงานรักษาความปลอดภัย', 'สามีของฉัน', 'จากนิ้ว'})
     toks = [t for t in word_tokenize(text, engine='newmm', custom_dict=_TRIE, keep_whitespace=True)]
+    merged = []   # เครื่องหมาย ! ? … ติดคำหน้าเสมอ ไม่ขึ้นบรรทัดใหม่เดี่ยว ๆ
+    for tk in toks:
+        if merged and tk.strip() and all(ch in '!?.…"ๆ' for ch in tk.strip()): merged[-1] += tk
+        else: merged.append(tk)
+    toks = merged
     L = lambda a, b: len(''.join(toks[a:b]).strip())
     m = len(toks); best = [0.0] + [1e18] * m; prev = [0] * (m + 1)
     for b in range(1, m + 1):

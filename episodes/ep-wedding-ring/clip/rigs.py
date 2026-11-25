@@ -59,7 +59,7 @@ def woman_rig(p):
     body = strip(body, F_ARM_KEYS)
     glove = ('#141218', '#2c2a34')
     L, _ = arm(p, 'L', -43, 66, 74, 72, 12, 10, ('#f1d8cc', '#fbeae2'), glove, '#141218')
-    R, _ = arm(p, 'R', 43, 66, 74, 72, 12, 10, ('#dcb7aa', '#c49688'), glove, '#141218', RING.format(x=39.5, y=226, cx=43, cy=225.4))
+    R, _ = arm(p, 'R', 43, 66, 74, 72, 12, 10, ('#dcb7aa', '#c49688'), glove, '#141218', f'<g id="{p}Ring">' + RING.format(x=39.5, y=226, cx=43, cy=225.4) + '</g>')
     sc = 'scale(.87 1.03)'
     return wrap(p, back, body, L + R, head + blink(p, '#f1d8cc', scale=sc) + mouth(p, '#f1d8cc', '#8e2236', scale=sc), 460)
 

@@ -22,6 +22,11 @@ gh = gh.replace('<path d="M 23,-14.5 L 7,-11.6 L 7.4,-8.8 L 22,-11.2 Z" fill="#1
 i = gh.index('    <!-- thin closed-mouth smirk'); j = gh.index('    <!-- neat comma hair')
 gh = gh[:i] + ('    <path d="M -8,21 Q 0,19 8,21 Q 7,30 0,30 Q -7,30 -8,21 Z" fill="#5a1a22"/><path d="M -7,21.4 Q 0,19.8 7,21.4 L 6.4,23.6 Q 0,22.4 -6.4,23.6 Z" fill="#fff"/>'
                '<path d="M -8,21 Q 0,19 8,21" fill="none" stroke="#8a4a46" stroke-width="1.4"/>\n') + gh[j:]
+gp = re.search(r'<g id="ghead">.*?\n  </g>', WC.GROOM_HEAD, re.S).group(0).replace('<g id="ghead">', '<g id="ghead_panic">')
+gp = gp.replace('<path d="M -23,-14.5 L -7,-11.6 L -7.4,-8.8 L -22,-11.2 Z" fill="#141218"/>', '<path d="M -23,-11.5 L -7,-17.6 L -6.4,-14.6 L -22,-8.6 Z" fill="#141218"/>')
+gp = gp.replace('<path d="M 23,-14.5 L 7,-11.6 L 7.4,-8.8 L 22,-11.2 Z" fill="#141218"/>', '<path d="M 23,-11.5 L 7,-17.6 L 6.4,-14.6 L 22,-8.6 Z" fill="#141218"/>')
+gp = gp.replace('\n  </g>', '<path d="M 27,-24 C 31,-17 32,-13 28.5,-11 C 25,-13 25.5,-18 27,-24 Z" fill="#cfe6ff" stroke="#9cc4ee" stroke-width=".6"/>'
+                '<path d="M -29,-14 C -26,-9 -26,-6 -28.5,-4.8 C -31,-6 -31,-9.5 -29,-14 Z" fill="#cfe6ff" stroke="#9cc4ee" stroke-width=".6"/>\n  </g>')
 gb = WC.groom_body()
 ARM_PARTS = [p for p in re.findall(r'<[^>]+/>', gb) if any(k in p for k in ('-58,226', '-59,229', 'x="-59"', 'cx="-51.5"', '-58,96'))]
 for p in ARM_PARTS: gb = gb.replace(p, '', 1)
@@ -71,7 +76,7 @@ VO = {k: A.load_voice(os.path.join(HERE, 'vo', f'{k}.mp3')) for k in ('01c', '03
 D = {k: len(v) / A.SR for k, v in VO.items()}
 TB = .3 + D['04c'] - .35                  # เสียงปังตรงคำว่า "เปิดออก"
 S7_SPLIT = .3 + D['07g'] + .35          # เจ้าบ่าวพูดจบในช็อตตัวเองก่อน แล้วค่อยตัดไป รปภ. เดินเข้ามา
-G7_POINT = .3 + D['07g'] * .66            # ชี้ตอนพูดว่า "เจ้าหน้าที่ครับ"
+G7_POINT = .3 + 7.9                       # เสียงตะคอก "เจ้าหน้าที่!" เริ่มที่ 7.9 วิ (ดูจากช่วงเงียบในไฟล์เสียง)            # ชี้ตอนพูดว่า "เจ้าหน้าที่ครับ"
 SHOTS = [
     ('s1', .5 + D['01c'] + .9), ('s3', .4 + D['03c'] + .5), ('s4', TB + 2.3), ('s4r', 1.8), ('s5', .4 + D['05c'] + .6), ('s6', .4 + D['06e'] + .5),
     ('s6r', 2.3), ('s7a', S7_SPLIT), ('s7b', 3.0), ('s8', .4 + D['08c'] + .4), ('s9', .4 + D['09e'] + .6), ('s9r', 2.6)]
@@ -98,7 +103,7 @@ SVGS = [
     shot_svg('s5', door_open + placed(woman_rig('w5'), 270, SB.DOOR_FEET, SB.DOOR_S) + f'<g id="ring5" display="none">{SB.inset_ring()}</g>'),
     shot_svg('s6', door_open + placed(woman_rig('w6'), 270, SB.DOOR_FEET, SB.DOOR_S)),
     shot_svg('s6r', img('hall_nb') + placed(bride_rig('b6'), *SB.CAST['bride'])),
-    shot_svg('s7a', img('hall_ng') + placed(groom_rig('g7'), *SB.CAST['groom'])),
+    shot_svg('s7a', img('hall_ng') + placed(groom_rig('g7', heads=('ghead', 'ghead_angry', 'ghead_sin', 'ghead_panic')), *SB.CAST['groom'])),
     shot_svg('s7b', door_open + placed(woman_rig('w7'), 246, SB.DOOR_FEET, SB.DOOR_S) + placed(guard_rig('k7'), 600, SB.DOOR_FEET + 4, SB.DOOR_S)),
     shot_svg('s8', door_open + placed(woman_rig('w8'), 246, SB.DOOR_FEET, SB.DOOR_S) + placed(guard_rig('k8'), 312, SB.DOOR_FEET + 4, SB.DOOR_S)),
     shot_svg('s9', door_open + placed(woman_rig('w9'), 270, SB.DOOR_FEET, SB.DOOR_S)),
@@ -106,15 +111,39 @@ SVGS = [
 ]
 
 # ---------------------------------------------------------------- ซับแบบตั้งเวลา (ไทย + อังกฤษ)
+# คำเน้นในซับ (ผู้ใช้สั่ง: ตัวหนังสือขาว คำเน้นสีม่วง จังหวะตกใจสีแดง)
+EMPH = {1: [('วันแต่งงาน', 'p'), ('ภรรยา', 'r'), ('คุณจะทำยังไงคะ?', 'p')], 3: [('สามปี', 'p'), ('สมบูรณ์แบบ', 'p')],
+        4: [('ประตูห้องจัดเลี้ยง', 'p'), ('เปิดออก', 'r')], 5: [('ชุดเดรสสีดำ', 'p'), ('แบบเดียวกับคุณทุกประการ', 'r')],
+        6: [('สามีของฉัน', 'r')], 7: [('แฟนเก่า', 'p'), ('ป่วยทางจิต', 'r'), ('เจ้าหน้าที่!', 'r')], 8: [('ประโยคเดียว', 'p')],
+        9: [('อย่าให้เขาถอดแหวน', 'r'), ('เด็ดขาด', 'r')]}
+def colorize(full, lines, n):
+    col = [''] * len(full)
+    for ph, c in EMPH.get(n, []):
+        i = full.find(ph)
+        while i >= 0:
+            for k in range(i, i + len(ph)): col[k] = c
+            i = full.find(ph, i + len(ph))
+    out = []; cur = 0
+    for l in lines:
+        i = full.find(l, cur); i = cur if i < 0 else i; cur = i + len(l)
+        segs = []; run = ''; rc = None
+        for k, ch in enumerate(l):
+            c = col[i + k] if i + k < len(col) else ''
+            if c != rc and run: segs.append((run, rc)); run = ''
+            run += ch; rc = c
+        if run: segs.append((run, rc))
+        out.append(''.join(f'<tspan class="h{c}">{t}</tspan>' if c else t for t, c in segs))
+    return out
 SUB_TXT = {'01c': 1, '03c': 3, '04c': 4, '05c': 5, '06e': 6, '07g': 7, '08c': 8, '09e': 9}
 subs = []; sub_svg = []
 script = {int(m.group(1)): m.group(2) for m in (re.match(r'^(\d+)\. (.*)$', l.strip()) for l in open('../script.md')) if m}
 def clean(t): return re.sub(r'\[[^\]]*\]\s*', '', re.sub(r'^\(.*?\)\s*', '', t)).replace('"', '').strip()
 for key, n in SUB_TXT.items():
-    ls = thai_lines(clean(script[n])); groups = [ls[i:i + 2] for i in range(0, len(ls), 2)]
-    words = EN[n].split(' '); tot = sum(len(''.join(g)) for g in groups); acc = 0; wi = 0
+    full = clean(script[n]); ls0 = thai_lines(full); ls = colorize(full, ls0, n); groups = [ls[i:i + 2] for i in range(0, len(ls), 2)]
+    plain = [ls0[i:i + 2] for i in range(0, len(ls0), 2)]
+    words = EN[n].split(' '); tot = sum(len(''.join(g)) for g in plain); acc = 0; wi = 0
     for gi, g in enumerate(groups):
-        a0 = VOICE_AT[key] + D[key] * acc / tot - .1; acc += len(''.join(g)); a1 = VOICE_AT[key] + D[key] * acc / tot + (.4 if gi == len(groups) - 1 else 0)
+        a0 = VOICE_AT[key] + D[key] * acc / tot - .1; acc += len(''.join(plain[gi])); a1 = VOICE_AT[key] + D[key] * acc / tot + (.4 if gi == len(groups) - 1 else 0)
         upto = len(words) if gi == len(groups) - 1 else round(len(words) * acc / tot); en = ' '.join(words[wi:upto]); wi = upto
         el = []; cur = ''
         for w in en.split(' '):
@@ -127,8 +156,32 @@ for key, n in SUB_TXT.items():
         enx = ''.join(f'<text x="270" y="{ye + i * 17:.0f}" class="en">{l}</text>' for i, l in enumerate(el[:3]))
         sid = f'sub{len(subs)}'; subs.append((round(a0, 3), round(a1, 3), sid)); sub_svg.append(f'<g id="{sid}" display="none">{th}{enx}</g>')
 
+# ---------------------------------------------------------------- กราฟิกทับภาพ: ป้ายเวลา + มาตรความไว้ใจ + กราฟิกชี้แหวน
+FT = 'font-family="IBM Plex Sans Thai, sans-serif"'
+def mini_ring(skin, sleeve, label, cx, cy, gid):
+    hand = (SB.inset_ring().replace('#141218"/><path', '#26222e"/><path', 1)
+            .replace('fill="#141218"/>\n', '').replace('d="M 380,240 C 400,214 460,214 482,240 L 486,270 L 376,270 Z" fill="#141218"', f'd="M 380,240 C 400,214 460,214 482,240 L 486,270 L 376,270 Z" fill="{skin}"')
+            .replace('stroke="#2c2a34"', f'stroke="{sleeve}"'))
+    return (f'<g id="{gid}" opacity="0" transform="translate({cx},{cy})"><g transform="scale(.74) translate(-430,-230)">{hand}</g>'
+            f'<rect x="-46" y="66" width="92" height="28" rx="14" fill="#f6f2fb"/><text x="0" y="86" text-anchor="middle" {FT} font-size="15" font-weight="600" fill="#1a1626">{label}</text></g>')
+OVL = (f'<g id="hud" {FT}><rect x="22" y="26" width="196" height="38" rx="19" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".7"/>'
+       f'<circle id="hudDot" cx="41" cy="45" r="5" fill="#9a86ff"/><text id="hudTxt" x="54" y="51" font-size="16" font-weight="500" fill="#f2eefa">วันแต่งงาน · 19:00</text>'
+       f'<g id="trust"><rect x="22" y="72" width="196" height="34" rx="17" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".45"/>'
+       f'<path d="M 40,93 C 31,86 33,79 37.5,79 C 39.5,79 40,80.6 40,81.4 C 40,80.6 40.5,79 42.5,79 C 47,79 49,86 40,93 Z" id="trustHeart" fill="#ff5c8a"/>'
+       f'<text x="53" y="94" font-size="13" fill="#d9d2ee">ความไว้ใจ</text><rect x="114" y="84" width="64" height="10" rx="5" fill="#2c2540"/>'
+       f'<rect id="trustBar" x="114" y="84" width="64" height="10" rx="5" fill="#c04dff"/><text id="trustPct" x="208" y="94" text-anchor="end" font-size="13" font-weight="600" fill="#f2eefa">100%</text></g>'
+       f'<text id="trustDrop" x="226" y="94" font-size="15" font-weight="700" fill="#ff3b4e" opacity="0"></text></g>'
+       f'<g id="callout"><path id="coLine" d="M 0,0 L 0,0" stroke="#ffffff" stroke-width="2.4" stroke-dasharray="6 5" fill="none" opacity="0"/>'
+       f'<circle id="coDot" r="5" fill="#ffffff" opacity="0"/><circle id="coPulse" r="10" fill="none" stroke="#ffffff" stroke-width="2" opacity="0"/>'
+       + mini_ring('#26222e', '#2c2a34', 'ของเธอ', 170, 205, 'coA') + mini_ring('#fbe2cf', '#f3d2bc', 'ของคุณ', 370, 205, 'coB')
+       + f'<text id="coEq" x="270" y="222" text-anchor="middle" {FT} font-size="44" font-weight="700" fill="#ffffff" stroke="#12081c" stroke-width="5" paint-order="stroke" opacity="0">=</text>'
+       f'<g id="coCard" opacity="0"><rect x="128" y="318" width="284" height="40" rx="12" fill="#f6f2fb" fill-opacity=".96"/>'
+       f'<text x="270" y="344" text-anchor="middle" {FT} font-size="18" font-weight="700" fill="#1a1626">แหวนแบบเดียวกัน<tspan fill="#c0263a">ทุกประการ</tspan></text></g></g>')
+TRUST = [(T0['s6'] + .4 + D['06e'] * .85, 100, 70), (T0['s7a'] + G7_POINT - 3.2, 70, 45), (T0['s9'] + .4 + D['09e'] * .7, 45, 20)]
+
 # ---------------------------------------------------------------- JS ขับการเคลื่อนไหวทุกเฟรม
 JS = r'''
+const TRUST = %(trust)s, BANG = %(bang)s, RT5 = %(ringt)s;
 const SH = %(shots)s, T0 = %(t0)s, ENV = %(env)s, VAT = %(vat)s, SUBS = %(subs)s, FPS = %(fps)s;
 const $ = id => document.getElementById(id);
 function place(el, dx, dfeet, ds, rot) {
@@ -182,23 +235,36 @@ const R = { // การแสดงของแต่ละช็อต: t = �
     head('w5', -1.4 * Math.sin(ph) * walking, 0); blinkAt('w5', t, 3.3, 1.2); $('w5M').setAttribute('display', 'none');
     const rt = %(ringt)s;
     if (t < rt - .3) { arm('w5', 'L', 7 * Math.sin(ph) * walking, -8); arm('w5', 'R', 7 * Math.sin(ph) * walking, 8); }
-    else if (t < rt + 1.9) pose('w5', RELAX, RINGUP, (t - rt + .3) / .45);
-    else pose('w5', RINGUP, RELAX, (t - rt - 1.9) / .6);
-    $('ring5').setAttribute('display', t > rt && t < rt + 2.2 ? 'inline' : 'none'); cam('s5', lerp(1.0, 1.12, t / SH.s5), 270, 560, 560); },
+    else pose('w5', RELAX, RINGUP, (t - rt + .3) / .45);
+ cam('s5', lerp(1.0, 1.12, t / SH.s5), 270, 560, 560); },
   s6(t, gt) { cam('s6', lerp(2.6, 2.95, t / SH.s6), %(wfx)s, %(wfy)s + 70, 400); blinkAt('w6', t, 3.4, .9); const e = env('06e', gt);
     head('w6', 1.2 * Math.sin(t * .8) + 3 * e, -1.6 * e); talk('w6', '06e', gt); breathe('w6', t, .004, 1.7, .5);
     const k0 = SH.s6 * .58; if (t < k0) idleArms('w6', t, 0); else pose('w6', RELAX, CHEST, (t - k0) / .4); },
   s6r(t, gt) { cam('s6r', lerp(2.8, 3.2, t / SH.s6r), %(bx)s, %(by)s + 40, 400); face('b6', t < .9 ? 2 : 1, 3); blinkAt('b6', t, .9, .5, t > 1.0 && t < 1.25);
     if (t < 1.1) pose('b6', SHOCK, SHOCK, 1); else pose('b6', SHOCK, CLASP, (t - 1.1) / .7);
     head('b6', (Math.random() - .5) * (t < .9 ? 1.6 : .5) + (t > .9 ? -3 * ease((t - .9) / .6) : 0), 0); breathe('b6', t, t < 1 ? .012 : .007, t < 1 ? 9 : 4, 0); },
-  s7a(t, gt) { const tp = %(gpt)s; cam('s7a', lerp(2.1, 2.35, t / SH.s7a), %(gx)s, %(gy)s + 110, 420); blinkAt('g7', t, 3.9, 2.2);
-    const e = env('07g', gt); talk('g7', '07g', gt); face('g7', t < tp - .1 ? 0 : 1, 3);
-    if (t < tp - .35) { const c = backOut((t - .3) / .5), w = 4 * Math.sin(t * 2.4);   // มือสองข้างกางออกตรงหน้า ท่าบอกให้ใจเย็น
-      arm('g7', 'L', lerp(0, 12, c) + w, lerp(0, -38, c)); arm('g7', 'R', lerp(-6, -12, c) - w, lerp(22, 38, c)); }
-    else { const wind = -14 * Math.sin(Math.PI * Math.min(1, Math.max(0, (t - tp + .35) / .25)));
-      const a = t < tp ? wind : lerp(0, 74, backOut((t - tp) / .35)) + (t > tp + .4 ? 2.5 * Math.sin(t * 13) : 0);
-      arm('g7', 'L', a, t < tp ? -38 : -6); arm('g7', 'R', lerp(-12, -6, ease((t - tp + .35) / .4)), lerp(38, 22, ease((t - tp + .35) / .4))); }
-    head('g7', (t < tp ? 1.5 * Math.sin(t * 1.3) : 3 * Math.sin(t * 9) * Math.max(0, 1 - (t - tp) / 1.2)) + 2.5 * e, -1.2 * e); place(P('g7'), 0, 0, 1, t > tp ? -1.8 : 0); },
+  s7a(t, gt) { const tp = %(gpt)s, v = t - .3; blinkAt('g7', t, 2.6, 1.2); const e = env('07g', gt); talk('g7', '07g', gt);
+    const z = lerp(2.1, 2.4, ease(t / tp)) + (t > tp ? .35 * backOut((t - tp) / .3) : 0); const [sx, sy] = shake(t, tp, .45, 7);
+    cam('s7a', z, %(gx)s, %(gy)s + 110, 420, sx, sy);
+    let ph;
+    if (v < 3.0) { ph = 'panic'; face('g7', 3, 4);   // ลนลาน: ยกสองมือขึ้นห้าม มือสั่น หัวส่าย ตัวเอนหลัง
+      const c = backOut((t - .15) / .35), j = 3 * Math.sin(t * 17);
+      arm('g7', 'L', lerp(0, 65, c) + j, lerp(0, -205, c) + j); arm('g7', 'R', lerp(-6, -65, c) - j, lerp(22, 205, c) - j);
+      head('g7', 5 * Math.sin(t * 6.5) + 3 * e, -2 * e); place(P('g7'), 0, 0, 1 + .006 * Math.sin(t * 9), 2.4); }
+    else if (v < 4.0) { ph = 'laugh'; face('g7', 2, 4);   // หัวเราะกลบเกลื่อน: ลดมือลง ถูมือ หัวเอียง ไหล่ขยับ
+      const c = ease((v - 3.0) / .4), j = 4 * Math.sin(t * 14);
+      arm('g7', 'L', lerp(65, 15, c) + j, lerp(-205, -70, c)); arm('g7', 'R', lerp(-65, -15, c) - j, lerp(205, 70, c));
+      head('g7', -6 + 2 * Math.sin(t * 12), -1.5 + Math.abs(Math.sin(t * 12)) * -1.5); place(P('g7'), 0, Math.abs(Math.sin(t * 12)) * -2, 1, -1); }
+    else if (t < tp - .35) { ph = 'explain'; face('g7', 0, 4);   // อธิบาย: มือขวาผายไปทางประตูเป็นจังหวะตามเสียง มือซ้ายถูกับมือ
+      const c = ease((v - 4.0) / .4), beat = 8 * e;
+      arm('g7', 'L', 15 + 2 * Math.sin(t * 3), -70); arm('g7', 'R', lerp(-15, -34, c) - beat, lerp(70, 34, c) - beat * 1.5);
+      head('g7', lerp(-6, 3, c) + 3 * e + 1.2 * Math.sin(t * 2), -1.5 * e); place(P('g7'), 0, 0, 1, lerp(-1, .8, c)); }
+    else { ph = 'rage'; face('g7', 1, 4);   // โกรธ: ง้างแล้วชี้ไล่แรง ตัวพุ่งไปข้างหน้า หัวกระแทกตามคำ
+      const wind = -16 * Math.sin(Math.PI * Math.min(1, Math.max(0, (t - tp + .35) / .25)));
+      const a = t < tp ? wind : lerp(0, 76, backOut((t - tp) / .3)) + (t > tp + .35 ? 3 * Math.sin(t * 15) : 0);
+      arm('g7', 'L', a, t < tp ? -38 : -4); arm('g7', 'R', lerp(-34, -10, ease((t - tp + .35) / .3)), lerp(34, 40, ease((t - tp + .35) / .3)) + 6 * e);
+      head('g7', 4 * e + 2 * Math.sin(t * 11) * e, -3 * e - 1.5); place(P('g7'), 0, 0, 1 + .01 * e, -3.2); }
+  },
   s7b(t, gt) { cam('s7b', lerp(1.35, 1.45, t / SH.s7b), 270, 590, 480); const p = ease(t / 2.2), ph = t * Math.PI * 2, step = Math.abs(Math.sin(ph)) * (1 - p);
     const el = P('k7'); el.dataset.x = lerp(600, 316, p); place(el, 0, -5 * step, 1, 1.2 * Math.sin(ph) * (1 - p));
     if (t < 2.2) { arm('k7', 'L', 8 * Math.sin(ph) * (1 - p), -6); arm('k7', 'R', -8 * Math.sin(ph) * (1 - p), 6); } else pose('k7', RELAX, [38, -24, 0, 5], (t - 2.2) / .4);
@@ -221,22 +287,51 @@ window.renderAt = function (gt) {
   document.querySelectorAll('.place').forEach(el => { if (!el.dataset.init) { el.dataset.init = 1; place(el); } });
   R[cur](gt - T0[cur], gt);
   for (const [a, b, id] of SUBS) $(id).setAttribute('display', gt >= a && gt < b ? 'inline' : 'none');
+  // ป้ายเวลา: นาฬิกาเดินระหว่างงาน หลังประตูเปิดจุดเปลี่ยนเป็นสีแดงกะพริบ
+  const mins = Math.floor(gt / 3.2), hh = 19 + Math.floor(mins / 60), mm = mins %% 60;
+  $('hudTxt').textContent = (gt < BANG ? 'วันแต่งงาน · ' : 'มีคนบุกงาน · ') + hh + ':' + String(mm).padStart(2, '0');
+  $('hudDot').setAttribute('fill', gt < BANG ? '#9a86ff' : ((gt * 2) %% 1 < .5 ? '#ff3b4e' : '#5a1520'));
+  // มาตรความไว้ใจในตัวเจ้าบ่าว ลดลงเป็นช่วง ๆ ตามเหตุการณ์ พร้อมตัวเลขแดงลอยขึ้น
+  let pct = 100, drop = null;
+  for (const [t, a, b] of TRUST) { if (gt >= t) { const k = ease((gt - t) / .7); pct = a + (b - a) * k; if (gt - t < 1.6) drop = [b - a, gt - t]; } }
+  $('trustBar').setAttribute('width', (64 * pct / 100).toFixed(1)); $('trustPct').textContent = Math.round(pct) + '%%';
+  $('trustBar').setAttribute('fill', pct > 60 ? '#c04dff' : pct > 30 ? '#ff7a59' : '#ff3b4e');
+  const hb = 1 + (drop ? .35 * Math.max(0, 1 - drop[1] / .4) : 0); $('trustHeart').setAttribute('transform', `translate(40,86) scale(${hb}) translate(-40,-86)`);
+  if (drop) { $('trustDrop').textContent = drop[0] + '%%'; $('trustDrop').setAttribute('opacity', Math.max(0, 1 - drop[1] / 1.6).toFixed(2)); $('trustDrop').setAttribute('y', (94 - drop[1] * 10).toFixed(1)); }
+  else $('trustDrop').setAttribute('opacity', 0);
+  // กราฟิกชี้แหวน (ช็อต 5): จุดกะพริบที่แหวน → เส้นประค่อย ๆ ลากขึ้น → วงขยายแหวนของเธอ → เครื่องหมายเท่ากับ → แหวนของคุณ → การ์ดคำอธิบาย
+  const on = cur === 's5', tt = gt - T0.s5 - RT5, ids = ['coLine', 'coDot', 'coPulse', 'coA', 'coB', 'coEq', 'coCard'];
+  if (!on || tt < .15) { ids.forEach(i => $(i).setAttribute('opacity', 0)); }
+  else {
+    const fadeAll = Math.max(0, Math.min(1, (SH.s5 - RT5 - tt) / .35));
+    const rr = $('w5Ring').getBoundingClientRect(), st = $('stage').getBoundingClientRect(), x0 = rr.x + rr.width / 2 - st.x, y0 = rr.y + rr.height / 2 - st.y;
+    $('coDot').setAttribute('cx', x0); $('coDot').setAttribute('cy', y0); $('coPulse').setAttribute('cx', x0); $('coPulse').setAttribute('cy', y0);
+    const pl = ((tt - .15) %% .9) / .9; $('coPulse').setAttribute('r', (8 + 16 * pl).toFixed(1)); $('coPulse').setAttribute('opacity', ((1 - pl) * .9 * fadeAll).toFixed(2));
+    $('coDot').setAttribute('opacity', fadeAll);
+    const x1 = 170, y1 = 262, k = ease((tt - .35) / .55);
+    $('coLine').setAttribute('d', `M ${x0.toFixed(1)},${y0.toFixed(1)} L ${(x0 + (x1 - x0) * k).toFixed(1)},${(y0 + (y1 - y0) * k).toFixed(1)}`); $('coLine').setAttribute('opacity', (tt > .35 ? .95 : 0) * fadeAll);
+    const pop = (id, t0, cx, cy) => { const e = Math.min(1.15, backOut((tt - t0) / .4)), o = Math.max(0, Math.min(1, (tt - t0) / .2));
+      $(id).setAttribute('opacity', (o * fadeAll).toFixed(2)); $(id).setAttribute('transform', `translate(${cx},${cy}) scale(${Math.max(.01, e).toFixed(3)})`); };
+    pop('coA', .8, 170, 205); pop('coB', 1.35, 370, 205);
+    $('coEq').setAttribute('opacity', (Math.max(0, Math.min(1, (tt - 1.2) / .25)) * fadeAll).toFixed(2));
+    $('coCard').setAttribute('opacity', (Math.max(0, Math.min(1, (tt - 1.75) / .3)) * fadeAll).toFixed(2));
+  }
 };
 '''
 js = JS % dict(shots=json.dumps(dict(SHOTS)), t0=json.dumps(T0), env=json.dumps(ENV), vat=json.dumps(VOICE_AT), subs=json.dumps(subs), fps=FPS,
                cx3=(BX + GX) / 2, cy3=BY + 60, tb=TB, bx=BX, by=BY + 40, gx=GX, gy=GY, df=SB.DOOR_FEET, ds=SB.DOOR_S, ringt=.4 + D['05c'] * .55,
-               wfx=WF[0], wfy=WF[1], gpt=G7_POINT)
+               wfx=WF[0], wfy=WF[1], gpt=G7_POINT, trust=json.dumps(TRUST), bang=T0['s4'] + TB)
 
 base = SB.N9.H8.S.DEFS
 for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
     base = re.sub(rf'<(linear|radial)Gradient id="{gid}".*?</\1Gradient>', '', base, flags=re.S)
 DEFS = (base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.DEFS + SB.P2.DEFS2 + SB.EXTRA_DEFS + SB.CHAR_DEFS
-        + f'<svg width="0" height="0" style="position:absolute"><defs>{gh}</defs></svg>')
+        + f'<svg width="0" height="0" style="position:absolute"><defs>{gh}{gp}</defs></svg>')
 html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">'
         '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px}'
-        '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#c04dff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
-        '.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
-        + DEFS + '<div id="stage">' + ''.join(SVGS) + f'<svg viewBox="0 0 540 960">{"".join(sub_svg)}</svg></div><script>{js}</script>')
+        '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#ffffff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
+        '.hp{fill:#c04dff}.hr{fill:#ff3b4e}.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
+        + DEFS + '<div id="stage">' + ''.join(SVGS) + f'<svg viewBox="0 0 540 960">{OVL}{"".join(sub_svg)}</svg></div><script>{js}</script>')
 open('anim_v2.html', 'w').write(html)
 os.makedirs('bg', exist_ok=True)
 bg_html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap"><style>html,body{margin:0}svg{display:block}</style>'
