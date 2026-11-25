@@ -43,16 +43,15 @@ svg = f'''<svg id="cover" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/sv
 <g>{ch('groom_sin', 160, 355, 1.95)}</g>
 <g>{ch('bride_worry', 298, 410, 2.15)}</g>
 <!-- ชื่อเรื่อง -->
-<rect y="420" width="540" height="540" fill="url(#pFade)"/>
+<rect y="330" width="540" height="630" fill="url(#pFade)"/>
 <g {FT} text-anchor="middle">
- <text x="270" y="592" font-size="30" font-weight="600" fill="#d9d2ee" letter-spacing="2">ถ้าวันนี้เป็น</text>
- <text x="262" y="670" font-size="82" font-weight="700" fill="url(#pTitle)" stroke="#120a1c" stroke-width="3" paint-order="stroke">วันแต่งงาน</text>
- <text x="270" y="722" font-size="44" font-weight="700" fill="#c9a8ff" stroke="#120a1c" stroke-width="3" paint-order="stroke">ของคุณ</text>
+ <text x="270" y="506" font-size="25" font-weight="600" fill="#d9d2ee" letter-spacing="2">ถ้าวันนี้เป็น</text>
+ <text x="266" y="568" font-size="64" font-weight="700" fill="url(#pTitle)" stroke="#120a1c" stroke-width="3" paint-order="stroke">วันแต่งงาน</text>
+ <text x="270" y="610" font-size="35" font-weight="700" fill="#c9a8ff" stroke="#120a1c" stroke-width="3" paint-order="stroke">ของคุณ</text>
 </g>
-{RINGS}
-<g transform="translate(270,758)" {FT} text-anchor="middle"><rect x="-122" y="-17" width="244" height="32" rx="7" fill="#8e1b24"/>
- <text x="0" y="5" font-size="15" font-weight="600" fill="#fff4f2">กฎข้อเดียว • อย่าให้เขาถอดแหวน</text></g>
-<text x="270" y="800" text-anchor="middle" {FT} font-size="12" fill="#a79fc0" letter-spacing="2">ODD HOURS</text>
+<g transform="translate(270,640)" {FT} text-anchor="middle"><rect x="-108" y="-15" width="216" height="28" rx="6" fill="#8e1b24"/>
+ <text x="0" y="4.5" font-size="13" font-weight="600" fill="#fff4f2">กฎข้อเดียว • อย่าให้เขาถอดแหวน</text></g>
+<text x="270" y="674" text-anchor="middle" {FT} font-size="11" fill="#a79fc0" letter-spacing="2">ODD HOURS</text>
 <!-- มุมขวาบน: โลโก้ดวงตา + ตอน -->
 <g transform="translate(490,44)"><ellipse rx="22" ry="16.5" fill="#7a1fff"/><path d="M -16.5,0 C -9,-9.5 9,-9.5 16.5,0 C 9,9.5 -9,9.5 -16.5,0 Z" fill="#05040a"/><circle r="4.6" fill="#d6b0ff"/></g>
 <rect width="540" height="960" fill="url(#pVig)"/>
