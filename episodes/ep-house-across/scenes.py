@@ -419,6 +419,16 @@ def street(mode='night', moon=(420, 140), extra_back='', extra_front='', with_ho
     for t_ in (.2, .5, .8):   # little garden lights along the path
         px_ = 250 + 10 * hs + (80 * hs) * 0 + (196 - (250 + 10 * hs)) * t_; py_ = hy + 28 * hs + (12) * t_
         o.append(f'<rect x="{px_-2:.0f}" y="{py_-14:.0f}" width="4" height="14" fill="#2a1e1a"/><circle cx="{px_:.0f}" cy="{py_-16:.0f}" r="3.4" fill="{WARM if not day else "#d8c8a0"}"/>' + (glow(px_, py_ - 16, 18, WARM, .8) if not day else ''))
+    # stone gate pillars with lanterns at the path, clipped hedges, topiary pots by the steps
+    for gx in (186, 338):
+        o.append(f'<rect x="{gx-10}" y="{hy-30}" width="20" height="60" fill="{"#b8aa9a" if day else "#5a5250"}"/><rect x="{gx-13}" y="{hy-34}" width="26" height="6" fill="{"#d8ccbc" if day else "#7a706c"}"/>'
+                 + ''.join(f'<line x1="{gx-10}" y1="{yy}" x2="{gx+10}" y2="{yy}" stroke="#3a3230" stroke-width="1" opacity=".4"/>' for yy in range(hy - 22, hy + 30, 9))
+                 + f'<rect x="{gx-6}" y="{hy-52}" width="12" height="18" rx="2" fill="{WARM if not day else "#e8dcc0"}"/><path d="M {gx-8},{hy-52} L {gx},{hy-60} L {gx+8},{hy-52} Z" fill="#1e1a18"/>' + (glow(gx, hy - 44, 34, WARM, .85) if not day else ''))
+    hedge = '#3e5a46' if day else '#1c2a20'; hedge_lt = '#4e6e56' if day else '#26362a'
+    for (x0_, x1_) in ((0, 176), (348, W)):
+        o.append(f'<rect x="{x0_}" y="{hy-8}" width="{x1_-x0_}" height="30" rx="8" fill="{hedge}"/><rect x="{x0_}" y="{hy-8}" width="{x1_-x0_}" height="8" rx="4" fill="{hedge_lt}"/>')
+    for tx_ in (250 + 4 * hs, 250 + 92 * hs):
+        o.append(f'<path d="M {tx_-10},{hy+22*hs} L {tx_+10},{hy+22*hs} L {tx_+8},{hy+8*hs} L {tx_-8},{hy+8*hs} Z" fill="#e8dccb"/><rect x="{tx_-1.5}" y="{hy-10*hs}" width="3" height="{18*hs}" fill="#4a3a2a"/><circle cx="{tx_}" cy="{hy-16*hs}" r="{12*hs}" fill="{hedge_lt}"/>')
     o.append(f'<rect x="150" y="{hy-24}" width="4" height="54" fill="#3a2a24"/><rect x="138" y="{hy-40}" width="28" height="18" rx="6" fill="{"#7a3a34" if day else "#4a2422"}"/><rect x="164" y="{hy-40}" width="3" height="10" fill="#d9b25a"/>')
     o.append(f'<polygon points="{pts((0,hy+30),(W,hy+30),(W,hy+46),(0,hy+46))}" fill="{"#b0a2b0" if day else "#4a4050"}"/>')
     o.append(f'<rect x="0" y="{hy+46}" width="{W}" height="{H-hy-46}" fill="{"#7a6e88" if day else "#2e2838"}"/>')
@@ -747,36 +757,139 @@ def window_closeup(mode='open'):
 def g(x, y, k, body):
     return f'<g transform="translate({x:.1f},{y:.1f}) scale({k:.3f})">{body}</g>'
 
-def sofa_front(x, y, k, c=('#8a5a62', '#a0707a', '#5e3a44'), pillows=('#d8a070', '#8a7aa8', '#c86a6a')):
+# ---------------- upscale finish kit: panel mouldings, herringbone floor, tray ceiling, brass + velvet ----------------
+CREAM = '#e6d6c4'; CREAM_SH = '#c8b4a2'; BRASS = '#c9a45a'; BRASS_DK = '#8a6a34'
+
+def luxe_walls(R, wall='#7a5e60', panel='#86686a', mould='#d8c4b0', F=12):
+    """classic picture-frame mouldings on the back + side walls, crown and skirting"""
+    o = []
+    Hh = R.y1 - R.y0
+    # back wall panels: dado rail at 62%, tall panels above, short below
+    o.append(f'<rect x="{R.x0}" y="{R.y0 + Hh*.62:.0f}" width="{R.x1-R.x0}" height="4" fill="{mould}"/>')
+    n = 4
+    for i in range(n):
+        x0 = R.x0 + 8 + i * (R.x1 - R.x0 - 16) / n; x1 = x0 + (R.x1 - R.x0 - 16) / n - 8
+        o.append(f'<rect x="{x0:.0f}" y="{R.y0+Hh*.66:.0f}" width="{x1-x0:.0f}" height="{Hh*.26:.0f}" fill="{panel}" stroke="{mould}" stroke-width="2"/>')
+        o.append(f'<rect x="{x0:.0f}" y="{R.y0+Hh*.08:.0f}" width="{x1-x0:.0f}" height="{Hh*.5:.0f}" fill="none" stroke="{mould}" stroke-width="2" opacity=".8"/>')
+    for face in ('L', 'R'):
+        o.append(R.quad(face, 1, F, .615, .625, mould))
+        s = 1.04
+        while s < 5:
+            s2 = s * 1.22
+            o.append(R.quad(face, s + .02 * s, s2 - .04 * s, .66, .92, panel))
+            for (a0, a1) in ((.66, .92), (.08, .58)):
+                p = [R.P(face, s + .02 * s, a0), R.P(face, s2 - .04 * s, a0), R.P(face, s2 - .04 * s, a1), R.P(face, s + .02 * s, a1)]
+                o.append(f'<polygon points="{pts(*p)}" fill="none" stroke="{mould}" stroke-width="{1.6*s:.1f}" opacity=".85"/>')
+            s = s2
+        o.append(R.quad(face, 1, F, 0, .03, mould) + R.quad(face, 1, F, .965, 1, '#efe4d6'))   # crown + skirting
+    o.append(f'<rect x="{R.x0}" y="{R.y0}" width="{R.x1-R.x0}" height="{Hh*.03:.0f}" fill="{mould}"/><rect x="{R.x0}" y="{R.y1-Hh*.035:.0f}" width="{R.x1-R.x0}" height="{Hh*.035:.0f}" fill="#efe4d6"/>')
+    return ''.join(o)
+
+def herringbone(R, light='#9a6a48', dark='#7e5236', line='#5a3624', F=8):
+    """herringbone parquet in perspective"""
+    o = [f'<polygon points="{pts(R.BL, R.BR, R.at(R.BR, F), R.at(R.BL, F))}" fill="{light}"/>']
+    rows = []; s = 1.0
+    while s < F:
+        rows.append(s); s *= 1.09
+    cols = 14
+    for i in range(len(rows) - 1):
+        s0, s1 = rows[i], rows[i + 1]
+        for j in range(cols):
+            u0, u1 = j / cols, (j + 1) / cols
+            a, b, c, d = R.P('F', s0, u0), R.P('F', s0, u1), R.P('F', s1, u1), R.P('F', s1, u0)
+            if (i + j) % 2:
+                o.append(f'<polygon points="{pts(a, b, c, d)}" fill="{dark}" opacity=".55"/>')
+            o.append(f'<line x1="{(a[0] if (i+j)%2 else b[0]):.1f}" y1="{a[1]:.1f}" x2="{(c[0] if (i+j)%2 else d[0]):.1f}" y2="{c[1]:.1f}" stroke="{line}" stroke-width="{.5*s0:.2f}" opacity=".6"/>')
+    return ''.join(o)
+
+def tray_ceiling(R, col='#d8c8b8', recess='#c8b6a4', lights=True):
+    F = 12
+    o = [f'<polygon points="{pts(R.TL, R.TR, R.at(R.TR, F), R.at(R.TL, F))}" fill="{col}"/>']
+    q = [R.P('C', 1.25, .18), R.P('C', 1.25, .82), R.P('C', 3.2, .82), R.P('C', 3.2, .18)]
+    o.append(f'<polygon points="{pts(*q)}" fill="{recess}"/><polygon points="{pts(*q)}" fill="none" stroke="#efe4d6" stroke-width="3"/>')
+    if lights:
+        for s_ in (1.4, 2.0, 2.9):
+            for u_ in (.1, .9):
+                p = R.P('C', s_, u_)
+                o.append(f'<ellipse cx="{p[0]:.0f}" cy="{p[1]:.0f}" rx="{5*s_:.0f}" ry="{2*s_:.0f}" fill="#fff6e0"/>' + glow(p[0], p[1] + 6 * s_, 26 * s_, WARM, .35))
+    return ''.join(o)
+
+def chandelier(x, y, k, drop=60):
+    arms = ''.join(f'<line x1="0" y1="0" x2="{dx}" y2="{dy}" stroke="{BRASS}" stroke-width="2"/><circle cx="{dx}" cy="{dy}" r="4" fill="#fff4d8"/>' for dx, dy in
+                   [(-34, 4), (34, 4), (-22, 14), (22, 14), (-12, -10), (12, -10), (0, 18)])
+    b = (f'<line x1="0" y1="-{drop}" x2="0" y2="0" stroke="{BRASS_DK}" stroke-width="2"/><circle cx="0" cy="0" r="7" fill="{BRASS}"/>{arms}')
+    return g(x, y, k, b) + glow(x, y, 70 * k, WARM, .7)
+
+def round_marble_table(x, y, k):
+    b = (f'<ellipse cx="0" cy="2" rx="70" ry="9" fill="#1a1012" opacity=".35"/>'
+         f'<path d="M -10,0 L 10,0 L 4,-38 L -4,-38 Z" fill="{BRASS}"/><ellipse cx="0" cy="0" rx="26" ry="5" fill="{BRASS_DK}"/>'
+         f'<ellipse cx="0" cy="-42" rx="66" ry="14" fill="#efe8e2"/><ellipse cx="0" cy="-44" rx="66" ry="12" fill="#f6f0ea"/>'
+         f'<path d="M -40,-48 C -20,-40 0,-50 24,-42" fill="none" stroke="#c8beb8" stroke-width="1.4"/><path d="M -10,-52 C 6,-46 20,-50 40,-46" fill="none" stroke="#d8d0ca" stroke-width="1"/>'
+         + books(-40, -48, .8) + f'<g transform="translate(26,-48)"><path d="M -8,0 L 8,0 L 6,-22 L -6,-22 Z" fill="#e8dccb"/>'
+         + ''.join(f'<path d="M 0,-22 C {dx*.3:.0f},-40 {dx},-56 {dx*1.4:.0f},-66" fill="none" stroke="#e8d8b8" stroke-width="3"/>' for dx in (-10, -4, 3, 9)) + '</g>'
+         + f'<ellipse cx="-4" cy="-48" rx="10" ry="3" fill="{BRASS}"/>')
+    return g(x, y, k, b)
+
+def drapes(x0, y0, x1, y1, col='#3e4a6a', dk='#2a3450', lt='#5a6a8a'):
+    """floor-length velvet drapes over sheers, brass rod"""
+    o = [f'<rect x="{x0-30}" y="{y0-10}" width="{x1-x0+60}" height="5" rx="2" fill="{BRASS}"/><circle cx="{x0-30}" cy="{y0-8}" r="6" fill="{BRASS}"/><circle cx="{x1+30}" cy="{y0-8}" r="6" fill="{BRASS}"/>',
+         f'<rect x="{x0}" y="{y0}" width="{x1-x0}" height="{y1-y0}" fill="#f6eee6" opacity=".18"/>']
+    for xa, d in ((x0 - 26, 1), (x1 + 26, -1)):
+        xb = xa + d * 56
+        o.append(f'<path d="M {xa},{y0-6} L {xb},{y0-6} C {xb-d*6},{(y0+y1)/2} {xb+d*4},{y1-20} {xb+d*10},{y1} L {xa},{y1} Z" fill="{col}"/>')
+        for t, c in ((.25, dk), (.5, lt), (.75, dk)):
+            xx = xa + d * 56 * t
+            o.append(f'<path d="M {xx:.0f},{y0-6} C {xx-d*2:.0f},{(y0+y1)/2} {xx+d*3:.0f},{y1-20} {xx+d*6:.0f},{y1}" fill="none" stroke="{c}" stroke-width="3"/>')
+    return ''.join(o)
+
+def art_canvas(x, y, w, h, seed=1):
+    r = random.Random(seed)
+    o = [f'<rect x="{x-4}" y="{y-4}" width="{w+8}" height="{h+8}" fill="{BRASS}"/><rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#e8dccb"/>']
+    for _ in range(5):
+        cx = x + r.uniform(.15, .85) * w; cy = y + r.uniform(.15, .85) * h; rr = r.uniform(.12, .3) * min(w, h)
+        o.append(f'<circle cx="{cx:.0f}" cy="{cy:.0f}" r="{rr:.0f}" fill="{r.choice(["#c86a5a","#3e5a6a","#d8a85a","#7a5a8a","#5e7e6a"])}" opacity=".85"/>')
+    o.append(f'<path d="M {x+w*.1:.0f},{y+h*.7:.0f} C {x+w*.4:.0f},{y+h*.4:.0f} {x+w*.6:.0f},{y+h*.9:.0f} {x+w*.9:.0f},{y+h*.5:.0f}" fill="none" stroke="#2a1e1a" stroke-width="2"/>')
+    return ''.join(o)
+
+def olive_tree(x, y, k):
+    leaves = ''.join(f'<ellipse cx="{dx}" cy="{dy}" rx="22" ry="16" fill="{c}"/>' for dx, dy, c in
+                     [(-26, -150, '#6e7e5e'), (20, -160, '#7e8e6a'), (-4, -184, '#8a9a74'), (-36, -176, '#5e6e50'), (34, -186, '#6e7e5e'), (4, -206, '#7e8e6a')])
+    b = (f'<ellipse cx="0" cy="1" rx="30" ry="5" fill="#1a1012" opacity=".35"/><path d="M -2,-40 C -6,-80 6,-110 0,-150" fill="none" stroke="#5a4a3a" stroke-width="5"/>{leaves}'
+         f'<path d="M -26,0 L 26,0 L 30,-46 L -30,-46 Z" fill="#e8dccb"/><rect x="-32" y="-50" width="64" height="6" fill="#d8c8b4"/>')
+    return g(x, y, k, b)
+
+def sofa_front(x, y, k, c=('#3e4a6a', '#56628a', '#2a3450'), pillows=('#d8a070', '#e8dccb', '#c86a6a')):
+    """tufted velvet sofa with brass legs"""
     m, lt, dk = c
+    tufts = ''.join(f'<circle cx="{tx}" cy="{ty}" r="1.8" fill="{dk}"/>' for tx in range(-100, 104, 20) for ty in (-96, -78))
     b = (f'<ellipse cx="0" cy="2" rx="130" ry="10" fill="#1a1012" opacity=".35"/>'
-         f'<rect x="-118" y="-8" width="8" height="10" fill="#3a2418"/><rect x="110" y="-8" width="8" height="10" fill="#3a2418"/>'
-         f'<rect x="-124" y="-96" width="248" height="70" rx="22" fill="{dk}"/>'                       # back
-         f'<rect x="-112" y="-110" width="76" height="62" rx="20" fill="{m}"/><rect x="-38" y="-112" width="76" height="64" rx="20" fill="{m}"/><rect x="36" y="-110" width="76" height="62" rx="20" fill="{m}"/>'
-         f'<rect x="-108" y="-106" width="70" height="14" rx="7" fill="{lt}" opacity=".7"/><rect x="-34" y="-108" width="70" height="14" rx="7" fill="{lt}" opacity=".7"/><rect x="40" y="-106" width="70" height="14" rx="7" fill="{lt}" opacity=".7"/>'
-         f'<rect x="-120" y="-50" width="240" height="42" rx="14" fill="{m}"/><rect x="-118" y="-50" width="236" height="12" rx="6" fill="{lt}"/>'   # seat
-         f'<line x1="-38" y1="-50" x2="-38" y2="-10" stroke="{dk}" stroke-width="2"/><line x1="38" y1="-50" x2="38" y2="-10" stroke="{dk}" stroke-width="2"/>'
-         f'<rect x="-138" y="-78" width="34" height="72" rx="16" fill="{m}"/><rect x="104" y="-78" width="34" height="72" rx="16" fill="{dk}"/>'          # arms
-         f'<rect x="-136" y="-76" width="30" height="12" rx="6" fill="{lt}"/>'
-         f'<rect x="-100" y="-86" width="40" height="36" rx="10" fill="{pillows[0]}" transform="rotate(-8 -80 -68)"/><rect x="60" y="-86" width="40" height="36" rx="10" fill="{pillows[1]}" transform="rotate(8 80 -68)"/>'
-         f'<rect x="-20" y="-84" width="36" height="32" rx="10" fill="{pillows[2]}"/>')
+         f'<path d="M -116,-8 L -112,4 L -108,-8 Z M 108,-8 L 112,4 L 116,-8 Z" fill="{BRASS}"/>'
+         f'<path d="M -126,-40 L -126,-96 C -126,-116 126,-116 126,-96 L 126,-40 Z" fill="{dk}"/>'
+         f'<path d="M -118,-46 L -118,-94 C -118,-108 118,-108 118,-94 L 118,-46 Z" fill="{m}"/>{tufts}'
+         f'<path d="M -118,-92 C -60,-104 60,-104 118,-92" fill="none" stroke="{lt}" stroke-width="5" opacity=".6"/>'
+         f'<rect x="-122" y="-50" width="244" height="42" rx="12" fill="{m}"/><rect x="-120" y="-50" width="240" height="10" rx="5" fill="{lt}"/>'
+         f'<line x1="-40" y1="-50" x2="-40" y2="-10" stroke="{dk}" stroke-width="2"/><line x1="40" y1="-50" x2="40" y2="-10" stroke="{dk}" stroke-width="2"/>'
+         f'<path d="M -140,-8 L -140,-70 C -140,-86 -112,-86 -112,-70 L -112,-8 Z" fill="{m}"/><path d="M 140,-8 L 140,-70 C 140,-86 112,-86 112,-70 L 112,-8 Z" fill="{dk}"/>'
+         f'<rect x="-100" y="-88" width="40" height="36" rx="8" fill="{pillows[0]}" transform="rotate(-8 -80 -70)"/><rect x="60" y="-88" width="40" height="36" rx="8" fill="{pillows[1]}" transform="rotate(8 80 -70)"/>'
+         f'<rect x="-18" y="-86" width="36" height="32" rx="8" fill="{pillows[2]}"/><path d="M 60,-60 L 130,-60 L 126,-20 L 70,-24 Z" fill="#c8a080" opacity=".9"/>')
     return g(x, y, k, b)
 
-def sofa_back(x, y, k, c=('#8a5a62', '#a0707a', '#5e3a44')):
+def sofa_back(x, y, k, c=('#3e4a6a', '#56628a', '#2a3450')):
     m, lt, dk = c
-    b = (f'<rect x="-130" y="-120" width="260" height="120" rx="26" fill="{dk}"/><rect x="-130" y="-120" width="260" height="22" rx="11" fill="{m}"/>'
-         f'<rect x="-150" y="-92" width="36" height="92" rx="16" fill="{m}"/><rect x="114" y="-92" width="36" height="92" rx="16" fill="{dk}"/>'
-         f'<path d="M -126,-110 C -40,-118 40,-118 126,-110" fill="none" stroke="{lt}" stroke-width="3" opacity=".6"/>'
-         f'<path d="M 60,-120 C 70,-80 90,-40 100,0 L 60,0 C 56,-40 50,-80 40,-120 Z" fill="#7a5a4a" opacity=".95"/>')   # throw draped over the back
+    b = (f'<path d="M -132,0 L -132,-100 C -132,-124 132,-124 132,-100 L 132,0 Z" fill="{dk}"/><path d="M -128,-104 C -60,-122 60,-122 128,-104" fill="none" stroke="{lt}" stroke-width="4" opacity=".6"/>'
+         f'<path d="M -152,0 L -152,-80 C -152,-98 -118,-98 -118,-80 L -118,0 Z" fill="{m}"/><path d="M 152,0 L 152,-80 C 152,-98 118,-98 118,-80 L 118,0 Z" fill="{dk}"/>'
+         f'<path d="M 50,-118 C 60,-80 80,-40 90,0 L 50,0 C 46,-40 40,-80 30,-118 Z" fill="#8a6a5a" opacity=".95"/>')
     return g(x, y, k, b)
 
-def armchair(x, y, k, c=('#5e7276', '#76898c', '#3e4e52')):
+def armchair(x, y, k, c=('#7a3a46', '#94525e', '#5a2a34')):
+    """velvet wingback with brass feet"""
     m, lt, dk = c
-    b = (f'<ellipse cx="0" cy="2" rx="60" ry="7" fill="#1a1012" opacity=".35"/><rect x="-46" y="-8" width="6" height="10" fill="#3a2418"/><rect x="40" y="-8" width="6" height="10" fill="#3a2418"/>'
-         f'<path d="M -46,-60 C -48,-112 48,-112 46,-60 Z" fill="{dk}"/><path d="M -40,-66 C -40,-104 40,-104 40,-66 Z" fill="{m}"/>'
-         f'<rect x="-50" y="-48" width="100" height="40" rx="12" fill="{m}"/><rect x="-48" y="-48" width="96" height="10" rx="5" fill="{lt}"/>'
-         f'<rect x="-62" y="-70" width="24" height="64" rx="12" fill="{m}"/><rect x="38" y="-70" width="24" height="64" rx="12" fill="{dk}"/>'
-         f'<rect x="-14" y="-74" width="30" height="26" rx="8" fill="#d8a070"/>')
+    b = (f'<ellipse cx="0" cy="2" rx="60" ry="7" fill="#1a1012" opacity=".35"/><path d="M -44,-8 L -42,4 L -40,-8 Z M 40,-8 L 42,4 L 44,-8 Z" fill="{BRASS}"/>'
+         f'<path d="M -48,-50 L -50,-104 C -50,-128 50,-128 50,-104 L 48,-50 Z" fill="{dk}"/><path d="M -40,-56 L -42,-102 C -42,-118 42,-118 42,-102 L 40,-56 Z" fill="{m}"/>'
+         f'<path d="M -50,-104 L -64,-96 L -62,-50 L -48,-50 Z" fill="{m}"/><path d="M 50,-104 L 64,-96 L 62,-50 L 48,-50 Z" fill="{dk}"/>'
+         f'<rect x="-52" y="-50" width="104" height="42" rx="10" fill="{m}"/><rect x="-50" y="-50" width="100" height="10" rx="5" fill="{lt}"/>'
+         f'<rect x="-64" y="-66" width="20" height="58" rx="8" fill="{m}"/><rect x="44" y="-66" width="20" height="58" rx="8" fill="{dk}"/>'
+         f'<rect x="-14" y="-78" width="30" height="26" rx="7" fill="#e8dccb"/>')
     return g(x, y, k, b)
 
 def coffee_table(x, y, k, items=True):
@@ -891,12 +1004,11 @@ def family_room(night=False, board=False):
     Hh = R.y1 - R.y0
     o = [R.shell(wall='#6e5054' if not night else '#4a3442', wall_lt='#7c5c5e' if not night else '#56404c', wall_dk='#4e3842' if not night else '#34242e',
                  ceil='#2e2228' if not night else '#1c1418', floor='#7a4e38' if not night else '#4e3226')]
-    o.append(wallpaper(R, WALL, '#f2d8c8', .1))
-    o.append(walls_detail(R, stripes=False))
+    o.append(tray_ceiling(R, '#cdbcac' if not night else '#5a4a48', '#bfac9a' if not night else '#4e403e', lights=True))
+    o.append(herringbone(R, '#9a6a48' if not night else '#5e3e2c', '#7e5236' if not night else '#4a2e20'))
+    o.append(luxe_walls(R, panel='#86686a' if not night else '#56404a', mould='#d8c4b0' if not night else '#8a7a72'))
     # ceiling beams + skylight-free coffered feel
-    for s_ in (1.2, 1.55, 2.0, 2.8):
-        a, b = R.P('C', s_, 0), R.P('C', s_, 1)
-        o.append(f'<polygon points="{pts(a, b, (b[0], b[1]+9*s_), (a[0], a[1]+9*s_))}" fill="#3e2620"/>')
+
     # back wall: big arched window with window seat, built-in shelves either side
     wx0, wy0, wx1, wy1 = 200, 262, 360, 470
     view = street('night' if night else 'day', (130, 120), hy=600, hs=1.1)
@@ -907,7 +1019,7 @@ def family_room(night=False, board=False):
     o.append(f'<path d="M {(wx0+wx1)/2},{wy0-4} L {(wx0+wx1)/2},{wy1} M {wx0},{wy0+100} L {wx1},{wy0+100}" stroke="#e8dccb" stroke-width="5"/>')
     o.append(f'<path d="M {wx0+14},{wy0+40} A 66,34 0 0 1 {wx1-14},{wy0+40}" fill="none" stroke="#e8dccb" stroke-width="3"/>')
     o.append(builtin_shelf(R.x0 + 4, 236, wx0 - 26, R.y1 - 60, seed=3) + builtin_shelf(wx1 + 26, 236, R.x1 - 4, R.y1 - 60, seed=8))
-    o.append(curtain_pair(wx0, wy0 + 2, wx1, wy1, '#8a5a5a', '#6a3e40', '#a8766e'))
+    o.append(drapes(wx0, wy0 - 30, wx1, R.y1 - 70, '#3e4a6a', '#2a3450', '#5a6a8a'))
     o.append(f'<rect x="{wx0-22}" y="{wy1+8}" width="{wx1-wx0+44}" height="58" fill="{WOOD_DK}"/><rect x="{wx0-22}" y="{wy1+8}" width="{wx1-wx0+44}" height="8" fill="{WOOD_LT}"/>'
              f'<rect x="{wx0-16}" y="{wy1+16}" width="{wx1-wx0+32}" height="16" rx="6" fill="#6a5a8a"/>'
              f'<rect x="{wx0-4}" y="{wy1-14}" width="44" height="32" rx="10" fill="#d8a070" transform="rotate(-6 {wx0+18} {wy1})"/><rect x="{wx1-48}" y="{wy1-12}" width="40" height="30" rx="10" fill="#c86a6a" transform="rotate(6 {wx1-28} {wy1})"/>')
@@ -915,7 +1027,8 @@ def family_room(night=False, board=False):
     # hanging plants + pendant lamps
     for (s_, u_) in ((1.3, .22), (1.3, .78)):
         p = R.P('C', s_, u_); o.append(hanging_plant(p[0], p[1] + 90 * s_ * .5, s_ * .8))
-    for s_ in (1.6, 2.3):
+    cp0 = R.P('C', 1.9, .5); o.append(chandelier(cp0[0], cp0[1] + 60, 1.9 * .75, 80))
+    for s_ in ():
         pc = R.P('C', s_, .5)
         o.append(f'<line x1="{pc[0]:.0f}" y1="{pc[1]:.0f}" x2="{pc[0]:.0f}" y2="{pc[1]+34*s_:.0f}" stroke="#1a1012" stroke-width="2"/><path d="M {pc[0]-18*s_:.0f},{pc[1]+52*s_:.0f} Q {pc[0]:.0f},{pc[1]+26*s_:.0f} {pc[0]+18*s_:.0f},{pc[1]+52*s_:.0f} Z" fill="#c8945a"/>')
         if night or True: o.append(glow(pc[0], pc[1] + 54 * s_, 46 * s_, WARM, .55 if night else .3))
@@ -923,7 +1036,7 @@ def family_room(night=False, board=False):
     for (s0, s1, a0, a1, c) in ((1.12, 1.3, .14, .32, '#6e7ea0'), (1.34, 1.46, .18, .3, '#a08068'), (1.12, 1.26, .36, .48, '#7a9a8a'), (1.3, 1.46, .34, .5, '#b8806a')):
         o.append(R.quad('L', s0, s1, a0, a1, '#2a1a14') + R.quad('L', s0 + .01, s1 - .01, a0 + .015, a1 - .015, c))
     # rug + furniture: watching armchair by the window, coffee table, sofa (back to camera) in front, desk on the right
-    o.append(rug_pattern(R, 1.5, 2.6, .14, .86))
+    o.append(rug_pattern(R, 1.5, 2.6, .14, .86, '#5a3a4e', '#d8b88a', '#7a4a5e'))
     ap = on_floor(R, 1.12, .78); o.append(armchair(ap[0], ap[1], 1.12 * .9))
     sp = on_floor(R, 1.08, .94); o.append(side_table(sp[0], sp[1], 1.08 * .9, lamp=True, lit=True))
     fl = on_floor(R, 1.1, .1); o.append(floor_lamp(fl[0], fl[1], 1.1 * .85, lit=night))
@@ -936,8 +1049,8 @@ def family_room(night=False, board=False):
     o.append(lamp_desk(dk_[0] + 44, dk_[1] - 82 * 1.08, .8, on=night or board))
     ch = on_floor(R, 1.6, .26)
     o.append(g(ch[0], ch[1], 1.6 * .8, '<rect x="-24" y="-54" width="48" height="8" rx="3" fill="#8a5a3c"/><rect x="-22" y="-120" width="44" height="64" rx="10" fill="#6a3e4a"/><rect x="-3" y="-46" width="6" height="34" fill="#2a1a14"/><path d="M -26,0 L 26,0 L 4,-12 L -4,-12 Z" fill="#2a1a14"/>'))
-    ct = on_floor(R, 1.9, .55); o.append(coffee_table(ct[0], ct[1], 1.9 * .7))
-    bp = on_floor(R, 2.1, .86); o.append(big_plant(bp[0], bp[1], 2.1 * .62))
+    ct = on_floor(R, 1.9, .55); o.append(round_marble_table(ct[0], ct[1], 1.9 * .72))
+    bp = on_floor(R, 2.1, .88); o.append(olive_tree(bp[0], bp[1], 2.1 * .62))
     sb = on_floor(R, 3.3, .46); o.append(sofa_back(sb[0], sb[1], 3.3 * .5))
     # crutches leaning on the sofa's back corner
     cr = on_floor(R, 3.1, .74)
@@ -975,16 +1088,16 @@ def ground_living():
     """hero's ground-floor living room v2: front door + windows on the back wall, stairs at left, cosy furniture"""
     R = Room((290, 430), 120, 230, 450, 570)
     o = [R.shell(wall='#6a4c48', wall_lt='#7a5854', wall_dk='#4a3438', ceil='#2a1c1e', floor='#7a4e38')]
-    o.append(wallpaper(R, WALL, '#f2d8c8', .09))
-    o.append(walls_detail(R, stripes=False))
-    for s_ in (1.25, 1.7, 2.4):
-        a, b = R.P('C', s_, 0), R.P('C', s_, 1); o.append(f'<polygon points="{pts(a, b, (b[0], b[1]+9*s_), (a[0], a[1]+9*s_))}" fill="#3e2620"/>')
+    o.append(tray_ceiling(R, '#5a4a48', '#4e403e'))
+    o.append(herringbone(R, '#8a5c3e', '#6e4630'))
+    o.append(luxe_walls(R, panel='#7a5a5a', mould='#c8b4a0'))
+
     # front door with sidelight + transom, two windows with curtains
     o.append('<rect x="250" y="300" width="84" height="270" fill="#e8dccb"/><rect x="258" y="318" width="54" height="252" fill="#6a2e26"/><rect x="316" y="318" width="12" height="252" fill="url(#winDark)"/>'
              '<path d="M 258,318 A 35,16 0 0 1 328,318 Z" fill="url(#winDark)"/><rect x="266" y="334" width="38" height="70" fill="none" stroke="#3a1a16" stroke-width="2"/><rect x="266" y="420" width="38" height="120" fill="none" stroke="#3a1a16" stroke-width="2"/><circle cx="304" cy="452" r="3" fill="#d9b25a"/>')
     for wx in (150, 372):
         o.append(f'<rect x="{wx-6}" y="294" width="78" height="120" fill="#e8dccb"/><rect x="{wx}" y="300" width="66" height="108" fill="url(#winDark)"/><path d="M {wx+33},300 L {wx+33},408 M {wx},354 L {wx+66},354" stroke="#e8dccb" stroke-width="3"/>' + stars(70 + wx, 4, 0))
-        o.append(curtain_pair(wx, 300, wx + 66, 408, '#7a5a6a', '#5a3e4a', '#946e7e'))
+        o.append(drapes(wx, 290, wx + 66, 566, '#2e5a52', '#1e3e38', '#447a6e'))
     # entry: console table with key bowl + mirror, coat rack with jacket, shoes
     o.append('<ellipse cx="216" cy="470" rx="22" ry="30" fill="#c9a46a"/><ellipse cx="216" cy="470" rx="17" ry="25" fill="#8a9ab8" opacity=".6"/>')
     ct = on_floor(R, 1.02, .3)
@@ -1009,12 +1122,13 @@ def ground_living():
     o.append(R.box(1.5, 1.95, .86, 1.0, .14, WOOD_LT, WOOD_DK, WOOD))
     o.append(R.quad('R', 1.56, 1.9, .42, .68, '#141018') + R.quad('R', 1.58, 1.88, .44, .66, '#2a2438'))
     # rug, sofa facing camera, coffee table, armchair, floor lamp, big plant
-    o.append(rug_pattern(R, 1.35, 2.45, .24, .84, '#5e3a3a', '#d8b090', '#7a4a4a'))
-    sp = on_floor(R, 1.3, .55); o.append(sofa_front(sp[0], sp[1], 1.3 * .7, ('#6a6a8a', '#82829e', '#46465e')))
+    o.append(rug_pattern(R, 1.35, 2.45, .24, .84, '#3e3a52', '#d8b88a', '#5a4a6a'))
+    sp = on_floor(R, 1.3, .55); o.append(sofa_front(sp[0], sp[1], 1.3 * .7, ('#2e5a52', '#447a6e', '#1e3e38'), ('#d8a070', '#e8dccb', '#c86a6a')))
     fl = on_floor(R, 1.28, .86); o.append(floor_lamp(fl[0], fl[1], 1.28 * .85, lit=True))
-    ap = on_floor(R, 2.0, .86); o.append(armchair(ap[0], ap[1], 2.0 * .66, ('#8a5a62', '#a0707a', '#5e3a44')))
-    ctb = on_floor(R, 1.85, .55); o.append(coffee_table(ctb[0], ctb[1], 1.85 * .68))
-    bp = on_floor(R, 2.5, .97); o.append(big_plant(bp[0], bp[1], 2.5 * .6))
+    ap = on_floor(R, 2.0, .86); o.append(armchair(ap[0], ap[1], 2.0 * .66, ('#a0783a', '#b8904e', '#7a5a2a')))
+    ctb = on_floor(R, 1.85, .55); o.append(round_marble_table(ctb[0], ctb[1], 1.85 * .68))
+    cl0 = R.P('C', 1.7, .55); o.append(chandelier(cl0[0], cl0[1] + 50, 1.7 * .7, 70))
+    bp = on_floor(R, 2.5, .97); o.append(olive_tree(bp[0], bp[1], 2.5 * .55))
     o.append(shade(fl[0], fl[1] - 200, 520, '#1e1430', .6))
     o.append(dust(25, (fl[0] - 140, fl[1] - 240, fl[0] + 40, fl[1]), 14))
     return ''.join(o)
@@ -1023,15 +1137,16 @@ def ground_living():
 def party_room():
     R = Room((280, 440), 110, 250, 450, 590)
     o = [R.shell(wall='#8a6260', wall_lt='#9a706a', wall_dk='#6a4a50', ceil='#4a3438', floor='#7e5440')]
-    o.append(wallpaper(R, WALL, '#fff0e0', .12))
-    o.append(walls_detail(R, wall_stripe='#7a5452', stripes=False))
+    o.append(tray_ceiling(R, '#d8c8b8', '#cab8a6'))
+    o.append(herringbone(R, '#a07050', '#84583c'))
+    o.append(luxe_walls(R, panel='#9a7270', mould='#ecdccb'))
     # back wall: fireplace with mantel in the middle, window right, shelves left
-    o.append('<rect x="214" y="430" width="134" height="160" fill="#e8dccb"/><rect x="204" y="420" width="154" height="14" fill="#f2e8da"/><rect x="236" y="470" width="90" height="120" fill="#2a1612"/>'
+    o.append('<rect x="214" y="430" width="134" height="160" fill="#efe8e2"/><path d="M 222,440 C 250,452 280,436 300,448 C 320,440 336,452 340,446" fill="none" stroke="#c8beb8" stroke-width="2"/><rect x="204" y="420" width="154" height="14" fill="#f6f0ea"/><rect x="236" y="470" width="90" height="120" fill="#2a1612"/>'
              '<path d="M 250,590 C 252,560 266,556 270,540 C 276,556 290,560 292,546 C 300,560 312,566 312,590 Z" fill="#ffb060"/><path d="M 262,590 C 266,572 274,568 278,560 C 282,570 292,574 296,590 Z" fill="#ffe0a0"/>' + glow(281, 570, 70, '#ffb060', .8))
-    o.append(f'<rect x="232" y="356" width="98" height="62" fill="#2a1a14"/><rect x="238" y="362" width="86" height="50" fill="#8aa0b8"/><path d="M 238,412 L 270,380 L 300,400 L 324,384 L 324,412 Z" fill="#5a6e5a"/>')  # painting over the mantel
+    o.append(art_canvas(234, 330, 94, 80, 7))  # painting over the mantel
     o.append(''.join(f'<rect x="{x}" y="{404}" width="6" height="16" fill="#f2e8da"/><ellipse cx="{x+3}" cy="400" rx="3" ry="5" fill="#ffd890"/>' for x in (214, 226, 336, 348)))
     o.append(builtin_shelf(R.x0 + 4, 270, 196, R.y1 - 40, seed=12, rows=6))
-    o.append('<rect x="370" y="286" width="72" height="140" fill="#e8dccb"/><rect x="376" y="292" width="60" height="128" fill="#2e2560"/><path d="M 406,292 L 406,420 M 376,356 L 436,356" stroke="#e8dccb" stroke-width="3"/>' + curtain_pair(376, 292, 436, 420, '#c87a8a', '#a05a6a', '#e09aa8'))
+    o.append('<rect x="370" y="286" width="72" height="140" fill="#e8dccb"/><rect x="376" y="292" width="60" height="128" fill="#2e2560"/><path d="M 406,292 L 406,420 M 376,356 L 436,356" stroke="#e8dccb" stroke-width="3"/>' + drapes(376, 282, 436, 578, '#7a3a46', '#5a2a34', '#94525e'))
     # banner + balloons + string lights
     cols = ['#ff9fb4', '#b9a2ff', '#ffe08a', '#9fe0c8']
     o.append('<path d="M 112,262 Q 280,330 448,262" fill="none" stroke="#e6dcf6" stroke-width="2"/>')
@@ -1050,9 +1165,10 @@ def party_room():
             o.append(R.quad(face, s0, s1, a0, a1, '#2a1a14') + R.quad(face, s0 + .01, s1 - .01, a0 + .015, a1 - .015, c))
     # rug, sofa facing camera, two armchairs, coffee/cake table, floor lamp, plants, gifts
     o.append(rug_pattern(R, 1.25, 2.4, .16, .84, '#7a4a5a', '#e8c8a0', '#9a5a6a'))
-    sp = on_floor(R, 1.2, .5); o.append(sofa_front(sp[0], sp[1], 1.2 * .72, ('#a87a8a', '#c094a2', '#7a5262')))
+    sp = on_floor(R, 1.2, .5); o.append(sofa_front(sp[0], sp[1], 1.2 * .72, ('#d8c4b4', '#ece0d4', '#b8a494'), ('#c86a6a', '#3e4a6a', '#d8a070')))
+    cl0 = R.P('C', 1.8, .5); o.append(chandelier(cl0[0], cl0[1] + 60, 1.8 * .8, 80))
     for u_ in (.12, .88):
-        ap = on_floor(R, 1.75, u_); o.append(armchair(ap[0], ap[1], 1.75 * .62, ('#c08a6a', '#d8a080', '#8a5a44')))
+        ap = on_floor(R, 1.75, u_); o.append(armchair(ap[0], ap[1], 1.75 * .62, ('#2e5a52', '#447a6e', '#1e3e38')))
     ctp = on_floor(R, 1.8, .5)
     cake_table = ('<ellipse cx="0" cy="2" rx="80" ry="7" fill="#1a1012" opacity=".35"/><rect x="-66" y="-40" width="6" height="40" fill="#4a2c1c"/><rect x="60" y="-40" width="6" height="40" fill="#3a2016"/>'
                   '<path d="M -80,-52 L 80,-52 L 76,-40 L -76,-40 Z" fill="#f6eef8"/><path d="M -80,-52 L 80,-52 L 80,-34 C 60,-28 40,-36 20,-30 C 0,-36 -20,-28 -40,-34 C -60,-28 -80,-34 -80,-34 Z" fill="#f6eef8"/>'
@@ -1062,7 +1178,7 @@ def party_room():
     o.append(g(ctp[0], ctp[1], 1.8 * .7, cake_table) + glow(ctp[0], ctp[1] - 128 * 1.26, 70, WARM, .8))
     fl = on_floor(R, 1.15, .1); o.append(floor_lamp(fl[0], fl[1], 1.15 * .85))
     for (s_, u_) in ((1.15, .93), (2.4, .05)):
-        bp = on_floor(R, s_, u_); o.append(big_plant(bp[0], bp[1], s_ * .6))
+        bp = on_floor(R, s_, u_); o.append(olive_tree(bp[0], bp[1], s_ * .55))
     gf = on_floor(R, 2.2, .8)
     o.append(g(gf[0], gf[1], 2.2 * .6, '<rect x="-30" y="-34" width="40" height="34" fill="#c06a7e"/><rect x="-12" y="-34" width="6" height="34" fill="#f2d6a8"/><rect x="6" y="-24" width="30" height="24" fill="#6a7ab0"/><rect x="18" y="-24" width="6" height="24" fill="#f2d6a8"/><rect x="-18" y="-56" width="26" height="22" fill="#e8c46a"/><rect x="-7" y="-56" width="5" height="22" fill="#c06a7e"/>'))
     r = random.Random(12)
