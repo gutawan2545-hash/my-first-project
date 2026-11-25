@@ -396,5 +396,50 @@ rep("""    c_ = load_raw('music/C_night.mp3'); mc = np.zeros(N, np.float32); A.a
     def put_xf(x, at):
         k = int(.25 * A.SR); x = x.copy(); x[:k] *= np.linspace(0, 1, k); x[-k:] *= np.linspace(1, 0, k); A.add(mc, at - .12, x)
     put_xf(cut('s10', 's20'), T0['s10']); put_xf(stretch(cut('s20', 's22'), int((T0['s22'] - T0['s20']) * A.SR)), T0['s20']); put_xf(cut('s22', None), T0['s22'])""")
+# ================================================================ รอบแก้ 5 (ผู้ใช้สั่ง): ระบบแสงเงาแบบหนัง 2D (pipeline/cinelight.py) · NOLIGHT=1 = ภาพก่อนปรับ
+rep("import storyboard as SB                      # ฉาก ตัวละคร และ defs ที่ทำไว้แล้ว", """import storyboard as SB                      # ฉาก ตัวละคร และ defs ที่ทำไว้แล้ว
+sys.path.insert(0, os.path.join(HERE, '..', '..', '..', 'pipeline'))
+import cinelight as CL
+LIGHT = not os.environ.get('NOLIGHT')
+BGDIR = 'bg_lit' if LIGHT else 'bg'
+if LIGHT:   # ตัวละครที่อยู่ในฉากหลังนิ่ง (แขกในห้องพิธี) ได้แสงขอบด้วย
+    _put0 = SB.put
+    def _put_lit(key, x, feet, s, shadow=True): return f'<g filter="url(#clRim_bg)">' + _put0(key, x, feet, s, shadow) + '</g>'
+    SB.put = _put_lit""")
+rep("def placed(rig, x, feet, s):\n    body, lf = rig\n", "def placed(rig, x, feet, s):\n    body, lf = rig\n    if LIGHT: body = body.replace('class=\"place\"', '')\n")
+rep("""    return f'<g data-lf="{lf}" data-x="{x}" data-feet="{feet}" data-s="{s}" class="place">{body}</g>'""",
+    """    cs = CL.contact_shadow(0, lf, 1) if LIGHT else ''
+    return f'<g data-lf="{lf}" data-x="{x}" data-feet="{feet}" data-s="{s}" class="place">{cs}{body}</g>'""")
+rep("def img(name): return f'<image href=\"bg/{name}.jpg\"", "def img(name): return f'<image href=\"{BGDIR}/{name}.jpg\"")
+rep("""def shot_svg(sid, content):
+    return f'<svg id="{sid}" class="shot" viewBox="0 0 540 960" display="none"><g id="{sid}c">{content}</g>""",
+"""HALL_L = CL.Light(dir=(-.55, -.8), glows=[(270, 30, 150, '#ffd2a0', .35), (85, 400, 80, '#ffb36b', .55), (440, 400, 80, '#ffb36b', .55), (300, 290, 110, '#a9bcff', .25)])
+DOOR_L = CL.Light(dir=(-.75, -.5), ambient_op=.26, glows=[(175, 600, 60, '#ffb36b', .6), (365, 600, 60, '#ffb36b', .6), (270, 330, 150, '#b7c6ff', .3)])
+LIGHTS = {**{k: HALL_L for k in ('s1', 's2', 's3', 's4r', 's6r', 's7a', 's9r', 's10', 's11', 's12', 's13', 's14')},
+          **{k: DOOR_L for k in ('s4', 's5', 's6', 's7b', 's8', 's9')},
+          **{k: CL.Light(dir=(-.3, -.4), ambient='#5a6596', ambient_op=.18, glows=[(270, 420, 150, '#9fb4ff', .35), (440, 200, 90, '#ffe0c0', .2)]) for k in ('s15', 's16', 's17', 's18', 's19')},
+          's20': CL.Light(dir=(0, -1), ambient_op=.28, lowkey=.35, glows=[(270, 40, 160, '#ffd2a0', .5), (270, 800, 120, '#b7a6ff', .25)], pools=[(270, 120, 260), (270, 820, 160)]),
+          's21': CL.Light(dir=(0, -1), ambient='#3a4478', ambient_op=.3, lowkey=.4, glows=[(270, 400, 170, '#9fb4ff', .4)], pools=[(270, 420, 260)]),
+          **{k: CL.Light(dir=(-.8, -.3), rim_op=.85, ambient='#3a4478', ambient_op=.3, lowkey=.55, char_exp=.9, glows=[(150, 330, 120, '#ffb36b', .3), (270, 300, 200, '#7f90d0', .2)], pools=[(230, 340, 260)]) for k in ('s22', 's23')},
+          's24': CL.Light(dir=(-.6, -.6), ambient='#3a4478', ambient_op=.3, lowkey=.55, glows=[(80, 270, 70, '#ffb36b', .6), (460, 270, 70, '#ffb36b', .6), (270, 742, 120, '#ffcf96', .45)], pools=[(80, 270, 160), (460, 270, 160), (270, 760, 180)]),
+          's25': CL.Light(dir=(.8, -.4), ambient='#3a4478', ambient_op=.3, lowkey=.55, char_exp=.88, glows=[(90, 340, 70, '#ffb36b', .7), (450, 340, 70, '#ffb36b', .75)], pools=[(90, 340, 200), (450, 340, 220)]),
+          's26': CL.Light(dir=(-.6, -.2), char_exp=.92, ambient='#3c4678', ambient_op=.28, lowkey=.45, glows=[(230, 560, 90, '#ffb36b', .55), (420, 200, 150, '#a9bcff', .35)], pools=[(230, 560, 220), (420, 230, 220)])}
+BG_L = CL.Light(dir=(-.55, -.8), rim_w=1.6, shade_w=6, rim_op=.7)
+def light_chars(sid, content):
+    # ฟิลเตอร์แสงขอบ/เงานุ่มต่อชิ้นส่วน (ตัว หัว แขน) แสงติดไปกับตัวละครทุกท่า
+    a = CL.char_attr(sid)
+    content = re.sub(r'<g id="(\\w+?)(Body|LU|RU)"', lambda m: f'<g id="{m.group(1)}{m.group(2)}" {a}', content)
+    content = re.sub(r'<g id="(\\w+?)H">', lambda m: CL.AO_NECK + f'<g id="{m.group(1)}H" {a}>', content)
+    return content
+def shot_svg(sid, content):
+    if LIGHT and sid in LIGHTS:   # ชั้นเงาแวดล้อมใต้ตัวละคร (ต่อจากภาพฉากหลัง) · ตัวละครมีแสงของตัวเอง · ชั้นแสงเรืองบนสุด
+        L_ = LIGHTS[sid]; content = light_chars(sid, content)
+        tag = 'preserveAspectRatio="none"/>'
+        content = content.replace(tag, tag + CL.shadow_layer(sid, L_), 1) if tag in content else CL.shadow_layer(sid, L_) + content
+        content += CL.light_layer(sid, L_)
+    return f'<svg id="{sid}" class="shot" viewBox="0 0 540 960" display="none"><g id="{sid}c">{content}</g>""")
+rep("DEFS = (base +", "DEFS = ((CL.defs({**LIGHTS, 'bg': BG_L}) if LIGHT else '') + base +")
+rep("open('bg_full.html', 'w').write(bg_html)", "open('bg_full_lit.html' if LIGHT else 'bg_full.html', 'w').write(bg_html)")
+
 open('anim_full.py', 'w').write(s)
 print('wrote anim_full.py')

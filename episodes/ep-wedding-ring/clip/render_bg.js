@@ -9,7 +9,7 @@ const path = require('path');
   for (const e of await p.$$('body > svg[id]')) {
     const id = await e.getAttribute('id');
     await e.scrollIntoViewIfNeeded();
-    await e.screenshot({ path: path.join(__dirname, 'bg', id + '.jpg'), type: 'jpeg', quality: 92 });
+    await e.screenshot({ path: path.join(__dirname, process.env.BGDIR || 'bg', id + '.jpg'), type: 'jpeg', quality: 92 });
   }
   await b.close();
   console.log('bg done');

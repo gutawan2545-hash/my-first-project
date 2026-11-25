@@ -7,6 +7,14 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'storyboard'))
 import storyboard as SB                      # ฉาก ตัวละคร และ defs ที่ทำไว้แล้ว
+sys.path.insert(0, os.path.join(HERE, '..', '..', '..', 'pipeline'))
+import cinelight as CL
+LIGHT = not os.environ.get('NOLIGHT')
+BGDIR = 'bg_lit' if LIGHT else 'bg'
+if LIGHT:   # ตัวละครที่อยู่ในฉากหลังนิ่ง (แขกในห้องพิธี) ได้แสงขอบด้วย
+    _put0 = SB.put
+    def _put_lit(key, x, feet, s, shadow=True): return f'<g filter="url(#clRim_bg)">' + _put0(key, x, feet, s, shadow) + '</g>'
+    SB.put = _put_lit
 import audiolib as A
 import supporting as SP
 import wedding_chars as WC
@@ -70,7 +78,9 @@ PHONE_EAR = '<g transform="translate(30,6) rotate(10)"><rect x="-6" y="-20" widt
 
 def placed(rig, x, feet, s):
     body, lf = rig
-    return f'<g data-lf="{lf}" data-x="{x}" data-feet="{feet}" data-s="{s}" class="place">{body}</g>'
+    if LIGHT: body = body.replace('class="place"', '')
+    cs = CL.contact_shadow(0, lf, 1) if LIGHT else ''
+    return f'<g data-lf="{lf}" data-x="{x}" data-feet="{feet}" data-s="{s}" class="place">{cs}{body}</g>'
 
 CAST_NO = lambda *ks: {k: v for k, v in SB.CAST.items() if k not in ks}
 BX, BY = SB.bx, SB.by; GX, GY = SB.gx, SB.gy
@@ -98,7 +108,30 @@ SPEAKER = {'06e': 'w6', '09e': 'w9', '07g': 'g7', '22f': 'w22', '23f': 'w23', '2
 ENV = {k: A.envelope_fps(VO[k], FPS) for k in SPEAKER}
 
 # ---------------------------------------------------------------- ฉากแต่ละช็อต
+HALL_L = CL.Light(dir=(-.55, -.8), glows=[(270, 30, 150, '#ffd2a0', .35), (85, 400, 80, '#ffb36b', .55), (440, 400, 80, '#ffb36b', .55), (300, 290, 110, '#a9bcff', .25)])
+DOOR_L = CL.Light(dir=(-.75, -.5), ambient_op=.26, glows=[(175, 600, 60, '#ffb36b', .6), (365, 600, 60, '#ffb36b', .6), (270, 330, 150, '#b7c6ff', .3)])
+LIGHTS = {**{k: HALL_L for k in ('s1', 's2', 's3', 's4r', 's6r', 's7a', 's9r', 's10', 's11', 's12', 's13', 's14')},
+          **{k: DOOR_L for k in ('s4', 's5', 's6', 's7b', 's8', 's9')},
+          **{k: CL.Light(dir=(-.3, -.4), ambient='#5a6596', ambient_op=.18, glows=[(270, 420, 150, '#9fb4ff', .35), (440, 200, 90, '#ffe0c0', .2)]) for k in ('s15', 's16', 's17', 's18', 's19')},
+          's20': CL.Light(dir=(0, -1), ambient_op=.28, lowkey=.35, glows=[(270, 40, 160, '#ffd2a0', .5), (270, 800, 120, '#b7a6ff', .25)], pools=[(270, 120, 260), (270, 820, 160)]),
+          's21': CL.Light(dir=(0, -1), ambient='#3a4478', ambient_op=.3, lowkey=.4, glows=[(270, 400, 170, '#9fb4ff', .4)], pools=[(270, 420, 260)]),
+          **{k: CL.Light(dir=(-.8, -.3), rim_op=.85, ambient='#3a4478', ambient_op=.3, lowkey=.55, char_exp=.9, glows=[(150, 330, 120, '#ffb36b', .3), (270, 300, 200, '#7f90d0', .2)], pools=[(230, 340, 260)]) for k in ('s22', 's23')},
+          's24': CL.Light(dir=(-.6, -.6), ambient='#3a4478', ambient_op=.3, lowkey=.55, glows=[(80, 270, 70, '#ffb36b', .6), (460, 270, 70, '#ffb36b', .6), (270, 742, 120, '#ffcf96', .45)], pools=[(80, 270, 160), (460, 270, 160), (270, 760, 180)]),
+          's25': CL.Light(dir=(.8, -.4), ambient='#3a4478', ambient_op=.3, lowkey=.55, char_exp=.88, glows=[(90, 340, 70, '#ffb36b', .7), (450, 340, 70, '#ffb36b', .75)], pools=[(90, 340, 200), (450, 340, 220)]),
+          's26': CL.Light(dir=(-.6, -.2), char_exp=.92, ambient='#3c4678', ambient_op=.28, lowkey=.45, glows=[(230, 560, 90, '#ffb36b', .55), (420, 200, 150, '#a9bcff', .35)], pools=[(230, 560, 220), (420, 230, 220)])}
+BG_L = CL.Light(dir=(-.55, -.8), rim_w=1.6, shade_w=6, rim_op=.7)
+def light_chars(sid, content):
+    # ฟิลเตอร์แสงขอบ/เงานุ่มต่อชิ้นส่วน (ตัว หัว แขน) แสงติดไปกับตัวละครทุกท่า
+    a = CL.char_attr(sid)
+    content = re.sub(r'<g id="(\w+?)(Body|LU|RU)"', lambda m: f'<g id="{m.group(1)}{m.group(2)}" {a}', content)
+    content = re.sub(r'<g id="(\w+?)H">', lambda m: CL.AO_NECK + f'<g id="{m.group(1)}H" {a}>', content)
+    return content
 def shot_svg(sid, content):
+    if LIGHT and sid in LIGHTS:   # ชั้นเงาแวดล้อมใต้ตัวละคร (ต่อจากภาพฉากหลัง) · ตัวละครมีแสงของตัวเอง · ชั้นแสงเรืองบนสุด
+        L_ = LIGHTS[sid]; content = light_chars(sid, content)
+        tag = 'preserveAspectRatio="none"/>'
+        content = content.replace(tag, tag + CL.shadow_layer(sid, L_), 1) if tag in content else CL.shadow_layer(sid, L_) + content
+        content += CL.light_layer(sid, L_)
     return f'<svg id="{sid}" class="shot" viewBox="0 0 540 960" display="none"><g id="{sid}c">{content}</g><rect id="{sid}f" width="540" height="960" fill="#ffffff" opacity="0"/><rect id="{sid}k" width="540" height="960" fill="#000" opacity="0"/></svg>'
 # ฉากหลังที่ไม่ขยับ เรนเดอร์เป็นภาพครั้งเดียว (render_bg.js) แล้วใช้เป็น <image> ทำให้เรนเดอร์ทีละเฟรมเร็วขึ้นมาก
 BG = {'hall_nbg': SB.hall(CAST_NO('bride', 'groom')), 'hall_nb': SB.hall(CAST_NO('bride')), 'hall_ng': SB.hall(CAST_NO('groom')),
@@ -184,7 +217,7 @@ GRADE = ('<svg id="grade" viewBox="0 0 540 960"><defs><pattern id="grainP" width
          '<g id="dustS" filter="url(#dGlow)">' + ''.join(f'<circle id="ds{i}" r="1.4" fill="#fff6ea" opacity="0"/>' for i in range(22)) + '</g>'
          '<g id="dustB" filter="url(#dSoft)">' + ''.join(f'<circle id="db{i}" r="4" fill="#fff2e2" opacity="0"/>' for i in range(10)) + '</g>'
          '<rect id="grVig" width="540" height="960" fill="url(#gVig)"/><rect id="grGrain" width="540" height="960" fill="url(#grainP)" opacity=".16"/></svg>')
-def img(name): return f'<image href="bg/{name}.jpg" width="540" height="960" preserveAspectRatio="none"/>'
+def img(name): return f'<image href="{BGDIR}/{name}.jpg" width="540" height="960" preserveAspectRatio="none"/>'
 door_open = img('door_open')
 SVGS = [
     shot_svg('s1', img('hall_nbg') + placed(bride_rig('b1'), *SB.CAST['bride']) + placed(groom_rig('g1'), *SB.CAST['groom'])),
@@ -586,7 +619,7 @@ js = JS % dict(shots=json.dumps(dict(SHOTS)), t0=json.dumps(T0), env=json.dumps(
 base = SB.N9.H8.S.DEFS
 for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
     base = re.sub(rf'<(linear|radial)Gradient id="{gid}".*?</\1Gradient>', '', base, flags=re.S)
-DEFS = (base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.DEFS + SB.P2.DEFS2 + SB.EXTRA_DEFS + SB.CHAR_DEFS
+DEFS = ((CL.defs({**LIGHTS, 'bg': BG_L}) if LIGHT else '') + base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.DEFS + SB.P2.DEFS2 + SB.EXTRA_DEFS + SB.CHAR_DEFS
         + f'<svg width="0" height="0" style="position:absolute"><defs>{gh}{gp}</defs></svg>')
 html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">'
         '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px;transform-origin:50% 50%}#grRect,#grGrain{mix-blend-mode:soft-light}'
@@ -597,7 +630,7 @@ open('anim_full.html', 'w').write(html)
 os.makedirs('bg', exist_ok=True)
 bg_html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap"><style>html,body{margin:0}svg{display:block}</style>'
            + DEFS + ''.join(f'<svg id="{k}" viewBox="0 0 540 960" width="540" height="960">{v}</svg>' for k, v in BG.items()))
-open('bg_full.html', 'w').write(bg_html)
+open('bg_full_lit.html' if LIGHT else 'bg_full.html', 'w').write(bg_html)
 
 # ---------------------------------------------------------------- เสียง
 N = int((TOTAL + 1) * A.SR)
