@@ -212,21 +212,35 @@ fr_body = ('<path d="M -40,466 L -6,466 C -2,475 -4,481 -10,482 L -42,482 C -46,
            '<use href="#fr"/>')
 
 # mystery watcher: hooded silhouette with binoculars, no face, cold rim light only
-mystery = '''<svg viewBox="0 0 400 900" role="img" aria-label="บุคคลปริศนา เงาดำสวมฮู้ดถือกล้องส่องทางไกล">
-<rect width="400" height="900" fill="#1e1940"/><rect x="60" y="60" width="280" height="420" fill="#2c2660"/>
-<rect x="60" y="60" width="280" height="420" fill="none" stroke="#3e3474" stroke-width="10"/><rect x="196" y="60" width="8" height="420" fill="#3e3474"/>
-<circle cx="270" cy="150" r="36" fill="#d8d4ff" opacity=".85"/><circle cx="270" cy="150" r="90" fill="#9a94e8" opacity=".12"/>
-<g transform="translate(200,170) scale(1.25)">
-  <path d="M -40,10 C -46,-40 -20,-66 6,-64 C 34,-62 48,-34 40,10 C 36,36 30,48 22,56 L 60,72 C 74,80 80,110 80,180 L 84,420 L -84,420 L -80,180 C -80,110 -74,80 -60,72 L -22,56 C -32,46 -38,34 -40,10 Z" fill="#0c0a1c"/>
-  <path d="M -40,10 C -46,-40 -20,-66 6,-64 C -18,-56 -32,-30 -30,10 C -28,30 -24,44 -16,54 Z" fill="#1c1838"/>
-  <path d="M 6,-64 C 34,-62 48,-34 40,10 C 38,26 34,40 26,52" fill="none" stroke="#8e88d8" stroke-width="2.2" opacity=".75"/>
-  <path d="M 60,72 C 74,80 80,110 80,180 L 84,420" fill="none" stroke="#8e88d8" stroke-width="2" opacity=".6"/>
-  <g transform="translate(0,6)"><rect x="-30" y="-12" width="26" height="22" rx="6" fill="#050410"/><rect x="4" y="-12" width="26" height="22" rx="6" fill="#050410"/><rect x="-6" y="-6" width="12" height="10" fill="#050410"/>
-  <circle cx="-17" cy="-12" r="8" fill="#141030"/><circle cx="17" cy="-12" r="8" fill="#141030"/><circle cx="-19" cy="-14" r="2.4" fill="#d8d4ff" opacity=".9"/><circle cx="15" cy="-14" r="2.4" fill="#d8d4ff" opacity=".9"/></g>
-  <path d="M -60,140 C -50,100 -40,60 -30,20 L -18,24 C -26,62 -34,104 -44,146 Z" fill="#0c0a1c"/><path d="M 60,140 C 50,100 40,60 30,20 L 18,24 C 26,62 34,104 44,146 Z" fill="#0c0a1c"/>
-  <path d="M 30,20 C 40,60 50,100 60,140" fill="none" stroke="#8e88d8" stroke-width="1.6" opacity=".55"/>
+mystery = '''<svg viewBox="0 0 400 900" role="img" aria-label="บุคคลปริศนา หันหลัง สวมฮู้ด ยกกล้องส่องทางไกลมองออกหน้าต่าง">
+<rect width="400" height="900" fill="#1e1940"/>
+<rect x="50" y="70" width="300" height="430" fill="#2c2660"/><rect x="50" y="70" width="300" height="430" fill="none" stroke="#3e3474" stroke-width="12"/><rect x="196" y="70" width="8" height="430" fill="#3e3474"/>
+<circle cx="285" cy="150" r="34" fill="#d8d4ff" opacity=".9"/><circle cx="285" cy="150" r="96" fill="#9a94e8" opacity=".12"/>
+<g fill="#4a4286" opacity=".7"><rect x="70" y="380" width="40" height="120"/><rect x="118" y="340" width="34" height="160"/><rect x="240" y="360" width="44" height="140"/><rect x="292" y="400" width="40" height="100"/></g>
+<g fill="#ffcf9e" opacity=".8"><rect x="126" y="360" width="6" height="8"/><rect x="138" y="390" width="6" height="8"/><rect x="250" y="380" width="6" height="8"/></g>
+<rect x="30" y="500" width="340" height="18" fill="#3e3474"/>
+<g transform="translate(200,210) scale(1.25)">
+  <!-- hoodie from behind, arms raised holding binoculars to the face -->
+  <path d="M -64,100 C -70,70 -66,40 -48,30 L 48,30 C 66,40 70,70 64,100 L 70,330 L -70,330 Z" fill="#14112a"/>
+  <path d="M -64,100 C -70,70 -66,40 -48,30 L -30,30 C -44,60 -50,140 -52,330 L -70,330 Z" fill="#1d1938"/>
+  <path d="M 48,30 C 66,40 70,70 64,100 L 70,330" fill="none" stroke="#8e88d8" stroke-width="2" opacity=".65"/>
+  <!-- upper arms angled up and forward -->
+  <path d="M -48,40 C -70,40 -86,30 -88,6 C -88,-14 -76,-24 -62,-24 L -40,-6 Z" fill="#14112a"/>
+  <path d="M 48,40 C 70,40 86,30 88,6 C 88,-14 76,-24 62,-24 L 40,-6 Z" fill="#14112a"/>
+  <path d="M 62,-24 C 76,-24 88,-14 88,6 C 86,30 70,40 48,40" fill="none" stroke="#8e88d8" stroke-width="2" opacity=".6"/>
+  <!-- binocular barrels peeking past the hood -->
+  <rect x="-50" y="-34" width="18" height="20" rx="5" fill="#0a0818"/><rect x="32" y="-34" width="18" height="20" rx="5" fill="#0a0818"/>
+  <circle cx="-41" cy="-34" r="6" fill="#1a163a"/><circle cx="41" cy="-34" r="6" fill="#1a163a"/>
+  <!-- hood -->
+  <path d="M -44,32 C -54,0 -48,-46 -22,-62 C -8,-70 8,-70 22,-62 C 48,-46 54,0 44,32 C 28,42 -28,42 -44,32 Z" fill="#100e22"/>
+  <path d="M -44,32 C -54,0 -48,-46 -22,-62 C -8,-70 0,-70 6,-68 C -20,-56 -34,-20 -30,30 Z" fill="#1d1938"/>
+  <path d="M 22,-62 C 48,-46 54,0 44,32" fill="none" stroke="#a8a2f0" stroke-width="2.4" opacity=".75"/>
+  <path d="M 0,-66 C -4,-30 -4,0 0,34" fill="none" stroke="#2a2552" stroke-width="2"/>
+  <!-- legs -->
+  <rect x="-40" y="330" width="34" height="140" fill="#0e0c1e"/><rect x="6" y="330" width="34" height="140" fill="#0e0c1e"/>
+  <path d="M 40,330 L 40,470" stroke="#8e88d8" stroke-width="1.6" opacity=".5"/>
 </g>
-<rect y="760" width="400" height="140" fill="#14112a"/></svg>'''
+<rect y="770" width="400" height="130" fill="#14112a"/></svg>'''
 
 def section(name, sub, full, close, cap_full, cap_close, chips, notes):
     ch = ''.join(f'<span><i style="background:{c}"></i>{t}</span>' for c, t in chips)
@@ -254,10 +268,10 @@ S.append(f'''<section><h2>ตัวประกอบฉากเซอร์ไ
 <div class="trio"><figure>{panel(figure(dd_body, 176, 1.15), 'พ่อของพระเอก')}<figcaption><b>พ่อ</b> ราว 58 ปี ผมสีเทา แว่นกรอบเหลี่ยม เสื้อโปโลกรม สแล็กสีเบจ ยิ้มใจดี</figcaption></figure>
 <figure>{panel(figure(mm_body, 182, 1.1), 'แม่ของพระเอก')}<figcaption><b>แม่</b> ราว 55 ปี ผมดัดสั้น ต่างหูมุก เสื้อแขนยาวสีม่วงอ่อน กระโปรงยาว ยิ้มตาหยี</figcaption></figure>
 <figure>{panel(figure(fr_body, 170, 1.2), 'เพื่อนสนิทของพระเอก')}<figcaption><b>เพื่อนสนิท</b> ราว 30 ปี หมวกไหมพรม ฮู้ดดี้ตัวโคร่ง ยีนส์ สนีกเกอร์ ถือกล่องของขวัญ ยิ้มกว้าง</figcaption></figure></div></section>''')
-S.append(section('บุคคลปริศนา', 'ฉาก 8 เท่านั้น · ห้ามเห็นหน้า ห้ามบอกเพศ', mystery, '',
-    'เงาดำสวมฮู้ด ยืนหน้าหน้าต่างห้องมืด ถือกล้องส่องทางไกล แสงจันทร์ติดขอบฮู้ดกับไหล่เพียงเส้นบาง ๆ เห็นแค่แสงสะท้อนบนเลนส์',
-    '', [('#0c0a1c', 'เงา'), ('#8e88d8', 'แสงขอบจันทร์'), ('#d8d4ff', 'แสงสะท้อนเลนส์')],
-    ['ห้ามเห็นหน้า ทรงผม หรือมือชัด เพื่อไม่ให้เดาได้ว่าเป็นใคร', 'เปิดตัวด้วยการแพนกล้องจากงานเลี้ยงมาที่หน้าต่าง แล้วหยุดนิ่งก่อนตัดดำ']))
+S.append(section('บุคคลปริศนา', 'ฉาก 8 เท่านั้น · หันหลังใส่ฮู้ดเท่านั้น ห้ามเห็นหน้า ห้ามบอกเพศ', mystery, '',
+    'หันหลังให้กล้องเสมอ สวมฮู้ดคลุมหัว ยกกล้องส่องทางไกลมองออกหน้าต่างไปที่งานเลี้ยง แสงจันทร์ติดขอบฮู้ด ไหล่ และแขนเป็นเส้นบาง ๆ ไม่เห็นหน้า มือ หรือผม',
+    '', [('#14112a', 'ฮู้ด'), ('#8e88d8', 'แสงขอบจันทร์')],
+    ['ใช้มุมหันหลังมุมเดียว ห้ามหันหน้า หันข้าง หรือเห็นมือชัด เพื่อไม่ให้เดาได้ว่าเป็นใคร', 'เปิดตัวด้วยการแพนกล้องจากงานเลี้ยงมาที่ห้องนี้ เห็นแผ่นหลังสวมฮู้ดกับกล้องส่องทางไกล แล้วหยุดนิ่งก่อนตัดดำ']))
 
 page = f'''<title>บ้านตรงข้าม ตัวละครอื่น ๆ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
