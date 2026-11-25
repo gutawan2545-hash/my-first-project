@@ -432,8 +432,27 @@ def build():
             f'''<div class="wrap"><h1>สตอรีบอร์ด · ถ้าวันนี้เป็นวันแต่งงานของคุณ<span>Odd Hours · 30 ช็อตตามบท · ห้องพิธีวิวพระจันทร์เต็มดวง</span></h1>
 <p class="note">ห้องพิธีกับตัวละครใช้ของที่ทำไว้แล้ว ส่วนประตูห้องจัดเลี้ยง หน้าจอมือถือ ลิฟต์ ห้องพัก และทางเดิน เป็นแบบร่างในโทนเดียวกัน ไว้ดูจังหวะและมุมกล้องก่อน ตัวละครยังยืนท่าตรงแบบแผ่นตัวละคร ท่าทางจริงจะทำตอนภาพนิ่ง ซับไทยวางที่ราว 74% ของความสูงเฟรมตามมาตรฐานช่อง</p>
 {html_scenes}</div>''')
-    out = os.path.join(HERE, 'storyboard.html')
-    open(out, 'w').write(page); print('ok', len(page))
+    out = os.path.join(HERE, 'storyboard_svg.html')
+    open(out, 'w').write(page); print('ok svg', len(page))
+
+def build_light():
+    """หน้าเบาสำหรับเปิดดู: ใช้รูป frames/NN.jpg ที่ render_frames.js เรนเดอร์จาก storyboard_svg.html"""
+    html_scenes = ''
+    for title, nums in SCENES:
+        cards = ''
+        for n in nums:
+            camtxt, who, desc, _ = SHOTS[n]
+            cards += (f'<figure><img src="frames/{n:02d}.jpg" width="540" height="960" loading="lazy" alt="ช็อต {n}">'
+                      f'<figcaption><div class="num"><b>{n:02d}</b><span>{camtxt}</span></div><div class="who">เสียง: {who}</div><small>{desc}</small></figcaption></figure>')
+        html_scenes += f'<h2>{title}</h2><div class="grid">{cards}</div>'
+    css = CSS.replace('figure svg{', 'figure img{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:9/16;object-fit:cover;background:#1b1a26;').replace('display:block;width:100%;height:auto;aspect-ratio:9/16;border-radius:4px', 'border-radius:4px')
+    page = css + f'''<div class="wrap"><h1>สตอรีบอร์ด · ถ้าวันนี้เป็นวันแต่งงานของคุณ<span>Odd Hours · 30 ช็อตตามบท · ห้องพิธีวิวพระจันทร์เต็มดวง</span></h1>
+<p class="note">ห้องพิธีกับตัวละครใช้ของที่ทำไว้แล้ว ส่วนหน้าจอมือถือ ลิฟต์ ห้องพัก และทางเดิน เป็นแบบร่างในโทนเดียวกัน ไว้ดูจังหวะและมุมกล้องก่อน ตัวละครยังยืนท่าตรงแบบแผ่นตัวละคร ท่าทางจริงจะทำตอนภาพนิ่ง ซับไทยวางที่ราว 74% ของความสูงเฟรมตามมาตรฐานช่อง</p>
+{html_scenes}</div>'''
+    open(os.path.join(HERE, 'storyboard.html'), 'w').write(page); print('ok light', len(page))
 
 if __name__ == '__main__':
-    build()
+    if len(sys.argv) > 1 and sys.argv[1] == 'light':
+        build_light()
+    else:
+        build()
