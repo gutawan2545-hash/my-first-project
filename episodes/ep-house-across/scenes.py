@@ -426,8 +426,214 @@ def window_fg(lit_inside=WARM, night=True, sill=True):
         o.append(f'<rect x="210" y="722" width="90" height="14" fill="{PAPER}" opacity=".85" transform="rotate(-3 255 729)"/><rect x="220" y="712" width="70" height="12" fill="#d9c8b8" opacity=".8" transform="rotate(4 255 718)"/>')
     return ''.join(o)
 
+# ---------------- new rooms: police station · ground-floor living room · 2nd-floor family room ----------------
+def sofa(R, s0, s1, u0, u1, col='#7a5a6e', dk='#4e3446', lt='#94728a', back='L'):
+    """sofa: seat + back + arms. back='L' means the backrest is against the left side (sofa faces right); 'B' faces the viewer"""
+    o = []
+    if back == 'B':
+        o.append(R.box(s0, s0 + .08, u0, u1, .24, lt, dk, col))
+        o.append(R.box(s0 + .08, s1, u0, u1, .11, lt, dk, col))
+        o.append(R.box(s0 + .08, s1, u0, u0 + .05, .17, lt, dk, col))
+        o.append(R.box(s0 + .08, s1, u1 - .05, u1, .17, lt, dk, col))
+    else:
+        o.append(R.box(s0, s1, u0, u0 + .06, .24, lt, dk, col))
+        o.append(R.box(s0, s1, u0 + .06, u1, .11, lt, dk, col))
+        o.append(R.box(s0, s0 + .06, u0, u1, .17, lt, dk, col))
+        o.append(R.box(s1 - .06, s1, u0, u1, .17, lt, dk, col))
+    return ''.join(o)
+
+def cushions(R, pts_list, cols=('#c88a6a', '#8a7aa8', '#b85a6a')):
+    o = []
+    for (s_, u_, h_), c in zip(pts_list, cols):
+        p = on_floor(R, s_, u_, h_)
+        o.append(f'<rect x="{p[0]-14*s_:.0f}" y="{p[1]-20*s_:.0f}" width="{28*s_:.0f}" height="{22*s_:.0f}" rx="{6*s_:.0f}" fill="{c}"/>')
+    return ''.join(o)
+
+def family_room(night=False, board=False):
+    """2nd-floor family room / home studio, big back window looking at the house across"""
+    R = Room((290, 420), 140, 230, 440, 560)
+    o = [R.shell(wall=WALL if not night else '#4a3440', wall_lt=WALL_LT if not night else '#56404a', wall_dk=WALL_DK if not night else '#34242e',
+                 ceil=CEIL if not night else '#1e1620', floor=FLOOR if not night else '#4a2e24')]
+    o.append(walls_detail(R))
+    # ceiling beams
+    for s_ in (1.25, 1.7, 2.4):
+        a, b = R.P('C', s_, 0), R.P('C', s_, 1)
+        o.append(f'<polygon points="{pts(a, b, (b[0], b[1]+10*s_), (a[0], a[1]+10*s_))}" fill="#3a2420"/>')
+    # big picture window (3 panes) on the back wall
+    wx0, wy0, wx1, wy1 = 196, 262, 400, 452
+    view = street('night' if night else 'day', (150, 120), hy=600, hs=1.1)
+    cid = uid('cw')
+    o.append(f'<clipPath id="{cid}"><rect x="{wx0}" y="{wy0}" width="{wx1-wx0}" height="{wy1-wy0}"/></clipPath>')
+    o.append(f'<g clip-path="url(#{cid})"><g filter="url(#dof)" transform="translate({wx0},{wy0}) scale(.39) translate(-10,-150)">{view}</g></g>')
+    o.append(f'<path d="M {wx0-10},{wy0-10} L {wx1+10},{wy0-10} L {wx1+10},{wy1+10} L {wx0-10},{wy1+10} Z M {wx0},{wy0} L {wx1},{wy0} L {wx1},{wy1} L {wx0},{wy1} Z" fill="{WOOD_DK}" fill-rule="evenodd"/>')
+    for k in (1, 2):
+        xx = wx0 + (wx1 - wx0) * k / 3; o.append(f'<rect x="{xx-3:.0f}" y="{wy0}" width="6" height="{wy1-wy0}" fill="{WOOD_DK}"/>')
+    o.append(f'<rect x="{wx0}" y="{wy0+58}" width="{wx1-wx0}" height="5" fill="{WOOD_DK}"/>')
+    o.append(f'<rect x="{wx0-40}" y="{wy0-30}" width="{wx1-wx0+80}" height="5" rx="2" fill="#2a1a16"/>')
+    o.append(f'<path d="M {wx0-38},{wy0-26} L {wx0+4},{wy0-26} C {wx0},{wy0+80} {wx0+6},{wy0+160} {wx0-4},{wy1+40} L {wx0-40},{wy1+40} Z" fill="#8a6a5a"/>')
+    o.append(f'<path d="M {wx1+38},{wy0-26} L {wx1-4},{wy0-26} C {wx1},{wy0+80} {wx1-6},{wy0+160} {wx1+4},{wy1+40} L {wx1+40},{wy1+40} Z" fill="#7a5a4c"/>')
+    # watching corner: armchair + side table + coffee by the window
+    o.append(R.box(1.02, 1.12, .42, .62, .26, '#6a7a7a', '#3e4a4c', '#4e5c5e'))
+    o.append(R.box(1.12, 1.3, .42, .62, .12, '#7a8a8a', '#3e4a4c', '#4e5c5e'))
+    o.append(R.box(1.12, 1.3, .42, .46, .18, '#6a7a7a', '#3e4a4c', '#4e5c5e'))
+    o.append(R.box(1.12, 1.3, .58, .62, .18, '#6a7a7a', '#3e4a4c', '#4e5c5e'))
+    o.append(R.box(1.06, 1.18, .66, .74, .15, WOOD_LT, WOOD_DK, WOOD))
+    st = on_floor(R, 1.12, .7, .15); o.append(mug(st[0], st[1], .8) + books(st[0] - 14, st[1], .4))
+    # left wall: built-in bookshelf + record player cabinet
+    o.append(R.box(1.0, 1.42, .0, .1, .8, WOOD_LT, WOOD_DK, WOOD))
+    for k in range(5):
+        a = R.P('L', 1.0, 1 - (.16 + k * .15)); b = R.P('L', 1.42, 1 - (.16 + k * .15))
+        o.append(f'<line x1="{a[0]+0:.0f}" y1="{a[1]:.0f}" x2="{b[0]:.0f}" y2="{b[1]:.0f}" stroke="#341c14" stroke-width="2"/>')
+        bp = on_floor(R, 1.42, .05, .16 + k * .15); o.append(books(bp[0] - 4, bp[1], .9 + k * .02))
+    # sofa on the left facing right, cushions, throw
+    o.append(sofa(R, 1.55, 2.35, .0, .3, '#8a5a62', '#5a3440', '#a0707a'))
+    o.append(cushions(R, [(1.75, .12, .2), (2.05, .12, .2), (1.9, .2, .14)]))
+    o.append(R.box(2.1, 2.3, .06, .3, .12, '#c8a080', '#9a7656', '#b08a6a', h0=.11))
+    # coffee table + rug
+    rug = [R.P('F', 1.5, .2), R.P('F', 1.5, .84), R.P('F', 2.6, .88), R.P('F', 2.6, .16)]
+    o.append(f'<polygon points="{pts(*rug)}" fill="#6a4a5e"/><polygon points="{pts(*[lerp(rug[0],rug[2],.06), lerp(rug[1],rug[3],.06), lerp(rug[2],rug[0],.06), lerp(rug[3],rug[1],.06)])}" fill="none" stroke="#c09a80" stroke-width="2.4"/>')
+    o.append(R.box(1.75, 2.15, .38, .64, .09, WOOD_LT, WOOD_DK, WOOD))
+    ct = on_floor(R, 1.9, .5, .09); o.append(books(ct[0] - 20, ct[1], .8) + mug(ct[0] + 30, ct[1], 1.4))
+    # right wall: TV console + TV, desk corner (studio) with monitor
+    o.append(R.box(1.6, 2.1, .84, 1.0, .12, WOOD_LT, WOOD_DK, WOOD))
+    o.append(R.quad('R', 1.66, 2.02, .44, .7, '#141018') + R.quad('R', 1.68, 2.0, .46, .68, '#2a2438' if not night else '#4a5a8a'))
+    o.append(R.box(1.04, 1.36, .74, 1.0, .22, WOOD_LT, WOOD_DK, WOOD))
+    dk_ = on_floor(R, 1.2, .86, .22)
+    o.append(f'<rect x="{dk_[0]-26:.0f}" y="{dk_[1]-34:.0f}" width="40" height="26" rx="2" fill="#1a1418"/><rect x="{dk_[0]-23:.0f}" y="{dk_[1]-31:.0f}" width="34" height="20" fill="{"#3a4a6a" if not night else "#8aa0d8"}"/><rect x="{dk_[0]-8:.0f}" y="{dk_[1]-8:.0f}" width="6" height="8" fill="#1a1418"/>')
+    o.append(lamp_desk(dk_[0] + 24, dk_[1], .62, on=night) + plant(*on_floor(R, 1.08, .97, .22), .7))
+    o.append(R.box(1.4, 1.5, .76, .86, .11, WOOD_LT, WOOD_DK, WOOD) + R.box(1.47, 1.5, .76, .86, .24, WOOD_LT, WOOD_DK, WOOD, h0=.11))
+    # frames on the right wall above the console, plants, floor lamp, pendant
+    if board:
+        o.append(R.quad('R', 1.08, 1.56, .08, .42, WOOD_DK) + R.quad('R', 1.1, 1.54, .1, .4, '#a77a5c'))
+        r = random.Random(4); pins = []
+        for i in range(10):
+            s0 = 1.12 + r.uniform(0, .32); a0 = .12 + r.uniform(0, .2)
+            o.append(R.quad('R', s0, s0 + .07, a0, a0 + .08, PAPER) + R.quad('R', s0 + .008, s0 + .062, a0 + .01, a0 + .055, '#5e5070'))
+            pins.append(R.P('R', s0 + .035, a0 + .005))
+        o.append(f'<polyline points="{pts(*pins)}" fill="none" stroke="{RED}" stroke-width="1.6"/>' + ''.join(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="3" fill="#ffd34a"/>' for x, y in pins))
+        o.append(R.quad('R', 1.62, 2.04, .12, .38, '#e8dcc8') + R.quad('R', 1.66, 1.8, .16, .26, '#c9a46a') + R.quad('R', 1.84, 2.0, .2, .32, '#8a9ab0'))  # street map pinned
+    else:
+        o.append(R.quad('R', 1.12, 1.3, .16, .34, WOOD_DK) + R.quad('R', 1.14, 1.28, .19, .31, '#6e7ea0'))
+        o.append(R.quad('R', 1.7, 1.9, .2, .36, WOOD_DK) + R.quad('R', 1.72, 1.88, .23, .33, '#a08068'))
+        o.append(R.quad('R', 1.92, 2.04, .24, .34, WOOD_DK) + R.quad('R', 1.94, 2.02, .26, .32, '#7a9a8a'))
+    o.append(plant(*on_floor(R, 2.45, .95), 2.6, '#7a4a3a'))
+    fl = on_floor(R, 1.48, .04)
+    o.append(f'<line x1="{fl[0]:.0f}" y1="{fl[1]:.0f}" x2="{fl[0]:.0f}" y2="{fl[1]-230:.0f}" stroke="#2a1a14" stroke-width="3"/><path d="M {fl[0]-24:.0f},{fl[1]-226:.0f} L {fl[0]+24:.0f},{fl[1]-226:.0f} L {fl[0]+15:.0f},{fl[1]-258:.0f} L {fl[0]-15:.0f},{fl[1]-258:.0f} Z" fill="#e8c8a0"/>')
+    for s_ in (1.5, 2.1):
+        pc = R.P('C', s_, .5)
+        o.append(f'<line x1="{pc[0]:.0f}" y1="{pc[1]:.0f}" x2="{pc[0]:.0f}" y2="{pc[1]+30*s_:.0f}" stroke="#1a1012" stroke-width="2"/><ellipse cx="{pc[0]:.0f}" cy="{pc[1]+36*s_:.0f}" rx="{14*s_:.0f}" ry="{8*s_:.0f}" fill="#d8b890"/>')
+        if night: o.append(glow(pc[0], pc[1] + 38 * s_, 50 * s_, WARM, .5))
+    # crutches leaning on the sofa arm (he lives here now)
+    cp_ = on_floor(R, 1.5, .14)
+    o.append(f'<path d="M {cp_[0]:.0f},{cp_[1]:.0f} L {cp_[0]-16:.0f},{cp_[1]-190:.0f} M {cp_[0]+10:.0f},{cp_[1]:.0f} L {cp_[0]-4:.0f},{cp_[1]-186:.0f}" stroke="#a3a9b6" stroke-width="4"/>'
+             f'<rect x="{cp_[0]-26:.0f}" y="{cp_[1]-198:.0f}" width="16" height="8" rx="3" fill="#4a4e5c"/><rect x="{cp_[0]-12:.0f}" y="{cp_[1]-194:.0f}" width="16" height="8" rx="3" fill="#3a3d49"/>')
+    if board:
+        tp = on_floor(R, 1.25, .5)
+        o.append(f'<g transform="translate({tp[0]:.0f},{tp[1]-150:.0f})"><path d="M 0,36 L -24,150 M 0,36 L 24,150 M 0,36 L 0,154" stroke="#1e1214" stroke-width="3"/><rect x="-18" y="14" width="30" height="22" rx="3" fill="#1e1214"/><rect x="10" y="18" width="38" height="14" rx="3" fill="#2e2024"/><circle cx="50" cy="25" r="7" fill="#120a0c"/></g>')
+        r = random.Random(9)
+        for _ in range(14):
+            s = r.uniform(1.6, 3.4); u = r.uniform(.12, .9); p = R.P('F', s, u); a = r.uniform(-30, 30)
+            o.append(f'<rect x="{p[0]:.0f}" y="{p[1]:.0f}" width="{14*s:.0f}" height="{9*s:.0f}" fill="{PAPER}" transform="rotate({a:.0f} {p[0]:.0f} {p[1]:.0f})" opacity=".9"/>')
+        o.append(mug(*on_floor(R, 1.95, .44, .09), 1.4, '#c9b49a') + mug(*on_floor(R, 2.0, .58, .09), 1.4))
+    if night:
+        o.append(beam(f'{wx0},{wy0} {wx1},{wy0} 480,960 90,960', 'beamC', .5))
+        o.append(shade(dk_[0] + 20, dk_[1] - 40, 470, '#1a1030', .7))
+        o.append(dust(23, (160, 300, 460, 900), 22, '#e6e2ff'))
+    else:
+        sun = [R.P('F', 1.4, .3), R.P('F', 1.4, .75), R.P('F', 2.5, .8), R.P('F', 2.5, .35)]
+        o.append(f'<polygon points="{pts(*sun)}" fill="#ffd8b0" opacity=".4" filter="url(#soft)" style="mix-blend-mode:screen"/>')
+        o.append(beam(f'{wx0},{wy0} {wx1},{wy0} {sun[2][0]:.0f},{sun[2][1]:.0f} {sun[3][0]:.0f},{sun[3][1]:.0f}', 'beamW', .7))
+        o.append(shade(300, 500, 540, '#24163a', .5))
+        o.append(dust(24, (200, 300, 480, 860), 26))
+    return ''.join(o)
+
+def ground_living():
+    """hero's ground-floor living room in the evening: front door on the back wall, stairs up on the left"""
+    R = Room((300, 430), 120, 220, 460, 580)
+    o = [R.shell(wall='#6a4a46', wall_lt='#7a5652', wall_dk='#4a3438', ceil='#2a1c1e', floor='#6a4430')]
+    o.append(walls_detail(R, wall_stripe='#5a3e3c'))
+    # front door + side window on the back wall
+    o.append(f'<rect x="250" y="290" width="76" height="290" fill="#e6d8c6"/><rect x="258" y="300" width="60" height="280" fill="#5a2a24"/><circle cx="308" cy="450" r="3" fill="#d9b25a"/>')
+    o.append(f'<rect x="266" y="312" width="44" height="40" fill="url(#winDark)"/><rect x="266" y="364" width="44" height="80" fill="none" stroke="#3a1a16" stroke-width="2"/>')
+    o.append(f'<rect x="360" y="300" width="72" height="110" fill="#e6d8c6"/><rect x="366" y="306" width="60" height="98" fill="url(#winDark)"/><path d="M 396,306 L 396,404" stroke="#e6d8c6" stroke-width="3"/>' + stars(17, 6, 0))
+    # shoe cabinet + key bowl + coat hooks by the door
+    o.append(R.box(1.02, 1.12, .62, .78, .16, WOOD_LT, WOOD_DK, WOOD))
+    sh_ = on_floor(R, 1.07, .7, .16); o.append(f'<ellipse cx="{sh_[0]:.0f}" cy="{sh_[1]-3:.0f}" rx="12" ry="4" fill="#c9a46a"/>')
+    o.append(''.join(f'<rect x="{xx}" y="300" width="4" height="10" fill="#2a1a14"/>' for xx in (196, 214, 232)) + '<path d="M 192,308 C 186,340 190,380 200,400 L 218,400 C 214,370 214,330 206,308 Z" fill="#3e4a5e"/>')
+    # stairs going up along the left wall
+    for k in range(9):
+        s0 = 1.0 + k * .12; h = .06 + k * .07
+        o.append(R.box(s0, s0 + .12, .0, .22, h, '#8a5a3c', '#5a3624', '#6e4630'))
+    o.append(f'<path d="M {R.P("F",1.0,.22)[0]:.0f},{R.P("F",1.0,.22)[1]-40:.0f} L {R.P("F",2.08,.22)[0]:.0f},{R.P("F",2.08,.22)[1]-(R.y1-R.y0)*2.08*.68:.0f}" stroke="#3a2016" stroke-width="5"/>')
+    # sofa facing the viewer, coffee table, TV wall right, family photos, plant, lamp
+    o.append(sofa(R, 1.25, 1.6, .3, .74, '#6a6a8a', '#40405a', '#82829e', back='B'))
+    o.append(cushions(R, [(1.36, .4, .16), (1.36, .64, .16)], ('#c88a6a', '#b85a6a')))
+    o.append(R.box(1.8, 2.15, .38, .66, .09, WOOD_LT, WOOD_DK, WOOD))
+    ct = on_floor(R, 1.95, .52, .09); o.append(mug(ct[0], ct[1], 1.3) + books(ct[0] - 40, ct[1], .9))
+    o.append(R.box(1.3, 1.9, .86, 1.0, .12, WOOD_LT, WOOD_DK, WOOD))
+    o.append(R.quad('R', 1.38, 1.82, .44, .7, '#141018') + R.quad('R', 1.4, 1.8, .46, .68, '#2a2438'))
+    for i, (s_, a_) in enumerate([(1.36, .2), (1.56, .16), (1.72, .24)]):
+        o.append(R.quad('R', s_, s_ + .12, a_, a_ + .12, WOOD_DK) + R.quad('R', s_ + .01, s_ + .11, a_ + .015, a_ + .105, ['#a08068', '#6e7ea0', '#8a9a7a'][i]))
+    o.append(plant(*on_floor(R, 2.2, .95), 2.4, '#7a4a3a'))
+    lp = on_floor(R, 1.25, .8)
+    o.append(f'<line x1="{lp[0]:.0f}" y1="{lp[1]:.0f}" x2="{lp[0]:.0f}" y2="{lp[1]-190:.0f}" stroke="#2a1a14" stroke-width="3"/><path d="M {lp[0]-20:.0f},{lp[1]-186:.0f} L {lp[0]+20:.0f},{lp[1]-186:.0f} L {lp[0]+13:.0f},{lp[1]-212:.0f} L {lp[0]-13:.0f},{lp[1]-212:.0f} Z" fill="#e8c8a0"/>' + glow(lp[0], lp[1] - 196, 90, WARM, .8))
+    rug = [R.P('F', 1.65, .24), R.P('F', 1.65, .8), R.P('F', 2.5, .84), R.P('F', 2.5, .2)]
+    o.insert(3, f'<polygon points="{pts(*rug)}" fill="#7a4a4a"/>')
+    o.append(pool(lp[0], lp[1] + 10, 200, 60, WARM, .4))
+    o.append(shade(lp[0], lp[1] - 140, 520, '#1e1430', .6))
+    o.append(dust(25, (lp[0] - 120, lp[1] - 220, lp[0] + 60, lp[1]), 14))
+    return ''.join(o)
+
+def police_station():
+    """detective squad room at night: rows of desks, case board, blinds, fluorescent panels"""
+    R = Room((270, 420), 110, 220, 430, 560)
+    o = [R.shell(wall='#5e5258', wall_lt='#6e6066', wall_dk='#463c44', ceil='#2a2428', floor='#4a4044', planks=False)]
+    # floor tiles
+    for k in range(1, 8):
+        p = lerp(R.BL, R.BR, k / 8); q = R.at(p, 12)
+        o.append(f'<line x1="{p[0]:.0f}" y1="{p[1]:.0f}" x2="{q[0]:.0f}" y2="{q[1]:.0f}" stroke="#3a3034" stroke-width="1.2"/>')
+    for s_ in (1.2, 1.5, 1.9, 2.5, 3.4):
+        a, b = R.P('F', s_, 0), R.P('F', s_, 1); o.append(f'<line x1="{a[0]:.0f}" y1="{a[1]:.0f}" x2="{b[0]:.0f}" y2="{b[1]:.0f}" stroke="#3a3034" stroke-width="1"/>')
+    o.append(R.quad('L', 1, 12, .72, 1, '#3e3438') + R.quad('R', 1, 12, .72, 1, '#342c30') + f'<rect x="{R.x0}" y="{R.y0+(R.y1-R.y0)*.72:.0f}" width="{R.x1-R.x0}" height="{(R.y1-R.y0)*.28:.0f}" fill="#46393e"/>')
+    # windows with blinds (night city) on the back wall
+    for wx in (130, 290):
+        o.append(f'<rect x="{wx}" y="250" width="120" height="130" fill="url(#winDark)"/>' + ''.join(f'<rect x="{wx+8+i*16}" y="{280+(i%3)*20}" width="8" height="10" fill="{WARM}" opacity=".6"/>' for i in range(7)))
+        o.append(''.join(f'<rect x="{wx}" y="{yy}" width="120" height="5" fill="#8a7e80" opacity=".85"/>' for yy in range(252, 380, 10)))
+        o.append(f'<rect x="{wx-4}" y="246" width="128" height="6" fill="#3a3034"/>')
+    # case board on the left wall
+    o.append(R.quad('L', 1.08, 1.7, .14, .56, '#2e2a2c') + R.quad('L', 1.11, 1.67, .17, .53, '#a6845e'))
+    r = random.Random(31); pins = []
+    for i in range(11):
+        s0 = 1.14 + r.uniform(0, .44); a0 = .2 + r.uniform(0, .24)
+        o.append(R.quad('L', s0, s0 + .07, a0, a0 + .08, PAPER) + R.quad('L', s0 + .008, s0 + .062, a0 + .01, a0 + .055, '#5a5266'))
+        pins.append(R.P('L', s0 + .035, a0 + .005))
+    o.append(f'<polyline points="{pts(*pins)}" fill="none" stroke="{RED}" stroke-width="1.6"/>' + ''.join(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="3" fill="#ffd34a"/>' for x, y in pins))
+    # filing cabinets + water cooler on the right wall, clock
+    o.append(R.box(1.04, 1.3, .86, 1.0, .46, '#6a6a74', '#40404a', '#52525c') + R.box(1.32, 1.5, .86, 1.0, .46, '#6a6a74', '#40404a', '#52525c'))
+    o.append(R.box(1.58, 1.68, .88, 1.0, .3, '#e6e2ea', '#b0aab8', '#c8c2d0') + R.box(1.6, 1.66, .9, .98, .42, '#9ac0e0', '#6a90b0', '#7aa0c0', h0=.3))
+    o.append('<circle cx="270" cy="236" r="12" fill="#e8e4ea"/><circle cx="270" cy="236" r="9.6" fill="#2a2428"/><path d="M 270,236 L 270,228 M 270,236 L 275,240" stroke="#e8e4ea" stroke-width="1.6"/>')
+    # rows of desks with monitors, folders, mugs, desk lamps
+    for row, s0 in enumerate((1.25, 1.75, 2.45)):
+        for u0, u1 in ((.06, .42), (.58, .94)):
+            o.append(R.box(s0, s0 + .26, u0, u1, .21, '#7a6a5a', '#4a3e34', '#5e5044'))
+            tp = on_floor(R, s0 + .08, (u0 + u1) / 2, .21); k = s0 * .9
+            o.append(f'<rect x="{tp[0]-18*k:.0f}" y="{tp[1]-30*k:.0f}" width="{36*k:.0f}" height="{24*k:.0f}" rx="2" fill="#1a161a"/><rect x="{tp[0]-15*k:.0f}" y="{tp[1]-27*k:.0f}" width="{30*k:.0f}" height="{18*k:.0f}" fill="#5a6a9a"/>')
+            o.append(f'<rect x="{tp[0]+22*k:.0f}" y="{tp[1]-10*k:.0f}" width="{20*k:.0f}" height="{10*k:.0f}" fill="#d8c8a0"/><rect x="{tp[0]+24*k:.0f}" y="{tp[1]-16*k:.0f}" width="{18*k:.0f}" height="{6*k:.0f}" fill="#b89a70"/>' + mug(tp[0] - 26 * k, tp[1], k * .9))
+            o.append(R.box(s0 + .28, s0 + .38, u0 + .12, u0 + .24, .12, '#2e2a30', '#1e1a20', '#262228'))
+            o.append(glow(tp[0], tp[1] - 18 * k, 40 * k, '#a8b8ff', .35))
+        o.append(lamp_desk(*on_floor(R, s0 + .05, .4, .21), .5 + row * .2, on=True))
+    # fluorescent ceiling panels
+    for s_ in (1.3, 1.8, 2.6):
+        a, b, c, d = R.P('C', s_, .3), R.P('C', s_, .7), R.P('C', s_ + .12, .7), R.P('C', s_ + .12, .3)
+        o.append(f'<polygon points="{pts(a,b,c,d)}" fill="#e8ecf4"/>' + glow((a[0]+b[0])/2, (a[1]+c[1])/2, 80 * s_, '#dfe6ff', .35))
+    o.append(shade(270, 520, 620, '#1e1830', .45))
+    o.append(dust(32, (100, 300, 460, 900), 16, '#eef0ff'))
+    return ''.join(o)
+
 # ======================= SCENES =======================
 S = []
+
+S.append(('1A', 'ฉาก 1 · สถานีตำรวจ: ห้องนักสืบตอนกลางคืน', 'ช่วงเล่าชีวิตนักสืบที่ไม่มีวันหยุด โต๊ะทำงานเรียงลึก จอคอมเรืองแสง แฟ้มกองบนโต๊ะ บอร์ดคดีโยงด้ายแดงผนังซ้าย ตู้เอกสาร มู่ลี่หน้าต่างเห็นเมืองตอนดึก ไฟเพดานนีออน', police_station()))
 
 # ---- 1A flashback alley (one-point, warm faded, purple shadows) ----
 o = []
@@ -459,7 +665,7 @@ o.append('<g fill="#e8d4d0">' + ''.join(f'<rect x="{x}" y="{y}" width="16" heigh
 o.append(shade(280, 520, 520, '#3a2430', .55))
 o.append(dust(11, (120, 300, 360, 820), 26, '#ffe8d4'))
 o.append('<rect width="540" height="960" fill="#e8c4b0" opacity=".22" style="mix-blend-mode:soft-light"/>')
-S.append(('1A', 'ฉาก 1 · ย้อนอดีต: ตรอกที่ไล่จับคนร้าย', 'ตรอกเปอร์สเปกทีฟจุดเดียว ไฟถนนสามดวงไล่ลึก พื้นเปียกสะท้อนแสง ถังขยะล้ม โทนอุ่นซีดแบบความทรงจำ เงาออกม่วง', ''.join(o)))
+S.append(('1B', 'ฉาก 1 · ย้อนอดีต: ตรอกที่ไล่จับคนร้าย', 'ตรอกเปอร์สเปกทีฟจุดเดียว ไฟถนนสามดวงไล่ลึก พื้นเปียกสะท้อนแสง ถังขยะล้ม โทนอุ่นซีดแบบความทรงจำ เงาออกม่วง', ''.join(o)))
 
 # ---- 1B hero bedroom (late afternoon: purple interior, warm sun patch) ----
 def bedroom(night=False, board=False):
@@ -562,9 +768,10 @@ def bedroom(night=False, board=False):
         o.append(dust(22, (220, 300, 500, 860), 26))
     return ''.join(o)
 
-S.append(('1B', 'ฉาก 1–2 · ห้องนอนพระเอก ชั้นสอง (ยามบ่าย)', 'ห้องเปอร์สเปกทีฟจุดเดียว หน้าต่างใหญ่ผนังหลังมีเบาะนั่งริมหน้าต่าง เห็นบ้านตรงข้ามแบบเบลอ แดดบ่ายส่องเป็นแผ่นบนพื้น ผนังซ้ายมีประตูกับตู้เสื้อผ้า เตียง โคมหัวเตียง อาร์มแชร์ มุมห้องเงาม่วง', bedroom()))
+S.append(('1C', 'ฉาก 1 · ห้องนั่งเล่นชั้นล่างบ้านพระเอก (หัวค่ำ)', 'ประตูหน้าบ้านกับหน้าต่างบนผนังหลัง บันไดขึ้นชั้นสองชิดผนังซ้าย โซฟาหันหน้าเข้ากล้อง ทีวี รูปครอบครัว โคมตั้งพื้นส่องเป็นวงอุ่น ใช้กับช็อตกลับบ้านพร้อมเฝือกและประโยคของแฟน "ก็ดีแล้วไง จะได้พักบ้าง" และตอนพระเอกรีบลงบันไดออกจากบ้านในฉาก 7', ground_living()))
+S.append(('2A', 'ฉาก 2 · ห้องนั่งเล่นชั้นสอง (แฟมิลีรูมกึ่งสตูดิโอ) ยามบ่าย', 'ห้องที่พระเอกใช้ชีวิตช่วงพักขา หน้าต่างบานใหญ่สามช่องเห็นบ้านตรงข้าม มุมอาร์มแชร์ริมหน้าต่างพร้อมโต๊ะข้างวางกาแฟ ชั้นหนังสือบิลต์อินผนังซ้าย โซฟากับหมอนอิง โต๊ะกลาง พรม ทีวีกับมุมทำงานผนังขวา คานเพดานไม้ ไม้ค้ำยันพิงโซฟา', family_room()))
 
-S.append(('2', 'ฉาก 2 · มองจากหน้าต่าง: รถขนของมาจอดบ้านตรงข้าม', 'กรอบหน้าต่างพระเอกมืดเป็นฉากหน้ามีแสงขอบ บ้านตรงข้ามเห็นด้านข้างเป็นสามมิติ มีเสาไฟและสายไฟ รถขนของกับกล่องหน้าบ้าน',
+S.append(('2B', 'ฉาก 2 · มองจากหน้าต่าง: รถขนของมาจอดบ้านตรงข้าม', 'กรอบหน้าต่างพระเอกมืดเป็นฉากหน้ามีแสงขอบ บ้านตรงข้ามเห็นด้านข้างเป็นสามมิติ มีเสาไฟและสายไฟ รถขนของกับกล่องหน้าบ้าน',
           street('day', extra_front=(cast('<rect x="40" y="560" width="200" height="70"/>') +
                  '<g transform="translate(36,540) scale(.85)"><rect width="170" height="96" rx="5" fill="#ece4f6"/><rect width="170" height="12" fill="#cfc2e6"/><rect x="0" y="80" width="170" height="16" fill="#b9aad6"/>'
                  '<rect x="170" y="28" width="60" height="68" rx="6" fill="#8f7cc8"/><rect x="180" y="38" width="40" height="26" rx="3" fill="#4a3f86"/>'
@@ -589,8 +796,7 @@ S.append(('4', 'ฉาก 4 · ตีสอง ลากถุงดำขึ้
                  + glow(479, 312, 130, WARM, .7) + pool(470, 620, 120, 30, WARM, .5) + beam('462,310 498,310 560,640 380,640', 'beamW', .55)
                  + dust(34, (390, 320, 540, 640), 14, '#ffe8d4'))) + window_fg(None)))
 
-S.append(('5A', 'ฉาก 5 · ห้องนอนกลายเป็นห้องสืบสวน (กลางคืน)', 'ห้องเดิมตอนกลางคืน บอร์ดรูปโยงด้ายแดงบนผนังขวา โต๊ะใต้บอร์ดมีโคมส่องเป็นวงอุ่น กล้องบนขาตั้งหันออกหน้าต่าง กระดาษกระจายเต็มพื้น แสงจันทร์ฟ้าม่วงจากหน้าต่าง',
-          bedroom(night=True, board=True)))
+S.append(('5A', 'ฉาก 5 · ห้องนั่งเล่นชั้นสองกลายเป็นห้องสืบสวน (กลางคืน)', 'ห้องเดิมตอนกลางคืน บอร์ดรูปโยงด้ายแดงกับแผนที่ถนนบนผนังขวา จอคอมกับโคมโต๊ะเปิด กล้องบนขาตั้งหันออกหน้าต่าง กระดาษกระจายเต็มพื้น แก้วกาแฟหลายใบบนโต๊ะกลาง แสงจันทร์จากหน้าต่าง', family_room(night=True, board=True)))
 
 # ---- 5B phone on bedside table, top-down ----
 o = ['<rect width="540" height="960" fill="#4a2e26"/>']
