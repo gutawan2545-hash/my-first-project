@@ -1188,6 +1188,47 @@ def party_room():
     o.append(dust(40, (60, 250, 480, 760), 20))
     return ''.join(o)
 
+
+def pound_window():
+    """ground-floor side window of the house across, close: a woman's shadow presses and pounds the glass, an arm reaches from the dark behind her"""
+    o = [night_sky((90, 100), 37, 300)]
+    o.append('<rect x="0" y="110" width="540" height="850" fill="#5e4644"/>' + ''.join(f'<rect x="0" y="{yy}" width="540" height="3" fill="#2e2020" opacity=".35"/>' for yy in range(116, 960, 22)))
+    o.append('<polygon points="0,110 540,110 540,60 270,-30 0,60" fill="#26191c"/><rect x="0" y="102" width="540" height="12" fill="#a89688"/>')
+    X0, Y0, X1, Y1 = 132, 190, 408, 620          # tall single-sash window, fills most of the frame
+    o.append(f'<rect x="{X0-48}" y="{Y0}" width="38" height="{Y1-Y0}" fill="#26302c"/><rect x="{X1+10}" y="{Y0}" width="38" height="{Y1-Y0}" fill="#202824"/>')
+    o.append(''.join(f'<line x1="{xx}" y1="{yy}" x2="{xx+30}" y2="{yy}" stroke="#141a18" stroke-width="2"/>' for xx in (X0 - 44, X1 + 14) for yy in range(Y0 + 10, Y1 - 6, 12)))
+    o.append(f'<rect x="{X0-14}" y="{Y0-18}" width="{X1-X0+28}" height="{Y1-Y0+36}" fill="#a89688"/><rect x="{X0-22}" y="{Y0-30}" width="{X1-X0+44}" height="14" fill="#988678"/>')
+    # dim interior: a hallway lamp far behind, sheer curtain catching it
+    o.append(f'<rect x="{X0}" y="{Y0}" width="{X1-X0}" height="{Y1-Y0}" fill="#4a2c2a"/>' + glow(X1 - 70, Y0 + 90, 200, '#ffc890', .75))
+    o.append(f'<rect x="{X0}" y="{Y0}" width="{X1-X0}" height="{Y1-Y0}" fill="#f2d0b8" opacity=".22"/>' + ''.join(f'<rect x="{xx}" y="{Y0}" width="10" height="{Y1-Y0}" fill="#f6dcc8" opacity=".12"/>' for xx in range(X0 + 8, X1, 26)))
+    # the woman's shadow behind the sheer, palms flat on the glass
+    cx = (X0 + X1) / 2
+    o.append(f'<g opacity=".92"><path d="M {cx-62},{Y1} C {cx-66},{Y1-120} {cx-50},{Y1-196} {cx-26},{Y1-214} C {cx-38},{Y1-236} {cx-36},{Y1-270} {cx-8},{Y1-282} C {cx+22},{Y1-288} {cx+40},{Y1-262} {cx+30},{Y1-228} C {cx+56},{Y1-206} {cx+70},{Y1-120} {cx+66},{Y1} Z" fill="#1e1216" filter="url(#dof)"/>'
+             f'<path d="M {cx-14},{Y1-284} C {cx-40},{Y1-276} {cx-48},{Y1-240} {cx-44},{Y1-200} L {cx-30},{Y1-206} C {cx-30},{Y1-240} {cx-20},{Y1-264} {cx-10},{Y1-270} Z" fill="#1e1216" filter="url(#dof)"/>'   # loose hair
+             f'<path d="M {cx-30},{Y1-196} C {cx-64},{Y1-230} {cx-86},{Y1-268} {cx-92},{Y1-300} L {cx-74},{Y1-306} C {cx-66},{Y1-276} {cx-48},{Y1-244} {cx-20},{Y1-214} Z" fill="#1e1216"/>'
+             f'<path d="M {cx+28},{Y1-196} C {cx+60},{Y1-224} {cx+78},{Y1-256} {cx+82},{Y1-286} L {cx+100},{Y1-280} C {cx+94},{Y1-248} {cx+74},{Y1-214} {cx+38},{Y1-186} Z" fill="#1e1216"/></g>')
+    # palms pressed on the glass: sharper and slightly lit at the edges
+    for hx, hy, rot in ((cx - 84, Y1 - 318, -14), (cx + 92, Y1 - 300, 12)):
+        o.append(f'<g transform="translate({hx},{hy}) rotate({rot})"><ellipse cx="0" cy="6" rx="15" ry="18" fill="#140a0e"/>'
+                 + ''.join(f'<rect x="{fx-3}" y="{-22+abs(fx)*.4:.0f}" width="6" height="22" rx="3" fill="#140a0e"/>' for fx in (-11, -4, 4, 11)) + '<rect x="12" y="2" width="14" height="6" rx="3" fill="#140a0e" transform="rotate(-30 12 2)"/></g>')
+    # an arm reaching out of the dark behind her shoulder
+    o.append(f'<path d="M {X1},{Y0+150} C {X1-60},{Y0+170} {cx+60},{Y1-240} {cx+34},{Y1-226} L {cx+40},{Y1-210} C {cx+70},{Y1-222} {X1-50},{Y0+200} {X1},{Y0+196} Z" fill="#0c0608" opacity=".95" filter="url(#dof)"/>')
+    # crack radiating from the left palm
+    hx, hy = cx - 84, Y1 - 318
+    cr = ''.join(f'<path d="M {hx},{hy} L {hx+dx},{hy+dy} L {hx+dx*1.6+ex},{hy+dy*1.6+ey}" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".85"/>' for dx, dy, ex, ey in
+                 [(-40, -30, -6, 10), (30, -46, 8, -4), (46, 10, 10, 8), (-30, 40, -10, 6), (8, 54, 6, 10), (-56, -4, -8, -10)])
+    o.append(cr + f'<circle cx="{hx}" cy="{hy}" r="22" fill="none" stroke="#ffffff" stroke-width="1" opacity=".5"/>')
+    # sash, mullion, glare
+    o.append(f'<rect x="{X0}" y="{(Y0+Y1)/2-6}" width="{X1-X0}" height="12" fill="#a89688"/><rect x="{cx-5}" y="{Y0}" width="10" height="{Y1-Y0}" fill="#a89688" opacity=".9"/>')
+    o.append(f'<path d="M {X0+10},{Y0+10} L {X0+70},{Y0+10} L {X0+10},{Y0+70} Z" fill="#ffffff" opacity=".1"/>')
+    # sill + empty planter
+    o.append(f'<rect x="{X0-30}" y="{Y1+18}" width="{X1-X0+60}" height="12" fill="#988678"/><rect x="{X0-16}" y="{Y1+30}" width="{X1-X0+32}" height="30" fill="#3a2018"/>' + ''.join(f'<ellipse cx="{X0+i*24}" cy="{Y1+28}" rx="14" ry="9" fill="#1e2a20"/>' for i in range(12)))
+    o.append(glow(cx, Y1 + 90, 240, WARM, .25) + beam(f'{X0},{Y1} {X1},{Y1} 520,960 20,960', 'beamW', .3))
+    o.append(shade(cx, Y0 + 200, 560, '#0e0820', .62))
+    o.append(fog(820, 160, '#9a8cc8', .22))
+    o.append(dust(62, (X0, Y1, X1, 940), 14, '#ffe8d4'))
+    return ''.join(o)
+
 # ======================= SCENES =======================
 S = []
 
@@ -1350,17 +1391,7 @@ o.append(shade(270, 400, 460, '#1a1240', .7))
 o.append(dust(35, (120, 160, 420, 620), 12, '#eae6ff'))
 S.append(('5B', 'ฉาก 5 · ข้อความจากเบอร์ไม่รู้จัก', 'มุมจากบนลงโต๊ะข้างเตียง จอมือถือเรืองแสงเป็นแหล่งแสงหลัก แสงโคมอุ่นล้นเข้ามาจากมุม ข้อความ "ช่วยฉันด้วย ฉันยังอยู่ในบ้าน" เวลา 02:47', ''.join(o)))
 
-# ---- 5C silhouette pounding the upstairs window (close) ----
-o = [night_sky((440, 120), 6, 900)]
-o.append(f'<g transform="translate(300,1180) scale(3.2)">{house3d(0, 0, 1, "dark")}</g>')
-o.append('<rect x="60" y="170" width="240" height="250" fill="url(#winLit)" opacity=".9"/>' + glow(180, 300, 220, WARM, .6))
-o.append('<path d="M 130,420 C 126,350 142,300 172,288 C 162,268 166,244 184,240 C 202,238 212,256 204,278 C 230,290 244,330 250,420 Z" fill="#2a1f4a" opacity=".92" filter="url(#dof)"/>')
-o.append('<path d="M 212,276 L 250,214 L 262,222 L 224,284 Z" fill="#2a1f4a" opacity=".92" filter="url(#dof)"/>')
-o.append('<path d="M 250,212 L 274,190 M 250,212 L 282,222 M 250,212 L 264,246 M 250,212 L 232,186 M 262,200 L 290,196" stroke="#ffffff" stroke-width="1.6" opacity=".85"/>')
-o.append(beam('60,420 300,420 360,960 0,960', 'beamW', .4))
-o.append(shade(180, 300, 520, '#1a1240', .55))
-o.append(dust(36, (60, 170, 300, 420), 12, '#ffe8d4'))
-S.append(('5C', 'ฉาก 5 · เงาผู้หญิงทุบกระจกชั้นบน', 'ซูมเข้าหน้าต่างชั้นบนของบ้านตรงข้าม แสงอุ่นในห้องตัดกับผนังม่วงคราม เงาผู้หญิงชูแขนทุบกระจกจนร้าว เงานี้เป็นตัวแทนชั่วคราว', ''.join(o)))
+S.append(('5C', 'ฉาก 5 · ระยะใกล้หน้าต่างข้างบ้าน: เงาผู้หญิงทุบกระจก', 'หน้าต่างบานสูงชั้นล่างอีกบานของบ้านตรงข้าม (ไม่ใช่หน้าต่างห้องนั่งเล่น) เต็มเฟรม ข้างในมืดสลัว มีโคมทางเดินไกล ๆ เงาผู้หญิงผมยาวอยู่หลังผ้าม่านโปร่ง ฝ่ามือสองข้างแนบกระจก กระจกร้าวจากฝ่ามือ มีแขนอีกคนยื่นออกมาจากความมืดด้านหลังเพื่อดึงเธอกลับ', pound_window()))
 
 # ---- 6A street level, dusk: wide, depth ----
 o = []
