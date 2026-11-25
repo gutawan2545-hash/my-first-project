@@ -247,6 +247,26 @@ A.add(sfx, bang_t, A.door_bang()); A.add(sfx, bang_t + .75, A.thunder(5.0, 1.0))
 A.add(sfx, T0['s6r'] + .05, A.sting(), .8); A.add(sfx, T0['s9r'] + .2, A.boom(2.6, 46), .5)
 steps = A.footsteps(N, T0['s5'] + .1, T0['s5'] + 3.5, 1.7, .55) + A.footsteps(N, T0['s7b'] + .05, T0['s7b'] + 2.2, 2.0, .45)
 rn = A.rain(N, bang_t + .9)
+# เสียงจริงจาก sfx/*.mp3 (gen_sfx.py) ถ้ามี ใช้แทนเสียงสังเคราะห์
+def real(name): f = f'sfx/{name}.mp3'; return A.load_voice(f, .1) if os.path.exists(f) else None
+def fit(x, n, fo=.4): x = x[:n].copy(); k = min(len(x), int(fo * A.SR)); x[-k:] *= np.linspace(1, 0, k); return x
+R_ = {k: real(k) for k in ('applause', 'door_bang', 'thunder', 'rain', 'heels', 'guard_steps')}
+if R_['applause'] is not None: cl = np.zeros(N, np.float32); A.add(cl, .1, fit(R_['applause'], int(2.6 * A.SR), .8))
+if R_['door_bang'] is not None or R_['thunder'] is not None:
+    sfx = np.zeros(N, np.float32)
+    A.add(sfx, bang_t, R_['door_bang'] * 3 if R_['door_bang'] is not None else A.door_bang())
+    th = R_['thunder'] * 3 if R_['thunder'] is not None else None
+    A.add(sfx, bang_t + .75, th if th is not None else A.thunder(5.0, 1.0)); A.add(sfx, T0['s9'] + 2.1, th if th is not None else A.thunder(4.0, 1.4), .8)
+    A.add(sfx, T0['s6r'] + .05, A.sting(), .8); A.add(sfx, T0['s9r'] + .2, A.boom(2.6, 46), .5)
+if R_['heels'] is not None or R_['guard_steps'] is not None:
+    steps = np.zeros(N, np.float32)
+    A.add(steps, T0['s5'] + .1, fit(R_['heels'], int(3.4 * A.SR)) if R_['heels'] is not None else A.footsteps(N, 0, 3.4, 1.7, .55)[:int(3.4 * A.SR)])
+    A.add(steps, T0['s7b'] + .05, fit(R_['guard_steps'], int(2.2 * A.SR)) if R_['guard_steps'] is not None else A.footsteps(N, 0, 2.2, 2.0, .45)[:int(2.2 * A.SR)])
+if R_['rain'] is not None:
+    r = R_['rain']; x = r[int(.5 * A.SR):]; k = int(1.0 * A.SR)  # วนลูปแบบเฟดซ้อน
+    loop = np.zeros(N, np.float32); t = int((bang_t + .9) * A.SR); w = np.linspace(0, 1, k)
+    while t < N: seg = x.copy(); seg[:k] *= w; seg[-k:] *= w[::-1]; n = min(len(seg), N - t); loop[t:t + n] += seg[:n]; t += len(seg) - k
+    rn = loop
 thr = A.thriller(N, T0['s5'], TOTAL)
 def rms(x): return float(np.sqrt(np.mean(x ** 2)) + 1e-9)
 v = rms(voice[np.abs(voice) > 1e-4])
