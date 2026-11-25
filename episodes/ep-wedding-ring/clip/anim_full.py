@@ -147,7 +147,7 @@ MISS = SB.scr_missing()
 _m = re.split(r'(?=<rect x="\d+" y="\d+" width="102" height="136")', MISS)
 MISS_LIVE = _m[0] + '<g id="ms19">' + ''.join(f'<g id="ms19_{i}" opacity="0">{p}</g>' for i, p in enumerate(_m[1:])) + '</g>'
 BG.update({'hall_all': SB.hall(), 'hall_cool': SB.hall(cool=.12), 'hall_nmom': SB.hall(CAST_NO('mom'), cool=.12), 'hall_nph': SB.hall(CAST_NO('ph'), cool=.12),
-           'hall_nstaff': SB.hall(CAST_NO('staff', 'ph'), cool=.12), 'hall_nb_cool2': SB.hall(CAST_NO('bride'), cool=.12),
+           'hall_nstaff': SB.hall(CAST_NO('staff', 'ph', 'bm'), cool=.12), 'hall_nb_cool2': SB.hall(CAST_NO('bride'), cool=.12),
            'phb_bridal': phone_bg(P2.bridal_room_bg()), 'phb_suite': phone_bg('<g filter="url(#blurBG)">' + P2.suite_room() + '</g>'),
            'ph17': P2.phone_hand(SB.scr_lastyear(), P2.bridal_room_bg()), 'ph18': P2.phone_hand(SB.scr_search(), P2.bridal_room_bg()),
            'ph19': P2.phone_hand(SB.scr_missing(), P2.bridal_room_bg()), 'ph21': P2.phone_hand(SB.scr_call(), '<g filter="url(#blurBG)">' + P2.suite_room() + '</g>'),
@@ -686,6 +686,7 @@ for k in range(5): A.add(sfx2, T0['s27'] + 1.0 + k * 1.4, click(), 1.0)
 if os.path.exists('music/C_night.mp3'):
     c_ = load_raw('music/C_night.mp3'); mc = np.zeros(N, np.float32); A.add(mc, T0['s10'], c_)
     mc = lvl(mc, T0['s10'] + 1, T0['s26'], 9); thr = thr + mc
+rn = A.lp(rn, 1200) * (10 ** (-12 / 20)) * 2.2   # ตัดเสียงแหลมแบบสังกะสีออก เหลือฝนทุ้ม ๆ ไกล ๆ เบากว่าเดิมราว 5 dB
 venv = A.lp(np.abs(voice), 4); duck = 1 - .3 * np.clip(venv / (venv.max() * .25 + 1e-6), 0, 1)
 mix = voice + (music_w + thr) * duck + cl + rn + steps + sfx * .35 + sfx2 * .35
 fade = int(.7 * A.SR); end = int(TOTAL * A.SR); mix[end - fade:end] *= np.linspace(1, 0, fade); mix[end:] = 0

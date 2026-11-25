@@ -199,7 +199,7 @@ rep("function cam(sid, z, cx, cy, ty, sx, sy) { $(sid + 'c').setAttribute('trans
     "  if (z >= 1) { X = Math.min(0, Math.max(540 - 540 * z, X)); Y = Math.min(0, Math.max(960 - 960 * z, Y)); }\n"
     "  $(sid + 'c').setAttribute('transform', `translate(${X},${Y}) scale(${z})`); }")
 # 2) ช็อตพนักงานโรงแรม: เอาช่างภาพที่ยืนแถวหน้าออก จะได้ไม่มีคนตัวใหญ่บังฉากหลัง
-rep("'hall_nstaff': SB.hall(CAST_NO('staff'), cool=.12)", "'hall_nstaff': SB.hall(CAST_NO('staff', 'ph'), cool=.12)")
+rep("'hall_nstaff': SB.hall(CAST_NO('staff'), cool=.12)", "'hall_nstaff': SB.hall(CAST_NO('staff', 'ph', 'bm'), cool=.12)")   # ผู้ใช้สั่ง: ไม่เอาเพื่อนเจ้าสาวด้านหลังด้วย
 # 3) ช็อตมือถือ: นิ้วโป้งแยกเป็นชิ้นขยับได้ กดปุ่ม เลื่อนจอ พิมพ์ จอเปลี่ยนตามการกด
 rep("P2 = SB.P2\nBG.update(", r'''P2 = SB.P2
 THUMB_OLD = '<path d="M 300,630 C 320,580 340,540 352,510 C 362,496 382,500 380,520 C 372,560 360,610 340,660 Z" fill="#fbe2cf"/><ellipse cx="366" cy="512" rx="12" ry="9" fill="#ffffff" opacity=".5"/>'
@@ -374,5 +374,7 @@ KNOCKS = [""")
 rep("for st in ('s15', 's20'): A.add(sfx2, T0[st] - .3, whoosh(), .8)",
     "for b in ZB_T: A.add(sfx2, b - .3, whoosh(.65), .9)\nA.add(sfx2, T0['s6r'], A.boom(2.4, 50), .6); A.add(sfx2, TW22, A.boom(2.6, 46), .8)")
 
+# ================================================================ รอบแก้ 3: ฝนดังเหมือนตกบนสังกะสี (ผู้ใช้สั่ง) ให้เบาลงมากและอู้อี้เหมือนฝนนอกกระจก
+rep("venv = A.lp(np.abs(voice), 4);", "rn = A.lp(rn, 1200) * (10 ** (-12 / 20)) * 2.2   # ตัดเสียงแหลมแบบสังกะสีออก เหลือฝนทุ้ม ๆ ไกล ๆ เบากว่าเดิมราว 5 dB\nvenv = A.lp(np.abs(voice), 4);", 1)
 open('anim_full.py', 'w').write(s)
 print('wrote anim_full.py')
