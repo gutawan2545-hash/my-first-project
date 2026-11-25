@@ -203,126 +203,169 @@ def back_view(k):
 
 # ---------------- side (facing viewer's left, full 90°) ----------------
 def head_side(c):
+    """full 90-degree profile facing the viewer's left. head centre at (0,0), chin near y 37"""
     s, sh, lt = c['skin']; hc, hl = c['hair'], c['hair_lt']; st = c['style']
-    fat = c.get('belly'); long_ = st == 'pomp'
-    chin = 44 if long_ else (40 if not fat else 40)
-    face = (f'M 6,-46 C -18,-46 -30,-32 -30,-12 L -30,-4 L -36,6 L -31,9 L -31,13 C -33,15 -32,18 -29,19 C -31,21 -30,24 -27,25 '
-            f'C -27,31 -23,{chin-4} -12,{chin} L -2,{chin+2} C 8,{chin+1} 14,{chin-8} 16,{chin-16} L 24,8 C 32,-6 30,-34 6,-46 Z')
+    fem = st in ('bob', 'halfup'); fat = c.get('belly')
     if fat:
-        face = ('M 6,-46 C -22,-46 -36,-32 -36,-12 L -36,-2 L -42,8 L -36,11 L -36,15 C -38,17 -37,20 -34,21 C -36,24 -34,28 -30,30 '
-                'C -28,38 -18,44 -4,44 L 6,44 C 16,42 22,32 24,22 L 28,6 C 34,-8 32,-34 6,-46 Z')
-    o = [f'<path d="M -6,22 L 12,20 L 16,60 L -4,60 Z" fill="{sh}"/>', f'<path d="{face}" fill="{s}"/>',
-         f'<path d="M 24,8 C 32,-6 30,-34 6,-46 C 18,-36 22,-20 20,0 C 18,14 14,24 6,32 C 12,30 16,24 18,18 Z" fill="{sh}" opacity=".6"/>',
-         f'<ellipse cx="9" cy="0" rx="5.4" ry="8.4" fill="{s}"/><path d="M 9,-5 C 6,-2 6,3 9,6" fill="none" stroke="{sh}" stroke-width="1.4"/>']
-    ex = -22 if not fat else -26
-    if st == 'buzz':   # happy squint
-        o.append(f'<path d="M {ex-5},-2 Q {ex-1},-7 {ex+4},-2" fill="none" stroke="#1d1416" stroke-width="2.4" stroke-linecap="round"/>')
+        face = ('M 8,-48 C -16,-50 -31,-38 -32,-22 C -32,-15 -32,-11 -33,-8 C -33,-5 -33,-3 -34,0 '
+                'C -40,2 -43,7 -40,11 C -38,13 -36,13 -34,13 L -33,15 C -34,17 -34,19 -32,20 C -34,21 -33,24 -31,25 '
+                'C -31,28 -31,31 -29,33 C -30,38 -25,43 -16,44 C -6,45 4,40 12,32 L 14,24 C 20,22 28,14 30,-2 C 32,-28 26,-46 8,-48 Z')
+        jaw_sh = 'M -26,40 C -14,46 2,42 12,32 L 14,24 C 8,34 -4,40 -18,40 Z'
+    elif fem:
+        face = ('M 8,-48 C -14,-50 -26,-38 -27,-22 C -27,-16 -27,-12 -28,-9 C -28,-6 -28,-4 -29,-1 '
+                'L -34.5,8 C -35.4,10 -34,12 -31.4,12.4 L -30,13 C -31.4,14.6 -31.4,17 -29.2,18 C -31,19.4 -30.6,22 -28.4,23 '
+                'C -28.2,25 -28,26.6 -27,27.6 C -27.4,31 -25,35 -20,36 C -14,37 -6,33 3,27 L 9,21 C 16,21 26,13 28,-2 C 30,-28 24,-46 8,-48 Z')
+        jaw_sh = 'M -20,35 C -12,36 -4,32 3,27 L 9,21 C 4,28 -6,33 -16,33 Z'
     else:
-        o.append(f'<path d="M {ex-5},-2 C {ex-3},-5 {ex+2},-5 {ex+5},-1.4 C {ex+2},0.6 {ex-2},0.8 {ex-5},-2 Z" fill="#fbf4ee"/>'
-                 f'<circle cx="{ex-1.4}" cy="-2" r="2.4" fill="#2a1a16"/><circle cx="{ex-2}" cy="-2.8" r=".7" fill="#fff"/>'
-                 f'<path d="M {ex-6},-2.4 C {ex-3},-6 {ex+2},-6 {ex+6},-1.8" fill="none" stroke="#1d1416" stroke-width="1.8"/>')
-        if st in ('bob', 'halfup'):
-            o.append(f'<path d="M {ex-6},-2.6 L {ex-9},-5.4" stroke="#1d1416" stroke-width="1.4" stroke-linecap="round"/>')
-        if st == 'pomp':
-            o.append(f'<path d="M {ex-6},-4.6 C {ex-2},-5.4 {ex+3},-5 {ex+6},-3" fill="{s}"/>')
-    o.append(f'<path d="M {ex-8},-12 C {ex-4},-15 {ex+3},-15 {ex+8},-12.6" fill="none" stroke="#221a1e" stroke-width="2.2" stroke-linecap="round"/>')
-    o.append(f'<ellipse cx="{ex+6}" cy="11" rx="5" ry="3" fill="#e48a7e" opacity=".35"/>')
-    lip = '#9a5a50' if st in ('crop', 'slick', 'buzz', 'pomp') else '#b8606c'
+        face = ('M 8,-48 C -14,-50 -27,-38 -28,-22 C -28,-16 -28,-12 -29,-9 C -29,-6 -29,-4 -30,-1 '
+                'L -37,9 C -38,11 -36,13 -33,13 L -31,14 C -32,16 -32,18 -30,19 C -32,20 -31,22 -29,23 '
+                'C -29,25 -29,27 -28,28 C -29,32 -27,36 -22,37 C -16,38 -6,34 4,28 L 10,22 C 16,22 26,14 28,-2 C 30,-28 24,-46 8,-48 Z')
+        jaw_sh = 'M -22,36 C -14,37 -4,33 4,28 L 10,22 C 4,29 -6,34 -18,34 Z'
+    o = [f'<path d="M -16,26 L 10,18 L 16,62 L -14,62 Z" fill="{sh}"/><path d="M -16,26 L -6,24 L -6,62 L -14,62 Z" fill="{s}" opacity=".6"/>',
+         f'<path d="{face}" fill="{s}"/>',
+         f'<path d="{jaw_sh}" fill="{sh}"/>',
+         f'<path d="M 28,-2 C 30,-28 24,-46 8,-48 C 18,-38 22,-22 20,-4 C 18,8 14,16 10,22 C 16,22 26,14 28,-2 Z" fill="{sh}" opacity=".7"/>',
+         f'<path d="M -27,-20 C -27,-30 -22,-38 -14,-42 C -20,-34 -23,-26 -23,-16 Z" fill="{lt}" opacity=".9"/>']
+    # ear
+    o.append(f'<path d="M 4,-7 C 4,-12 12,-12 13,-5 C 14,2 12,9 6,10 C 3,10 2,7 4,4 Z" fill="{s}"/><path d="M 7,-6 C 10,-6 11,-1 10,3 C 9,6 7,6 6,4" fill="none" stroke="{sh}" stroke-width="1.6"/>')
+    # eye, brow, cheek, mouth
+    ex = -21 if not fat else -24
     if st == 'buzz':
-        o.append('<path d="M -40,16 Q -34,22 -28,18 L -36,17 Z" fill="#5a2a2c"/><path d="M -38,12 Q -33,11 -29,13" fill="none" stroke="#2a2224" stroke-width="2.4"/>')
+        o.append(f'<path d="M {ex-4},-2 Q {ex},-7 {ex+4},-2.6" fill="none" stroke="#1d1416" stroke-width="2.4" stroke-linecap="round"/>')
     else:
-        o.append(f'<path d="M -30,{16 if not long_ else 18} L -26,{17 if not long_ else 19}" stroke="{lip}" stroke-width="1.8" stroke-linecap="round"/>')
-    if st == 'pomp':
-        o.append('<path d="M -26,19 L -36,15" stroke="#e8d2a0" stroke-width="1.4" stroke-linecap="round"/><path d="M -16,{0} L -10,{0}" stroke="none"/>'.replace('{0}', '46'))
-        o.append('<path d="M -14,44 L -10,49 L -6,45 Z" fill="#241c1e"/>')
+        o.append(f'<path d="M {ex-3.4},-3 C {ex-1.4},-5.8 {ex+2.6},-6 {ex+5.6},-4 L {ex+4.6},-0.6 C {ex+1.6},0.2 {ex-1.4},-0.6 {ex-3.4},-3 Z" fill="#fbf4ee"/>'
+                 f'<circle cx="{ex-0.4}" cy="-3" r="2.3" fill="#2a1a16"/><circle cx="{ex-1}" cy="-3.8" r=".7" fill="#fff"/>'
+                 f'<path d="M {ex-4.2},-3.4 C {ex-1.4},-6.8 {ex+2.6},-7 {ex+6},-4.4" fill="none" stroke="#1d1416" stroke-width="1.8" stroke-linecap="round"/>')
+        if fem: o.append(f'<path d="M {ex+5.6},-4.6 L {ex+8.6},-7.4 M {ex+3.6},-6 L {ex+5.6},-8.8" stroke="#1d1416" stroke-width="1" stroke-linecap="round"/>')
+        if st == 'pomp': o.append(f'<path d="M {ex-4.4},-6 L {ex+6.4},-6 L {ex+6.4},-3.6 C {ex+2},-5.2 {ex-2},-5.2 {ex-4.4},-3.4 Z" fill="{s}"/><path d="M {ex-4.4},-3.6 C {ex-1},-5.4 {ex+3},-5.2 {ex+6.4},-3.4" fill="none" stroke="#1d1416" stroke-width="1.8"/>')
+    by = -12.6 if st != 'pomp' else -15
+    o.append(f'<path d="M {ex-6},{by} C {ex-2},{by-3} {ex+4},{by-3} {ex+8},{by-0.6}" fill="none" stroke="#221a1e" stroke-width="{2.6 if not fem else 2}" stroke-linecap="round"/>')
+    o.append(f'<ellipse cx="{ex+7}" cy="10" rx="5.4" ry="3" fill="#e48a7e" opacity="{.45 if fem or fat else .28}"/>')
+    lip = '#b8606c' if fem else '#9a5a50'
+    if st == 'buzz':
+        o.append('<path d="M -36,16 C -34,20 -30,22 -26,20 L -32,18 Z" fill="#5a2a2c"/><path d="M -37,12.6 C -34,11.4 -30,11.6 -27,13.4" fill="none" stroke="#2a2224" stroke-width="2.6" stroke-linecap="round"/>')
+    else:
+        o.append(f'<path d="M {-30 if not fem else -29.6},{18.6 if not fem else 17.8} L {-25 if not fem else -25.4},{19 if not fem else 18.4}" stroke="{lip}" stroke-width="1.6" stroke-linecap="round"/>')
+        if fem: o.append(f'<path d="M -29.6,18 C -31,19.4 -30.6,22 -28.4,23 L -27.4,20 Z" fill="{lip}" opacity=".7"/>')
     if st == 'crop':
-        o.append('<path d="M -24,26 C -20,34 -12,40 -2,42 C 8,41 14,33 16,24 L 10,26 C 6,32 0,35 -6,35 C -14,34 -20,30 -24,26 Z" fill="#5b4a48" opacity=".22"/>')
+        o.append('<path d="M -27,26 C -25,33 -18,37 -10,36 C -2,34 4,30 8,24 L 2,24 C -2,29 -8,32 -14,32 C -20,32 -24,29 -27,26 Z" fill="#5b4a48" opacity=".22"/>')
+        o.append(f'<path d="M -26,-14 L -21,-6.4" stroke="#f3cfae" stroke-width="1.3" stroke-linecap="round"/>' if False else '')
+    if st == 'pomp':
+        o.append('<path d="M -27,19 L -40,13" stroke="#e8d2a0" stroke-width="1.5" stroke-linecap="round"/><path d="M -24,35 L -20,40 L -16,36 Z" fill="#241c1e"/>')
     if c.get('glasses'):
-        o.append(f'<path d="M {ex-6},-6 L {ex+6},-6.6 L {ex+5},3 C {ex+2},5 {ex-4},5 {ex-6},2 Z" fill="#ffffff" fill-opacity=".08" stroke="#2c1a24" stroke-width="1.3"/>'
-                 f'<path d="M {ex+6},-5.6 L 6,-4" stroke="#2c1a24" stroke-width="1.3"/><path d="M {ex+6},-6.6 L {ex+8},-9 L {ex+4},-8.6 Z" fill="#2c1a24"/>')
+        o.append(f'<path d="M {ex-5},-7.4 L {ex+5.6},-7.4 L {ex+5},2 C {ex+2},3.6 {ex-3},3.4 {ex-5},1 Z" fill="#ffffff" fill-opacity=".08" stroke="#2c1a24" stroke-width="1.3"/>'
+                 f'<path d="M {ex+5.6},-6.4 L 4,-4.6" stroke="#2c1a24" stroke-width="1.3"/>')
     # hair
     if st == 'crop':
-        o.append(f'<path d="M -30,-14 C -32,-42 -14,-62 8,-61 C 28,-60 36,-40 30,-6 L 26,10 L 18,12 L 18,-8 C 10,-18 -2,-22 -14,-22 L -28,-18 Z" fill="{hc}"/>'
-                 f'<path d="M 14,-14 L 20,-14 L 18,-2 L 15,-2 Z" fill="#3a3034"/><path d="M -16,-50 C -4,-58 14,-58 24,-48 C 10,-52 -2,-50 -12,-44 Z" fill="{hl}"/>')
+        o.append(f'<path d="M -28,-23 C -30,-46 -12,-60 10,-59 C 30,-58 38,-40 33,-14 C 32,-4 30,4 27,10 L 20,8 L 20,-8 C 14,-16 4,-20 -6,-21 C -14,-22 -22,-22 -28,-23 Z" fill="{hc}"/>'
+                 f'<path d="M 14,-16 C 18,-17 22,-16 24,-14 L 22,-8 C 19,-10 16,-10 13,-9 Z" fill="#3a3034"/>'
+                 f'<path d="M -16,-50 C -4,-58 14,-58 26,-48 C 12,-52 -2,-50 -12,-44 Z" fill="{hl}"/>'
+                 + ''.join(f'<path d="M {x},-56 L {x+3},-61 L {x+6},-55 Z" fill="{hc}"/>' for x in (-8, 2, 12)))
     elif st == 'buzz':
-        o.append(f'<path d="M -34,-18 C -34,-46 -14,-56 8,-56 C 26,-56 34,-42 32,-14 L 26,-20 C 12,-28 -16,-30 -30,-24 Z" fill="{hc}"/>')
+        o.append(f'<path d="M -31,-26 C -31,-48 -12,-56 8,-56 C 26,-56 34,-44 33,-22 L 29,-20 C 18,-26 0,-30 -18,-30 Z" fill="{hc}"/>'
+                 f'<path d="M -22,-46 C -10,-54 8,-54 20,-48 C 6,-50 -8,-48 -18,-42 Z" fill="{hl}"/>')
     elif st == 'pomp':
-        o.append(f'<path d="M -30,-16 C -40,-46 -20,-68 4,-66 C 26,-64 36,-44 30,-8 L 30,30 L 20,26 L 18,-8 C 8,-24 -8,-28 -22,-26 Z" fill="{hc}"/><path d="M -30,-40 C -20,-60 4,-66 22,-56 C 6,-58 -10,-54 -24,-36 Z" fill="{hl}"/>'
-                 '<ellipse cx="-12" cy="-52" rx="11" ry="6" fill="#2e3e50" stroke="#c8b07a" stroke-width="1.2"/><path d="M -1,-52 L 10,-46" stroke="#c8b07a" stroke-width="1.2"/>')
+        o.append(f'<path d="M -32,-26 C -42,-52 -18,-70 6,-67 C 30,-64 38,-44 33,-12 L 32,26 L 24,22 L 22,0 C 18,-12 8,-20 -4,-24 L -24,-26 Z" fill="{hc}"/>'
+                 f'<path d="M -34,-38 C -24,-60 2,-68 22,-58 C 6,-60 -12,-54 -26,-34 Z" fill="{hl}"/>'
+                 f'<path d="M -22,-56 C -26,-60 -10,-64 -4,-58 L -4,-54 C -8,-56 -18,-54 -22,-52 Z" fill="#2e3e50"/><path d="M -24,-55 L -2,-56 L 12,-50" fill="none" stroke="#c8b07a" stroke-width="1.3"/>')
     elif st == 'slick':
-        o.append(f'<path d="M -30,-12 C -34,-42 -16,-62 6,-61 C 28,-60 36,-40 31,-6 C 29,8 24,16 18,18 L 18,-6 C 10,-20 -6,-26 -20,-26 L -28,-22 Z" fill="{hc}"/>'
-                 + ''.join(f'<path d="M -24,{y} C -6,{y-6} 14,{y-2} 28,{y+12}" fill="none" stroke="{hl}" stroke-width="1.4"/>' for y in (-50, -40, -30)))
+        o.append(f'<path d="M -28,-22 C -30,-48 -10,-62 12,-60 C 32,-58 38,-38 33,-10 C 31,4 28,12 24,14 L 20,-4 C 12,-16 0,-22 -12,-24 Z" fill="{hc}"/>'
+                 + ''.join(f'<path d="M -24,{yy} C -6,{yy-6} 14,{yy-2} 30,{yy+14}" fill="none" stroke="{hl}" stroke-width="1.4"/>' for yy in (-50, -40, -31)))
     elif st == 'bob':
-        o.append(f'<path d="M -34,-16 C -36,-46 -14,-64 8,-63 C 32,-62 44,-42 42,-6 L 44,32 C 38,40 28,40 22,36 L 16,10 C 14,-2 6,-10 -4,-14 L -34,-14 Z" fill="{hc}"/>'
-                 f'<path d="M -34,-18 L -32,-12 L -18,-13 L -16,-18 Z" fill="{hc}"/><path d="M -20,-48 C -6,-60 16,-60 32,-48 C 14,-52 -2,-50 -14,-42 Z" fill="{hl}"/>'
-                 f'<circle cx="8" cy="12" r="3.2" fill="none" stroke="#d8b46a" stroke-width="1.3"/>')
+        o.append(f'<path d="M -31,-20 C -33,-48 -10,-62 12,-61 C 36,-60 46,-40 44,-8 L 46,32 C 38,40 26,40 20,34 C 18,22 14,12 10,8 L 8,-6 C 0,-12 -10,-15 -20,-15 L -31,-15 Z" fill="{hc}"/>'
+                 f'<path d="M -20,-50 C -6,-60 16,-60 32,-48 C 14,-52 -2,-50 -14,-42 Z" fill="{hl}"/><path d="M 26,-40 C 36,-20 38,10 34,34" fill="none" stroke="{hl}" stroke-width="1.6"/>'
+                 f'<circle cx="7" cy="14" r="3.2" fill="none" stroke="#d8b46a" stroke-width="1.3"/>')
     elif st == 'halfup':
-        o.append(f'<path d="M -30,-14 C -34,-44 -14,-63 8,-62 C 30,-61 40,-42 36,-6 L 44,118 C 36,124 28,124 22,118 L 18,8 C 14,-6 4,-14 -8,-18 L -28,-18 Z" fill="{hc}"/>'
-                 f'<ellipse cx="24" cy="-22" rx="5" ry="7" fill="#7d9a88"/><path d="M -16,-50 C -2,-58 16,-58 28,-48 C 12,-52 -2,-50 -12,-44 Z" fill="{hl}"/>')
+        o.append(f'<path d="M -28,-21 C -30,-48 -10,-62 12,-61 C 34,-60 42,-40 38,-6 L 46,116 C 38,122 28,122 22,116 L 16,10 C 14,-4 6,-14 -6,-18 L -26,-19 Z" fill="{hc}"/>'
+                 f'<path d="M -16,-50 C -2,-58 16,-58 28,-48 C 12,-52 -2,-50 -12,-44 Z" fill="{hl}"/><path d="M 30,-6 C 36,30 38,70 40,110" fill="none" stroke="{hl}" stroke-width="1.6"/>'
+                 f'<ellipse cx="31" cy="-26" rx="5" ry="7" fill="#7d9a88"/>')
     return ''.join(o)
 
 def side_view(k, near_detail=False):
-    """facing the viewer's left. near_detail=True draws the leg/cast & chest badge for the opposite side (used for the right view, then mirrored)"""
+    """facing the viewer's left, full 90 degrees. near_detail draws the opposite side's details (used for the right view, which is then mirrored)"""
     c = C[k]; m, lt, dk = c['tc']; s, sh, _ = c['skin']; y = c['sh']; hem = c['hem']; foot = c['foot']
+    fat = c.get('belly'); dress = c['top'] in ('dress', 'dress2')
     o = []
-    if c.get('crutch'):
-        o.append(f'<rect x="10" y="{y+84}" width="4.6" height="{foot-y-70}" fill="#7d8391"/><rect x="6" y="{y+76}" width="13" height="10" rx="4" fill="#3a3d49"/>')
-    # legs (back then front)
-    if c['top'] in ('dress', 'dress2'):
-        o.append(f'<rect x="-2" y="{hem-6}" width="12" height="{foot-hem+8}" fill="{sh}"/><rect x="-12" y="{hem-6}" width="13" height="{foot-hem+8}" fill="{s}"/>')
-        o.append(f'<path d="M -26,{foot+2} L 2,{foot} L 4,{foot+13} L -30,{foot+13} C -32,{foot+9} -30,{foot+4} -26,{foot+2} Z" fill="{c["shoe"]}"/>')
+    if c.get('crutch'):  # far crutch behind the body
+        o.append(f'<path d="M 18,{y+84} L 24,{foot+12}" stroke="#7d8391" stroke-width="4.6"/><rect x="10" y="{y+76}" width="16" height="10" rx="4" fill="#3a3d49"/>')
+    # ----- legs: far leg (darker, a step back) then near leg -----
+    if dress:
+        o.append(f'<path d="M 2,{hem-10} L 14,{hem-10} L 13,{foot} L 4,{foot} Z" fill="{sh}"/>'
+                 f'<path d="M 0,{foot-2} L 16,{foot-2} C 22,{foot+2} 24,{foot+10} 22,{foot+12} L -2,{foot+12} Z" fill="{c["shoe"]}" opacity=".8"/>')
+        o.append(f'<path d="M -14,{hem-10} L -2,{hem-10} L -4,{foot} L -13,{foot} Z" fill="{s}"/>'
+                 f'<path d="M -28,{foot+4} C -26,{foot-2} -18,{foot-3} -12,{foot-3} L 0,{foot-3} L 0,{foot+12} L -30,{foot+12} Z" fill="{c["shoe"]}"/>')
     else:
-        b, bl, bd = c['bot']; lw = 34 if not c.get('belly') else 40
-        o.append(f'<path d="M -10,{hem-6} L {lw-12},{hem-6} L {lw-14},{foot} L 0,{foot} Z" fill="{bd}"/>')
-        o.append(f'<path d="M -{lw-14},{hem-6} L 10,{hem-6} L 6,{foot} L -14,{foot} Z" fill="{b}"/><path d="M -{lw-14},{hem-6} L -10,{hem-6} L -14,{foot} L -16,{foot} Z" fill="{bl}"/>')
-        cast_back = c.get('cast') and not near_detail; cast_near = c.get('cast') and near_detail
-        if cast_back:
-            o.append(f'<path d="M -2,{hem+134} L {lw-12},{hem+134} L {lw-14},{foot+10} C {lw-14},{foot+18} {lw-18},{foot+22} {lw-24},{foot+22} L -8,{foot+22} C -10,{foot+16} -6,{foot+10} -2,{foot+8} Z" fill="#c8c4be"/>')
-        o.append(f'<path d="M -22,{foot} L 6,{foot} L 8,{foot+16} L -28,{foot+16} C -30,{foot+10} -28,{foot+4} -22,{foot} Z" fill="{c["shoe"]}"/>' if not cast_near else
-                 f'<path d="M -16,{hem+134} L 8,{hem+134} L 6,{foot+10} C 6,{foot+18} 2,{foot+22} -4,{foot+22} L -30,{foot+22} C -34,{foot+16} -28,{foot+10} -18,{foot+8} Z" fill="#e8e5e0"/><path d="M -14,{hem+174} L 7,{hem+174}" stroke="#cfcbc5" stroke-width="1.2"/>')
+        b, bl, bd = c['bot']
+        far = (f'M -8,{hem-6} L 24,{hem-6} C 30,{hem+30} 26,{hem+70} 22,{hem+110} L 20,{foot} L 2,{foot} L -2,{hem+120} Z')
+        near = (f'M -24,{hem-6} L 20,{hem-6} C {28 if not fat else 34},{hem+28} 22,{hem+64} 14,{hem+100} L 8,{foot} L -12,{foot} L -16,{hem+116} C -22,{hem+80} -24,{hem+40} -24,{hem-6} Z')
+        cast_far = c.get('cast') and not near_detail; cast_near = c.get('cast') and near_detail
+        o.append(f'<path d="{far}" fill="{bd}"/>')
+        if cast_far:
+            o.append(f'<path d="M 0,{hem+130} L 22,{hem+128} L 21,{foot+4} C 22,{foot+14} 16,{foot+20} 8,{foot+20} L -10,{foot+20} C -14,{foot+14} -6,{foot+8} 2,{foot+6} Z" fill="#c8c4be"/>')
+        else:
+            o.append(f'<path d="M -8,{foot+1} C -8,{foot-4} 0,{foot-6} 6,{foot-6} L 24,{foot-6} L 26,{foot+14} L -10,{foot+14} Z" fill="{c["shoe"]}" opacity=".85"/>')
+        o.append(f'<path d="{near}" fill="{b}"/><path d="M -24,{hem-6} L -14,{hem-6} C -16,{hem+40} -14,{hem+80} -10,{hem+116} L -16,{hem+116} C -22,{hem+80} -24,{hem+40} -24,{hem-6} Z" fill="{bl}"/>')
         if cast_near:
-            o.append(f'<path d="M 4,{foot} L 26,{foot} L 28,{foot+16} L -2,{foot+16} Z" fill="{c["shoe"]}" opacity=".85"/>')
-    # torso
-    if c['top'] in ('dress', 'dress2'):
+            o.append(f'<path d="M -16,{hem+128} L 12,{hem+128} L 8,{foot+4} C 8,{foot+14} 2,{foot+20} -6,{foot+20} L -32,{foot+20} C -36,{foot+12} -28,{foot+6} -18,{foot+4} Z" fill="#e8e5e0"/>'
+                     f'<path d="M -16,{hem+128} L -8,{hem+128} L -10,{foot+4} L -18,{foot+4} Z" fill="#f7f5f2"/><path d="M -15,{hem+168} L 10,{hem+168} M -16,{hem+206} L 9,{hem+206}" stroke="#cfcbc5" stroke-width="1.2"/>'
+                     f'<path d="M -34,{foot+18} C -34,{foot+22} -30,{foot+23} -27,{foot+21} L -27,{foot+18} Z" fill="{s}"/>')
+        else:
+            o.append(f'<path d="M -32,{foot+1} C -32,{foot-5} -24,{foot-7} -16,{foot-7} L 10,{foot-7} L 12,{foot+14} L -34,{foot+14} Z" fill="{c["shoe"]}"/><path d="M -34,{foot+10} L 12,{foot+10} L 12,{foot+14} L -34,{foot+14} Z" fill="#000" opacity=".25"/>')
+    # ----- torso -----
+    if dress:
         if c['top'] == 'dress':
-            o.append(f'<path d="M -10,{y} C -18,{y+8} -20,{y+20} -18,{y+40} L 14,{y+40} C 16,{y+20} 14,{y+8} 8,{y} Z" fill="{s}"/>')
-            o.append(f'<path d="M -20,{y+34} C -26,{y+50} -22,{y+70} -16,{y+96} C -22,{y+130} -24,{y+180} -28,{hem} L 26,{hem} C 24,{y+200} 22,{y+130} 18,{y+100} C 20,{y+70} 18,{y+44} 14,{y+34} Z" fill="{m}"/>'
-                     f'<path d="M -20,{y+34} C -26,{y+50} -22,{y+70} -16,{y+96} C -22,{y+130} -24,{y+180} -28,{hem} L -14,{hem} C -12,{y+180} -8,{y+120} -6,{y+96} C -10,{y+70} -10,{y+50} -8,{y+36} Z" fill="{lt}"/>'
-                     f'<path d="M -4,{y+36} L -6,{y+4}" stroke="#b35d72" stroke-width="2"/>')
+            o.append(f'<path d="M -10,{y} C -20,{y+6} -24,{y+20} -22,{y+40} L 18,{y+40} C 20,{y+20} 16,{y+6} 8,{y-2} Z" fill="{s}"/><path d="M 8,{y-2} C 16,{y+6} 20,{y+20} 18,{y+40} L 10,{y+40} C 12,{y+20} 10,{y+8} 4,{y} Z" fill="{sh}"/>')
+            o.append(f'<path d="M -24,{y+36} C -30,{y+52} -28,{y+74} -20,{y+100} C -24,{y+150} -26,{y+200} -30,{hem} L 30,{hem} C 28,{y+220} 26,{y+150} 22,{y+108} C 28,{y+90} 26,{y+56} 20,{y+36} Z" fill="{m}"/>'
+                     f'<path d="M -24,{y+36} C -30,{y+52} -28,{y+74} -20,{y+100} C -24,{y+150} -26,{y+200} -30,{hem} L -16,{hem} C -12,{y+190} -8,{y+130} -6,{y+100} C -12,{y+74} -12,{y+52} -10,{y+38} Z" fill="{lt}"/>'
+                     f'<path d="M 22,{y+108} C 26,{y+150} 28,{y+220} 30,{hem} L 22,{hem} C 20,{y+200} 18,{y+150} 16,{y+110} Z" fill="{dk}"/>'
+                     f'<path d="M -6,{y+38} L -4,{y+4}" stroke="#b35d72" stroke-width="2" stroke-linecap="round"/>')
         else:
-            o.append(f'<path d="M -12,{y} C -24,{y+10} -26,{y+40} -24,{y+100} C -40,{y+190} -48,{y+280} -52,{hem} L 40,{hem} C 38,{y+280} 32,{y+190} 22,{y+100} C 24,{y+40} 18,{y+8} 10,{y} Z" fill="{m}"/>'
-                     f'<path d="M -12,{y} C -24,{y+10} -26,{y+40} -24,{y+100} C -40,{y+190} -48,{y+280} -52,{hem} L -30,{hem} C -24,{y+260} -14,{y+180} -10,{y+100} C -12,{y+50} -8,{y+10} -2,{y} Z" fill="{lt}"/>'
-                     f'<path d="M -24,{y+100} L 22,{y+100} L 22,{y+108} L -24,{y+108} Z" fill="#5a7262"/>')
+            o.append(f'<path d="M -12,{y} C -26,{y+10} -28,{y+44} -24,{y+100} C -38,{y+190} -46,{y+280} -50,{hem} L 42,{hem} C 40,{y+280} 34,{y+190} 24,{y+104} C 28,{y+50} 22,{y+10} 10,{y-2} Z" fill="{m}"/>'
+                     f'<path d="M -12,{y} C -26,{y+10} -28,{y+44} -24,{y+100} C -38,{y+190} -46,{y+280} -50,{hem} L -30,{hem} C -24,{y+260} -14,{y+180} -10,{y+100} C -14,{y+50} -10,{y+10} -2,{y} Z" fill="{lt}"/>'
+                     f'<path d="M -25,{y+98} L 24,{y+98} L 24,{y+106} L -25,{y+106} Z" fill="#5a7262"/>')
     else:
-        if c.get('belly'):
-            o.append(f'<path d="M -14,{y} C -30,{y+12} -36,{y+40} -40,{y+80} C -58,{y+110} -60,{y+160} -46,{y+190} L 26,{y+194} C 30,{y+150} 30,{y+80} 28,{y+40} C 26,{y+16} 20,{y+4} 10,{y} Z" fill="{m}"/>'
-                     f'<path d="M -14,{y} C -30,{y+12} -36,{y+40} -40,{y+80} C -58,{y+110} -60,{y+160} -46,{y+190} L -30,{y+192} C -40,{y+150} -36,{y+100} -26,{y+70} C -24,{y+40} -20,{y+14} -6,{y} Z" fill="{lt}"/>')
-            bl_y = y + 186
+        if fat:
+            o.append(f'<path d="M -14,{y} C -30,{y+12} -36,{y+40} -40,{y+70} C -60,{y+100} -62,{y+160} -48,{y+190} L 28,{y+194} C 32,{y+150} 32,{y+80} 30,{y+40} C 28,{y+14} 22,{y+2} 10,{y-2} Z" fill="{m}"/>'
+                     f'<path d="M -14,{y} C -30,{y+12} -36,{y+40} -40,{y+70} C -60,{y+100} -62,{y+160} -48,{y+190} L -34,{y+192} C -44,{y+150} -40,{y+100} -28,{y+70} C -24,{y+40} -20,{y+14} -6,{y} Z" fill="{lt}"/>'
+                     f'<path d="M 30,{y+40} C 32,{y+80} 32,{y+150} 28,{y+194} L 20,{y+194} C 24,{y+150} 24,{y+80} 22,{y+40} Z" fill="{dk}"/>')
+            bl_y = y + 186; bx0, bx1 = -50, 28
         else:
-            o.append(f'<path d="M -12,{y} C -28,{y+10} -31,{y+40} -29,{y+80} L -26,{hem} L 25,{hem} L 28,{y+80} C 30,{y+40} 22,{y+8} 10,{y} Z" fill="{m}"/>'
-                     f'<path d="M -12,{y} C -28,{y+10} -31,{y+40} -29,{y+80} L -26,{hem} L -12,{hem} C -14,{y+120} -14,{y+40} -4,{y} Z" fill="{lt}"/>')
-            bl_y = hem - 8
+            o.append(f'<path d="M -12,{y} C -24,{y+8} -30,{y+26} -29,{y+52} C -28,{y+92} -24,{y+130} -24,{hem} L 24,{hem} C 22,{y+150} 18,{y+112} 22,{y+72} C 26,{y+42} 24,{y+12} 10,{y-2} Z" fill="{m}"/>'
+                     f'<path d="M -12,{y} C -24,{y+8} -30,{y+26} -29,{y+52} C -28,{y+92} -24,{y+130} -24,{hem} L -12,{hem} C -14,{y+120} -16,{y+60} -4,{y} Z" fill="{lt}"/>'
+                     f'<path d="M 22,{y+72} C 26,{y+42} 24,{y+12} 10,{y-2} C 16,{y+20} 16,{y+50} 14,{y+80} C 12,{y+130} 16,{y+170} 16,{hem} L 24,{hem} C 22,{y+150} 18,{y+112} 22,{y+72} Z" fill="{dk}"/>')
+            bl_y = hem - 8; bx0, bx1 = -25, 25
+        if c['top'] in ('uniform', 'long'):
+            o.append(f'<path d="M {bx0},{bl_y} L {bx1},{bl_y} L {bx1},{bl_y+10} L {bx0},{bl_y+10} Z" fill="#17161c"/>')
         if c['top'] == 'uniform':
-            o.append(f'<rect x="{-46 if c.get("belly") else -27}" y="{bl_y}" width="{72 if c.get("belly") else 53}" height="10" fill="#17161c"/>')
-            o.append(f'<path d="M -6,{y+4} L 12,{y+2} L 12,{y+8} L -6,{y+10} Z" fill="#1f2433"/>')
-            if not near_detail:
-                o.append(f'<path d="{"M -34" if c.get("belly") else "M -22"},{y+46} l 10,0 l 0,20 l -10,0 Z" fill="{lt}"/>')
+            o.append(f'<path d="M -8,{y+2} L 14,{y-1} L 15,{y+6} L -8,{y+9} Z" fill="#1f2433"/>')
+            if near_detail:
+                px = -32 if fat else -22
+                o.append(f'<path d="M {px},{y+26} l 7,2 l -1,8 c -1,4 -3,5 -5,6 c -2,-1 -4,-2 -5,-6 l 0,-8 Z" fill="#c4c9d4"/>')
             else:
-                o.append(f'<path d="M {-30 if c.get("belly") else -20},{y+24} l 7,2 l -1,8 c -1,4 -3,5 -5,6 c -2,-1 -4,-2 -5,-6 l 0,-8 Z" fill="#c4c9d4"/>')
-        elif c['top'] == 'long':
-            o.append(f'<rect x="-27" y="{hem-8}" width="53" height="9" fill="#1f1d24"/>')
-        o.append(f'<path d="M -10,{y} L -6,{y+12} L 8,{y+12} L 10,{y} Z" fill="{dk}" opacity=".6"/>' if c['top'] != 'tee' else f'<path d="M -10,{y} C -8,{y+6} 4,{y+6} 8,{y}" fill="none" stroke="{dk}" stroke-width="3"/>')
-    # near arm hanging at the side
-    hand = hem - 14 if c['top'] not in ('dress', 'dress2') else 226
-    slen = {'tee': 66, 'uniform': 66, 'long': 178}.get(c['top'], 0)
-    o.append(f'<path d="M -8,{y+16} L 10,{y+14} L 8,{hand} L -6,{hand} Z" fill="{s}"/><path d="M 4,{y+16} L 10,{y+14} L 8,{hand} L 4,{hand} Z" fill="{sh}"/>')
-    o.append(f'<path d="M -7,{hand-2} L 8,{hand-2} C 9,{hand+12} 6,{hand+22} 0,{hand+24} C -6,{hand+22} -9,{hand+12} -7,{hand-2} Z" fill="{s}"/>')
+                px = -34 if fat else -26
+                o.append(f'<path d="M {px},{y+46} l 10,0 l 0,22 l -10,0 Z" fill="{lt}"/><path d="M {px-1},{y+42} l 12,0 l 0,7 l -12,0 Z" fill="{dk}"/><rect x="{px}" y="{y+32}" width="9" height="5" fill="#17161c"/>')
+        if c['top'] == 'tee':
+            o.append(f'<path d="M -12,{y} C -8,{y+6} 4,{y+6} 10,{y-2}" fill="none" stroke="{dk}" stroke-width="3"/>')
+        else:
+            o.append(f'<path d="M -12,{y} L -6,{y+14} L 6,{y+10} L 10,{y-2} Z" fill="{dk}" opacity=".7"/>')
+    # ----- near arm: slight bend at the elbow, hand relaxed -----
+    hand = hem - 16 if not dress else 226
+    elb = y + 104
+    o.append(f'<path d="M -9,{y+14} C -4,{y+10} 6,{y+10} 11,{y+14} L 10,{elb} L 2,{hand} L -9,{hand} L -6,{elb} Z" fill="{s}"/>'
+             f'<path d="M 5,{y+12} C 8,{y+12} 10,{y+12} 11,{y+14} L 10,{elb} L 2,{hand} L -2,{hand} L 4,{elb} Z" fill="{sh}"/>')
+    o.append(f'<path d="M -10,{hand-2} L 3,{hand-2} C 5,{hand+10} 2,{hand+22} -4,{hand+24} C -9,{hand+22} -12,{hand+12} -10,{hand-2} Z" fill="{s}"/>'
+             f'<path d="M -10,{hand+4} C -15,{hand+8} -15,{hand+14} -11,{hand+16}" fill="none" stroke="{s}" stroke-width="4" stroke-linecap="round"/>')
+    slen = {'tee': 62, 'uniform': 62, 'long': hand - y - 4}.get(c['top'], 0)
     if slen:
-        o.append(f'<path d="M -10,{y+12} L 12,{y+10} L 10,{y+slen} L -8,{y+slen+2} Z" fill="{lt}"/><path d="M 4,{y+12} L 12,{y+10} L 10,{y+slen} L 4,{y+slen} Z" fill="{dk}"/>')
+        o.append(f'<path d="M -11,{y+12} C -4,{y+6} 8,{y+6} 13,{y+12} L {12 if slen < 100 else 4},{y+slen} L {-9 if slen < 100 else -10},{y+slen+2} Z" fill="{lt}"/>'
+                 f'<path d="M 6,{y+9} C 9,{y+9} 11,{y+10} 13,{y+12} L {12 if slen < 100 else 4},{y+slen} L {6 if slen < 100 else -1},{y+slen} Z" fill="{dk}"/>')
+        if c['top'] == 'long':
+            o.append(f'<path d="M -11,{hand-6} L 4,{hand-6} L 4,{hand} L -11,{hand} Z" fill="{dk}"/>')
     if c['top'] == 'dress2':
-        o.append(f'<path d="M -14,{y+10} C -18,{y+30} -10,{y+50} 4,{y+52} C 16,{y+50} 18,{y+30} 12,{y+10} Z" fill="{lt}"/>')
+        o.append(f'<path d="M -14,{y+8} C -18,{y+30} -10,{y+52} 4,{y+54} C 16,{y+52} 18,{y+30} 13,{y+8} Z" fill="{lt}"/>')
     if c.get('crutch'):
-        o.append(f'<rect x="-14" y="{y+84}" width="4.6" height="{foot-y-70}" fill="#a3a9b6"/><rect x="-18" y="{y+76}" width="13" height="10" rx="4" fill="#4a4e5c"/><rect x="-14" y="{hand+4}" width="18" height="6" rx="2" fill="#2c2f3a"/>')
+        o.append(f'<path d="M -10,{y+84} L -16,{foot+12}" stroke="#a3a9b6" stroke-width="4.6"/><rect x="-18" y="{y+76}" width="16" height="10" rx="4" fill="#4a4e5c"/><rect x="-16" y="{hand+6}" width="18" height="6" rx="2" fill="#2c2f3a"/>'
+                 f'<path d="M -10,{hand+2} L 3,{hand+2} C 4,{hand+12} 0,{hand+18} -5,{hand+18} C -10,{hand+16} -12,{hand+10} -10,{hand+2} Z" fill="{s}"/>')
     o.append(head_side(c))
     return ''.join(o)
 
