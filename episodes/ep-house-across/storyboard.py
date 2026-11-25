@@ -45,7 +45,7 @@ def put(fig, x, feet_y, height, shadow=True, clip_y=None, clip_x=None):
         _n[0] += 1; i = f'sbk{_n[0]}'
         x0, x1 = clip_x or (-200, 800)
         g = f'<clipPath id="{i}"><rect x="{x0}" y="-200" width="{x1-x0}" height="{(clip_y if clip_y is not None else 1200)+200}"/></clipPath><g clip-path="url(#{i})">{g}</g>'
-    return sh + g
+    return (f'<!--S-->{sh}<!--/S-->' if sh else '') + f'<g class="br" data-x="{x:.1f}" data-fy="{feet_y:.1f}">{g}</g>'
 
 def fig_of(key, view):
     return ofig(key) if key in ('dad', 'mom', 'friend') else tfig(key, view)
@@ -162,9 +162,9 @@ def ab_card():
     o.append('<text x="270" y="300" class="q">คนที่แอบส่องอยู่คือใคร?</text><text x="270" y="334" class="qe">Who is watching from the window?</text>')
     for i, (lt, th, en) in enumerate((('A', 'คนร้ายตัวจริง', 'The real criminal'), ('B', 'อีกหนึ่งเซอร์ไพรส์', 'Another surprise'))):
         y = 420 + i * 130; on = i == 0
-        o.append(f'<rect x="70" y="{y}" width="400" height="100" rx="18" fill="{"#3a2a5e" if on else "#221a36"}" stroke="{"#c9a8ff" if on else "#5a4a7a"}" stroke-width="{3 if on else 1.5}"/>'
-                 f'<circle cx="124" cy="{y+50}" r="26" fill="{"#c9a8ff" if on else "#4a3a6a"}"/><text x="124" y="{y+60}" class="abl">{lt}</text>'
-                 f'<text x="172" y="{y+46}" class="abt">{th}</text><text x="172" y="{y+72}" class="abe">{en}</text>')
+        o.append(f'<g class="abopt"><rect class="abbox" x="70" y="{y}" width="400" height="100" rx="18" fill="{"#3a2a5e" if on else "#221a36"}" stroke="{"#c9a8ff" if on else "#5a4a7a"}" stroke-width="{3 if on else 1.5}"/>'
+                 f'<circle class="abdot" cx="124" cy="{y+50}" r="26" fill="{"#c9a8ff" if on else "#4a3a6a"}"/><text x="124" y="{y+60}" class="abl">{lt}</text>'
+                 f'<text x="172" y="{y+46}" class="abt">{th}</text><text x="172" y="{y+72}" class="abe">{en}</text></g>')
     o.append('<text x="270" y="760" class="qe">ตอบในคอมเมนต์ · Answer in the comments</text>')
     return ''.join(o)
 
@@ -303,22 +303,91 @@ party = (RP('dad', '7C', 1.4, .2) + RP('mom', '7C', 1.4, .32) + RP('ton', '7C', 
          + RP('husband', '7C', 1.5, .4, clip_y=tt) + RP('wife', '7C', 1.5, .6, clip_y=tt) + RP('friend', '7C', 1.55, .5, clip_y=tt)
          + RP('heroine', '7C', 2.2, .28))
 
+# ---------------- cinematic lighting (pipeline/cinelight.py) ----------------
+import sys, re
+sys.path.insert(0, os.path.join(HERE, '..', '..', 'pipeline'))
+import cinelight as CL
+WARM = '#ffcf9e'
+# per-scene light rig: src = light position on screen (rim faces it), night = low-key, lk = (cx, cy, r, op), glows, cone, dust shaft
+LIGHT = {
+    '1A': dict(src=(270, 240), amb=.14, glows=[(270, 250, 170, '#e6ecff', .35)], cone='210,250 330,250 430,820 110,820'),
+    '1B': dict(src=(211, 351), night=True, lk=(220, 430, 560, .5), glows=[(211, 355, 150, WARM, .8)], cone='196,355 226,355 430,860 40,860'),
+    '1C': dict(src=(270, 120), amb=.04, rim_op=.5, key_op=.25, glows=[(270, 330, 200, '#ffffff', .35)]),
+    '1D': dict(src=(270, 130), night=True, lk=(270, 330, 720, .35), glows=[(270, 160, 170, WARM, .8)], cone='238,170 302,170 480,900 60,900'),
+    '2A': dict(src=(280, 360), amb=.1, glows=[(280, 360, 210, '#ffe6c8', .45)], cone='200,300 360,300 470,900 120,900'),
+    '2B': dict(src=(270, 300), amb=.08, glows=[(300, 330, 280, '#fff0dc', .35)], cone='120,140 420,140 520,820 40,820'),
+    '3A': dict(src=(80, 140), amb=.08, glows=[(80, 140, 260, '#fff0dc', .45)], cone='20,90 160,90 440,600 120,600'),
+    '3B': dict(night=True, lk=(270, 360, 640, .25), glows=[(270, 380, 180, WARM, .35)]),
+    '3C*': dict(night=True, lk=(270, 415, 520, .4), glows=[(270, 400, 240, WARM, .3)], cone='95,600 445,600 560,960 -20,960'),
+    '3D': dict(night=True, lk=(270, 415, 520, .35)),
+    '4': dict(src=(479, 232), night=True, lk=(330, 420, 680, .3), glows=[(479, 232, 150, WARM, .75)], cone='462,236 498,236 560,560 380,560'),
+    '5A': dict(src=(150, 470), night=True, lk=(230, 480, 660, .45), glows=[(150, 470, 160, WARM, .7)], cone='200,300 360,300 470,960 120,960'),
+    '5B': dict(night=True, lk=(270, 470, 520, .35)),
+    '5C*': dict(night=True, lk=(270, 400, 520, .4), glows=[(300, 300, 260, WARM, .3)], cone='120,640 420,640 520,960 20,960'),
+    '6A': dict(src=(300, 470), night=True, lk=(290, 520, 600, .45), glows=[(300, 470, 170, WARM, .6)]),
+    '6C*': dict(night=True, lk=(270, 415, 520, .4), glows=[(270, 400, 240, WARM, .3)], cone='95,600 445,600 560,960 -20,960'),
+    '7A': dict(src=(270, 230), night=True, lk=(270, 360, 660, .45), glows=[(270, 230, 180, WARM, .75)], cone='240,250 300,250 420,900 120,900'),
+    '7B': dict(src=(453, 334), night=True, lk=(420, 430, 640, .5), glows=[(453, 334, 160, WARM, .8)], cone='443,334 473,334 470,960 160,960'),
+    '7C': dict(src=(280, 330), amb=.08, glows=[(280, 330, 190, WARM, .6)], cone='240,340 320,340 470,900 90,900'),
+    '8A': dict(night=True, lk=(270, 440, 560, .4), glows=[(270, 470, 200, WARM, .35)]),
+    '8B': dict(src=(270, 320), night=True, lk=(270, 340, 620, .45), glows=[(270, 330, 230, '#ffcf9e', .45)], cone='150,470 390,470 470,960 70,960'),
+}
+LIGHT['@zoom'] = dict(LIGHT['4'], src=(600, 100), glows=[], lk=(350, 520, 520, .2), amb=.08)
+EXTRA_DEFS = CL.defs()
+
+def lit_frame(n, sid, chars, body, overlay, mode='after', key=None):
+    """returns the frame svg. mode 'before' = the plain storyboard frame, 'after' = cinematic lighting layers"""
+    if mode == 'before':
+        return frame_svg_inner(body + chars).replace('</svg>', overlay + '</svg>')
+    key = key or sid
+    L = LIGHT.get(key, {})
+    shadows = ''.join(re.findall(r'<!--S-->(.*?)<!--/S-->', chars, flags=re.S))
+    figs = re.sub(r'<!--S-->.*?<!--/S-->', '', chars, flags=re.S)
+    char_svg = ''; fdefs = ''
+    if figs.strip():
+        sx, sy = L.get('src', (270, 200))
+        cx = sum(float(m) for m in re.findall(r'data-x="([\d.]+)"', figs)) / max(1, len(re.findall(r'data-x="', figs))) if 'data-x' in figs else 270
+        fy = re.findall(r'data-fy="([\d.]+)"', figs); cy = (sum(map(float, fy)) / len(fy) - 260) if fy else 500
+        night = L.get('night', False)
+        fid, fdefs = CL.char_light((sx - cx, sy - cy), rim=4.5 if night else 3.2, rim_op=L.get('rim_op', 1.0 if night else .75),
+                                   shade=11, shade_op=.5 if night else .38, key_op=L.get('key_op', .45))
+        char_svg = f'<g id="chars" filter="url(#{fid})">{figs}</g>'
+    env = ''
+    if L.get('amb', .16 if L.get('night') else .12): env += CL.ambient(op=L.get('amb', .16 if L.get('night') else .12))
+    if L.get('lk'): env += CL.low_key(*L['lk'])
+    lights = ''.join(f'<g class="fl">{CL.glow(*g)}</g>' for g in L.get('glows', []))
+    if L.get('cone'):
+        pts_ = [tuple(map(float, p.split(','))) for p in L['cone'].split()]
+        lights += CL.cone(L['cone'], op=.22, axis=((pts_[0][0], pts_[0][1]), ((pts_[2][0] + pts_[3][0]) / 2, pts_[2][1])))
+    atmo_items = f'<g id="dust">{CL.dust_in(L["cone"], seed=n, n=34)}</g>' if L.get('cone') else ''
+    inner = CL.compose(body, CL.shadow_layer(shadows), CL.env_layer(env), char_svg, CL.lighting_layer(lights), '', grade=True)
+    atmo = CL.atmosphere_layer(grain=.06, vignette=True)
+    return (f'<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg"><defs>{fdefs}</defs>'
+            f'<g id="cam">{inner}{atmo_items}</g>{atmo}<rect id="dark" width="540" height="960" fill="#05030a" opacity="0"/><g id="ov">{overlay}</g></svg>')
+
+def shot_parts(n, shot):
+    sid, tg, chars, th, en, note = shot
+    if chars == '@zoom':
+        body, chars_ = zoom(350, 520, 2.2, SC['4']), zoom(350, 520, 2.2, WP('husband', 350, 556))
+    elif chars == '@wheel':
+        body, chars_ = SC['1C'], wheelchair_shot()
+    elif chars == '@party':
+        body, chars_ = SC['7C'], party
+    else:
+        body, chars_ = SC[sid], chars
+    return body, chars_, tag(tg) + watermark() + subs(th, en)
+
+FRAMES = []
 cards = []
-for n, (sid, tg, chars, th, en, note) in enumerate(SHOTS, 1):
+for n, shot in enumerate(SHOTS, 1):
+    sid, tg, chars, th, en, note = shot
     if sid == 'AB':
         svg = f'<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">{ab_card() + watermark()}</svg>'
     else:
-        if chars == '@zoom':
-            body = zoom(350, 520, 2.2, SC['4'] + WP('husband', 350, 556))
-        elif chars == '@wheel':
-            body = SC['1C'] + wheelchair_shot()
-        elif chars == '@party':
-            body = SC['7C'] + party
-        else:
-            body = SC[sid] + chars
-        svg = frame_svg_inner(body).replace('</svg>', tag(tg) + watermark() + subs(th, en) + '</svg>')
-        if chars == '@wheel':
-            svg = svg.replace('<rect width="540" height="960" fill="url(#vig)"/>', '<rect width="540" height="960" fill="url(#vig)" opacity=".3"/>')
+        body, chars_, ov = shot_parts(n, shot)
+        key_sid = sid if chars != '@wheel' else '1C'
+        svg = lit_frame(n, key_sid, chars_, body, ov, key='@zoom' if chars == '@zoom' else None)
+    FRAMES.append(svg)
     cards.append(f'<figure><div class="fr">{svg}</div><figcaption><b>{n:02d}</b> <i>{sid.rstrip("*")}</i> {html.escape(note)}</figcaption></figure>')
 
 page = f'''<title>บ้านตรงข้าม สตอรีบอร์ด</title>
@@ -348,7 +417,7 @@ figcaption {{ font-size:12px; color:var(--muted); line-height:1.5; }} figcaption
 {SG["DEFS"]}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <filter id="sbBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
-{TG["HEAD_DEFS"]}{OG["DEFS"]}
+{TG["HEAD_DEFS"]}{OG["DEFS"]}{EXTRA_DEFS}
 </defs></svg>
 <div class="wrap"><header><h1>บ้านตรงข้าม · สตอรีบอร์ด v2 ({len(SHOTS)} ช็อต)</h1>
 <p>สเกลใหม่: ตัวละครวางด้วยความสูงจริง (พระเอก 1.78 ม. นางเอก 1.62 ม. หมู 1.66 ม. ต้น 1.85 ม.) ตามเปอร์สเปกทีฟของแต่ละห้อง เฟอร์นิเจอร์ใช้ขนาดจริงชุดเดียวกัน คนที่ยืนหลังโต๊ะถูกโต๊ะบังจริง ·
@@ -356,3 +425,39 @@ figcaption {{ font-size:12px; color:var(--muted); line-height:1.5; }} figcaption
 <div class="grid">{"".join(cards)}</div></div>'''
 open('storyboard.html', 'w', encoding='utf-8').write(page)
 print('shots', len(SHOTS))
+
+# ---------------- before / after preview ----------------
+def ba_pair(n, title, sub, body, chars_, ov, key_sid, key=None):
+    before = lit_frame(n, key_sid, chars_, body, ov, mode='before')
+    after = lit_frame(n, key_sid, chars_, body, ov, key=key)
+    return (f'<section><h2>{title}</h2><p>{sub}</p><div class="ba"><figure><div class="fr">{before}</div><figcaption>ก่อน</figcaption></figure>'
+            f'<figure><div class="fr">{after}</div><figcaption>หลัง · Cinematic 2D Lighting</figcaption></figure></div></section>')
+P1 = ba_pair(12, 'ฉากกลางคืน', 'ช็อต 12 ตีสอง: ไฟถนนเป็นแหล่งแสงหลักจากขวาบน แสงขอบส้มทองติดเฉพาะขอบผม ไหล่ และแขนด้านขวา ด้านไกลแสงไล่เงาเทาอมน้ำเงิน นอกวงแสงกด low-key',
+             *shot_parts(12, SHOTS[11])[:2], '', '4')
+P2 = ba_pair(24, 'ห้องที่เปิดไฟ', 'ช็อต 24 เซอร์ไพรส์: โคมระย้าเป็นแหล่งแสง ทุกคนได้แสงขอบด้านบน ห้องหม่นลงเล็กน้อย เงาเย็น โคมเรือง ฝุ่นในลำแสง',
+             *shot_parts(24, SHOTS[23])[:2], '', '7C')
+fb, fc, _ = shot_parts(25, SHOTS[24])
+face_z = lambda s: zoom(270, 400, 2.6, s)
+P3 = ba_pair(25, 'ระยะใกล้ใบหน้า', 'ช็อต 25 ขยายหน้าพระเอก: แสงขอบตามผม ขมับ และไหล่ด้านที่หันหาโคม เงาไล่นุ่มที่แก้มฝั่งไกลแสง AO ใต้คาง',
+             face_z(fb), face_z(fc), '', '7C')
+prev = f"""<title>แสงเงาก่อนและหลัง</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {{ --bg:#120e1c; --ink:#e6e0f2; --muted:#9a90b8; --line:#2a2440; color-scheme:dark; }}
+html,body {{ background:var(--bg); color:var(--ink); }}
+body {{ font-family:"IBM Plex Sans Thai",system-ui,sans-serif; padding:24px max(16px,env(safe-area-inset-left,0px)) 40px; }}
+.wrap {{ max-width:900px; margin:0 auto; display:grid; gap:28px; }}
+h1 {{ font-size:20px; font-weight:500; margin:0; }} h2 {{ font-size:16px; font-weight:500; margin:0 0 4px; }} p {{ color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 10px; }}
+.ba {{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }}
+figure {{ margin:0; display:grid; gap:6px; min-width:0; }} .fr {{ border-radius:6px; overflow:hidden; box-shadow:0 0 0 1px var(--line); }}
+.fr svg {{ display:block; width:100%; height:auto; }} figcaption {{ font-size:12px; color:var(--muted); }}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;700&family=Inter:wght@400;700&display=swap">
+{SG["DEFS"]}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<filter id="sbBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+{TG["HEAD_DEFS"]}{OG["DEFS"]}{EXTRA_DEFS}
+</defs></svg>
+<div class="wrap"><header><h1>บ้านตรงข้าม · แสงเงาก่อน/หลัง (3 ฉาก)</h1><p>ระบบแสง pipeline/cinelight.py แยกเลเยอร์ ฉาก → เงา → กดฉาก → ตัวละคร (แสงขอบตามทิศแหล่งแสงจริง) → แสงเรือง/ลำแสง → ฝุ่น เกรน vignette แล้วปรับสีทั้งภาพ</p></header>
+{P1}{P2}{P3}</div>"""
+open('lighting_preview.html', 'w', encoding='utf-8').write(prev)

@@ -17,3 +17,6 @@ episodes/ep-4am-transfer/v2/ep01_final_v5.mp4
 episodes/ep-4am-transfer/v2/ep01_final_v6.mp4
 episodes/ep-4am-transfer/v2/mix.wav
 pipeline/v2/outro.wav
+episodes/ep-house-across/clip/frames/
+episodes/ep-house-across/clip/shots/
+episodes/ep-house-across/clip/*.log
