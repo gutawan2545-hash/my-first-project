@@ -1,0 +1,26 @@
+{
+ "slots": {
+  "margin_left": 48,
+  "margin_right": 48,
+  "logo": [
+   70,
+   66
+  ],
+  "episode_y": 152,
+  "title1_y": 232,
+  "title2_y": 306,
+  "title_size": 62,
+  "episode_size": 22,
+  "rule_y": 338,
+  "rule_h": 36,
+  "rule_size": 17
+ },
+ "episode": {
+  "episode": "ตอนที่ 2",
+  "title1": "ถ้าวันนี้เป็นวัน",
+  "title2_before": "",
+  "title2_hl": "แต่งงาน",
+  "title2_after": "ของคุณ",
+  "rule": "กฎข้อเดียว • อย่าให้เขาถอดแหวน"
+ }
+}

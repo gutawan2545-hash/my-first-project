@@ -57,6 +57,11 @@ ART = f'''
 <rect width="540" height="960" filter="url(#grain)" opacity=".06" style="mix-blend-mode:overlay"/>
 '''
 
+# ตอนอื่น: COVER_EP=<ชื่อไฟล์ใน eps/> python3 cover.py  (ไฟล์ตอนกำหนด EP กับ ART เอง ส่วนตำแหน่งข้อความคงที่ตามแม่แบบ)
+import os
+if os.environ.get('COVER_EP'):
+    _ns = {}; exec(open(f"eps/{os.environ['COVER_EP']}.py").read(), _ns); EP, ART = _ns['EP'], _ns['ART']
+
 S = SLOT
 TEXT = f'''
 <g id="logo" transform="translate({S['logo'][0]},{S['logo'][1]})"><ellipse rx="22" ry="16.5" fill="#7a1fff"/>
@@ -104,5 +109,5 @@ document.fonts.ready.then(() => {{
 }});
 </script>'''
 open('cover.html', 'w').write(html)
-json.dump(dict(slots=SLOT, episode=EP), open('cover_template.json', 'w'), ensure_ascii=False, indent=1)
+json.dump(dict(slots=SLOT, episode=EP), open('cover_template.json' if not os.environ.get('COVER_EP') else f"eps/{os.environ['COVER_EP']}.json", 'w'), ensure_ascii=False, indent=1)
 print('cover.html built')

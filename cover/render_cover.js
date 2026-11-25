@@ -9,7 +9,7 @@ const fs = require('fs');
   await p.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 15000 });
   const over = await p.evaluate(() => document.body.dataset.overflow || '');
   if (over) console.log('WARNING: title overflows right margin:', over);
-  await (await p.$('#cover')).screenshot({ path: '../out/cover.png' });
+  await (await p.$('#cover')).screenshot({ path: process.env.OUT || '../out/cover.png' });
   const fam = await p.evaluate(() => [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family + ' ' + f.weight).join(', '));
   console.log('fonts:', fam || 'fallback');
   await b.close();
