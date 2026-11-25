@@ -134,6 +134,7 @@ def colorize(full, lines, n):
         if run: segs.append((run, rc))
         out.append(''.join(f'<tspan class="h{c}">{t}</tspan>' if c else t for t, c in segs))
     return out
+SUB_Y = 780   # ผู้ใช้สั่ง: ขยับซับลงมา (เดิม 712)
 SUB_TXT = {'01c': 1, '03c': 3, '04c': 4, '05c': 5, '06e': 6, '07g': 7, '08c': 8, '09e': 9}
 subs = []; sub_svg = []
 script = {int(m.group(1)): m.group(2) for m in (re.match(r'^(\d+)\. (.*)$', l.strip()) for l in open('../script.md')) if m}
@@ -150,7 +151,7 @@ for key, n in SUB_TXT.items():
             if len(cur) + len(w) > 44 and cur: el.append(cur); cur = w
             else: cur = (cur + ' ' + w).strip()
         if cur: el.append(cur)
-        block = len(g) * 27 + 6 + len(el) * 17; y0 = 712 - block / 2 + 20
+        block = len(g) * 27 + 6 + len(el) * 17; y0 = SUB_Y - block / 2 + 20
         th = ''.join(f'<text x="270" y="{y0 + i * 27:.0f}" class="th">{l}</text>' for i, l in enumerate(g))
         ye = y0 + (len(g) - 1) * 27 + 23
         enx = ''.join(f'<text x="270" y="{ye + i * 17:.0f}" class="en">{l}</text>' for i, l in enumerate(el[:3]))
@@ -164,7 +165,9 @@ def mini_ring(skin, sleeve, label, cx, cy, gid):
             .replace('stroke="#2c2a34"', f'stroke="{sleeve}"'))
     return (f'<g id="{gid}" opacity="0" transform="translate({cx},{cy})"><g transform="scale(.74) translate(-430,-230)">{hand}</g>'
             f'<rect x="-46" y="66" width="92" height="28" rx="14" fill="#f6f2fb"/><text x="0" y="86" text-anchor="middle" {FT} font-size="15" font-weight="600" fill="#1a1626">{label}</text></g>')
-OVL = (f'<g id="hud" {FT}><rect x="22" y="26" width="196" height="38" rx="19" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".7"/>'
+EYE = ('<g id="wm" transform="translate(500,48)" opacity=".85"><ellipse cx="0" cy="0" rx="20" ry="15" fill="#7a1fff"/>'
+       '<path d="M -15,0 C -8,-8.5 8,-8.5 15,0 C 8,8.5 -8,8.5 -15,0 Z" fill="#05040a"/><circle cx="0" cy="0" r="4.2" fill="#d6b0ff"/></g>')   # ลายน้ำดวงตาของช่อง (จาก ep-4am-transfer)
+OVL = EYE + (f'<g id="hud" {FT}><rect x="22" y="26" width="196" height="38" rx="19" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".7"/>'
        f'<circle id="hudDot" cx="41" cy="45" r="5" fill="#9a86ff"/><text id="hudTxt" x="54" y="51" font-size="16" font-weight="500" fill="#f2eefa">วันแต่งงาน · 19:00</text>'
        f'<g id="trust"><rect x="22" y="72" width="196" height="34" rx="17" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".45"/>'
        f'<path d="M 40,93 C 31,86 33,79 37.5,79 C 39.5,79 40,80.6 40,81.4 C 40,80.6 40.5,79 42.5,79 C 47,79 49,86 40,93 Z" id="trustHeart" fill="#ff5c8a"/>'
