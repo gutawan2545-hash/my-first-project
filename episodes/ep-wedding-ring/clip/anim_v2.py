@@ -67,20 +67,19 @@ BX, BY = SB.bx, SB.by; GX, GY = SB.gx, SB.gy
 WF = SB.WB_FACE
 
 # ---------------------------------------------------------------- เสียงพากย์และไทม์ไลน์
-VO = {k: A.load_voice(os.path.join(HERE, 'vo', f'{k}.mp3')) for k in ('03e', '04e', '05e', '06e', '08e', '09e')}
-VO['07'] = A.load_voice(os.path.join(HERE, 'vo', json.load(open('vo/report.json'))['lines']['07a']['best']['path']))
-VO['07'] *= 1.0
+VO = {k: A.load_voice(os.path.join(HERE, 'vo', f'{k}.mp3')) for k in ('01c', '03c', '04c', '05c', '06e', '07g', '08c', '09e')}
 D = {k: len(v) / A.SR for k, v in VO.items()}
-TB = .3 + D['04e'] - .35                  # เสียงปังตรงคำว่า "เปิดออก"
-S7_SPLIT = .3 + D['07'] * .55
+TB = .3 + D['04c'] - .35                  # เสียงปังตรงคำว่า "เปิดออก"
+S7_SPLIT = .3 + D['07g'] + .35          # เจ้าบ่าวพูดจบในช็อตตัวเองก่อน แล้วค่อยตัดไป รปภ. เดินเข้ามา
+G7_POINT = .3 + D['07g'] * .66            # ชี้ตอนพูดว่า "เจ้าหน้าที่ครับ"
 SHOTS = [
-    ('s3', .4 + D['03e'] + .5), ('s4', TB + 2.3), ('s4r', 1.8), ('s5', .4 + D['05e'] + .6), ('s6', .4 + D['06e'] + .5),
-    ('s6r', 2.3), ('s7a', S7_SPLIT), ('s7b', D['07'] - S7_SPLIT + .3 + .7), ('s8', .4 + D['08e'] + .4), ('s9', .4 + D['09e'] + .6), ('s9r', 2.6)]
+    ('s1', .5 + D['01c'] + .9), ('s3', .4 + D['03c'] + .5), ('s4', TB + 2.3), ('s4r', 1.8), ('s5', .4 + D['05c'] + .6), ('s6', .4 + D['06e'] + .5),
+    ('s6r', 2.3), ('s7a', S7_SPLIT), ('s7b', 3.0), ('s8', .4 + D['08c'] + .4), ('s9', .4 + D['09e'] + .6), ('s9r', 2.6)]
 T0 = {}; t = 0
 for k, d in SHOTS: T0[k] = t; t += d
 TOTAL = t
-VOICE_AT = {'03e': T0['s3'] + .4, '04e': T0['s4'] + .3, '05e': T0['s5'] + .4, '06e': T0['s6'] + .4, '07': T0['s7a'] + .3, '08e': T0['s8'] + .4, '09e': T0['s9'] + .4}
-SPEAKER = {'06e': 'w6', '09e': 'w9'}
+VOICE_AT = {'01c': T0['s1'] + .5, '03c': T0['s3'] + .4, '04c': T0['s4'] + .3, '05c': T0['s5'] + .4, '06e': T0['s6'] + .4, '07g': T0['s7a'] + .3, '08c': T0['s8'] + .4, '09e': T0['s9'] + .4}
+SPEAKER = {'06e': 'w6', '09e': 'w9', '07g': 'g7'}
 ENV = {k: A.envelope_fps(VO[k], FPS) for k in SPEAKER}
 
 # ---------------------------------------------------------------- ฉากแต่ละช็อต
@@ -92,6 +91,7 @@ BG = {'hall_nbg': SB.hall(CAST_NO('bride', 'groom')), 'hall_nb': SB.hall(CAST_NO
 def img(name): return f'<image href="bg/{name}.jpg" width="540" height="960" preserveAspectRatio="none"/>'
 door_open = img('door_open')
 SVGS = [
+    shot_svg('s1', img('hall_nbg') + placed(bride_rig('b1'), *SB.CAST['bride']) + placed(groom_rig('g1'), *SB.CAST['groom'])),
     shot_svg('s3', img('hall_nbg') + placed(bride_rig('b3'), *SB.CAST['bride']) + placed(groom_rig('g3'), *SB.CAST['groom'])),
     shot_svg('s4', f'<g id="d4c">{img("door_closed")}</g><g id="d4h" display="none">{img("door_half")}</g><g id="d4o" display="none">{door_open}</g>'),
     shot_svg('s4r', img('hall_nb') + placed(bride_rig('b4'), *SB.CAST['bride'])),
@@ -106,7 +106,7 @@ SVGS = [
 ]
 
 # ---------------------------------------------------------------- ซับแบบตั้งเวลา (ไทย + อังกฤษ)
-SUB_TXT = {'03e': 3, '04e': 4, '05e': 5, '06e': 6, '07': 7, '08e': 8, '09e': 9}
+SUB_TXT = {'01c': 1, '03c': 3, '04c': 4, '05c': 5, '06e': 6, '07g': 7, '08c': 8, '09e': 9}
 subs = []; sub_svg = []
 script = {int(m.group(1)): m.group(2) for m in (re.match(r'^(\d+)\. (.*)$', l.strip()) for l in open('../script.md')) if m}
 def clean(t): return re.sub(r'\[[^\]]*\]\s*', '', re.sub(r'^\(.*?\)\s*', '', t)).replace('"', '').strip()
@@ -161,6 +161,11 @@ function env(key, gt) { const e = ENV[key]; if (!e) return 0; const i = Math.flo
 function breathe(p, t, amp, rate, sway) { place(P(p), 0, 0, 1 + amp * Math.sin(t * rate), sway * Math.sin(t * .45)); }
 const CLASP = [-12, -18, 12, 18], SHOCK = [-28, -138, 10, 140], RELAX = [0, -5, 0, 5], RINGUP = [0, -5, 15, 122], CHEST = [0, -5, 12, 128];
 const R = { // การแสดงของแต่ละช็อต: t = เวลาในช็อต, gt = เวลารวม
+  s1(t, gt) { cam('s1', lerp(1.0, 1.75, ease(t / SH.s1)), lerp(270, %(cx3)s, ease(t / SH.s1)), lerp(520, %(cy3)s, ease(t / SH.s1)), lerp(480, 380, ease(t / SH.s1)));
+    blinkAt('b1', t, 3.4, .7); blinkAt('g1', t, 3.9, 2.1); breathe('b1', t, .005, 2.0, .6); breathe('g1', t, .004, 1.8, -.4);
+    const k = (t - 2.0) / .9; if (t < 2.0) pose('b1', CLASP, CLASP, 1); else pose('b1', CLASP, [-12, -18, 26, 96], k);
+    head('b1', 3 + 1.5 * Math.sin(t * 1.0), 0); idleArms('g1', t, .5); head('g1', -2 - Math.sin(t * .8), 0);
+    if (t > SH.s1 - 3) { face('b1', 1, 3); head('b1', lerp(3, -5, ease((t - SH.s1 + 3) / .8)), 0); } else face('b1', 0, 3); },
   s3(t, gt) { cam('s3', lerp(2.0, 2.25, t / SH.s3), %(cx3)s, %(cy3)s, 360); blinkAt('b3', t, 3.1, .4); blinkAt('g3', t, 3.7, 1.6);
     breathe('b3', t, .005, 2.2, .7); breathe('g3', t, .004, 1.9, -.5);
     pose('b3', CLASP, CLASP, 1); arm('b3', 'L', -12 + 1.5 * Math.sin(t * 1.3), -18 - 3 * Math.sin(t * 1.3)); arm('b3', 'R', 12 - 1.5 * Math.sin(t * 1.3), 18 + 3 * Math.sin(t * 1.3));
@@ -186,11 +191,14 @@ const R = { // การแสดงของแต่ละช็อต: t = �
   s6r(t, gt) { cam('s6r', lerp(2.8, 3.2, t / SH.s6r), %(bx)s, %(by)s + 40, 400); face('b6', t < .9 ? 2 : 1, 3); blinkAt('b6', t, .9, .5, t > 1.0 && t < 1.25);
     if (t < 1.1) pose('b6', SHOCK, SHOCK, 1); else pose('b6', SHOCK, CLASP, (t - 1.1) / .7);
     head('b6', (Math.random() - .5) * (t < .9 ? 1.6 : .5) + (t > .9 ? -3 * ease((t - .9) / .6) : 0), 0); breathe('b6', t, t < 1 ? .012 : .007, t < 1 ? 9 : 4, 0); },
-  s7a(t, gt) { cam('s7a', lerp(2.1, 2.3, t / SH.s7a), %(gx)s, %(gy)s + 110, 420); face('g7', t < .35 ? 0 : 1, 3); blinkAt('g7', t, 3.9, 2.2);
-    const wind = -14 * Math.sin(Math.PI * Math.min(1, Math.max(0, (t - .3) / .25)));
-    const a = t < .55 ? wind : lerp(0, 74, backOut((t - .55) / .35)) + (t > .95 ? 2.5 * Math.sin(t * 13) : 0);
-    arm('g7', 'L', a, t < .55 ? 0 : -6); arm('g7', 'R', -6 + 2 * Math.sin(t * 3), 22);
-    head('g7', t > .55 && t < 1.7 ? 4 * Math.sin(t * 10) : 1.5, t > .5 ? -1.5 : 0); place(P('g7'), 0, 0, 1, t > .55 ? -1.8 : 0); },
+  s7a(t, gt) { const tp = %(gpt)s; cam('s7a', lerp(2.1, 2.35, t / SH.s7a), %(gx)s, %(gy)s + 110, 420); blinkAt('g7', t, 3.9, 2.2);
+    const e = env('07g', gt); talk('g7', '07g', gt); face('g7', t < tp - .1 ? 0 : 1, 3);
+    if (t < tp - .35) { const c = backOut((t - .3) / .5), w = 4 * Math.sin(t * 2.4);   // มือสองข้างกางออกตรงหน้า ท่าบอกให้ใจเย็น
+      arm('g7', 'L', lerp(0, 12, c) + w, lerp(0, -38, c)); arm('g7', 'R', lerp(-6, -12, c) - w, lerp(22, 38, c)); }
+    else { const wind = -14 * Math.sin(Math.PI * Math.min(1, Math.max(0, (t - tp + .35) / .25)));
+      const a = t < tp ? wind : lerp(0, 74, backOut((t - tp) / .35)) + (t > tp + .4 ? 2.5 * Math.sin(t * 13) : 0);
+      arm('g7', 'L', a, t < tp ? -38 : -6); arm('g7', 'R', lerp(-12, -6, ease((t - tp + .35) / .4)), lerp(38, 22, ease((t - tp + .35) / .4))); }
+    head('g7', (t < tp ? 1.5 * Math.sin(t * 1.3) : 3 * Math.sin(t * 9) * Math.max(0, 1 - (t - tp) / 1.2)) + 2.5 * e, -1.2 * e); place(P('g7'), 0, 0, 1, t > tp ? -1.8 : 0); },
   s7b(t, gt) { cam('s7b', lerp(1.35, 1.45, t / SH.s7b), 270, 590, 480); const p = ease(t / 2.2), ph = t * Math.PI * 2, step = Math.abs(Math.sin(ph)) * (1 - p);
     const el = P('k7'); el.dataset.x = lerp(600, 316, p); place(el, 0, -5 * step, 1, 1.2 * Math.sin(ph) * (1 - p));
     if (t < 2.2) { arm('k7', 'L', 8 * Math.sin(ph) * (1 - p), -6); arm('k7', 'R', -8 * Math.sin(ph) * (1 - p), 6); } else pose('k7', RELAX, [38, -24, 0, 5], (t - 2.2) / .4);
@@ -216,8 +224,8 @@ window.renderAt = function (gt) {
 };
 '''
 js = JS % dict(shots=json.dumps(dict(SHOTS)), t0=json.dumps(T0), env=json.dumps(ENV), vat=json.dumps(VOICE_AT), subs=json.dumps(subs), fps=FPS,
-               cx3=(BX + GX) / 2, cy3=BY + 60, tb=TB, bx=BX, by=BY + 40, gx=GX, gy=GY, df=SB.DOOR_FEET, ds=SB.DOOR_S, ringt=.4 + D['05e'] * .55,
-               wfx=WF[0], wfy=WF[1])
+               cx3=(BX + GX) / 2, cy3=BY + 60, tb=TB, bx=BX, by=BY + 40, gx=GX, gy=GY, df=SB.DOOR_FEET, ds=SB.DOOR_S, ringt=.4 + D['05c'] * .55,
+               wfx=WF[0], wfy=WF[1], gpt=G7_POINT)
 
 base = SB.N9.H8.S.DEFS
 for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
@@ -241,7 +249,7 @@ voice = np.zeros(N, np.float32)
 for k, at in VOICE_AT.items(): A.add(voice, at, VO[k])
 bang_t = T0['s4'] + TB
 music_w = A.bridal_chorus(N, 0.0, bang_t)
-cl = A.claps(N, 0.1, 2.6)
+cl = A.claps(N, T0['s3'] + .1, T0['s3'] + 2.6)
 sfx = np.zeros(N, np.float32)
 A.add(sfx, bang_t, A.door_bang()); A.add(sfx, bang_t + .75, A.thunder(5.0, 1.0)); A.add(sfx, T0['s9'] + 2.1, A.thunder(4.0, 1.4), .8)
 A.add(sfx, T0['s6r'] + .05, A.sting(), .8); A.add(sfx, T0['s9r'] + .2, A.boom(2.6, 46), .5)
@@ -251,7 +259,7 @@ rn = A.rain(N, bang_t + .9)
 def real(name): f = f'sfx/{name}.mp3'; return A.load_voice(f, .1) if os.path.exists(f) else None
 def fit(x, n, fo=.4): x = x[:n].copy(); k = min(len(x), int(fo * A.SR)); x[-k:] *= np.linspace(1, 0, k); return x
 R_ = {k: real(k) for k in ('applause', 'door_bang', 'thunder', 'rain', 'heels', 'guard_steps')}
-if R_['applause'] is not None: cl = np.zeros(N, np.float32); A.add(cl, .1, fit(R_['applause'], int(2.6 * A.SR), .8))
+if R_['applause'] is not None: cl = np.zeros(N, np.float32); A.add(cl, T0['s3'] + .1, fit(R_['applause'], int(2.6 * A.SR), .8))
 if R_['door_bang'] is not None or R_['thunder'] is not None:
     sfx = np.zeros(N, np.float32)
     A.add(sfx, bang_t, R_['door_bang'] * 3 if R_['door_bang'] is not None else A.door_bang())
@@ -272,7 +280,19 @@ thr = score.build(N, dict(bang=bang_t, s5=T0['s5'], s6=T0['s6'], s6r=T0['s6r'], 
 def rms(x): return float(np.sqrt(np.mean(x ** 2)) + 1e-9)
 v = rms(voice[np.abs(voice) > 1e-4])
 def lvl(x, a, b, db): i0, i1 = int(a * A.SR), int(b * A.SR); return x * (v * 10 ** (-db / 20) / rms(x[i0:i1]))
-music_w = lvl(music_w, .3, bang_t - .1, 5.5); thr = lvl(thr, bang_t + 1.5, TOTAL - 1, 8); rn = lvl(rn, bang_t + 2, TOTAL - 1, 22); cl = lvl(cl, .4, 2.3, 14)
+music_w = lvl(music_w, .3, bang_t - .1, 5.5); thr = lvl(thr, bang_t + 1.5, TOTAL - 1, 8)
+# เพลงจริงจาก ElevenLabs Music (gen_music.py) ถ้ามี ใช้แทนเพลงสังเคราะห์ ท่อนเพลงตั้งความยาวตามไทม์ไลน์ไว้แล้ว
+def load_raw(f):
+    import subprocess
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-f', 's16le', '-ac', '1', '-ar', str(A.SR), '-'], capture_output=True).stdout
+    return np.frombuffer(raw, np.int16).astype(np.float32) / 32768
+if os.path.exists('music/A_wedding.mp3'):
+    w = load_raw('music/A_wedding.mp3'); music_w = np.zeros(N, np.float32); A.add(music_w, 0, w)
+    k = int(.06 * A.SR); i = int(bang_t * A.SR); music_w[i:i + k] *= np.linspace(1, 0, k); music_w[i + k:] = 0   # ตัดฉับตรงเสียงปัง
+    music_w = lvl(music_w, .5, bang_t - .2, 8)
+if os.path.exists('music/B_thriller.mp3'):
+    b = load_raw('music/B_thriller.mp3'); thr = np.zeros(N, np.float32); A.add(thr, bang_t + 1.4, b)
+    thr = lvl(thr, bang_t + 2, TOTAL - 1, 8); rn = lvl(rn, bang_t + 2, TOTAL - 1, 22); cl = lvl(cl, T0['s3'] + .4, T0['s3'] + 2.3, 16)
 steps = lvl(steps, T0['s5'] + .2, T0['s5'] + 3.3, 10)
 venv = A.lp(np.abs(voice), 4); duck = 1 - .3 * np.clip(venv / (venv.max() * .25 + 1e-6), 0, 1)
 mix = voice + (music_w + thr) * duck + cl + rn + steps + sfx * .35
@@ -282,5 +302,5 @@ os.makedirs('out', exist_ok=True)
 with wave.open('out/test_audio.wav', 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(A.SR)
     w.writeframes(np.repeat((mix[:end] * 32767).astype(np.int16)[:, None], 2, axis=1).tobytes())
-json.dump(dict(total=TOTAL, fps=FPS, shots=SHOTS), open('out/test_timeline.json', 'w'))
+json.dump(dict(total=TOTAL, fps=FPS, shots=SHOTS, t0=T0, bang=bang_t), open('out/test_timeline.json', 'w'))
 print(f'total {TOTAL:.1f}s · frames {int(TOTAL * FPS)} · arm parts {len(ARM_PARTS)}')

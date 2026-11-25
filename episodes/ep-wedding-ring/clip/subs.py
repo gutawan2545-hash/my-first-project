@@ -7,13 +7,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(os.path.join(HERE, 'subs'), exist_ok=True)
 
 EN = {
- 1: "If today were your wedding day, and just as you were about to put the ring on the groom, a woman walked in and said she was his wife, what would you do?",
+ 1: "If today were your wedding day, and just as you were about to put the ring on the groom, a woman suddenly walked into the middle of it and said she was the wife of the man you're marrying... what would you do?",
  2: "A wedding at a luxury hotel. White flowers along the aisle, a glittering chandelier, every guest applauding the couple.",
  3: "You'd been together three years. He was so perfect you never once doubted him.",
  4: "Until the ballroom doors swung open.",
  5: "A woman in a black dress walked in, wearing a wedding ring exactly like yours.",
  6: "I'm sorry, but the man you're about to marry... is my husband.",
- 7: "The groom told everyone she was an ex with mental health problems, and had security take her away.",
+ 7: "Everyone, please, stay calm. This woman is my ex. She has mental health problems. Security, take her out, please.",
  8: "Before she left, she turned to you and said just one thing.",
  9: "Tonight, don't let him take the ring off your finger. No matter what.",
  10: "The wedding went on, but you started noticing things.",

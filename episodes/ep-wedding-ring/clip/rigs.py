@@ -73,7 +73,7 @@ def male_arms(p, sleeve_l, sleeve_d, shirt, skin_l, skin_d, ring=False):
 def groom_rig(p, heads=('ghead', 'ghead_angry', 'ghead_sin')):
     body = strip(WC.groom_body(), M_ARM_KEYS)
     hs = ''.join(f'<use id="{p}H{k}" href="#{h}" display="{"inline" if k == 0 else "none"}"/>' for k, h in enumerate(heads))
-    head = hs + blink(p, '#f6dcc8', 12, -1.6, 9.6, 5.4) + '<path d="M -12,49 C -8,59 8,59 12,49" fill="none" stroke="#d8d4ce" stroke-width="2"/>'
+    head = hs + blink(p, '#f6dcc8', 12, -1.6, 9.6, 5.4) + mouth(p, '#f6dcc8', WC.G_LIP) + '<path d="M -12,49 C -8,59 8,59 12,49" fill="none" stroke="#d8d4ce" stroke-width="2"/>'
     return wrap(p, '', body, male_arms(p, WC.TUX_L, WC.TUX_D, WC.SHIRT, WC.G_SKIN, WC.G_SKIN_S, True), head, 488)
 
 def guard_rig(p):
