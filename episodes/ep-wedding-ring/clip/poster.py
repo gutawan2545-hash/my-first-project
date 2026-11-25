@@ -17,7 +17,7 @@ def ch(key, x, head_y, s, extra=''):
     return f'<g filter="url(#clRim_p)" {extra}><g transform="translate({x},{feet - lf * s:.1f}) scale({s})"><use href="#ch_{key}"/></g></g>'
 
 FT = 'font-family="IBM Plex Sans Thai, sans-serif"'
-RINGS = ('<g transform="translate(402,700) rotate(-18) scale(.8)"><ellipse cx="-11" cy="0" rx="20" ry="20" fill="none" stroke="#e8edf6" stroke-width="5"/>'
+RINGS = ('<g transform="translate(402,572) rotate(-18) scale(.8)"><ellipse cx="-11" cy="0" rx="20" ry="20" fill="none" stroke="#e8edf6" stroke-width="5"/>'
          '<ellipse cx="13" cy="0" rx="20" ry="20" fill="none" stroke="#b8c2d4" stroke-width="5"/><path d="M -11,-20 l 6,-9 l 6,9 Z" fill="#ffffff"/></g>')
 svg = f'''<svg id="cover" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">
 <defs>
@@ -43,20 +43,18 @@ svg = f'''<svg id="cover" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/sv
 <g>{ch('groom_sin', 160, 355, 1.95)}</g>
 <g>{ch('bride_worry', 298, 410, 2.15)}</g>
 <!-- ชื่อเรื่อง -->
-<rect y="560" width="540" height="400" fill="url(#pFade)"/>
+<rect y="420" width="540" height="540" fill="url(#pFade)"/>
 <g {FT} text-anchor="middle">
- <text x="270" y="720" font-size="30" font-weight="600" fill="#d9d2ee" letter-spacing="2">ถ้าวันนี้เป็น</text>
- <text x="262" y="800" font-size="82" font-weight="700" fill="url(#pTitle)" stroke="#120a1c" stroke-width="3" paint-order="stroke" filter="url(#pGlow)">วันแต่งงาน</text>
- <text x="270" y="852" font-size="44" font-weight="700" fill="#c9a8ff" stroke="#120a1c" stroke-width="3" paint-order="stroke">ของคุณ</text>
+ <text x="270" y="592" font-size="30" font-weight="600" fill="#d9d2ee" letter-spacing="2">ถ้าวันนี้เป็น</text>
+ <text x="262" y="670" font-size="82" font-weight="700" fill="url(#pTitle)" stroke="#120a1c" stroke-width="3" paint-order="stroke">วันแต่งงาน</text>
+ <text x="270" y="722" font-size="44" font-weight="700" fill="#c9a8ff" stroke="#120a1c" stroke-width="3" paint-order="stroke">ของคุณ</text>
 </g>
 {RINGS}
-<g transform="translate(270,884)" {FT} text-anchor="middle"><rect x="-122" y="-17" width="244" height="32" rx="7" fill="#8e1b24"/>
+<g transform="translate(270,758)" {FT} text-anchor="middle"><rect x="-122" y="-17" width="244" height="32" rx="7" fill="#8e1b24"/>
  <text x="0" y="5" font-size="15" font-weight="600" fill="#fff4f2">กฎข้อเดียว • อย่าให้เขาถอดแหวน</text></g>
-<text x="270" y="932" text-anchor="middle" {FT} font-size="12" fill="#a79fc0" letter-spacing="1">ODD HOURS · ตอนที่ 2</text>
+<text x="270" y="800" text-anchor="middle" {FT} font-size="12" fill="#a79fc0" letter-spacing="2">ODD HOURS</text>
 <!-- มุมขวาบน: โลโก้ดวงตา + ตอน -->
 <g transform="translate(490,44)"><ellipse rx="22" ry="16.5" fill="#7a1fff"/><path d="M -16.5,0 C -9,-9.5 9,-9.5 16.5,0 C 9,9.5 -9,9.5 -16.5,0 Z" fill="#05040a"/><circle r="4.6" fill="#d6b0ff"/></g>
-<rect x="18" y="26" width="92" height="34" rx="17" fill="#120e1c" fill-opacity=".8" stroke="#9a86ff" stroke-opacity=".7"/>
-<text x="64" y="49" text-anchor="middle" {FT} font-size="15" font-weight="600" fill="#f2eefa">ตอนที่ 2</text>
 <rect width="540" height="960" fill="url(#pVig)"/>
 <rect width="540" height="960" filter="url(#pGrain)" opacity=".07" style="mix-blend-mode:screen"/>
 </svg>'''
