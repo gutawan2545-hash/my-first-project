@@ -48,119 +48,112 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
 <defs>
   <linearGradient id="skyBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ab9cd8"/><stop offset=".6" stop-color="#cdb6dd"/><stop offset="1" stop-color="#e6cfe2"/></linearGradient>
   <!-- ================= พระเอก v4 ================= -->
-  <clipPath id="hface"><path d="M -31,-12 C -32,-46 32,-46 31,-12 C 31,4 29,16 22,24 C 15,31 7,34 0,34.4 C -7,34 -15,31 -22,24 C -29,16 -31,4 -31,-12 Z"/></clipPath>
-  <clipPath id="heyeL"><path d="M -23,-2 C -20,-9.5 -9,-10.4 -4.6,-3 C -8,2.4 -19,3 -23,-2 Z"/></clipPath>
-  <clipPath id="heyeR"><path d="M 23,-2 C 20,-9.5 9,-10.4 4.6,-3 C 8,2.4 19,3 23,-2 Z"/></clipPath>
+  <clipPath id="hface"><path d="M -33,-14 C -33,-46 33,-46 33,-14 L 32,8 C 31,22 18,36 0,39 C -18,36 -31,22 -32,8 Z"/></clipPath>
+  <clipPath id="heyeL"><path d="M -22,-2 C -18,-6 -9,-6 -5,-1.5 C -9,0.4 -18,0.4 -22,-2 Z"/></clipPath>
+  <clipPath id="heyeR"><path d="M 22,-2 C 18,-6 9,-6 5,-1.5 C 9,0.4 18,0.4 22,-2 Z"/></clipPath>
   <g id="hhead">
-    <path d="M -10,22 L 10,22 L 11,60 L -11,60 Z" fill="#e2b590"/>
-    <path d="M -10,28 L 10,28 L 10.6,46 Q 0,40 -10.4,50 Z" fill="#c99a74"/>
-    <ellipse cx="-31" cy="-1" rx="4.6" ry="8" fill="#eec6a2"/>
-    <ellipse cx="31" cy="-1" rx="4.6" ry="8" fill="#cf9f7a"/>
-    <path d="M -31,-12 C -32,-46 32,-46 31,-12 C 31,4 29,16 22,24 C 15,31 7,34 0,34.4 C -7,34 -15,31 -22,24 C -29,16 -31,4 -31,-12 Z" fill="#eec6a2"/>
+    <!-- neck, thicker than James -->
+    <rect x="-11" y="20" width="22" height="38" fill="#ddb08a"/>
+    <path d="M -11,26 L 11,26 L 11,46 Q 0,41 -11,49 Z" fill="#c4916c"/>
+    <!-- ears -->
+    <ellipse cx="-33" cy="-1" rx="5.5" ry="9" fill="#e9bf98"/>
+    <ellipse cx="33" cy="-1" rx="5.5" ry="9" fill="#c99470"/>
+    <path d="M -34,-5 C -36,-1 -35,4 -33,6" fill="none" stroke="#c99470" stroke-width="1.4"/>
+    <!-- face: squarer jaw -->
+    <path d="M -33,-14 C -33,-46 33,-46 33,-14 L 32,8 C 31,22 18,36 0,39 C -18,36 -31,22 -32,8 Z" fill="#e9bf98"/>
     <g clip-path="url(#hface)">
-      <path d="M 20,-34 C 31,-28 34,-12 32,6 C 30,20 20,30 10,34 C 18,26 23,16 24,4 C 25,-10 23,-22 20,-34 Z" fill="#dfb08a" opacity=".7"/>
-      
-      <path d="M -34,-24 L -24,-24 L -27,-8 L -34,-6 Z" fill="#e6ba94"/>
-      <path d="M -33,-12 C -33,-30 -28,-38 -22,-41 C -28,-32 -29,-20 -29,-10 L -28,8 C -27,20 -21,30 -15,35 C -23,31 -29,21 -31,8 Z" fill="#f9dcc0"/>
-      <path d="M 1.2,1 L 4.6,10 L 1,11.4 Z" fill="#d6a37c"/>
-      <path d="M -2.6,10.6 C -1.6,12.2 0,12.4 1.2,11.6" fill="none" stroke="#b8865f" stroke-width="1.1" stroke-linecap="round"/>
-      
+      <path d="M 16,-34 C 30,-28 35,-14 33,6 C 31,22 16,36 0,39 C 12,31 20,20 21,4 C 22,-10 20,-22 16,-34 Z" fill="#d6a47e"/>
+      <path d="M 27,-24 L 35,-24 L 35,12 C 33,6 31,0 29,-8 Z" fill="#bb8662"/>
+      <path d="M -35,-24 L -25,-24 L -28,-8 L -35,-6 Z" fill="#dcae88"/>
+      <path d="M -34,-12 C -34,-30 -29,-38 -23,-41 C -29,-32 -30,-20 -30,-10 L -29,8 C -28,20 -22,30 -16,35 C -24,31 -30,21 -32,8 Z" fill="#f6d5b4"/>
+      <path d="M 2,3 L 7,16 L 1,18 Z" fill="#c99470"/>
+      <!-- stubble: flat block, low opacity, no texture -->
+      <path d="M -31,8 C -29,24 -16,36 0,39 C 16,36 29,24 31,8 L 25,11 C 22,22 13,29 0,30 C -13,29 -22,22 -25,11 Z" fill="#5b4a48" opacity=".22"/>
+      <path d="M -9,19 C -4,17 4,17 9,19 L 8,22 C 3,21 -3,21 -8,22 Z" fill="#5b4a48" opacity=".26"/>
     </g>
-    <path d="M -25,-11 C -21,-16.6 -11,-17.6 -4.4,-14 L -4.8,-11.4 C -11,-14.4 -19.6,-13.8 -24.2,-9 Z" fill="#1c1619"/>
-    <path d="M 25,-11 C 21,-16.6 11,-17.6 4.4,-14 L 4.8,-11.4 C 11,-14.4 19.6,-13.8 24.2,-9 Z" fill="#1c1619"/>
-<g transform="translate(0,1) scale(1.1)">
-    <path d="M -23,-2 C -20,-9.5 -9,-10.4 -4.6,-3 C -8,2.4 -19,3 -23,-2 Z" fill="#fbf6f0"/>
-    <path d="M 23,-2 C 20,-9.5 9,-10.4 4.6,-3 C 8,2.4 19,3 23,-2 Z" fill="#f0e6dc"/>
-    <g clip-path="url(#heyeL)"><circle cx="-13" cy="-2.6" r="5.4" fill="#3e2318"/><circle cx="-13" cy="-1" r="3.8" fill="#6b3f26"/><circle cx="-13" cy="-2.6" r="2.4" fill="#120a09"/><circle cx="-15" cy="-4.6" r="1.6" fill="#fff"/><circle cx="-10.8" cy="0" r=".7" fill="#ffe8cf"/></g>
-    <g clip-path="url(#heyeR)"><circle cx="13" cy="-2.6" r="5.4" fill="#3e2318"/><circle cx="13" cy="-1" r="3.8" fill="#6b3f26"/><circle cx="13" cy="-2.6" r="2.4" fill="#120a09"/><circle cx="11" cy="-4.6" r="1.6" fill="#fff"/><circle cx="15.2" cy="0" r=".7" fill="#ffe8cf"/></g>
-    <path d="M -24.4,-1.6 C -20.6,-11.4 -8.4,-11.8 -3.4,-3.2 L -4.8,-2.2 C -9,-8.4 -18.6,-8.6 -22.6,-0.4 Z" fill="#1c1619"/>
-    <path d="M 24.4,-1.6 C 20.6,-11.4 8.4,-11.8 3.4,-3.2 L 4.8,-2.2 C 9,-8.4 18.6,-8.6 22.6,-0.4 Z" fill="#1c1619"/>
-    </g>
-    
-    
-    
-    
-    <ellipse cx="-19" cy="10" rx="6" ry="2.8" fill="#e2917c" opacity=".38"/>
-    <ellipse cx="19" cy="10" rx="6" ry="2.8" fill="#d4846e" opacity=".38"/>
-<g transform="translate(0,17) scale(.85) translate(0,-22)">
-    <path d="M -8,23.4 C -3,25 3,24.6 9,20.6" fill="none" stroke="#8a4c40" stroke-width="2" stroke-linecap="round"/>
-    <path d="M -4.6,25.2 C -1,27.6 4,27 7,23.4 C 4,25.2 0,25.6 -4.6,25.2 Z" fill="#c98a76"/>
-    <path d="M 9,20.6 C 10.4,19.8 11,19 11,18" fill="none" stroke="#c8966f" stroke-width="1.1" stroke-linecap="round"/>
-    </g>
+    <!-- brows: thick, straight, a little furrowed (always watching) -->
+    <path d="M -23,-12 L -6,-10.4 L -6.5,-7 L -22.5,-8.6 Z" fill="#1d1719"/>
+    <path d="M 23,-12 L 6,-10.4 L 6.5,-7 L 22.5,-8.6 Z" fill="#1d1719"/>
+    <!-- scar through his right brow (viewer's left): signature mark -->
+    <path d="M -16,-14.5 L -13.5,-5.5" stroke="#f3cfae" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- sharp narrow eyes -->
+    <path d="M -22,-2 C -18,-6 -9,-6 -5,-1.5 C -9,0.4 -18,0.4 -22,-2 Z" fill="#f8f1ea"/>
+    <path d="M 22,-2 C 18,-6 9,-6 5,-1.5 C 9,0.4 18,0.4 22,-2 Z" fill="#ece0d4"/>
+    <g clip-path="url(#heyeL)"><circle cx="-13" cy="-1.6" r="3.8" fill="#24181a"/><circle cx="-14.2" cy="-2.8" r="1" fill="#fff"/></g>
+    <g clip-path="url(#heyeR)"><circle cx="13" cy="-1.6" r="3.8" fill="#24181a"/><circle cx="11.8" cy="-2.8" r="1" fill="#fff"/></g>
+    <path d="M -23,-2 C -18,-7.2 -9,-7.2 -4,-1.6 L -5,-0.9 C -9,-5 -18,-5 -21.6,-1.4 Z" fill="#1d1719"/>
+    <path d="M 23,-2 C 18,-7.2 9,-7.2 4,-1.6 L 5,-0.9 C 9,-5 18,-5 21.6,-1.4 Z" fill="#1d1719"/>
+    <!-- tired under-eye lines -->
+    <path d="M -20,2.4 C -16,4.4 -10,4.4 -6,2.6" fill="none" stroke="#c99470" stroke-width="1"/>
+    <path d="M 20,2.4 C 16,4.4 10,4.4 6,2.6" fill="none" stroke="#b88560" stroke-width="1"/>
+    <!-- faint blush -->
+    <ellipse cx="-19" cy="12" rx="6" ry="3" fill="#d98a74" opacity=".28"/>
+    <ellipse cx="19" cy="12" rx="6" ry="3" fill="#c97c66" opacity=".28"/>
+    <!-- mouth: flat, unimpressed -->
+    <path d="M -7.5,25 Q 0,24 7.5,25.4" fill="none" stroke="#8e5848" stroke-width="2" stroke-linecap="round"/>
+    <path d="M -3.5,28.2 Q 0,29.4 3.5,28.2" fill="none" stroke="#d6a47e" stroke-width="1.4" stroke-linecap="round"/>
   </g>
   <g id="hhair">
-    <path d="M -32.6,-6 L -32.6,-24 L -29.6,-26 L -29.6,-8 Z" fill="#2e272b"/>
-    <path d="M 32.6,-6 L 32.6,-24 L 29.6,-26 L 29.6,-8 Z" fill="#241e21"/>
-    <g transform="scale(1 .86)">
-    <path d="M -33,-10 C -39,-40 -30,-63 -8,-71 C 12,-78 36,-70 41,-50 C 44,-37 40,-24 34,-14 L 32,-24 C 28,-33 20,-37 10,-37 C 0,-35 -12,-30 -20,-23 L -26,-16 L -28,-22 Z" fill="#191416"/>
-    <path d="M -24,-42 C -18,-58 -2,-68 16,-66 C 2,-62 -10,-54 -16,-40 Z" fill="#3e3439"/>
-    <path d="M 6,-50 C 14,-62 28,-64 36,-56 C 26,-58 18,-54 12,-46 Z" fill="#3e3439"/>
-    <path d="M -20,-23 C -14,-34 -2,-42 10,-44 C 0,-40 -8,-32 -12,-24 Z" fill="#2c2428"/>
-    <path d="M 10,-37 C 18,-42 28,-42 34,-36 L 34,-14 C 32,-26 24,-34 10,-37 Z" fill="#100d0f"/>
-    <path d="M -30,-30 C -33,-46 -26,-58 -14,-64 C -22,-54 -26,-42 -26,-28 Z" fill="#2c2428"/>
-    </g>
-    <path d="M 2,-28 C 4,-21 8,-17 14,-16 C 10,-21 10,-26 12,-31 Z" fill="#191416"/>
+    <!-- hair: short crop, textured top, faded sides -->
+    <path d="M -33.5,-22 L -30,-24 L -30.5,-9 L -33,-11 Z" fill="#3a3034"/>
+    <path d="M 33.5,-22 L 30,-24 L 30.5,-9 L 33,-11 Z" fill="#2e2629"/>
+    <path d="M -34,-20 C -37,-46 -24,-61 -2,-62 C 22,-62 37,-47 34,-20 L 30,-25 C 26,-32 18,-35 10,-33 L 4,-37 L -4,-32 L -12,-35 L -18,-31 C -24,-31 -28,-28 -30,-24 Z" fill="#1a1517"/>
+    <path d="M -28,-44 C -21,-54 -9,-58 2,-58 C -8,-53 -17,-46 -23,-37 Z" fill="#3c3236"/>
+    <path d="M 2,-56 L 8,-60 L 6,-52 Z M -10,-58 L -6,-63 L -4,-56 Z M 14,-55 L 20,-58 L 17,-50 Z" fill="#1a1517"/>
   </g>
 
   <!-- ================= แฟนสาว v4 ================= -->
-  <clipPath id="gface"><path d="M -30,-12 C -31,-45 31,-45 30,-12 C 30,4 28,14 21,23 C 14,30 7,33.4 0,34 C -7,33.4 -14,30 -21,23 C -28,14 -30,4 -30,-12 Z"/></clipPath>
-  <clipPath id="geyeL"><path d="M -24,-1 C -21,-10.6 -9,-11.4 -4.6,-3 C -8,3.4 -19,4 -24,-1 Z"/></clipPath>
-  <clipPath id="geyeR"><path d="M 24,-1 C 21,-10.6 9,-11.4 4.6,-3 C 8,3.4 19,4 24,-1 Z"/></clipPath>
+  <clipPath id="gface"><path d="M -30,-14 C -30,-45 30,-45 30,-14 L 29,6 C 27,22 13,36 0,39 C -13,36 -27,22 -29,6 Z"/></clipPath>
+  <clipPath id="geyeL"><path d="M -21,-1 C -18,-7 -8,-7.5 -4,-2.5 C -8,2.5 -18,2.5 -21,-1 Z"/></clipPath>
+  <clipPath id="geyeR"><path d="M 21,-1 C 18,-7 8,-7.5 4,-2.5 C 8,2.5 18,2.5 21,-1 Z"/></clipPath>
   <g id="gback">
-    <path d="M -44,-10 C -50,-52 -24,-70 2,-69 C 28,-69 50,-52 46,-10 C 54,10 50,30 57,50 C 61,66 51,80 43,74 C 40,87 28,89 24,80 L 22,58 L -22,58 L -24,80 C -28,89 -40,87 -43,74 C -51,80 -61,66 -57,50 C -50,30 -55,10 -44,-10 Z" fill="#26171a"/>
-    <path d="M -48,8 C -52,26 -50,40 -55,54 C -57,64 -52,72 -46,72 C -50,62 -46,52 -46,40 C -46,28 -44,18 -48,8 Z" fill="#4e2f30"/>
-    <path d="M 50,10 C 53,28 50,40 54,54 L 50,60 C 48,48 50,30 46,16 Z" fill="#1a0f12"/>
+    <!-- chin-length bob, back mass -->
+    <path d="M -40,-6 C -42,-46 -22,-63 0,-63 C 22,-63 42,-46 40,-6 L 41,30 C 34,38 26,37 22,33 L -22,33 C -26,37 -34,38 -41,30 Z" fill="#221519"/>
   </g>
   <g id="ghead">
-    <path d="M -7.4,22 L 7.4,22 L 8,58 L -8,58 Z" fill="#efc8ab"/>
-    <path d="M -7.4,28 L 7.4,28 L 7.8,45 Q 0,39 -7.6,48 Z" fill="#d7a486"/>
-    <path d="M -30,-12 C -31,-45 31,-45 30,-12 C 30,4 28,14 21,23 C 14,30 7,33.4 0,34 C -7,33.4 -14,30 -21,23 C -28,14 -30,4 -30,-12 Z" fill="#f9dcc6"/>
+    <rect x="-7.5" y="20" width="15" height="38" fill="#ecc0a0"/>
+    <path d="M -7.5,26 L 7.5,26 L 7.5,45 Q 0,40 -7.5,48 Z" fill="#cf9a7a"/>
+    <path d="M -30,-14 C -30,-45 30,-45 30,-14 L 29,6 C 27,22 13,36 0,39 C -13,36 -27,22 -29,6 Z" fill="#f6d6bc"/>
     <g clip-path="url(#gface)">
-      <path d="M 20,-34 C 30,-28 32,-12 30,4 C 28,18 20,28 10,33 C 18,25 22,15 23,4 C 24,-10 22,-22 20,-34 Z" fill="#ecc0a4" opacity=".7"/>
-      
-      <path d="M -32,-24 L -22,-24 L -25,-8 L -32,-6 Z" fill="#f2ceb4"/>
-      <path d="M -31,-12 C -31,-30 -26,-38 -20,-41 C -26,-32 -27,-20 -27,-10 L -26,6 C -25,18 -19,28 -13,34 C -21,30 -27,20 -29,6 Z" fill="#fff2e8"/>
-      <path d="M 1,2 L 4,10 L 0.8,11.2 Z" fill="#e2ad92"/>
-      <path d="M -2.4,10.2 C -1.4,11.6 0,11.8 1.2,11" fill="none" stroke="#c99076" stroke-width="1" stroke-linecap="round"/>
+      <path d="M 16,-34 C 29,-28 32,-14 30,4 C 28,22 14,36 0,39 C 11,31 19,20 20,4 C 21,-10 19,-22 16,-34 Z" fill="#e6b597"/>
+      <path d="M 24,-24 L 32,-24 L 32,10 C 30,6 28,0 26,-8 Z" fill="#cc9274"/>
+      <path d="M -32,-24 L -22,-24 L -25,-8 L -32,-6 Z" fill="#efc7aa"/>
+      <path d="M -31,-12 C -31,-30 -26,-38 -20,-41 C -26,-32 -27,-20 -27,-10 L -26,6 C -25,18 -19,28 -13,34 C -21,30 -27,20 -29,6 Z" fill="#fff0e3"/>
+      <path d="M 2,4 L 6,14.5 L 1,16 Z" fill="#dca084"/>
     </g>
-    <ellipse cx="-18" cy="10" rx="6.4" ry="3" fill="#f39a9e" opacity=".55"/>
-    <ellipse cx="18" cy="10" rx="6.4" ry="3" fill="#e88e92" opacity=".55"/>
-    <path d="M -25,-11 C -21,-18.4 -11,-19.6 -4.4,-15.6 L -5,-12.6 C -11,-15.6 -19,-14.8 -24,-8.6 Z" fill="#2c1b1e"/>
-    <path d="M 25,-11.6 C 21,-19.2 11,-20.2 4.4,-16 L 5,-13 C 11,-16.2 19,-15.4 24,-9.2 Z" fill="#2c1b1e"/>
-    <path d="M -23,-4 C -19,-12.4 -9,-12.6 -5,-5.4 C -9,-8.8 -18,-9 -23,-4 Z" fill="#e597ad" opacity=".28"/>
-    <path d="M 23,-4 C 19,-12.4 9,-12.6 5,-5.4 C 9,-8.8 18,-9 23,-4 Z" fill="#d888a0" opacity=".28"/>
-    
-    
-<g transform="translate(0,1) scale(1.08)">
-    <path d="M -24,-1 C -21,-10.6 -9,-11.4 -4.6,-3 C -8,3.4 -19,4 -24,-1 Z" fill="#fcf5ee"/>
-    <path d="M 24,-1 C 21,-10.6 9,-11.4 4.6,-3 C 8,3.4 19,4 24,-1 Z" fill="#f2e7de"/>
-    <g clip-path="url(#geyeL)"><circle cx="-12" cy="-2.6" r="6.2" fill="#3e2016"/><circle cx="-12" cy="-0.6" r="4.4" fill="#7a4628"/><circle cx="-12" cy="-2.6" r="2.8" fill="#120808"/><circle cx="-14.4" cy="-5" r="1.9" fill="#fff"/><circle cx="-9.4" cy="0.6" r=".9" fill="#ffe8cf"/></g>
-    <g clip-path="url(#geyeR)"><circle cx="14" cy="-2.6" r="6.2" fill="#3e2016"/><circle cx="14" cy="-0.6" r="4.4" fill="#7a4628"/><circle cx="14" cy="-2.6" r="2.8" fill="#120808"/><circle cx="11.6" cy="-5" r="1.9" fill="#fff"/><circle cx="16.6" cy="0.6" r=".9" fill="#ffe8cf"/></g>
-    <path d="M -25.4,-0.4 C -21.6,-12.6 -8,-13 -3.2,-3.4 L -4.8,-2.2 C -9,-9.4 -19.6,-9.6 -23.4,0.8 Z" fill="#170d12"/>
-    <path d="M -23.6,-0.8 L -28.6,-5 L -27.4,-1.8 L -23.8,1.4 Z" fill="#170d12"/>
-    <path d="M -21.4,-6.6 L -26,-9.8 M -18,-9 L -21.4,-12.4 M -14.6,-10.2 L -16.6,-13.4" stroke="#170d12" stroke-width="1.1" stroke-linecap="round"/>
-    <path d="M 25.4,-0.4 C 21.6,-12.6 8,-13 3.2,-3.4 L 4.8,-2.2 C 9,-9.4 19.6,-9.6 23.4,0.8 Z" fill="#170d12"/>
-    <path d="M 23.6,-0.8 L 28.6,-5 L 27.4,-1.8 L 23.8,1.4 Z" fill="#170d12"/>
-    <path d="M 21.4,-6.6 L 26,-9.8 M 18,-9 L 21.4,-12.4 M 14.6,-10.2 L 16.6,-13.4" stroke="#170d12" stroke-width="1.1" stroke-linecap="round"/>
-    </g>
-    
-    
-    <circle cx="18" cy="8" r="1.1" fill="#5a3430"/>
-<g transform="translate(0,16.6) scale(.88) translate(0,-22)">
-    <path d="M -8.4,22.6 C -5,19.4 -1.8,19.6 0,21 C 2,19.4 5.4,18.6 9,20 C 4.6,22.8 -3.6,23.6 -8.4,22.6 Z" fill="#d45a6e"/>
-    <path d="M -8.4,22.6 C -3.6,23.6 4.6,22.8 9,20 C 7.4,27.6 -5.6,28.4 -8.4,22.6 Z" fill="#e67a8a"/>
-    <path d="M -3,24.8 C -0.6,26 2.6,25.8 4.4,24.4" fill="none" stroke="#f29aa8" stroke-width="1.3" stroke-linecap="round"/>
-    <path d="M 9,20 C 10.4,19.2 11.2,18.2 11.4,17.2" fill="none" stroke="#d6a083" stroke-width="1" stroke-linecap="round"/>
-    </g>
-    <circle cx="-30.6" cy="12" r="3.6" fill="none" stroke="#d8b46a" stroke-width="1.4"/>
-    <circle cx="30.6" cy="12" r="3.6" fill="none" stroke="#b8944e" stroke-width="1.4"/>
-    <path d="M -42,-6 C -46,-50 -22,-67 6,-67 C 30,-67 47,-50 42,-8 C 39,-24 31,-37 16,-43 C 10,-30 -8,-22 -24,-18 C -33,-14 -39,-10 -42,-6 Z" fill="#26171a"/>
-    <path d="M -34,-36 C -26,-54 -8,-63 10,-62 C -6,-58 -20,-48 -28,-32 Z" fill="#4e2f30"/>
-    <path d="M 14,-42 C 6,-30 -10,-23 -26,-19 C -14,-26 -2,-32 8,-44 Z" fill="#6a4240"/>
-    <path d="M 20,-58 C 30,-56 38,-48 40,-36 C 34,-44 28,-50 18,-54 Z" fill="#1a0f12"/>
-    <path d="M -42,-8 C -35,-2 -38,10 -32,18 C -28,26 -34,34 -30,42 C -38,47 -48,43 -50,34 C -46,24 -52,14 -46,4 Z" fill="#26171a"/>
-    <path d="M -40,-2 C -38,6 -40,14 -36,20 C -33,26 -36,32 -34,38 L -37,39 C -39,32 -37,26 -40,20 C -43,14 -41,6 -43,-2 Z" fill="#6a4240"/>
-    <path d="M 42,-8 C 36,-2 38,10 32,18 C 28,26 34,34 30,42 C 38,47 48,43 50,34 C 46,24 52,14 46,4 Z" fill="#1d1114"/>
+    <ellipse cx="-17.5" cy="12" rx="6.5" ry="3.4" fill="#e98c8c" opacity=".5"/>
+    <ellipse cx="17.5" cy="12" rx="6.5" ry="3.4" fill="#dc8080" opacity=".5"/>
+    <!-- brows: defined, slightly arched, expressive -->
+    <path d="M -22,-12 C -17,-16.5 -10,-17 -5,-14.5 L -5.5,-12.6 C -10,-14.6 -16,-14 -21,-10.6 Z" fill="#2a1a1c"/>
+    <path d="M 22,-12 C 17,-16.5 10,-17 5,-14.5 L 5.5,-12.6 C 10,-14.6 16,-14 21,-10.6 Z" fill="#2a1a1c"/>
+    <!-- eyes: almond with a winged liner (stage habit) -->
+    <path d="M -21,-1 C -18,-7 -8,-7.5 -4,-2.5 C -8,2.5 -18,2.5 -21,-1 Z" fill="#fbf3ec"/>
+    <path d="M 21,-1 C 18,-7 8,-7.5 4,-2.5 C 8,2.5 18,2.5 21,-1 Z" fill="#f0e4da"/>
+    <g clip-path="url(#geyeL)"><circle cx="-12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="-12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="-14.2" cy="-2.7" r="1.3" fill="#fff"/></g>
+    <g clip-path="url(#geyeR)"><circle cx="12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="10.8" cy="-2.7" r="1.3" fill="#fff"/></g>
+    <path d="M -22,-0.6 C -18.5,-8.5 -8,-9 -3,-2.8 L -4.2,-1.8 C -8.4,-6 -17,-5.6 -20.6,0.4 Z" fill="#1b1015"/>
+    <path d="M -21,-1 L -27.5,-4.8 L -21.2,1 Z" fill="#1b1015"/>
+    <path d="M 22,-0.6 C 18.5,-8.5 8,-9 3,-2.8 L 4.2,-1.8 C 8.4,-6 17,-5.6 20.6,0.4 Z" fill="#1b1015"/>
+    <path d="M 21,-1 L 27.5,-4.8 L 21.2,1 Z" fill="#1b1015"/>
+    <path d="M -18.5,2.8 C -14.5,4.4 -9.5,4.2 -6,2.2" fill="none" stroke="#c48a74" stroke-width="1"/>
+    <path d="M 18.5,2.8 C 14.5,4.4 9.5,4.2 6,2.2" fill="none" stroke="#b67c66" stroke-width="1"/>
+    <!-- beauty mark under her left eye (viewer's right): signature mark -->
+    <circle cx="17" cy="6.5" r="1.1" fill="#5a3430"/>
+    <!-- smile: playful, a bit mischievous -->
+    <path d="M -7,21.6 Q 0,26.4 7.5,20.6" fill="none" stroke="#9c4458" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M -3.5,25.4 Q 0,27.4 3.5,25" fill="none" stroke="#d98a96" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M 7.5,20.6 L 9,19.4" stroke="#cc9274" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- small gold hoops -->
+    <circle cx="-31" cy="12" r="3.4" fill="none" stroke="#d8b46a" stroke-width="1.3"/>
+    <circle cx="31" cy="12" r="3.4" fill="none" stroke="#b8944e" stroke-width="1.3"/>
+    <!-- bob: crown + blunt bangs -->
+    <path d="M -38,-6 C -40,-44 -22,-61 0,-61 C 22,-61 40,-44 38,-6 L 31,-16 L 31,-19 L 18,-18 L 6,-20 L -6,-18 L -18,-20 L -31,-18 L -31,-16 Z" fill="#221519"/>
+    <path d="M -30,-42 C -22,-54 -10,-58 0,-58 C -10,-53 -20,-46 -26,-34 Z" fill="#4a2d36"/>
+    <path d="M -6,-18 L -2,-34 L 6,-20 Z M -24,-19 L -20,-32 L -18,-20 Z" fill="#33212a"/>
+    <!-- side panels that end at the jaw, curling in -->
+    <path d="M -39,-10 L -30,-12 C -31,8 -30,22 -24,33 C -30,36 -37,35 -42,30 C -41,16 -40,4 -39,-10 Z" fill="#221519"/>
+    <path d="M -38,0 L -36,0 C -37,14 -36,24 -34,31 L -37,31 C -38,22 -38,12 -38,0 Z" fill="#4a2d36"/>
+    <path d="M 39,-10 L 30,-12 C 31,8 30,22 24,33 C 30,36 37,35 42,30 C 41,16 40,4 39,-10 Z" fill="#1a1013"/>
   </g>
 </defs>
 </svg>
@@ -273,7 +266,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
             <path d="M -46,238 C -38,234 -29,236 -27,243 C -29,251 -37,255 -45,251 Z" fill="#e6ba94"/>
             <path d="M -40,240 L -30,241 M -40,245 L -29,246" stroke="#d6a37c" stroke-width="1"/>
             <use href="#hhead"/>
-            <path d="M -32.6,-6 L -32.6,-24 L -29.6,-26 L -29.6,-8 Z" fill="#2e272b"/><path d="M 32.6,-6 L 32.6,-24 L 29.6,-26 L 29.6,-8 Z" fill="#241e21"/>
+            <path d="M -33.5,-22 L -30,-24 L -30.5,-9 L -33,-11 Z" fill="#3a3034"/><path d="M 33.5,-22 L 30,-24 L 30.5,-9 L 33,-11 Z" fill="#2e2629"/>
             <path d="M -14,52 L -3,67 L -21,62 Z" fill="#a38563"/>
             <path d="M 14,52 L 3,67 L 21,62 Z" fill="#6a5136"/>
             <path d="M -42,-36 C -44,-70 44,-70 42,-36 Z" fill="#8a6c4a"/>
@@ -299,7 +292,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
           <path d="M -11,58 L 11,58 L 11,62 L -11,62 Z" fill="#7f9cc8"/>
           <path d="M -14,52 C -9,64 9,64 14,52" fill="none" stroke="#5a76a6" stroke-width="4"/>
         </svg>
-        <figcaption>ใบหน้าระยะใกล้ · หน้าหนุ่ม กรามเรียว คางมน แก้มอิ่มขึ้น · คิ้วหนาโค้งเข้ม · ตาโตแววตาคม ม่านตาน้ำตาลมีประกาย · ยิ้มมุมปาก · ผมเซตยกโคนเป็นลอนใหญ่ปัดไปข้างหนึ่ง</figcaption>
+        <figcaption>ใบหน้าระยะใกล้ · หน้าฉบับแรก: ตาเรียวคม คิ้วหนาตรงขมวดเล็กน้อย หนวดเคราจาง ๆ รอยแผลเป็นผ่าคิ้วขวาเป็นจุดจำ ผมสั้นเกรียนข้าง</figcaption>
         <div class="chips">
           <span><i style="background:#eec6a2"></i>ผิว</span>
           <span><i style="background:#dfb08a"></i>ผิวเงา</span>
@@ -309,7 +302,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
           <span><i style="background:#8a6c4a"></i>เครื่องแบบ</span>
         </div>
         <ul class="notes">
-          <li>หล่อแบบพระเอกเกมแนวการ์ตูน ผิวสองสีแทน ตาและคิ้วใหญ่พอให้เล่นอารมณ์ได้ชัดในจอมือถือ</li>
+          <li>ใช้หน้าฉบับแรกตามที่เจ้าของช่องเลือก ผิวสองสีแทน หน้านิ่ง ดูเหนื่อยแบบคนบ้างานที่โดนบังคับพัก</li>
           <li>ชุดตำรวจใช้เฉพาะฉาก 1 หลังขาหักต้องมีเฝือกและไม้ค้ำยันทุกช็อต</li>
         </ul>
       </figure>
@@ -374,7 +367,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
           <path d="M -9,58 Q 0,72 9,58" fill="none" stroke="#d8b46a" stroke-width=".8"/>
           <g transform="rotate(-4 0 40)"><use href="#ghead"/></g>
         </svg>
-        <figcaption>ใบหน้าระยะใกล้ · หน้ารูปหัวใจ คางเรียว · ตาโตเป็นประกาย ม่านตาน้ำตาลอำพัน · อายไลเนอร์หางเชิด ขนตางอน · คิ้วโค้งเข้ม ยกข้างหนึ่ง · ปากอิ่มสีชมพูสดยิ้มมุมปาก · แก้มอิ่ม แต่งหน้าบางลงให้ดูวัย 24 · ไฝใต้ตาซ้าย · เอียงหน้าเล็กน้อย</figcaption>
+        <figcaption>ใบหน้าระยะใกล้ · หน้าฉบับแรก: ผมบ๊อบประคางหน้าม้าตัดตรง อายไลเนอร์หางเชิด ไฝใต้ตาซ้ายเป็นจุดจำ ต่างหูห่วงทองเล็ก ยิ้มมุมปากขี้เล่น</figcaption>
         <div class="chips">
           <span><i style="background:#f9dcc6"></i>ผิว</span>
           <span><i style="background:#ecc0a4"></i>ผิวเงา</span>
@@ -385,7 +378,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
           <span><i style="background:#d8b46a"></i>ทอง</span>
         </div>
         <ul class="notes">
-          <li>ผมดำอมน้ำตาลประบ่า ลอนใหญ่มีวอลุ่ม แสกลึก ปอยหน้าปัดเฉียง</li>
+          <li>ใช้หน้าฉบับแรกตามที่เจ้าของช่องเลือก ผมบ๊อบดำอมน้ำตาลแดง แยกจากตะวันได้ทันที</li>
           <li>ท่าเท้าสะเอวแตะคางเป็นท่าประจำตัว เหมาะกับช็อตแกล้งไม่เชื่อในฉาก 6 และตอนเฉลยในฉาก 7</li>
           <li>เซ็กซี่แบบดูแพง เปิดไหล่และขาผ่าข้างพอดี ไม่โป๊ ใช้ได้บนแพลตฟอร์มคลิปสั้น</li>
         </ul>
