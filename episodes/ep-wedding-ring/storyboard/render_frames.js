@@ -7,6 +7,7 @@ const path = require('path');
   const p = await b.newPage({ viewport: { width: 700, height: 1100 }, deviceScaleFactor: 1 });
   await p.goto('file://' + path.join(__dirname, 'storyboard_svg.html'));
   await p.waitForTimeout(1500);
+  await p.addStyleTag({ content: '.grid{display:block!important} figure{display:block!important;width:540px!important;margin:0 0 20px!important} figcaption{display:none!important}' });
   const n = await p.$$eval('figure svg', els => { els.forEach(e => { e.style.width = '540px'; e.style.height = '960px'; e.style.borderRadius = '0'; e.style.boxShadow = 'none'; }); return els.length; });
   const svgs = await p.$$('figure svg');
   for (let i = 0; i < svgs.length; i++) {
