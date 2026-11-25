@@ -421,7 +421,7 @@ def build():
         cards = ''
         for n in nums:
             camtxt, who, desc, content = SHOTS[n]
-            sub = '' if n >= 26 else subtitle(clean_sub(lines[n]))
+            sub = '' if (n >= 26 or os.environ.get('NOSUB')) else subtitle(clean_sub(lines[n]))
             svg = (f'<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ช็อต {n}">'
                    f'<clipPath id="fr{n}"><rect width="540" height="960"/></clipPath><g clip-path="url(#fr{n})">{content}{sub}</g></svg>')
             cards += f'<figure>{svg}<figcaption><div class="num"><b>{n:02d}</b><span>{camtxt}</span></div><div class="who">เสียง: {who}</div><small>{desc}</small></figcaption></figure>'
@@ -433,7 +433,7 @@ def build():
             f'''<div class="wrap"><h1>สตอรีบอร์ด · ถ้าวันนี้เป็นวันแต่งงานของคุณ<span>Odd Hours · 27 ช็อตตามบท · ห้องพิธีวิวพระจันทร์เต็มดวง</span></h1>
 <p class="note">ห้องพิธีกับตัวละครใช้ของที่ทำไว้แล้ว ส่วนประตูห้องจัดเลี้ยง หน้าจอมือถือ ลิฟต์ ห้องพัก และทางเดิน เป็นแบบร่างในโทนเดียวกัน ไว้ดูจังหวะและมุมกล้องก่อน ตัวละครยังยืนท่าตรงแบบแผ่นตัวละคร ท่าทางจริงจะทำตอนภาพนิ่ง ซับไทยวางที่ราว 74% ของความสูงเฟรมตามมาตรฐานช่อง</p>
 {html_scenes}</div>''')
-    out = os.path.join(HERE, 'storyboard_svg.html')
+    out = os.path.join(HERE, 'storyboard_svg_nosub.html' if os.environ.get('NOSUB') else 'storyboard_svg.html')
     open(out, 'w').write(page); print('ok svg', len(page))
 
 def build_light():

@@ -1,0 +1,510 @@
+{
+ "used": 1623,
+ "voices": {
+  "N": "IM6pYHlwZQDuZqGBrSYI",
+  "W": "XB0fDUnXU5powFXDhCwa",
+  "G": "N2lVS1w4EtoT3dr4eOWO"
+ },
+ "lines": {
+  "01a": {
+   "shot": 1,
+   "who": "N",
+   "text": "ถ้าวันนี้เป็นวันแต่งงานของคุณ แต่ระหว่างที่คุณกำลังจะสวมแหวนให้เจ้าบ่าว มีผู้หญิงคนหนึ่งเดินเข้ามาในงาน แล้วบอกว่าเธอคือภรรยาของคนที่คุณกำลังจะแต่งงานด้วย คุณจะทำยังไง?",
+   "best": {
+    "path": "01a_t1.mp3",
+    "dur": 12.59,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "01a_t1.mp3",
+     "dur": 12.59,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "02a": {
+   "shot": 2,
+   "who": "N",
+   "text": "งานแต่งงานในโรงแรมหรู ดอกไม้สีขาวประดับตลอดทางเดิน แชนเดอเลียร์ระยิบระยับ แขกทุกคนกำลังปรบมือให้กับคู่บ่าวสาว",
+   "best": {
+    "path": "02a_t1.mp3",
+    "dur": 9.17,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "02a_t1.mp3",
+     "dur": 9.17,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "03a": {
+   "shot": 3,
+   "who": "N",
+   "text": "คุณคบกับแฟนมาสามปี เขาเป็นผู้ชายที่สมบูรณ์แบบจนคุณไม่เคยคิดสงสัยอะไรในตัวเขาเลย",
+   "best": {
+    "path": "03a_t1.mp3",
+    "dur": 6.03,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "03a_t1.mp3",
+     "dur": 6.03,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "04a": {
+   "shot": 4,
+   "who": "N",
+   "text": "จนกระทั่งประตูห้องจัดเลี้ยงเปิดออก",
+   "best": {
+    "path": "04a_t1.mp3",
+    "dur": 2.27,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "04a_t1.mp3",
+     "dur": 2.27,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "05a": {
+   "shot": 5,
+   "who": "N",
+   "text": "ผู้หญิงคนหนึ่งในชุดเดรสสีดำเดินเข้ามา เธอสวมแหวนแต่งงานแบบเดียวกับคุณทุกประการ",
+   "best": {
+    "path": "05a_t1.mp3",
+    "dur": 5.72,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "05a_t1.mp3",
+     "dur": 5.72,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "06a": {
+   "shot": 6,
+   "who": "W",
+   "text": "ขอโทษนะคะ แต่ผู้ชายที่คุณกำลังจะแต่งงานด้วย... เป็นสามีของฉันค่ะ",
+   "best": {
+    "path": "06a_t1.mp3",
+    "dur": 7.0,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "06a_t1.mp3",
+     "dur": 7.0,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "XB0fDUnXU5powFXDhCwa"
+  },
+  "07a": {
+   "shot": 7,
+   "who": "N",
+   "text": "เจ้าบ่าวรีบบอกทุกคนว่าผู้หญิงคนนี้เป็นแฟนเก่าที่มีปัญหาทางจิต และให้พนักงานรักษาความปลอดภัยพาตัวออกไป",
+   "best": {
+    "path": "07a_t1.mp3",
+    "dur": 7.31,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "07a_t1.mp3",
+     "dur": 7.31,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "08a": {
+   "shot": 8,
+   "who": "N",
+   "text": "ก่อนออกจากงาน เธอหันมามองคุณแล้วพูดเพียงประโยคเดียว",
+   "best": {
+    "path": "08a_t1.mp3",
+    "dur": 3.71,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "08a_t1.mp3",
+     "dur": 3.71,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "09a": {
+   "shot": 9,
+   "who": "W",
+   "text": "คืนนี้อย่าให้เขาถอดแหวนออกจากนิ้วคุณเด็ดขาด",
+   "best": {
+    "path": "09a_t1.mp3",
+    "dur": 3.24,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "09a_t1.mp3",
+     "dur": 3.24,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "XB0fDUnXU5powFXDhCwa"
+  },
+  "10a": {
+   "shot": 10,
+   "who": "N",
+   "text": "งานแต่งดำเนินต่อไป แต่คุณเริ่มสังเกตเห็นความผิดปกติ",
+   "best": {
+    "path": "10a_t1.mp3",
+    "dur": 3.87,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "10a_t1.mp3",
+     "dur": 3.87,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "11a": {
+   "shot": 11,
+   "who": "N",
+   "text": "แขกฝั่งเจ้าบ่าวแทบไม่มีใครถ่ายรูปเลย",
+   "best": {
+    "path": "11a_t1.mp3",
+    "dur": 2.51,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "11a_t1.mp3",
+     "dur": 2.51,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "12a": {
+   "shot": 12,
+   "who": "N",
+   "text": "แม่ของเจ้าบ่าวเรียกคุณผิดชื่อถึงสองครั้ง",
+   "best": {
+    "path": "12a_t1.mp3",
+    "dur": 2.69,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "12a_t1.mp3",
+     "dur": 2.69,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "13a": {
+   "shot": 13,
+   "who": "N",
+   "text": "ช่างภาพเผลอพูดว่า ปีนี้จัดงานสวยกว่าครั้งที่แล้ว",
+   "best": {
+    "path": "13a_t1.mp3",
+    "dur": 4.05,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "13a_t1.mp3",
+     "dur": 4.05,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "14a": {
+   "shot": 14,
+   "who": "N",
+   "text": "พนักงานโรงแรมมองคุณด้วยสายตาสงสาร",
+   "best": {
+    "path": "14a_t1.mp3",
+    "dur": 2.77,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "14a_t1.mp3",
+     "dur": 2.77,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "15a": {
+   "shot": 15,
+   "who": "N",
+   "text": "คุณแอบค้นโทรศัพท์ของเจ้าบ่าวระหว่างที่เขาออกไปส่งแขก",
+   "best": {
+    "path": "15a_t1.mp3",
+    "dur": 3.71,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "15a_t1.mp3",
+     "dur": 3.71,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "16a": {
+   "shot": 16,
+   "who": "N",
+   "text": "คุณพบอัลบั้มภาพงานแต่งงานย้อนหลังหลายปี ทุกงานจัดในโรงแรมเดียวกัน ใช้ดอกไม้แบบเดียวกัน เจ้าบ่าวคนเดียวกัน แต่เจ้าสาวไม่เคยซ้ำหน้า",
+   "best": {
+    "path": "16a_t1.mp3",
+    "dur": 10.68,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "16a_t1.mp3",
+     "dur": 10.68,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "17a": {
+   "shot": 17,
+   "who": "N",
+   "text": "และผู้หญิงชุดดำที่เดินเข้ามาในงาน คือเจ้าสาวของปีที่แล้ว",
+   "best": {
+    "path": "17a_t1.mp3",
+    "dur": 3.87,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "17a_t1.mp3",
+     "dur": 3.87,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "18a": {
+   "shot": 18,
+   "who": "N",
+   "text": "คุณลองค้นชื่อเจ้าสาวแต่ละคนบนอินเทอร์เน็ต",
+   "best": {
+    "path": "18a_t1.mp3",
+    "dur": 2.35,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "18a_t1.mp3",
+     "dur": 2.35,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "19a": {
+   "shot": 19,
+   "who": "N",
+   "text": "ทุกคนมีประกาศตามหาคนหาย หลังจากวันแต่งงานเพียงหนึ่งวัน",
+   "best": {
+    "path": "19a_t1.mp3",
+    "dur": 4.28,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "19a_t1.mp3",
+     "dur": 4.28,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "20a": {
+   "shot": 20,
+   "who": "N",
+   "text": "เมื่อคุณพยายามหนีออกจากโรงแรม ลิฟต์กลับพาคุณมาที่ชั้นเดิมซ้ำแล้วซ้ำเล่า",
+   "best": {
+    "path": "20a_t1.mp3",
+    "dur": 5.25,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "20a_t1.mp3",
+     "dur": 5.25,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "21a": {
+   "shot": 21,
+   "who": "N",
+   "text": "โทรศัพท์ดังขึ้น เป็นเบอร์ของผู้หญิงชุดดำ",
+   "best": {
+    "path": "21a_t1.mp3",
+    "dur": 3.0,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "21a_t1.mp3",
+     "dur": 3.0,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "22a": {
+   "shot": 22,
+   "who": "W",
+   "text": "มันไม่ใช่สามีของฉันหรอกค่ะ... ฉันแค่เคยเป็นเจ้าสาวเหมือนคุณ",
+   "best": {
+    "path": "22a_t1.mp3",
+    "dur": 4.99,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "22a_t1.mp3",
+     "dur": 4.99,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "XB0fDUnXU5powFXDhCwa"
+  },
+  "23a": {
+   "shot": 23,
+   "who": "W",
+   "text": "แล้วถ้าคุณอยากรอด คุณต้องหาผู้หญิงคนต่อไปมาแต่งงานกับมันแทน",
+   "best": {
+    "path": "23a_t1.mp3",
+    "dur": 6.53,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "23a_t1.mp3",
+     "dur": 6.53,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "XB0fDUnXU5powFXDhCwa"
+  },
+  "24a": {
+   "shot": 24,
+   "who": "N",
+   "text": "เสียงเคาะประตูดังขึ้นสามครั้ง",
+   "best": {
+    "path": "24a_t1.mp3",
+    "dur": 2.04,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "24a_t1.mp3",
+     "dur": 2.04,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "IM6pYHlwZQDuZqGBrSYI"
+  },
+  "25a": {
+   "shot": 25,
+   "who": "G",
+   "text": "ที่รัก เปิดประตูให้ผมหน่อย ถึงเวลาถอดแหวนแล้วครับ",
+   "best": {
+    "path": "25a_t1.mp3",
+    "dur": 5.41,
+    "score": null,
+    "heard": null
+   },
+   "takes": [
+    {
+     "path": "25a_t1.mp3",
+     "dur": 5.41,
+     "score": null,
+     "heard": null
+    }
+   ],
+   "voice": "N2lVS1w4EtoT3dr4eOWO"
+  }
+ }
+}
