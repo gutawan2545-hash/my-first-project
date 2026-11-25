@@ -226,7 +226,7 @@ DEFS = (base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.D
         + f'<svg width="0" height="0" style="position:absolute"><defs>{gh}</defs></svg>')
 html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">'
         '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px}'
-        '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#ffd84a;stroke:#1a1410;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
+        '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#c04dff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
         '.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
         + DEFS + '<div id="stage">' + ''.join(SVGS) + f'<svg viewBox="0 0 540 960">{"".join(sub_svg)}</svg></div><script>{js}</script>')
 open('anim_v2.html', 'w').write(html)
@@ -267,13 +267,14 @@ if R_['rain'] is not None:
     loop = np.zeros(N, np.float32); t = int((bang_t + .9) * A.SR); w = np.linspace(0, 1, k)
     while t < N: seg = x.copy(); seg[:k] *= w; seg[-k:] *= w[::-1]; n = min(len(seg), N - t); loop[t:t + n] += seg[:n]; t += len(seg) - k
     rn = loop
-thr = A.thriller(N, T0['s5'], TOTAL)
+import score
+thr = score.build(N, dict(bang=bang_t, s5=T0['s5'], s6=T0['s6'], s6r=T0['s6r'], s7a=T0['s7a'], s7b=T0['s7b'], s8=T0['s8'], s9=T0['s9'], s9r=T0['s9r'], end=TOTAL))
 def rms(x): return float(np.sqrt(np.mean(x ** 2)) + 1e-9)
 v = rms(voice[np.abs(voice) > 1e-4])
 def lvl(x, a, b, db): i0, i1 = int(a * A.SR), int(b * A.SR); return x * (v * 10 ** (-db / 20) / rms(x[i0:i1]))
-music_w = lvl(music_w, .3, bang_t - .1, 5.5); thr = lvl(thr, T0['s6'], TOTAL - 1, 6.5); rn = lvl(rn, bang_t + 2, TOTAL - 1, 22); cl = lvl(cl, .4, 2.3, 14)
+music_w = lvl(music_w, .3, bang_t - .1, 5.5); thr = lvl(thr, bang_t + 1.5, TOTAL - 1, 8); rn = lvl(rn, bang_t + 2, TOTAL - 1, 22); cl = lvl(cl, .4, 2.3, 14)
 steps = lvl(steps, T0['s5'] + .2, T0['s5'] + 3.3, 10)
-venv = A.lp(np.abs(voice), 4); duck = 1 - .45 * np.clip(venv / (venv.max() * .25 + 1e-6), 0, 1)
+venv = A.lp(np.abs(voice), 4); duck = 1 - .3 * np.clip(venv / (venv.max() * .25 + 1e-6), 0, 1)
 mix = voice + (music_w + thr) * duck + cl + rn + steps + sfx * .35
 fade = int(.7 * A.SR); end = int(TOTAL * A.SR); mix[end - fade:end] *= np.linspace(1, 0, fade); mix[end:] = 0
 mix = np.tanh(mix * 1.3) / 1.3; mix = mix / (np.abs(mix).max() + 1e-6) * .9

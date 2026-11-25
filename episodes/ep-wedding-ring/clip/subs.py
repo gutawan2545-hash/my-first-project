@@ -1,5 +1,5 @@
 """ซับไทย + อังกฤษแบบขึ้นทีละช่วงตามเสียงพูด ตามมาตรฐานช่อง:
-ไทยตัวหนาสีเหลือง #ffd84a ขอบเข้ม ไม่เกิน 4 บรรทัด (ใช้ช่วงละไม่เกิน 2 บรรทัดให้อ่านทัน) ขนาด 20 ในเฟรม 540
+ไทยตัวหนาสีม่วงสด #c04dff ขอบเข้ม ไม่เกิน 4 บรรทัด (ใช้ช่วงละไม่เกิน 2 บรรทัดให้อ่านทัน) ขนาด 20 ในเฟรม 540
 อังกฤษ Inter สีขาว ขอบเข้ม ขนาด 13 ไม่เกิน 3 บรรทัด จัดกลางที่ราว y 712
 รัน: python3 subs.py -> subs/chunks.json + subs.html แล้ว node render_subs.js -> subs/NNN.png"""
 import json, os, re
@@ -35,21 +35,29 @@ EN = {
 }
 
 def thai_lines(text, n=22):
-    """ตัดบรรทัดตรงรอยต่อของคำ (ใช้ตัวตัดคำภาษาไทย) ไม่ตัดกลางคำ"""
+    """ตัดบรรทัดตรงรอยต่อของคำ (ตัวตัดคำภาษาไทย + พจนานุกรมเพิ่ม) ไม่ตัดกลางคำ
+    เลือกจุดตัดให้บรรทัดยาวใกล้เคียงกัน ไม่ปล่อยคำสั้น ๆ ค้างบรรทัดเดียว"""
     from pythainlp.tokenize import word_tokenize
-    toks = word_tokenize(text, engine='newmm', keep_whitespace=True)
-    lines = []; cur = ''
-    for t in toks:
-        if t.isspace():
-            if cur and len(cur) >= n * .7: lines.append(cur); cur = ''
-            elif cur: cur += ' '
-            continue
-        if cur and len(cur.rstrip()) + len(t) > n:
-            lines.append(cur.rstrip()); cur = t
-        else:
-            cur += t
-    if cur.strip(): lines.append(cur.strip())
-    return lines
+    from pythainlp.corpus.common import thai_words
+    from pythainlp.util import Trie
+    global _TRIE
+    if '_TRIE' not in globals():
+        _TRIE = Trie(set(thai_words()) | {'เดรส', 'ชุดเดรส', 'เจ้าบ่าว', 'เจ้าสาว', 'แหวนแต่งงาน', 'ห้องจัดเลี้ยง', 'แบบเดียวกับ',
+                                          'แฟนเก่า', 'ทุกประการ', 'ปัญหาทางจิต', 'พนักงานรักษาความปลอดภัย', 'สามีของฉัน', 'จากนิ้ว'})
+    toks = [t for t in word_tokenize(text, engine='newmm', custom_dict=_TRIE, keep_whitespace=True)]
+    L = lambda a, b: len(''.join(toks[a:b]).strip())
+    m = len(toks); best = [0.0] + [1e18] * m; prev = [0] * (m + 1)
+    for b in range(1, m + 1):
+        for a in range(b - 1, -1, -1):
+            ln = L(a, b)
+            if ln > n + 2 and b - a > 1: break
+            cost = (n - ln) ** 2 if ln <= n else 40 * (ln - n) ** 2
+            if ln < 7: cost += 400
+            if toks[b - 1].isspace() or (b < m and toks[b].isspace()): cost -= 25   # ตัดตรงช่องว่างได้ก่อน
+            if best[a] + cost < best[b]: best[b] = best[a] + cost; prev[b] = a
+    lines = []; b = m
+    while b > 0: a = prev[b]; lines.append(''.join(toks[a:b]).strip()); b = a
+    return [l for l in reversed(lines) if l]
 
 def chunks_for(th, en):
     ls = thai_lines(th)
@@ -89,7 +97,7 @@ def main():
             svgs.append(f'<svg id="s{n:02d}_{k}" viewBox="0 0 540 960" width="540" height="960" xmlns="http://www.w3.org/2000/svg">{t}{e}</svg>')
     html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@700&family=Inter:wght@600&display=swap">'
             '<style>html,body{margin:0;background:transparent}svg{display:block}'
-            '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#ffd84a;stroke:#1a1410;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
+            '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#c04dff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
             '.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#ffffff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
             + ''.join(svgs))
     open(os.path.join(HERE, 'subs.html'), 'w').write(html)
