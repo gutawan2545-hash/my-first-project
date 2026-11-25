@@ -1229,6 +1229,74 @@ def pound_window():
     o.append(dust(62, (X0, Y1, X1, 940), 14, '#ffe8d4'))
     return ''.join(o)
 
+
+def entryway():
+    """hero's ground-floor entry at night, lived-in and calm: plain painted walls, arched wooden door, coats, shoes, keys, mail, one warm pendant"""
+    o = []
+    W_, H_ = 540, 960
+    wall, wall_dk, trim = '#7a6668', '#5e4c50', '#e4d8ca'
+    # ceiling strip + side wall slivers + back wall
+    o.append(f'<rect width="{W_}" height="{H_}" fill="{wall}"/>')
+    o.append(f'<polygon points="0,0 540,0 500,120 40,120" fill="#4a3a3e"/>')
+    o.append(f'<polygon points="0,0 40,120 40,820 0,880" fill="{wall_dk}"/><polygon points="540,0 500,120 500,820 540,880" fill="#54434a"/>')
+    o.append(f'<rect x="40" y="114" width="460" height="10" fill="{trim}"/><rect x="40" y="124" width="460" height="4" fill="#c8baac"/>')    # crown
+    # floor: warm terracotta tiles in perspective
+    o.append('<polygon points="40,820 500,820 540,880 540,960 0,960 0,880" fill="#8a5a46"/>')
+    for i in range(0, 9):
+        x = 40 + i * 57.5; o.append(f'<line x1="{x:.0f}" y1="820" x2="{270+(x-270)*1.9:.0f}" y2="960" stroke="#6e4434" stroke-width="2"/>')
+    for y in (846, 884, 930):
+        o.append(f'<line x1="0" y1="{y}" x2="540" y2="{y}" stroke="#6e4434" stroke-width="2"/>')
+    o.append(f'<rect x="40" y="800" width="460" height="20" fill="{trim}"/>')                                                              # skirting
+    # arched door with trim
+    dx0, dx1, dtop, dbot = 172, 368, 300, 800
+    r_ = (dx1 - dx0) / 2; cx = (dx0 + dx1) / 2
+    o.append(f'<path d="M {dx0-20},{dbot} L {dx0-20},{dtop} A {r_+20},{r_+20} 0 0 1 {dx1+20},{dtop} L {dx1+20},{dbot} Z" fill="#6a4632"/>')
+    o.append(f'<path d="M {dx0-12},{dbot} L {dx0-12},{dtop} A {r_+12},{r_+12} 0 0 1 {dx1+12},{dtop} L {dx1+12},{dbot} Z" fill="#8a5c40"/>')
+    o.append(f'<path d="M {dx0},{dbot} L {dx0},{dtop} A {r_},{r_} 0 0 1 {dx1},{dtop} L {dx1},{dbot} Z" fill="#7a3e2c"/>')
+    o.append(f'<path d="M {dx0},{dbot} L {dx0},{dtop} A {r_},{r_} 0 0 1 {cx-30},{dtop-r_+8} L {cx-30},{dbot} Z" fill="#8a4a34"/>')   # light side
+    for (px0, py0, pw, ph) in ((dx0 + 22, 330, 58, 170), (dx1 - 80, 330, 58, 170), (dx0 + 22, 540, 58, 230), (dx1 - 80, 540, 58, 230)):
+        o.append(f'<rect x="{px0}" y="{py0}" width="{pw}" height="{ph}" fill="#6a3424"/><rect x="{px0+4}" y="{py0+4}" width="{pw-8}" height="{ph-8}" fill="#7e4230"/>')
+    o.append(f'<rect x="{dx1-40}" y="520" width="20" height="44" rx="3" fill="#3a3436"/><circle cx="{dx1-30}" cy="552" r="9" fill="#c8c0b4"/><circle cx="{dx1-33}" cy="549" r="3" fill="#ffffff" opacity=".6"/>')
+    o.append(f'<rect x="{dx1-46}" y="470" width="30" height="14" rx="2" fill="#b8925a"/><rect x="{dx1-40}" y="474" width="18" height="5" fill="#3a2418"/>')     # deadbolt
+    o.append(f'<rect x="{cx-34}" y="380" width="68" height="10" rx="3" fill="#b8925a" opacity=".9"/>')                                    # mail slot
+    # door mat
+    o.append(f'<path d="M {dx0+6},{826} L {dx1-6},{826} L {dx1+10},{872} L {dx0-10},{872} Z" fill="#a8905e"/><path d="M {dx0+14},{832} L {dx1-14},{832} L {dx1},{866} L {dx0},{866} Z" fill="none" stroke="#8a744a" stroke-width="2"/>')
+    # left: framed family photos, coat stand with coats + the hero's uniform shirt, shoe bench
+    o.append('<rect x="56" y="210" width="84" height="104" fill="#5a3a26"/><rect x="64" y="218" width="68" height="88" fill="#e8d8c0"/><circle cx="88" cy="252" r="12" fill="#a87a5a"/><circle cx="110" cy="256" r="10" fill="#8a6a5a"/><path d="M 72,306 C 80,276 120,276 126,306 Z" fill="#6a7a8a"/>')
+    o.append('<rect x="72" y="336" width="60" height="50" fill="#7a5aa0"/><rect x="78" y="342" width="48" height="38" fill="#e6dccb"/><path d="M 82,376 L 96,358 L 106,368 L 114,356 L 122,376 Z" fill="#7a9a8a"/>')
+    o.append(cast('<rect x="114" y="370" width="10" height="430"/>', 10, 8, .4))
+    o.append('<rect x="116" y="368" width="8" height="432" fill="#4a2c1c"/><path d="M 92,800 L 148,800 L 140,790 L 100,790 Z" fill="#4a2c1c"/>'
+             '<path d="M 120,384 C 108,380 102,388 104,396 M 120,384 C 132,380 138,388 136,396 M 120,400 C 104,398 98,408 102,414" fill="none" stroke="#4a2c1c" stroke-width="4" stroke-linecap="round"/>')
+    o.append('<path d="M 104,394 C 86,410 80,470 84,560 L 128,560 C 130,480 124,420 116,396 Z" fill="#3e4e66"/><path d="M 104,394 C 92,410 88,460 90,540 L 100,540 C 100,470 104,420 110,398 Z" fill="#52668a"/>')       # puffer coat
+    o.append('<path d="M 134,394 C 150,410 154,450 150,500 L 124,500 C 124,450 126,420 128,396 Z" fill="#8a6c4a"/><rect x="132" y="430" width="12" height="4" fill="#17161c"/><path d="M 136,406 l 8,2 l -1,6 l -7,-1 Z" fill="#c4c9d4"/>')   # police shirt on a hanger
+    o.append('<path d="M 98,362 C 92,346 120,334 138,346 L 144,360 C 126,352 108,354 98,362 Z" fill="#2a2a34"/>')                               # cap on top
+    o.append(cast('<rect x="30" y="700" width="170" height="100"/>', 10, 8, .45))
+    o.append('<rect x="30" y="692" width="170" height="12" fill="#e8dccb"/><rect x="34" y="704" width="12" height="96" fill="#e0d2c2"/><rect x="184" y="704" width="12" height="96" fill="#d0c2b2"/><rect x="34" y="748" width="162" height="8" fill="#d8cabc"/>')
+    o.append('<path d="M 56,746 C 52,730 70,726 80,736 L 92,746 Z" fill="#3a3a44"/><path d="M 100,746 C 96,730 114,726 124,736 L 136,746 Z" fill="#a85a4a"/><path d="M 60,800 L 60,788 C 70,780 84,782 90,792 L 96,800 Z" fill="#6a5a4a"/><path d="M 110,800 L 112,786 L 140,786 L 146,800 Z" fill="#2a2a30"/>')
+    o.append('<path d="M 150,692 L 184,692 L 188,640 L 146,640 Z" fill="#c9a46a"/><path d="M 154,640 C 156,620 178,620 180,640" fill="none" stroke="#8a6a3a" stroke-width="3"/>')   # tote bag on the bench
+    o.append('<rect x="150" y="760" width="22" height="40" fill="#3a3a40"/><path d="M 156,760 L 152,700 M 166,760 L 170,708" stroke="#5a4a5a" stroke-width="5" stroke-linecap="round"/>')  # umbrellas
+    # right: light switch, key hooks + mail shelf, console with plant + bag, boots
+    o.append('<rect x="392" y="500" width="22" height="34" rx="2" fill="#e8dccb"/><rect x="398" y="508" width="4" height="10" fill="#b8aa9a"/><rect x="404" y="508" width="4" height="10" fill="#b8aa9a"/>')
+    o.append('<rect x="408" y="330" width="80" height="14" fill="#9a7a58"/><rect x="408" y="300" width="80" height="34" fill="#b08a64"/><rect x="412" y="304" width="72" height="26" fill="#8a6a4a"/>'
+             '<rect x="416" y="282" width="20" height="26" fill="#e8e0f0" transform="rotate(-6 426 296)"/><rect x="438" y="278" width="22" height="30" fill="#f2dca8"/><rect x="460" y="284" width="18" height="24" fill="#c8d8e8" transform="rotate(5 469 296)"/>'
+             + ''.join(f'<path d="M {x},344 l 0,10 c 0,6 8,6 8,0" fill="none" stroke="#3a3436" stroke-width="3"/>' for x in (414, 434, 454, 474))
+             + '<path d="M 438,356 L 438,392" stroke="#8a7a6a" stroke-width="1.4"/><rect x="432" y="392" width="12" height="16" rx="2" fill="#c9a46a"/><rect x="446" y="396" width="8" height="12" rx="2" fill="#b8b0a4"/>')
+    o.append(cast('<rect x="396" y="600" width="104" height="200"/>', 10, 8, .45))
+    o.append('<rect x="392" y="596" width="112" height="12" fill="#5a3a26"/><rect x="398" y="608" width="100" height="70" fill="#7a5038"/><rect x="404" y="614" width="88" height="24" fill="#8a5c40"/><circle cx="448" cy="626" r="3" fill="#d9b25a"/>'
+             '<rect x="400" y="678" width="8" height="122" fill="#5a3a26"/><rect x="488" y="678" width="8" height="122" fill="#5a3a26"/>')
+    o.append('<path d="M 410,596 L 440,596 L 436,576 L 414,576 Z" fill="#6a7aa0"/>' + ''.join(f'<path d="M 425,578 C {425+dx*.4:.0f},560 {425+dx:.0f},548 {425+dx*1.3:.0f},538" fill="none" stroke="#5a7a4a" stroke-width="2.4"/><circle cx="{425+dx*1.3:.0f}" cy="538" r="4" fill="#e8a8b8"/>' for dx in (-14, -6, 4, 12)))
+    o.append('<path d="M 452,596 L 494,596 L 490,566 L 456,566 Z" fill="#c86a5a"/><path d="M 460,566 C 462,548 486,548 488,566" fill="none" stroke="#a04a3c" stroke-width="3"/>')     # handbag
+    o.append('<path d="M 414,800 L 414,744 L 432,744 L 432,786 L 446,792 L 446,800 Z" fill="#3e5a6a"/><path d="M 452,800 L 452,748 L 470,748 L 470,788 L 482,794 L 482,800 Z" fill="#36505e"/>')   # rain boots
+    # window on the right side-wall sliver with a cafe curtain
+    o.append('<polygon points="504,260 528,240 528,560 504,540" fill="url(#winDark)"/><polygon points="504,260 528,240 528,300 504,316" fill="#c87a8a"/>')
+    # pendant lamp: warm glass dome, the only light
+    o.append('<line x1="270" y1="120" x2="270" y2="188" stroke="#2a1e1a" stroke-width="2"/><path d="M 226,236 C 226,200 314,200 314,236 Z" fill="#f2c890"/><path d="M 226,236 L 314,236" stroke="#b8925a" stroke-width="3"/>'
+             + ''.join(f'<path d="M {270+dx},204 L {270+dx*1.4},236" stroke="#c8a070" stroke-width="1.4"/>' for dx in (-30, -12, 12, 30)))
+    o.append(glow(270, 226, 120, WARM, .9) + pool(270, 830, 260, 60, WARM, .45) + beam('230,236 310,236 470,900 70,900', 'beamW', .45))
+    o.append(shade(270, 330, 520, '#1e1430', .55))
+    o.append(dust(71, (110, 240, 430, 880), 18))
+    return ''.join(o)
+
 # ======================= SCENES =======================
 S = []
 
@@ -1338,7 +1406,7 @@ def bedroom(night=False, board=False):
     return ''.join(o)
 
 S.append(('1C', 'ฉาก 1 · โรงพยาบาลหลังอุบัติเหตุ (โพล้เพล้)', 'ห้องพักผู้ป่วย เตียงพร้อมที่แขวนขาเข้าเฝือก เสาน้ำเกลือ จอวัดชีพจร ช่อดอกไม้ ตะกร้าผลไม้ และการ์ดหัวใจจากแฟนบนโต๊ะข้างเตียง ไม้ค้ำยันรออยู่ที่ผนัง แสงโพล้เพล้ลอดมู่ลี่ ใช้กับ VO "ทำให้ขาหักและต้องพักรักษาตัวสองเดือน" และช่วงแนะนำแฟนที่มาเยี่ยม', hospital_room()))
-S.append(('1D', 'ฉาก 1 · ห้องนั่งเล่นชั้นล่างบ้านพระเอก (หัวค่ำ)', 'ประตูหน้าบ้านกับหน้าต่างบนผนังหลัง บันไดขึ้นชั้นสองชิดผนังซ้าย โซฟาหันหน้าเข้ากล้อง ทีวี รูปครอบครัว โคมตั้งพื้นส่องเป็นวงอุ่น ใช้กับช็อตกลับบ้านพร้อมเฝือกและประโยคของแฟน "ก็ดีแล้วไง จะได้พักบ้าง" และตอนพระเอกรีบลงบันไดออกจากบ้านในฉาก 7', ground_living()))
+S.append(('1D', 'ฉาก 1 · โถงหน้าประตูชั้นล่างบ้านพระเอก (หัวค่ำ) · ลองแนวใหม่', 'ผนังทาสีเรียบ บัวขาวนวล ประตูไม้โค้ง ราวแขวนเสื้อมีเสื้อโค้ทกับเสื้อตำรวจของพระเอกแขวนอยู่ ม้านั่งวางรองเท้ากับกระเป๋า ร่ม รูปครอบครัว ที่แขวนกุญแจกับชั้นจดหมาย โต๊ะเล็กวางต้นไม้กับกระเป๋าถือ รองเท้าบูต พรมเช็ดเท้า โคมแก้วดวงเดียวส่องอุ่น ใช้กับช็อตกลับบ้านพร้อมเฝือก และตอนรีบออกจากบ้านในฉาก 7', entryway()))
 S.append(('2A', 'ฉาก 2 · ห้องนั่งเล่นชั้นสอง (แฟมิลีรูมกึ่งสตูดิโอ) ยามบ่าย', 'ห้องที่พระเอกใช้ชีวิตช่วงพักขา หน้าต่างบานใหญ่สามช่องเห็นบ้านตรงข้าม มุมอาร์มแชร์ริมหน้าต่างพร้อมโต๊ะข้างวางกาแฟ ชั้นหนังสือบิลต์อินผนังซ้าย โซฟากับหมอนอิง โต๊ะกลาง พรม ทีวีกับมุมทำงานผนังขวา คานเพดานไม้ ไม้ค้ำยันพิงโซฟา', family_room()))
 
 S.append(('2B', 'ฉาก 2 · มองจากหน้าต่าง: รถขนของมาจอดบ้านตรงข้าม', 'กรอบหน้าต่างพระเอกมืดเป็นฉากหน้ามีแสงขอบ บ้านตรงข้ามเห็นด้านข้างเป็นสามมิติ มีเสาไฟและสายไฟ รถขนของกับกล่องหน้าบ้าน',
