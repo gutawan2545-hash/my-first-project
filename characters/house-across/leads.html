@@ -28,6 +28,9 @@ h2 span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 14
 section { display: grid; gap: 14px; }
 .panels { display: grid; grid-template-columns: 4fr 5fr; gap: 16px; align-items: start; }
 @media (max-width: 640px) { .panels { grid-template-columns: 1fr; } }
+.panels.three { grid-template-columns: 1fr 1fr 1.15fr; }
+@media (max-width: 860px) { .panels.three { grid-template-columns: 1fr 1fr; } .panels.three figure:last-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .panels.three { grid-template-columns: 1fr; } }
 figure { margin: 0; min-width: 0; display: grid; gap: 8px; }
 figure svg { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
 figcaption { font-size: 13px; color: var(--muted); }
@@ -118,33 +121,41 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
     </g>
     <ellipse cx="-17.5" cy="12" rx="6.5" ry="3.4" fill="#e98c8c" opacity=".5"/>
     <ellipse cx="17.5" cy="12" rx="6.5" ry="3.4" fill="#dc8080" opacity=".5"/>
-    <!-- brows: defined, slightly arched, expressive -->
-    <path d="M -22,-12 C -17,-16.5 -10,-17 -5,-14.5 L -5.5,-12.6 C -10,-14.6 -16,-14 -21,-10.6 Z" fill="#2a1a1c"/>
-    <path d="M 22,-12 C 17,-16.5 10,-17 5,-14.5 L 5.5,-12.6 C 10,-14.6 16,-14 21,-10.6 Z" fill="#2a1a1c"/>
+    <!-- brows: defined arches, her left one lifted (confident, teasing) -->
+    <path d="M -22,-11 C -17,-15 -10,-15.4 -5,-13 L -5.5,-11.2 C -10,-13.2 -16,-12.6 -21,-9.6 Z" fill="#2a1a1c"/>
+    <path d="M 22,-13.5 C 18,-19 10,-19.4 5,-15.5 L 5.5,-13.6 C 10,-16.8 17,-16.4 21,-12 Z" fill="#2a1a1c"/>
     <!-- eyes: almond with a winged liner (stage habit) -->
     <path d="M -21,-1 C -18,-7 -8,-7.5 -4,-2.5 C -8,2.5 -18,2.5 -21,-1 Z" fill="#fbf3ec"/>
     <path d="M 21,-1 C 18,-7 8,-7.5 4,-2.5 C 8,2.5 18,2.5 21,-1 Z" fill="#f0e4da"/>
     <g clip-path="url(#geyeL)"><circle cx="-12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="-12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="-14.2" cy="-2.7" r="1.3" fill="#fff"/></g>
     <g clip-path="url(#geyeR)"><circle cx="12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="10.8" cy="-2.7" r="1.3" fill="#fff"/></g>
-    <path d="M -22,-0.6 C -18.5,-8.5 -8,-9 -3,-2.8 L -4.2,-1.8 C -8.4,-6 -17,-5.6 -20.6,0.4 Z" fill="#1b1015"/>
-    <path d="M -21,-1 L -27.5,-4.8 L -21.2,1 Z" fill="#1b1015"/>
-    <path d="M 22,-0.6 C 18.5,-8.5 8,-9 3,-2.8 L 4.2,-1.8 C 8.4,-6 17,-5.6 20.6,0.4 Z" fill="#1b1015"/>
-    <path d="M 21,-1 L 27.5,-4.8 L 21.2,1 Z" fill="#1b1015"/>
+    <!-- heavy lids: half-closed, sultry -->
+    <path d="M -22.5,-1 C -18.5,-9.5 -8,-10 -2.5,-3 L -3.8,-1.6 C -8.4,-4.6 -17,-4.4 -21.2,0.6 Z" fill="#f0c8ac"/>
+    <path d="M 22.5,-1 C 18.5,-9.5 8,-10 2.5,-3 L 3.8,-1.6 C 8.4,-4.6 17,-4.4 21.2,0.6 Z" fill="#e2b496"/>
+    <path d="M -22,0.4 C -17.5,-5.6 -8.6,-5.8 -3,-2 L -4.2,-0.9 C -8.6,-3.4 -16.8,-3.4 -20.6,1.4 Z" fill="#1b1015"/>
+    <path d="M -21,0.4 L -28.5,-4 L -21,2 Z" fill="#1b1015"/>
+    <path d="M 22,0.4 C 17.5,-5.6 8.6,-5.8 3,-2 L 4.2,-0.9 C 8.6,-3.4 16.8,-3.4 20.6,1.4 Z" fill="#1b1015"/>
+    <path d="M 21,0.4 L 28.5,-4 L 21,2 Z" fill="#1b1015"/>
+    <!-- soft plum shadow on the lids -->
+    <path d="M -20,-3 C -16,-7.6 -9,-7.8 -5,-4 C -9,-5.4 -16,-5.2 -20,-3 Z" fill="#8e5a70" opacity=".45"/>
+    <path d="M 20,-3 C 16,-7.6 9,-7.8 5,-4 C 9,-5.4 16,-5.2 20,-3 Z" fill="#7a4a5e" opacity=".45"/>
     <path d="M -18.5,2.8 C -14.5,4.4 -9.5,4.2 -6,2.2" fill="none" stroke="#c48a74" stroke-width="1"/>
     <path d="M 18.5,2.8 C 14.5,4.4 9.5,4.2 6,2.2" fill="none" stroke="#b67c66" stroke-width="1"/>
     <!-- beauty mark under her left eye (viewer's right): signature mark -->
     <circle cx="17" cy="6.5" r="1.1" fill="#5a3430"/>
-    <!-- smile: playful, a bit mischievous -->
-    <path d="M -7,21.6 Q 0,26.4 7.5,20.6" fill="none" stroke="#9c4458" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M -3.5,25.4 Q 0,27.4 3.5,25" fill="none" stroke="#d98a96" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M 7.5,20.6 L 9,19.4" stroke="#cc9274" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- fuller lips, closed smirk lifted on one side -->
+    <path d="M -8,22.4 C -4.5,20 -1.5,20.4 0,21.4 C 1.5,20.2 4.5,19 8.6,19.6 C 4.6,22.2 -3,23.2 -8,22.4 Z" fill="#8e3a50"/>
+    <path d="M -8,22.4 C -3,23.2 4.6,22.2 8.6,19.6 C 7,25.8 -4,27.4 -8,22.4 Z" fill="#a8485e"/>
+    <path d="M -3,24.4 C -1,25.4 2,25.2 3.6,24" fill="none" stroke="#d47a8a" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M 8.6,19.6 L 10,18.6" stroke="#cc9274" stroke-width="1.1" stroke-linecap="round"/>
     <!-- small gold hoops -->
     <circle cx="-31" cy="12" r="3.4" fill="none" stroke="#d8b46a" stroke-width="1.3"/>
     <circle cx="31" cy="12" r="3.4" fill="none" stroke="#b8944e" stroke-width="1.3"/>
-    <!-- bob: crown + blunt bangs -->
-    <path d="M -38,-6 C -40,-44 -22,-61 0,-61 C 22,-61 40,-44 38,-6 L 31,-16 L 31,-19 L 18,-18 L 6,-20 L -6,-18 L -18,-20 L -31,-18 L -31,-16 Z" fill="#221519"/>
+    <!-- sleek bob, deep side part, one big swept panel over the forehead -->
+    <path d="M -38,-6 C -40,-44 -22,-61 0,-61 C 22,-61 40,-44 38,-6 L 31,-12 C 30,-24 25,-33 16,-38 C 6,-31 -10,-25 -22,-16 L -31,-4 Z" fill="#221519"/>
     <path d="M -30,-42 C -22,-54 -10,-58 0,-58 C -10,-53 -20,-46 -26,-34 Z" fill="#4a2d36"/>
-    <path d="M -6,-18 L -2,-34 L 6,-20 Z M -24,-19 L -20,-32 L -18,-20 Z" fill="#33212a"/>
+    <path d="M 14,-36 C 2,-30 -12,-24 -24,-13 L -27,-9 C -16,-22 -2,-30 12,-38 Z" fill="#4a2d36"/>
+    <path d="M 16,-38 L 18,-56 L 20,-37 Z" fill="#33212a"/>
     <!-- side panels that end at the jaw, curling in -->
     <path d="M -39,-10 L -30,-12 C -31,8 -30,22 -24,33 C -30,36 -37,35 -42,30 C -41,16 -40,4 -39,-10 Z" fill="#221519"/>
     <path d="M -38,0 L -36,0 C -37,14 -36,24 -34,31 L -37,31 C -38,22 -38,12 -38,0 Z" fill="#4a2d36"/>
@@ -161,8 +172,8 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
 
   <!-- ===================== HERO ===================== -->
   <section>
-    <h2>พระเอก<span>อดีตตำรวจสายสืบ ราว 32 ปี · ขาขวาเข้าเฝือก ใช้ไม้ค้ำยัน 2 ข้าง</span></h2>
-    <div class="panels">
+    <h2>พระเอก<span>อดีตตำรวจสายสืบ ราว 32 ปี · ชุดอยู่บ้านกับชุดเครื่องแบบ</span></h2>
+    <div class="panels three">
       <figure>
         <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกเต็มตัว หน้าตรง ถือไม้ค้ำยัน ขาขวาเข้าเฝือก">
           <rect width="400" height="900" fill="#1b1f2b"/>
@@ -223,7 +234,78 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
             <path d="M -13,49 C -9,61 9,61 13,49" fill="none" stroke="#323d2d" stroke-width="4"/>
           </g>
         </svg>
-        <figcaption>เต็มตัว · สูงราว 5.8 หัว ไหล่กว้างกว่าเจมส์ · เสื้อยืดเขียวมะกอกมีกระเป๋าอก · กางเกงวอร์มเทาอมน้ำเงิน ขาขวาพับไว้เหนือเฝือก · รองเท้าแตะข้างเดียว</figcaption>
+        <figcaption>ชุดอยู่บ้าน (ช่วงพักขา) · สูงราว 5.8 หัว · เสื้อยืดเขียวมะกอก · กางเกงวอร์ม ขาขวาพับไว้เหนือเฝือก · ไม้ค้ำยันสองข้าง</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกในชุดเครื่องแบบตำรวจ เต็มตัว หน้าตรง">
+          <rect width="400" height="900" fill="#1b1f2b"/>
+          <rect y="760" width="400" height="140" fill="#161a24"/>
+          <ellipse cx="200" cy="818" rx="80" ry="10" fill="#10131b"/>
+          <g transform="translate(200,124) scale(1.4)">
+            <!-- khaki trousers -->
+            <path d="M -44,230 L 44,230 L 46,300 L 39,462 L 9,462 L 2,292 L -2,292 L -9,462 L -39,462 L -46,300 Z" fill="#7a5e40"/>
+            <path d="M -44,230 L -27,230 L -30,300 L -28,462 L -39,462 L -46,300 Z" fill="#92755a"/>
+            <path d="M 24,238 L 44,230 L 46,300 L 39,462 L 28,462 C 30,380 28,300 24,238 Z" fill="#5c452e"/>
+            <path d="M -2,292 L 2,292 L 6,340 L -6,340 Z" fill="#5c452e"/>
+            <!-- polished black shoes -->
+            <path d="M -42,460 L -8,460 C -5,470 -6,478 -11,480 L -44,480 C -48,478 -47,466 -42,460 Z" fill="#15151a"/>
+            <path d="M -38,464 L -26,464 L -28,468 L -39,468 Z" fill="#4a4c58"/>
+            <path d="M 42,460 L 8,460 C 5,470 6,478 11,480 L 44,480 C 48,478 47,466 42,460 Z" fill="#0f0f13"/>
+            <!-- arms below short sleeves -->
+            <path d="M -60,136 L -46,138 L -45,180 L -47,236 L -59,236 L -61,180 Z" fill="#e9bf98"/>
+            <path d="M -60,136 L -55,137 L -56,236 L -59,236 L -61,180 Z" fill="#f6d5b4"/>
+            <path d="M 60,136 L 46,138 L 45,180 L 47,236 L 59,236 L 61,180 Z" fill="#d6a47e"/>
+            <path d="M 60,136 L 55,137 L 56,236 L 59,236 L 61,180 Z" fill="#bb8662"/>
+            <path d="M -60,234 L -46,234 C -45,248 -47,262 -53,264 C -59,264 -62,250 -60,234 Z" fill="#e9bf98"/>
+            <path d="M 60,234 L 46,234 C 45,248 47,262 53,264 C 59,264 62,250 60,234 Z" fill="#d6a47e"/>
+            <!-- khaki uniform shirt, tucked in -->
+            <path d="M -13,49 L 13,49 C 30,51 45,56 50,66 L 62,138 L 45,142 L 45,230 L -45,230 L -45,142 L -62,138 L -50,66 C -45,56 -30,51 -13,49 Z" fill="#8a6c4a"/>
+            <path d="M -50,66 C -45,56 -30,51 -19,50 C -27,72 -31,110 -30,230 L -45,230 L -45,142 L -62,138 Z" fill="#a38563"/>
+            <path d="M 21,50 C 34,53 46,58 50,66 L 62,138 L 45,142 L 45,230 L 28,230 C 30,180 30,100 21,50 Z" fill="#6a5136"/>
+            <!-- sleeve hems -->
+            <path d="M -62,132 L -45,136 L -45,142 L -62,138 Z" fill="#7a5e40"/>
+            <path d="M 62,132 L 45,136 L 45,142 L 62,138 Z" fill="#5c452e"/>
+            <!-- placket + buttons -->
+            <path d="M -2,60 L 2,60 L 2,230 L -2,230 Z" fill="#7a5e40"/>
+            <circle cx="0" cy="104" r="1.6" fill="#c7a46a"/><circle cx="0" cy="140" r="1.6" fill="#c7a46a"/><circle cx="0" cy="176" r="1.6" fill="#c7a46a"/><circle cx="0" cy="210" r="1.6" fill="#b08f58"/>
+            <!-- chest pockets with flaps -->
+            <path d="M -34,92 L -12,92 L -12,118 L -34,118 Z" fill="#9a7b58"/>
+            <path d="M -35,88 L -11,88 L -11,96 L -23,99 L -35,96 Z" fill="#7a5e40"/>
+            <path d="M 34,92 L 12,92 L 12,118 L 34,118 Z" fill="#76593c"/>
+            <path d="M 35,88 L 11,88 L 11,96 L 23,99 L 35,96 Z" fill="#5c452e"/>
+            <!-- name plate (viewer's left) + generic silver badge (viewer's right) -->
+            <rect x="-34" y="78" width="22" height="6" rx="1" fill="#17161c"/>
+            <rect x="-31" y="80.4" width="16" height="1.3" fill="#e2e4ea"/>
+            <path d="M 23,64 L 31,67 L 30,76 C 29,80 26,82 23,83 C 20,82 17,80 16,76 L 15,67 Z" fill="#c4c9d4"/>
+            <path d="M 23,64 L 31,67 L 30,76 C 29,80 26,82 23,83 Z" fill="#9aa0ad"/>
+            <circle cx="23" cy="73" r="2.6" fill="#7d8491"/>
+            <!-- shoulder boards -->
+            <path d="M -48,60 L -22,52 L -20,58 L -46,67 Z" fill="#1f2433"/>
+            <path d="M -40,61 L -34,59 M -33,59 L -27,57" stroke="#c4c9d4" stroke-width="1.6"/>
+            <path d="M 48,60 L 22,52 L 20,58 L 46,67 Z" fill="#171b27"/>
+            <path d="M 40,61 L 34,59 M 33,59 L 27,57" stroke="#9aa0ad" stroke-width="1.6"/>
+            <!-- black belt, plain buckle -->
+            <rect x="-45" y="224" width="90" height="10" fill="#17161c"/>
+            <rect x="-45" y="224" width="30" height="3" fill="#2b2a33"/>
+            <rect x="-7" y="223" width="14" height="12" rx="1.5" fill="#b9bec9"/>
+            <rect x="-4" y="226" width="8" height="6" fill="#17161c"/>
+            <use href="#hhead"/>
+            <!-- collar -->
+            <path d="M -13,49 L -3,64 L -20,60 Z" fill="#a38563"/>
+            <path d="M 13,49 L 3,64 L 20,60 Z" fill="#6a5136"/>
+            <!-- peaked cap: khaki crown, black band and visor, plain emblem -->
+            <path d="M -42,-38 C -44,-70 44,-70 42,-38 Z" fill="#8a6c4a"/>
+            <path d="M -42,-38 C -44,-58 -30,-66 -14,-67 C -26,-60 -30,-50 -30,-38 Z" fill="#a38563"/>
+            <path d="M 18,-66 C 34,-63 44,-56 42,-38 L 30,-38 C 30,-50 26,-60 18,-66 Z" fill="#6a5136"/>
+            <rect x="-38" y="-40" width="76" height="9" fill="#141418"/>
+            <path d="M -36,-31 C -20,-22 20,-22 36,-31 L 32,-27 C 16,-19 -16,-19 -32,-27 Z" fill="#0e0e12"/>
+            <path d="M -30,-29 C -16,-24 -4,-23 4,-23.4" fill="none" stroke="#3a3a46" stroke-width="1.2"/>
+            <circle cx="0" cy="-47" r="5.5" fill="#c7a46a"/>
+            <circle cx="0" cy="-47" r="2.6" fill="#8a6c4a"/>
+          </g>
+        </svg>
+        <figcaption>ชุดเครื่องแบบตำรวจ (ฉาก 1 ช่วงเล่าชีวิตก่อนขาหัก) · เสื้อกากีแขนสั้นเหน็บในกางเกง · หมวกแก๊ป · ป้ายชื่อ · ตราโล่สีเงินแบบสมมติ · เข็มขัดดำ รองเท้าหนังดำ ยังไม่มีเฝือก</figcaption>
       </figure>
 
       <figure>
@@ -249,7 +331,8 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
         <ul class="notes">
           <li>ผิวสองสีแทนกลาง เข้มกว่าเจมส์ชัดเจน ผมสั้นเกรียนข้าง ข้างบนเป็นปอยสั้น</li>
           <li>หน้านิ่ง ปากตรง ดูเหนื่อยและเบื่อ ยิ้มยาก ซึ่งตรงกับบุคลิกคนบ้างานที่โดนบังคับพัก</li>
-          <li>ไม้ค้ำยันกับเฝือกต้องอยู่ทุกช็อตตั้งแต่ฉาก 1 ถึง 8 ตอนนั่งให้พิงไม้ค้ำไว้ข้างตัว</li>
+          <li>ชุดตำรวจใช้เฉพาะช่วงเล่าอดีตในฉาก 1 ตั้งแต่ขาหักเป็นต้นไป เฝือกกับไม้ค้ำยันต้องอยู่ทุกช็อต ตอนนั่งให้พิงไม้ค้ำไว้ข้างตัว</li>
+          <li>เครื่องแบบเป็นแบบสมมติ สีกากีตามตำรวจไทย แต่ตราและป้ายไม่ลอกของจริง</li>
         </ul>
       </figure>
     </div>
@@ -257,7 +340,7 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
 
   <!-- ===================== GIRLFRIEND ===================== -->
   <section>
-    <h2>แฟนสาว<span>นักแสดงละครเวที ราว 30 ปี · คบกันมา 5 ปี · ขี้เล่น แสดงสีหน้าเก่ง</span></h2>
+    <h2>แฟนสาว<span>นักแสดงละครเวที ราว 30 ปี · คบกันมา 5 ปี · เซ็กซี่ มั่นใจ ขี้แกล้ง</span></h2>
     <div class="panels">
       <figure>
         <svg viewBox="0 0 400 900" role="img" aria-label="แฟนสาวเต็มตัว หน้าตรง">
@@ -266,70 +349,74 @@ ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; col
           <ellipse cx="200" cy="818" rx="76" ry="10" fill="#10131b"/>
           <g transform="translate(200,170) scale(1.32)">
             <use href="#gback"/>
-            <!-- wide-leg charcoal trousers -->
-            <path d="M -40,226 L 40,226 L 47,470 L 6,470 L 2,300 L -2,300 L -6,470 L -47,470 Z" fill="#2a2730"/>
-            <path d="M -40,226 L -26,226 L -32,470 L -47,470 Z" fill="#3b3743"/>
-            <path d="M 24,232 L 40,226 L 47,470 L 32,470 C 30,380 28,300 24,232 Z" fill="#1d1b22"/>
-            <!-- ankles + black ballet flats -->
-            <rect x="-29" y="468" width="13" height="8" fill="#ecc0a0"/>
-            <rect x="16" y="468" width="13" height="8" fill="#dcae90"/>
-            <path d="M -37,475 L -10,475 C -8,482 -10,488 -14,489 L -38,489 C -42,488 -41,479 -37,475 Z" fill="#17151b"/>
-            <path d="M 37,475 L 10,475 C 8,482 10,488 14,489 L 38,489 C 42,488 41,479 37,475 Z" fill="#111015"/>
-            <!-- black tee underneath -->
-            <path d="M -18,50 L 18,50 L 22,232 L -22,232 Z" fill="#1f1d24"/>
-            <path d="M -18,50 L -8,50 L -10,232 L -22,232 Z" fill="#2b2932"/>
-            <!-- hands -->
-            <path d="M -53,226 L -40,226 C -39,240 -41,252 -46,254 C -52,254 -55,242 -53,226 Z" fill="#f6d6bc"/>
-            <path d="M 53,226 L 40,226 C 39,240 41,252 46,254 C 52,254 55,242 53,226 Z" fill="#e6b597"/>
-            <!-- oversized mauve cardigan, open front, long hem -->
-            <path d="M -10,48 C -24,50 -40,55 -46,66 L -56,118 L -54,228 L -38,228 L -39,140 L -38,256 L -14,256 L -16,62 Z" fill="#8f6680"/>
-            <path d="M -46,66 C -40,56 -28,51 -18,50 C -26,80 -28,140 -28,256 L -38,256 L -39,140 L -38,228 L -54,228 L -56,118 Z" fill="#a87d97"/>
-            <path d="M 10,48 C 24,50 40,55 46,66 L 56,118 L 54,228 L 38,228 L 39,140 L 38,256 L 14,256 L 16,62 Z" fill="#6f4d63"/>
-            <path d="M 28,52 C 38,55 44,60 46,66 L 56,118 L 54,228 L 44,228 C 44,160 40,90 28,52 Z" fill="#5c3f52"/>
-            <!-- ribbed cuffs + front band -->
-            <rect x="-55" y="220" width="17" height="8" fill="#7c5670"/>
-            <rect x="38" y="220" width="17" height="8" fill="#5c3f52"/>
-            <path d="M -16,62 L -13,62 L -11,256 L -14,256 Z" fill="#7c5670"/>
-            <path d="M 16,62 L 13,62 L 11,256 L 14,256 Z" fill="#5c3f52"/>
-            <rect x="-38" y="250" width="24" height="6" fill="#7c5670"/>
-            <rect x="14" y="250" width="24" height="6" fill="#5c3f52"/>
+            <!-- legs (below the hem and through the slit) -->
+            <path d="M -25,380 L -9,380 L -10,468 L -22,468 Z" fill="#f6d6bc"/>
+            <path d="M -25,380 L -20,380 L -20,468 L -22,468 Z" fill="#fff0e3"/>
+            <path d="M 7,300 L 25,300 L 22,468 L 10,468 Z" fill="#e6b597"/>
+            <path d="M 19,300 L 25,300 L 22,468 L 17,468 Z" fill="#cc9274"/>
+            <!-- black ankle-strap heels -->
+            <path d="M -23,462 L -9,462 L -9,465 L -23,465 Z M 9,462 L 23,462 L 23,465 L 9,465 Z" fill="#141217"/>
+            <path d="M -26,468 L -8,468 C -5,474 -6,479 -10,480 L -22,480 L -24,476 L -24,486 L -27,486 Z" fill="#17151b"/>
+            <path d="M 26,468 L 8,468 C 5,474 6,479 10,480 L 22,480 L 24,476 L 24,486 L 27,486 Z" fill="#111015"/>
+            <!-- bare shoulders + collarbones -->
+            <path d="M -12,48 C -30,50 -42,55 -46,66 L -42,96 L 42,96 L 46,66 C 42,55 30,50 12,48 Z" fill="#f6d6bc"/>
+            <path d="M 18,50 C 32,53 43,58 46,66 L 42,96 L 30,96 C 32,80 28,62 18,50 Z" fill="#e6b597"/>
+            <path d="M -22,66 Q -12,70 -4,68 M 22,66 Q 12,70 4,68" fill="none" stroke="#e0ad90" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- plum satin slip dress, cowl neck, midi with side slit -->
+            <path d="M -31,82 C -20,92 -10,98 0,100 C 10,98 20,92 31,82 L 35,112 C 33,132 27,148 24,162 C 32,182 38,202 38,222 L 40,384 L 25,384 L 25,300 L 7,300 L 7,384 L -40,384 L -38,222 C -38,202 -32,182 -24,162 C -27,148 -33,132 -35,112 Z" fill="#6e2a48"/>
+            <path d="M -31,82 C -26,88 -21,92 -16,94 C -22,120 -22,140 -16,162 C -24,186 -28,220 -26,384 L -40,384 L -38,222 C -38,202 -32,182 -24,162 C -27,148 -33,132 -35,112 Z" fill="#8e3d60"/>
+            <path d="M 18,94 C 24,90 28,86 31,82 L 35,112 C 33,132 27,148 24,162 C 32,182 38,202 38,222 L 40,384 L 30,384 C 30,280 28,200 22,166 C 26,140 24,116 18,94 Z" fill="#521e36"/>
+            <!-- cowl folds + satin sheen -->
+            <path d="M -20,92 Q 0,108 20,92" fill="none" stroke="#521e36" stroke-width="1.6"/>
+            <path d="M -12,124 C -14,150 -12,170 -6,190 C -10,170 -10,148 -8,124 Z" fill="#a85678" opacity=".7"/>
+            <!-- thin straps -->
+            <path d="M -27,84 L -24,52 M 27,84 L 24,52" stroke="#5e2440" stroke-width="2" stroke-linecap="round"/>
+            <!-- left arm (viewer's left): hand on hip -->
+            <path d="M -50,62 L -39,68 L -51,150 L -63,146 Z" fill="#f6d6bc"/>
+            <path d="M -50,62 L -46,64 L -59,148 L -63,146 Z" fill="#fff0e3"/>
+            <path d="M -63,146 L -51,150 L -33,194 L -41,202 Z" fill="#f6d6bc"/>
+            <path d="M -45,196 C -40,190 -32,190 -29,195 C -30,201 -37,205 -43,203 Z" fill="#ecc0a0"/>
+            <!-- right arm (viewer's right): relaxed, gold bangle -->
+            <path d="M 39,68 L 50,62 L 54,150 L 50,228 L 40,228 L 42,150 Z" fill="#e6b597"/>
+            <path d="M 50,62 L 54,150 L 50,228 L 47,228 L 49,150 L 46,64 Z" fill="#cc9274"/>
+            <path d="M 51,226 L 40,226 C 39,240 41,250 45,252 C 50,252 53,240 51,226 Z" fill="#e6b597"/>
+            <rect x="39.5" y="214" width="12" height="3.2" rx="1.6" fill="#d8b46a"/>
             <use href="#ghead"/>
-            <!-- crew neck of the tee -->
-            <path d="M -10,49 C -7,59 7,59 10,49" fill="none" stroke="#141218" stroke-width="3.5"/>
-            <!-- small silver bar necklace -->
-            <path d="M -8,57 Q 0,66 8,57" fill="none" stroke="#b8bcc8" stroke-width=".8"/>
-            <rect x="-3.5" y="63.5" width="7" height="2" rx="1" fill="#d6d9e2"/>
+            <!-- fine gold chain with a small drop -->
+            <path d="M -9,56 Q 0,74 9,56" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+            <circle cx="0" cy="66.5" r="1.6" fill="#e6c47a"/>
           </g>
         </svg>
-        <figcaption>เต็มตัว · เตี้ยกว่าพระเอกราวครึ่งหัว · คาร์ดิแกนตัวโคร่งสีม่วงมอฟทับเสื้อยืดดำ · กางเกงขากว้างสีถ่าน · รองเท้าบัลเลต์แฟลตสีดำ</figcaption>
+        <figcaption>เต็มตัว · เตี้ยกว่าพระเอกราวครึ่งหัว · ยืนเท้าสะเอวข้างหนึ่ง · เดรสสายเดี่ยวผ้าซาตินสีพลัม คอถ่วง ยาวครึ่งน่อง ผ่าข้าง · ส้นสูงรัดข้อสีดำ · กำไลและสร้อยทองเส้นเล็ก</figcaption>
       </figure>
 
       <figure>
         <svg viewBox="-75 -78 150 150" role="img" aria-label="ใบหน้าแฟนสาวระยะใกล้">
           <rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/>
           <use href="#gback"/>
-          <path d="M -52,72 C -50,58 -32,50 -12,48 L 12,48 C 32,50 50,58 52,72 Z" fill="#8f6680"/>
-          <path d="M -52,72 C -50,60 -36,52 -20,50 C -24,58 -26,66 -26,72 Z" fill="#a87d97"/>
-          <path d="M 22,50 C 36,53 50,60 52,72 L 30,72 C 30,64 28,56 22,50 Z" fill="#6f4d63"/>
-          <path d="M -16,50 L 16,50 L 18,72 L -18,72 Z" fill="#1f1d24"/>
+          <path d="M -54,72 C -52,58 -32,50 -12,48 L 12,48 C 32,50 52,58 54,72 Z" fill="#f6d6bc"/>
+          <path d="M 18,50 C 34,53 52,60 54,72 L 32,72 C 32,64 28,56 18,50 Z" fill="#e6b597"/>
+          <path d="M -24,64 Q -12,68 -4,66 M 24,64 Q 12,68 4,66" fill="none" stroke="#e0ad90" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M -26,72 L -24,52 M 26,72 L 24,52" stroke="#5e2440" stroke-width="2" stroke-linecap="round"/>
           <use href="#ghead"/>
-          <path d="M -10,49 C -7,59 7,59 10,49" fill="none" stroke="#141218" stroke-width="3.5"/>
-          <path d="M -8,57 Q 0,66 8,57" fill="none" stroke="#b8bcc8" stroke-width=".8"/>
-          <rect x="-3.5" y="63.5" width="7" height="2" rx="1" fill="#d6d9e2"/>
+          <path d="M -9,56 Q 0,74 9,56" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+          <circle cx="0" cy="66.5" r="1.6" fill="#e6c47a"/>
         </svg>
-        <figcaption>ใบหน้าระยะใกล้ · ผมบ๊อบประคางมีหน้าม้าตัดตรง · อายไลเนอร์หางเชิดแบบคนอยู่หลังเวที · ไฝใต้ตาซ้ายคือจุดจำ · ต่างหูห่วงทองเล็ก</figcaption>
+        <figcaption>ใบหน้าระยะใกล้ · ผมบ๊อบเรียบแสกลึก ปอยหน้าปัดเฉียง · ตาปรือครึ่งหนึ่ง อายไลเนอร์หางเชิด อายแชโดว์พลัมจาง ๆ · คิ้วยกข้างหนึ่ง · ปากอิ่มยิ้มมุมปาก · ไฝใต้ตาซ้ายคือจุดจำ</figcaption>
         <div class="chips">
           <span><i style="background:#f6d6bc"></i>ผิว</span>
           <span><i style="background:#e6b597"></i>ผิวเงา</span>
           <span><i style="background:#221519"></i>ผม</span>
-          <span><i style="background:#8f6680"></i>คาร์ดิแกน</span>
-          <span><i style="background:#2a2730"></i>กางเกง</span>
-          <span><i style="background:#9c4458"></i>ปาก</span>
+          <span><i style="background:#6e2a48"></i>เดรส</span>
+          <span><i style="background:#17151b"></i>รองเท้า</span>
+          <span><i style="background:#a8485e"></i>ปาก</span>
+          <span><i style="background:#d8b46a"></i>ทอง</span>
         </div>
         <ul class="notes">
           <li>ผมดำอมน้ำตาลแดงเข้ม ทรงบ๊อบ แยกจากตะวันที่ผมยาวตรงได้ทันที</li>
-          <li>ยิ้มมุมปากเล็กน้อยแบบมีแผน ใช้ได้ทั้งตอนแกล้งไม่เชื่อในฉาก 6 และตอนเฉลยในฉาก 7</li>
-          <li>สีม่วงมอฟของคาร์ดิแกนเข้ากับโทนห้องมืดม่วงเทาของช่อง และไม่ทำให้ภาพออกเหลือง</li>
+          <li>สายตามั่นใจแบบนักแสดงที่คุมเวทีได้ ยิ้มมุมปากแบบมีแผน ใช้ได้ทั้งตอนแกล้งไม่เชื่อในฉาก 6 และตอนเฉลยในฉาก 7</li>
+          <li>เซ็กซี่แบบดูแพง เปิดไหล่และขาผ่าข้างพอดี ไม่โป๊ ใช้ได้บนแพลตฟอร์มคลิปสั้น</li>
+          <li>สีพลัมเข้ากับโทนห้องมืดม่วงเทาของช่อง ไม่ทำให้ภาพออกเหลือง</li>
         </ul>
       </figure>
     </div>
