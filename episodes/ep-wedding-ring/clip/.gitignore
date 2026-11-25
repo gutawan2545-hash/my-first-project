@@ -4,3 +4,4 @@ hd_nosub/
 subs/*.png
 bg/
 __pycache__/
+bg_lit/
