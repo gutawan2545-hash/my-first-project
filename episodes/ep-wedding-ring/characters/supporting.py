@@ -9,14 +9,14 @@ def fx(v): return f'{v:.1f}'
 # ================================================================ ชิ้นส่วนใบหน้า
 F_FACES = {
     'oval': 'M -31,-14 C -31,-45 31,-45 31,-14 L 30,6 C 28,22 13,37 0,40 C -13,37 -28,22 -30,6 Z',
-    'long': 'M -29,-16 C -29,-46 29,-46 29,-16 L 28,6 C 26,24 12,40 0,43 C -12,40 -26,24 -28,6 Z',
+    'long': 'M -30,-16 C -30,-46 30,-46 30,-16 L 29,4 C 27,22 12,41 0,45 C -12,41 -27,22 -29,4 Z',
     'round': 'M -32,-12 C -32,-44 32,-44 32,-12 L 31,8 C 29,24 14,37 0,39 C -14,37 -29,24 -31,8 Z',
-    'mature': 'M -31,-14 C -31,-44 31,-44 31,-14 L 31,8 C 29,24 15,38 0,40 C -15,38 -29,24 -31,8 Z',
+    'mature': 'M -31,-14 C -31,-44 31,-44 31,-14 L 30,6 C 28,22 14,39 0,42 C -14,39 -28,22 -30,6 Z',
 }
 M_FACES = {
-    'normal': 'M -32,-14 C -32,-46 32,-46 32,-14 L 31,4 C 29,20 14,36 0,40 C -14,36 -29,20 -31,4 Z',
+    'normal': 'M -32,-14 C -32,-46 32,-46 32,-14 L 32,4 C 31,18 18,36 0,43 C -18,36 -31,18 -32,4 Z',
     'round': 'M -33,-12 C -33,-46 33,-46 33,-12 L 32,8 C 30,24 16,38 0,40 C -16,38 -30,24 -32,8 Z',
-    'square': 'M -33,-14 C -33,-46 33,-46 33,-14 L 33,12 C 32,26 20,38 0,40 C -20,38 -32,26 -33,12 Z',
+    'square': 'M -33,-14 C -33,-46 33,-46 33,-14 L 33,10 C 32,24 22,38 0,43 C -22,38 -32,24 -33,10 Z',
 }
 
 def shade_face(cid, sk):
@@ -135,6 +135,20 @@ def hair_bob_bangs(c, cl, cd):
              f'<path d="M -37,0 L -35,0 L -35,34 L -38,34 Z" fill="{cl}"/>')
     return back, front
 
+def hair_long_tucked(c, cl, cd, sk):
+    back = (f'<path d="M -38,-6 C -40,-44 -22,-63 0,-63 C 22,-63 40,-44 38,-6 L 44,150 L 32,156 L 20,150 L 8,156 L -4,150 L -16,156 L -28,150 L -44,150 Z" fill="{c}"/>'
+            f'<path d="M -38,-6 L -44,150 L -38,152 L -33,0 Z" fill="{cl}"/>')
+    front = (f'<path d="M -38,-6 C -40,-44 -22,-63 0,-63 C 22,-63 40,-44 38,-6 L 31,-6 C 29,-24 16,-38 1,-41 L 0,-41 L -1,-41 C -16,-38 -29,-24 -31,-6 Z" fill="{c}"/>'
+             f'<path d="M -1,-41 C -14,-46 -26,-40 -32,-28 C -26,-38 -14,-43 -1,-41 Z M -26,-48 C -18,-56 -8,-59 -1,-59 C -8,-55 -16,-52 -21,-44 Z" fill="{cl}"/>'
+             f'<path d="M 1,-41 C 14,-46 26,-40 32,-28 C 26,-38 14,-43 1,-41 Z" fill="{cd}"/>'
+             # her right side: straight panel over the shoulder
+             f'<path d="M -38,-8 L -28,-8 C -26,30 -26,80 -24,140 L -31,148 L -40,140 C -41,80 -40,30 -38,-8 Z" fill="{c}"/>'
+             f'<path d="M -36,4 L -33.6,4 C -34,50 -34,100 -33,134 L -35.4,136 C -36,100 -36.4,50 -36,4 Z" fill="{cl}"/>'
+             # her left side: tucked behind the ear, falls behind the shoulder
+             f'<path d="M 31,-8 C 34,-14 37,-10 38,-6 L 40,30 L 33,24 C 33,10 32,0 31,-8 Z" fill="{cd}"/>'
+             f'<path d="M 30,-6 C 36,-8 37,6 31,10 Z" fill="{sk[1]}"/>')
+    return back, front
+
 def hair_mom(c, gray):
     back = (f'<circle cx="0" cy="-54" r="17" fill="{c}"/>'
             f'<path d="M -36,-6 C -38,-44 -20,-62 0,-62 C 20,-62 38,-44 36,-6 L 34,10 L -34,10 Z" fill="{c}"/>')
@@ -191,15 +205,15 @@ def mhair_slick(c, gray):
 def fhead(cid, sk, face, eye_kw, brow_kw, mouth_kind, lip, hair, blush_op=.4, extra='', brow_col='#2c1c1a', mole=None):
     back, front = hair
     fp = F_FACES[face]
-    head = (f'<clipPath id="{cid}"><path d="{fp}"/></clipPath>{neck(sk)}<path d="{fp}" fill="{sk[0]}"/>{shade_face(cid, sk)}'
-            f'{blush(op=blush_op) if blush_op else ""}{brows(brow_col, **brow_kw)}{eyes(cid, **eye_kw)}'
-            f'{mouth(mouth_kind, lip)}{f"<circle cx=\"{mole[0]}\" cy=\"{mole[1]}\" r=\"1\" fill=\"#4a2c24\"/>" if mole else ""}{front}{extra}')
-    return back, head
+    head = (f'<g transform="scale(.87 1.03)"><clipPath id="{cid}"><path d="{fp}"/></clipPath>{neck(sk)}<path d="{fp}" fill="{sk[0]}"/>{shade_face(cid, sk)}'
+            f'{blush(op=blush_op, rx=5.4) if blush_op else ""}{brows(brow_col, **brow_kw)}{eyes(cid, **eye_kw)}'
+            f'{mouth(mouth_kind, lip)}{f"<circle cx=\"{mole[0]}\" cy=\"{mole[1]}\" r=\"1\" fill=\"#4a2c24\"/>" if mole else ""}{front}{extra}</g>')
+    return f'<g transform="scale(.87 1.03)">{back}</g>', head
 
 def mhead(cid, sk, face, eye_kw, brow_kw, mouth_kind, hair_front, extra='', back=''):
     fp = M_FACES[face]
-    head = (f'{ears(sk)}<clipPath id="{cid}"><path d="{fp}"/></clipPath>{neck(sk, True)}<path d="{fp}" fill="{sk[0]}"/>{shade_face(cid, sk)}'
-            f'{brows("#151318", sharp=True, **brow_kw)}{eyes(cid, **eye_kw)}{mouth(mouth_kind)}{hair_front}{extra}')
+    head = (f'<g transform="scale(.88 1.03)">{ears(sk)}<clipPath id="{cid}"><path d="{fp}"/></clipPath>{neck(sk, True)}<path d="{fp}" fill="{sk[0]}"/>{shade_face(cid, sk)}'
+            f'{brows("#151318", sharp=True, **brow_kw)}{eyes(cid, **eye_kw)}{mouth(mouth_kind)}{hair_front}{extra}</g>')
     return back, head
 
 # ================================================================ ตัวผู้หญิง (พิกัดเดียวกับตะวัน เท้าราว y 462)
@@ -294,18 +308,20 @@ SK_MALE_T = ('#ecc4a2', '#d8a682', '#ba8664', '#f8dcc4')
 SILVER, SILVER_L = '#c3c8cf', '#f4f6f9'
 
 def c_woman_black():
-    hb, hf = hair_bob_bangs('#0e0b10', '#2c2834', '#050406')
-    net = ('<path d="M -36,-20 L 36,-20 L 34,6 L -34,6 Z" fill="url(#net)"/>'
-           '<path d="M -36,-20 L 36,-20" stroke="#0a0a0e" stroke-width="1.2"/>'
-           '<ellipse cx="-20" cy="-50" rx="16" ry="6" fill="#0c0b10" transform="rotate(-18 -20 -50)"/><path d="M -30,-56 C -40,-70 -30,-78 -18,-72" fill="none" stroke="#24222c" stroke-width="2"/>')
-    back, head = fhead('wbf', SK_PALE, 'long', dict(iris='#2a1814', lift=1.6, wing=7, lashes=2, smoky='#4a3644', under=True, r=4.3),
-                       dict(inner=-11, outer=-13.6, arch=.4), 'dark', '#7e2232', (hb, hf), blush_op=0, extra=net, brow_col='#141016')
+    hb, hf = hair_long_tucked('#0e0b10', '#34303e', '#060508', SK_PALE)
+    hat = ('<ellipse cx="-18" cy="-52" rx="15" ry="5.4" fill="#0c0b10" transform="rotate(-16 -18 -52)"/>'
+           '<path d="M -30,-56 C -40,-70 -30,-78 -18,-72" fill="none" stroke="#2a2832" stroke-width="2"/>'
+           '<path d="M -32,-56 L 6,-56 L 4,-30 C -8,-26 -22,-28 -32,-34 Z" fill="url(#net)" opacity=".7"/>')
+    ear = (f'<circle cx="31.4" cy="10" r="1.4" fill="{SILVER_L}"/><path d="M 31.4,11.4 V16" stroke="#c3c8cf" stroke-width=".8"/>'
+           '<path d="M 31.4,16 l 2.4,3.6 l -2.4,6.4 l -2.4,-6.4 Z" fill="#dde6f6"/><path d="M 31.4,16 l 2.4,3.6 l -2.4,6.4 Z" fill="#aebbd4"/>')
+    back, head = fhead('wbf', SK_PALE, 'long', dict(iris='#2a1814', lift=1.1, wing=5.4, lashes=2, smoky='#8a6474', r=4.6),
+                       dict(inner=-11.4, outer=-13, arch=1.0, t=2), 'small', '#8e2236', (hb, hf), blush_op=.15, extra=hat + ear, brow_col='#141016', mole=None)
     gloves = ('<path d="M -51,150 L -40,150 L -40,212 L -51,212 Z M 51,150 L 40,150 L 40,212 L 51,212 Z" fill="#141218"/>'
               '<path d="M -51,210 L -40,210 C -39,224 -41,236 -46,238 C -51,238 -53,226 -51,210 Z M 51,210 L 40,210 C 39,224 41,236 46,238 C 51,238 53,226 51,210 Z" fill="#141218"/>'
               '<path d="M -51,150 L -40,150 L -40,154 L -51,154 Z M 51,150 L 40,150 L 40,154 L 51,154 Z" fill="#2c2a34"/>'
               f'<rect x="41.5" y="224" width="7" height="2.6" rx="1.2" fill="{SILVER_L}"/><circle cx="45" cy="223.4" r="1.6" fill="#e8f0ff"/>')
-    body = fbody(SK_PALE, ('#16141a', '#2a2832', '#0c0b10'), ('#16141a', '#2a2832', '#0c0b10'), hem=458, flare=48, neckline='high', extra=gloves)
-    return 'ผู้หญิงชุดดำ', 'เจ้าสาวของปีที่แล้ว ผิวซีดอมชมพูเย็น ผมบ็อบดำหน้าม้าตรง ตาเฉี่ยวอายแชโดว์เข้ม มีรอยคล้ำใต้ตา ปากแดงไวน์ ไม่มีแก้มแดง สวมหมวกเล็กมีผ้าตาข่ายคลุมตา เดรสดำคอสูงยาวถึงพื้น ถุงมือดำ และแหวนเงินแบบเดียวกับเจ้าสาวทับถุงมือ', 'f', back, head, body
+    body = fbody(SK_PALE, ('#16141a', '#2a2832', '#0c0b10'), ('#16141a', '#2a2832', '#0c0b10'), hem=458, flare=48, neckline='square', extra=gloves)
+    return 'ผู้หญิงชุดดำ', 'เจ้าสาวของปีที่แล้ว สวยแบบลึกลับ หน้าเรียว ผิวซีดเย็น ผมยาวตรงสีดำแสกกลาง ทัดหูข้างหนึ่ง ตาเฉี่ยวหางตาเชิด อายแชโดว์บาง ๆ ปากทรงสวยสีแดงเข้ม ต่างหูเพชรหยดน้ำ หมวกเล็กมีตาข่ายบางคลุมแค่หน้าผาก เดรสดำคอเหลี่ยมยาวถึงพื้น ถุงมือดำ และแหวนเงินแบบเดียวกับเจ้าสาวทับถุงมือ', 'f', back, head, body
 
 def c_mother():
     hb, hf = hair_mom('#2a2226', '#a39ca6')
@@ -334,7 +350,7 @@ def c_new_bride():
     hb, hf = hair_wavy_shoulder('#3a2620', '#6a4a3c', '#24160f', clip='#f6f2ec')
     veil = '<path d="M -26,-50 C -60,20 -92,180 -104,330 C -60,345 60,345 104,330 C 92,180 60,20 26,-50 Z" fill="#ffffff" opacity=".16"/>'
     crown = ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{c}"/>' for x, y, r, c in ((-24, -47, 3.4, '#fbf6ee'), (-12, -53, 3, '#f8dcd6'), (0, -55, 3.4, '#ffffff'), (12, -53, 3, '#f8dcd6'), (24, -47, 3.4, '#fbf6ee')))
-    back, head = fhead('nbf', SK_FAIR, 'round', dict(iris='#5a3a2c', h=1.08, wing=2.4, lashes=2, r=5.2),
+    back, head = fhead('nbf', SK_FAIR, 'oval', dict(iris='#5a3a2c', h=1.08, wing=2.4, lashes=2, r=5.2),
                        dict(inner=-11.2, outer=-12, arch=1.2, t=1.8), 'small', '#e0707e', (hb, hf), blush_op=.55, extra=crown)
     lace = ''.join(f'<circle cx="{x + (y % 20) / 4}" cy="{y}" r="1.2" fill="#e6dcd0"/>' for x in range(-60, 62, 9) for y in range(160, 452, 14) if abs(x) < 30 + (y - 146) * .2)
     sleeves_sheer = '<path d="M -10,50 L 10,50 C 22,51 34,55 39,64 L 37,84 L -37,84 L -39,64 C -34,55 -22,51 -10,50 Z" fill="#ffffff" opacity=".35"/>'
@@ -344,7 +360,7 @@ def c_new_bride():
 
 def c_bridesmaid():
     hb, hf = hair_wavy_shoulder('#2a1c18', '#5a3e34', '#1a100c')
-    back, head = fhead('bmf', SK_WARM, 'round', dict(iris='#4a2a1e', wing=2.6, lashes=2, r=4.8),
+    back, head = fhead('bmf', SK_WARM, 'oval', dict(iris='#4a2a1e', wing=2.6, lashes=2, r=4.8),
                        dict(inner=-12.6, outer=-13, arch=1.6, t=2), 'grin', '#d06a76', (hb, hf), blush_op=.5)
     phone = ('<rect x="38" y="200" width="14" height="24" rx="2.4" fill="#1e1e26"/><rect x="39.6" y="202" width="10.8" height="18" rx="1.4" fill="#5a78c0"/>'
              '<circle cx="45" cy="221.6" r=".9" fill="#3a3a46"/>')
@@ -363,7 +379,7 @@ def c_guest_w():
 def c_photographer():
     hf = mhair_curtain('#3a2a24', '#5e4438', '#24170f')
     stub = ''.join(f'<circle cx="{x}" cy="{y}" r=".5" fill="#a98a7a"/>' for x in range(-12, 13, 3) for y in (31, 34) if abs(x) < 12)
-    back, head = mhead('phm', SK_MALE_T, 'round', dict(iris='#3a2418', wing=0, lashes=0, crease=True, r=4.4),
+    back, head = mhead('phm', SK_MALE_T, 'normal', dict(iris='#3a2418', wing=0, lashes=0, crease=True, r=4.4),
                        dict(inner=-11.6, outer=-13, t=2.4), 'm_sheepish', hf, extra=stub)
     cam = ('<path d="M -14,52 L -20,120 M 14,52 L 20,120" stroke="#1a1a20" stroke-width="2.4"/>'
            '<rect x="-24" y="116" width="48" height="32" rx="4" fill="#24242c"/><rect x="-24" y="116" width="48" height="8" rx="3" fill="#3a3a46"/>'
@@ -408,7 +424,7 @@ def build():
             full = f'<svg viewBox="0 0 400 900" role="img" aria-label="{name} เต็มตัว"><rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/><ellipse cx="200" cy="815" rx="80" ry="10" fill="#10131b"/><g transform="translate(200,130) scale(1.4)">{back}{body}{head}</g></svg>'
         face = f'<svg viewBox="-75 -84 150 156" role="img" aria-label="หน้า{name}"><rect x="-75" y="-84" width="150" height="156" fill="#1b1f2b"/><g id="face{i}">{back}{body}{head}</g></svg>'
         cards += f'<div class="card"><h2>{i + 1}. {name}</h2><div class="pair"><figure>{full}</figure><figure>{face}</figure></div><figcaption>{note}</figcaption></div>'
-    page = CSS + DEFS + f'''<div class="wrap"><h1>ตัวละครรอง · ตอนงานแต่ง<span>ร่างแรก 9 ตัว · หน้าตรง · แสงกลางจากซ้าย</span></h1><div class="grid">{cards}</div></div>'''
+    page = CSS + DEFS + f'''<div class="wrap"><h1>ตัวละครรอง · ตอนงานแต่ง<span>รอบ 2 · หน้าเรียวลง · หน้าตรง · แสงกลางจากซ้าย</span></h1><div class="grid">{cards}</div></div>'''
     # clipPath ids repeat between the full-body and face panels of a card; make the face copies unique
     import re
     out, n = [], [0]
