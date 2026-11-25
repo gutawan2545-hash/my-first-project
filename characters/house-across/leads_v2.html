@@ -1,0 +1,436 @@
+<title>บ้านตรงข้าม ตัวละครหลัก</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one row per character (full body + face close-up), stacking on phones, then a cast plan. Single dark look, same as the approved character sheets. */
+:root {
+  --stage: #0d0f14;
+  --panel: #1b1f2b;
+  --ink: #d4d6e0;
+  --muted: #80849a;
+  --line: #2a2e3a;
+  --accent: #c9a8ff;
+  --font: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--stage); color: var(--ink); }
+body {
+  font-family: var(--font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 40px;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 36px; }
+header { display: grid; gap: 6px; }
+header p { margin: 0; color: var(--muted); font-size: 13px; }
+h1 { font-size: 20px; font-weight: 500; margin: 0; }
+h2 { font-size: 18px; font-weight: 500; margin: 0; }
+h2 span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 14px; }
+section { display: grid; gap: 14px; }
+.panels { display: grid; grid-template-columns: 4fr 5fr; gap: 16px; align-items: start; }
+@media (max-width: 640px) { .panels { grid-template-columns: 1fr; } }
+.panels.three { grid-template-columns: 1fr 1fr 1.15fr; }
+@media (max-width: 860px) { .panels.three { grid-template-columns: 1fr 1fr; } .panels.three figure:last-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .panels.three { grid-template-columns: 1fr; } }
+figure { margin: 0; min-width: 0; display: grid; gap: 8px; }
+figure svg { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
+figcaption { font-size: 13px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 12px; color: var(--muted); }
+.chips span { display: inline-flex; align-items: center; gap: 6px; }
+.chips i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; box-shadow: 0 0 0 1px var(--line); }
+ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; color: var(--ink); }
+.cast { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.cast div { background: var(--panel); border-radius: 6px; padding: 12px 14px; font-size: 13px; line-height: 1.65; min-width: 0; }
+.cast b { display: block; font-weight: 500; color: var(--accent); margin-bottom: 2px; }
+.cast em { font-style: normal; color: var(--muted); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <!-- ============ พระเอก (อดีตตำรวจสายสืบ) ============ -->
+  <clipPath id="hface"><path d="M -33,-14 C -33,-46 33,-46 33,-14 L 32,8 C 31,22 18,36 0,39 C -18,36 -31,22 -32,8 Z"/></clipPath>
+  <clipPath id="heyeL"><path d="M -22,-2 C -18,-6 -9,-6 -5,-1.5 C -9,0.4 -18,0.4 -22,-2 Z"/></clipPath>
+  <clipPath id="heyeR"><path d="M 22,-2 C 18,-6 9,-6 5,-1.5 C 9,0.4 18,0.4 22,-2 Z"/></clipPath>
+  <g id="hhead">
+    <!-- neck, thicker than James -->
+    <rect x="-11" y="20" width="22" height="38" fill="#ddb08a"/>
+    <path d="M -11,26 L 11,26 L 11,46 Q 0,41 -11,49 Z" fill="#c4916c"/>
+    <!-- ears -->
+    <ellipse cx="-33" cy="-1" rx="5.5" ry="9" fill="#e9bf98"/>
+    <ellipse cx="33" cy="-1" rx="5.5" ry="9" fill="#c99470"/>
+    <path d="M -34,-5 C -36,-1 -35,4 -33,6" fill="none" stroke="#c99470" stroke-width="1.4"/>
+    <!-- face: squarer jaw -->
+    <path d="M -33,-14 C -33,-46 33,-46 33,-14 L 32,8 C 31,22 18,36 0,39 C -18,36 -31,22 -32,8 Z" fill="#e9bf98"/>
+    <g clip-path="url(#hface)">
+      <path d="M 16,-34 C 30,-28 35,-14 33,6 C 31,22 16,36 0,39 C 12,31 20,20 21,4 C 22,-10 20,-22 16,-34 Z" fill="#d6a47e"/>
+      <path d="M 27,-24 L 35,-24 L 35,12 C 33,6 31,0 29,-8 Z" fill="#bb8662"/>
+      <path d="M -35,-24 L -25,-24 L -28,-8 L -35,-6 Z" fill="#dcae88"/>
+      <path d="M -34,-12 C -34,-30 -29,-38 -23,-41 C -29,-32 -30,-20 -30,-10 L -29,8 C -28,20 -22,30 -16,35 C -24,31 -30,21 -32,8 Z" fill="#f6d5b4"/>
+      <path d="M 2,3 L 7,16 L 1,18 Z" fill="#c99470"/>
+      <!-- stubble: flat block, low opacity, no texture -->
+      <path d="M -31,8 C -29,24 -16,36 0,39 C 16,36 29,24 31,8 L 25,11 C 22,22 13,29 0,30 C -13,29 -22,22 -25,11 Z" fill="#5b4a48" opacity=".22"/>
+      <path d="M -9,19 C -4,17 4,17 9,19 L 8,22 C 3,21 -3,21 -8,22 Z" fill="#5b4a48" opacity=".26"/>
+    </g>
+    <!-- brows: thick, straight, a little furrowed (always watching) -->
+    <path d="M -23,-12 L -6,-10.4 L -6.5,-7 L -22.5,-8.6 Z" fill="#1d1719"/>
+    <path d="M 23,-12 L 6,-10.4 L 6.5,-7 L 22.5,-8.6 Z" fill="#1d1719"/>
+    <!-- scar through his right brow (viewer's left): signature mark -->
+    <path d="M -16,-14.5 L -13.5,-5.5" stroke="#f3cfae" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- sharp narrow eyes -->
+    <path d="M -22,-2 C -18,-6 -9,-6 -5,-1.5 C -9,0.4 -18,0.4 -22,-2 Z" fill="#f8f1ea"/>
+    <path d="M 22,-2 C 18,-6 9,-6 5,-1.5 C 9,0.4 18,0.4 22,-2 Z" fill="#ece0d4"/>
+    <g clip-path="url(#heyeL)"><circle cx="-13" cy="-1.6" r="3.8" fill="#24181a"/><circle cx="-14.2" cy="-2.8" r="1" fill="#fff"/></g>
+    <g clip-path="url(#heyeR)"><circle cx="13" cy="-1.6" r="3.8" fill="#24181a"/><circle cx="11.8" cy="-2.8" r="1" fill="#fff"/></g>
+    <path d="M -23,-2 C -18,-7.2 -9,-7.2 -4,-1.6 L -5,-0.9 C -9,-5 -18,-5 -21.6,-1.4 Z" fill="#1d1719"/>
+    <path d="M 23,-2 C 18,-7.2 9,-7.2 4,-1.6 L 5,-0.9 C 9,-5 18,-5 21.6,-1.4 Z" fill="#1d1719"/>
+    <!-- tired under-eye lines -->
+    <path d="M -20,2.4 C -16,4.4 -10,4.4 -6,2.6" fill="none" stroke="#c99470" stroke-width="1"/>
+    <path d="M 20,2.4 C 16,4.4 10,4.4 6,2.6" fill="none" stroke="#b88560" stroke-width="1"/>
+    <!-- faint blush -->
+    <ellipse cx="-19" cy="12" rx="6" ry="3" fill="#d98a74" opacity=".28"/>
+    <ellipse cx="19" cy="12" rx="6" ry="3" fill="#c97c66" opacity=".28"/>
+    <!-- mouth: flat, unimpressed -->
+    <path d="M -7.5,25 Q 0,24 7.5,25.4" fill="none" stroke="#8e5848" stroke-width="2" stroke-linecap="round"/>
+    <path d="M -3.5,28.2 Q 0,29.4 3.5,28.2" fill="none" stroke="#d6a47e" stroke-width="1.4" stroke-linecap="round"/>
+    <!-- hair: short crop, textured top, faded sides -->
+    <path d="M -33.5,-22 L -30,-24 L -30.5,-9 L -33,-11 Z" fill="#3a3034"/>
+    <path d="M 33.5,-22 L 30,-24 L 30.5,-9 L 33,-11 Z" fill="#2e2629"/>
+    <path d="M -34,-20 C -37,-46 -24,-61 -2,-62 C 22,-62 37,-47 34,-20 L 30,-25 C 26,-32 18,-35 10,-33 L 4,-37 L -4,-32 L -12,-35 L -18,-31 C -24,-31 -28,-28 -30,-24 Z" fill="#1a1517"/>
+    <path d="M -28,-44 C -21,-54 -9,-58 2,-58 C -8,-53 -17,-46 -23,-37 Z" fill="#3c3236"/>
+    <path d="M 2,-56 L 8,-60 L 6,-52 Z M -10,-58 L -6,-63 L -4,-56 Z M 14,-55 L 20,-58 L 17,-50 Z" fill="#1a1517"/>
+  </g>
+
+  <!-- ============ แฟนสาว (นักแสดงละครเวที) ============ -->
+  <clipPath id="gface"><path d="M -30,-14 C -30,-45 30,-45 30,-14 L 29,6 C 27,22 13,36 0,39 C -13,36 -27,22 -29,6 Z"/></clipPath>
+  <clipPath id="geyeL"><path d="M -21,-1 C -18,-7 -8,-7.5 -4,-2.5 C -8,2.5 -18,2.5 -21,-1 Z"/></clipPath>
+  <clipPath id="geyeR"><path d="M 21,-1 C 18,-7 8,-7.5 4,-2.5 C 8,2.5 18,2.5 21,-1 Z"/></clipPath>
+  <g id="gback">
+    <!-- chin-length bob, back mass -->
+    <path d="M -40,-6 C -42,-46 -22,-63 0,-63 C 22,-63 42,-46 40,-6 L 41,30 C 34,38 26,37 22,33 L -22,33 C -26,37 -34,38 -41,30 Z" fill="#221519"/>
+  </g>
+  <g id="ghead">
+    <rect x="-7.5" y="20" width="15" height="38" fill="#ecc0a0"/>
+    <path d="M -7.5,26 L 7.5,26 L 7.5,45 Q 0,40 -7.5,48 Z" fill="#cf9a7a"/>
+    <path d="M -30,-14 C -30,-45 30,-45 30,-14 L 29,6 C 27,22 13,36 0,39 C -13,36 -27,22 -29,6 Z" fill="#f6d6bc"/>
+    <g clip-path="url(#gface)">
+      <path d="M 16,-34 C 29,-28 32,-14 30,4 C 28,22 14,36 0,39 C 11,31 19,20 20,4 C 21,-10 19,-22 16,-34 Z" fill="#e6b597"/>
+      <path d="M 24,-24 L 32,-24 L 32,10 C 30,6 28,0 26,-8 Z" fill="#cc9274"/>
+      <path d="M -32,-24 L -22,-24 L -25,-8 L -32,-6 Z" fill="#efc7aa"/>
+      <path d="M -31,-12 C -31,-30 -26,-38 -20,-41 C -26,-32 -27,-20 -27,-10 L -26,6 C -25,18 -19,28 -13,34 C -21,30 -27,20 -29,6 Z" fill="#fff0e3"/>
+      <path d="M 2,4 L 6,14.5 L 1,16 Z" fill="#dca084"/>
+    </g>
+    <ellipse cx="-17.5" cy="12" rx="6.5" ry="3.4" fill="#e98c8c" opacity=".5"/>
+    <ellipse cx="17.5" cy="12" rx="6.5" ry="3.4" fill="#dc8080" opacity=".5"/>
+    <!-- brows: defined arches, her left one lifted (confident, teasing) -->
+    <path d="M -22,-11 C -17,-15 -10,-15.4 -5,-13 L -5.5,-11.2 C -10,-13.2 -16,-12.6 -21,-9.6 Z" fill="#2a1a1c"/>
+    <path d="M 22,-13.5 C 18,-19 10,-19.4 5,-15.5 L 5.5,-13.6 C 10,-16.8 17,-16.4 21,-12 Z" fill="#2a1a1c"/>
+    <!-- eyes: almond with a winged liner (stage habit) -->
+    <path d="M -21,-1 C -18,-7 -8,-7.5 -4,-2.5 C -8,2.5 -18,2.5 -21,-1 Z" fill="#fbf3ec"/>
+    <path d="M 21,-1 C 18,-7 8,-7.5 4,-2.5 C 8,2.5 18,2.5 21,-1 Z" fill="#f0e4da"/>
+    <g clip-path="url(#geyeL)"><circle cx="-12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="-12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="-14.2" cy="-2.7" r="1.3" fill="#fff"/></g>
+    <g clip-path="url(#geyeR)"><circle cx="12.5" cy="-1" r="4.6" fill="#3d2420"/><circle cx="12.5" cy="-1" r="2.1" fill="#160c0c"/><circle cx="10.8" cy="-2.7" r="1.3" fill="#fff"/></g>
+    <!-- heavy lids: half-closed, sultry -->
+    <path d="M -22.5,-1 C -18.5,-9.5 -8,-10 -2.5,-3 L -3.8,-1.6 C -8.4,-4.6 -17,-4.4 -21.2,0.6 Z" fill="#f0c8ac"/>
+    <path d="M 22.5,-1 C 18.5,-9.5 8,-10 2.5,-3 L 3.8,-1.6 C 8.4,-4.6 17,-4.4 21.2,0.6 Z" fill="#e2b496"/>
+    <path d="M -22,0.4 C -17.5,-5.6 -8.6,-5.8 -3,-2 L -4.2,-0.9 C -8.6,-3.4 -16.8,-3.4 -20.6,1.4 Z" fill="#1b1015"/>
+    <path d="M -21,0.4 L -28.5,-4 L -21,2 Z" fill="#1b1015"/>
+    <path d="M 22,0.4 C 17.5,-5.6 8.6,-5.8 3,-2 L 4.2,-0.9 C 8.6,-3.4 16.8,-3.4 20.6,1.4 Z" fill="#1b1015"/>
+    <path d="M 21,0.4 L 28.5,-4 L 21,2 Z" fill="#1b1015"/>
+    <!-- soft plum shadow on the lids -->
+    <path d="M -20,-3 C -16,-7.6 -9,-7.8 -5,-4 C -9,-5.4 -16,-5.2 -20,-3 Z" fill="#8e5a70" opacity=".45"/>
+    <path d="M 20,-3 C 16,-7.6 9,-7.8 5,-4 C 9,-5.4 16,-5.2 20,-3 Z" fill="#7a4a5e" opacity=".45"/>
+    <path d="M -18.5,2.8 C -14.5,4.4 -9.5,4.2 -6,2.2" fill="none" stroke="#c48a74" stroke-width="1"/>
+    <path d="M 18.5,2.8 C 14.5,4.4 9.5,4.2 6,2.2" fill="none" stroke="#b67c66" stroke-width="1"/>
+    <!-- beauty mark under her left eye (viewer's right): signature mark -->
+    <circle cx="17" cy="6.5" r="1.1" fill="#5a3430"/>
+    <!-- fuller lips, closed smirk lifted on one side -->
+    <path d="M -8,22.4 C -4.5,20 -1.5,20.4 0,21.4 C 1.5,20.2 4.5,19 8.6,19.6 C 4.6,22.2 -3,23.2 -8,22.4 Z" fill="#8e3a50"/>
+    <path d="M -8,22.4 C -3,23.2 4.6,22.2 8.6,19.6 C 7,25.8 -4,27.4 -8,22.4 Z" fill="#a8485e"/>
+    <path d="M -3,24.4 C -1,25.4 2,25.2 3.6,24" fill="none" stroke="#d47a8a" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M 8.6,19.6 L 10,18.6" stroke="#cc9274" stroke-width="1.1" stroke-linecap="round"/>
+    <!-- small gold hoops -->
+    <circle cx="-31" cy="12" r="3.4" fill="none" stroke="#d8b46a" stroke-width="1.3"/>
+    <circle cx="31" cy="12" r="3.4" fill="none" stroke="#b8944e" stroke-width="1.3"/>
+    <!-- sleek bob, deep side part, one big swept panel over the forehead -->
+    <path d="M -38,-6 C -40,-44 -22,-61 0,-61 C 22,-61 40,-44 38,-6 L 31,-12 C 30,-24 25,-33 16,-38 C 6,-31 -10,-25 -22,-16 L -31,-4 Z" fill="#221519"/>
+    <path d="M -30,-42 C -22,-54 -10,-58 0,-58 C -10,-53 -20,-46 -26,-34 Z" fill="#4a2d36"/>
+    <path d="M 14,-36 C 2,-30 -12,-24 -24,-13 L -27,-9 C -16,-22 -2,-30 12,-38 Z" fill="#4a2d36"/>
+    <path d="M 16,-38 L 18,-56 L 20,-37 Z" fill="#33212a"/>
+    <!-- side panels that end at the jaw, curling in -->
+    <path d="M -39,-10 L -30,-12 C -31,8 -30,22 -24,33 C -30,36 -37,35 -42,30 C -41,16 -40,4 -39,-10 Z" fill="#221519"/>
+    <path d="M -38,0 L -36,0 C -37,14 -36,24 -34,31 L -37,31 C -38,22 -38,12 -38,0 Z" fill="#4a2d36"/>
+    <path d="M 39,-10 L 30,-12 C 31,8 30,22 24,33 C 30,36 37,35 42,30 C 41,16 40,4 39,-10 Z" fill="#1a1013"/>
+  </g>
+</defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>บ้านตรงข้าม · ตัวละครหลักชุดใหม่</h1>
+    <p>หน้าตรง · แสงกลางส่องจากซ้าย · ลายเส้นและวิธีลงเงาเดียวกับแผ่นเจมส์และตะวัน แต่หน้าตา ทรงผม และชุดใหม่ทั้งหมด</p>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section>
+    <h2>พระเอก<span>อดีตตำรวจสายสืบ ราว 32 ปี · ชุดอยู่บ้านกับชุดเครื่องแบบ</span></h2>
+    <div class="panels three">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกเต็มตัว หน้าตรง ถือไม้ค้ำยัน ขาขวาเข้าเฝือก">
+          <rect width="400" height="900" fill="#1b1f2b"/>
+          <rect y="760" width="400" height="140" fill="#161a24"/>
+          <ellipse cx="200" cy="818" rx="118" ry="11" fill="#10131b"/>
+          <g transform="translate(200,124) scale(1.4)">
+            <!-- crutches (behind body): aluminium rails, grey pads -->
+            <g>
+              <rect x="-72" y="118" width="4.5" height="370" fill="#a3a9b6"/>
+              <rect x="-72" y="118" width="1.6" height="370" fill="#c9ced8"/>
+              <rect x="67.5" y="118" width="4.5" height="370" fill="#7d8391"/>
+              <rect x="-76" y="110" width="13" height="10" rx="4" fill="#4a4e5c"/>
+              <rect x="63" y="110" width="13" height="10" rx="4" fill="#3a3d49"/>
+              <rect x="-73.5" y="484" width="7.5" height="12" rx="2.5" fill="#20222b"/>
+              <rect x="66" y="484" width="7.5" height="12" rx="2.5" fill="#191b22"/>
+              <!-- hand grips -->
+              <rect x="-70" y="243" width="18" height="6" rx="2" fill="#2c2f3a"/>
+              <rect x="52" y="243" width="18" height="6" rx="2" fill="#24262f"/>
+            </g>
+            <!-- left leg (viewer's left): sweatpants to the ankle -->
+            <path d="M -44,228 L 2,228 L 2,292 L -6,462 L -38,462 L -46,300 Z" fill="#2f3442"/>
+            <path d="M -44,228 L -27,228 L -30,300 L -28,462 L -38,462 L -46,300 Z" fill="#424a5c"/>
+            <rect x="-38" y="458" width="32" height="12" rx="2" fill="#272b36"/>
+            <rect x="-30" y="469" width="15" height="10" fill="#ddb08a"/>
+            <path d="M -42,478 L -6,478 C -4,486 -6,493 -10,494 L -44,494 C -48,493 -47,483 -42,478 Z" fill="#20232f"/>
+            <path d="M -41,478 L -7,478 L -8,484 L -42,484 Z" fill="#3b4256"/>
+            <!-- right leg: pant leg cut at the knee, cast below (foot lifted a little) -->
+            <path d="M -2,228 L 44,228 L 46,300 L 44,330 L 4,330 L -2,292 Z" fill="#2f3442"/>
+            <path d="M 26,232 L 44,228 L 46,300 L 44,330 L 32,330 C 32,290 30,256 26,232 Z" fill="#232733"/>
+            <path d="M 4,326 L 44,326 L 44,334 L 4,334 Z" fill="#232733"/>
+            <path d="M 6,334 L 42,334 L 40,462 C 42,476 38,484 30,485 L 13,485 C 7,484 5,476 7,462 Z" fill="#e8e5e0"/>
+            <path d="M 30,334 L 42,334 L 40,462 C 42,476 38,484 30,485 L 26,485 C 32,470 33,400 30,334 Z" fill="#c8c4be"/>
+            <path d="M 6,334 L 12,334 L 12,462 L 8,470 C 6,464 6,440 6,334 Z" fill="#f7f5f2"/>
+            <path d="M 7,372 L 41,370 M 7,410 L 41,408 M 7,446 L 40,444" stroke="#cfcbc5" stroke-width="1.2"/>
+            <!-- toes peeking out -->
+            <path d="M 11,484 C 11,490 15,492 18,490 L 19,484 Z M 19,484 C 19,490 23,491 26,489 L 26,484 Z M 26,484 C 27,489 30,489 32,486 L 32,484 Z" fill="#ddb08a"/>
+            <!-- arms -->
+            <path d="M -59,114 L -44,118 L -44,170 L -48,240 L -61,240 L -62,170 Z" fill="#e9bf98"/>
+            <path d="M -59,114 L -54,115 L -57,240 L -61,240 L -62,170 Z" fill="#f6d5b4"/>
+            <path d="M 59,114 L 44,118 L 44,170 L 48,240 L 61,240 L 62,170 Z" fill="#d6a47e"/>
+            <path d="M 59,114 L 54,115 L 57,240 L 61,240 L 62,170 Z" fill="#bb8662"/>
+            <!-- hands closed around the grips -->
+            <path d="M -62,236 L -47,236 C -45,244 -46,254 -50,256 L -60,256 C -64,252 -64,244 -62,236 Z" fill="#e9bf98"/>
+            <path d="M -50,240 L -47,240 C -46,247 -47,252 -50,254 Z" fill="#d6a47e"/>
+            <path d="M 62,236 L 47,236 C 45,244 46,254 50,256 L 60,256 C 64,252 64,244 62,236 Z" fill="#d6a47e"/>
+            <path d="M 50,240 L 47,240 C 46,247 47,252 50,254 Z" fill="#bb8662"/>
+            <!-- olive tee, broader shoulders -->
+            <path d="M -13,49 L 13,49 C 30,51 45,56 50,66 L 61,116 L 44,122 L 45,232 L -45,232 L -44,122 L -61,116 L -50,66 C -45,56 -30,51 -13,49 Z" fill="#4b5a46"/>
+            <path d="M -50,66 C -45,56 -30,51 -19,50 C -27,72 -31,110 -30,232 L -45,232 L -44,122 L -61,116 Z" fill="#62735b"/>
+            <path d="M 21,50 C 34,53 46,58 50,66 L 61,116 L 44,122 L 45,232 L 28,232 C 30,180 30,100 21,50 Z" fill="#35412f"/>
+            <path d="M -44,122 L -40,124 L -42,152 Z" fill="#35412f"/>
+            <path d="M 44,122 L 40,124 L 40,162 Z" fill="#29321f"/>
+            <!-- chest pocket -->
+            <path d="M -30,84 L -14,84 L -14,100 L -30,100 Z" fill="#435140"/>
+            <path d="M -30,84 L -14,84 L -14,87 L -30,87 Z" fill="#35412f"/>
+            <use href="#hhead"/>
+            <path d="M -11,56 L 11,56 L 11,60 L -11,60 Z" fill="#4b5a46"/>
+            <path d="M -13,49 C -9,61 9,61 13,49" fill="none" stroke="#323d2d" stroke-width="4"/>
+          </g>
+        </svg>
+        <figcaption>ชุดอยู่บ้าน (ช่วงพักขา) · สูงราว 5.8 หัว · เสื้อยืดเขียวมะกอก · กางเกงวอร์ม ขาขวาพับไว้เหนือเฝือก · ไม้ค้ำยันสองข้าง</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกในชุดเครื่องแบบตำรวจ เต็มตัว หน้าตรง">
+          <rect width="400" height="900" fill="#1b1f2b"/>
+          <rect y="760" width="400" height="140" fill="#161a24"/>
+          <ellipse cx="200" cy="818" rx="80" ry="10" fill="#10131b"/>
+          <g transform="translate(200,124) scale(1.4)">
+            <!-- khaki trousers -->
+            <path d="M -44,230 L 44,230 L 46,300 L 39,462 L 9,462 L 2,292 L -2,292 L -9,462 L -39,462 L -46,300 Z" fill="#7a5e40"/>
+            <path d="M -44,230 L -27,230 L -30,300 L -28,462 L -39,462 L -46,300 Z" fill="#92755a"/>
+            <path d="M 24,238 L 44,230 L 46,300 L 39,462 L 28,462 C 30,380 28,300 24,238 Z" fill="#5c452e"/>
+            <path d="M -2,292 L 2,292 L 6,340 L -6,340 Z" fill="#5c452e"/>
+            <!-- polished black shoes -->
+            <path d="M -42,460 L -8,460 C -5,470 -6,478 -11,480 L -44,480 C -48,478 -47,466 -42,460 Z" fill="#15151a"/>
+            <path d="M -38,464 L -26,464 L -28,468 L -39,468 Z" fill="#4a4c58"/>
+            <path d="M 42,460 L 8,460 C 5,470 6,478 11,480 L 44,480 C 48,478 47,466 42,460 Z" fill="#0f0f13"/>
+            <!-- arms below short sleeves -->
+            <path d="M -60,136 L -46,138 L -45,180 L -47,236 L -59,236 L -61,180 Z" fill="#e9bf98"/>
+            <path d="M -60,136 L -55,137 L -56,236 L -59,236 L -61,180 Z" fill="#f6d5b4"/>
+            <path d="M 60,136 L 46,138 L 45,180 L 47,236 L 59,236 L 61,180 Z" fill="#d6a47e"/>
+            <path d="M 60,136 L 55,137 L 56,236 L 59,236 L 61,180 Z" fill="#bb8662"/>
+            <path d="M -60,234 L -46,234 C -45,248 -47,262 -53,264 C -59,264 -62,250 -60,234 Z" fill="#e9bf98"/>
+            <path d="M 60,234 L 46,234 C 45,248 47,262 53,264 C 59,264 62,250 60,234 Z" fill="#d6a47e"/>
+            <!-- khaki uniform shirt, tucked in -->
+            <path d="M -13,49 L 13,49 C 30,51 45,56 50,66 L 62,138 L 45,142 L 45,230 L -45,230 L -45,142 L -62,138 L -50,66 C -45,56 -30,51 -13,49 Z" fill="#8a6c4a"/>
+            <path d="M -50,66 C -45,56 -30,51 -19,50 C -27,72 -31,110 -30,230 L -45,230 L -45,142 L -62,138 Z" fill="#a38563"/>
+            <path d="M 21,50 C 34,53 46,58 50,66 L 62,138 L 45,142 L 45,230 L 28,230 C 30,180 30,100 21,50 Z" fill="#6a5136"/>
+            <!-- sleeve hems -->
+            <path d="M -62,132 L -45,136 L -45,142 L -62,138 Z" fill="#7a5e40"/>
+            <path d="M 62,132 L 45,136 L 45,142 L 62,138 Z" fill="#5c452e"/>
+            <!-- placket + buttons -->
+            <path d="M -2,60 L 2,60 L 2,230 L -2,230 Z" fill="#7a5e40"/>
+            <circle cx="0" cy="104" r="1.6" fill="#c7a46a"/><circle cx="0" cy="140" r="1.6" fill="#c7a46a"/><circle cx="0" cy="176" r="1.6" fill="#c7a46a"/><circle cx="0" cy="210" r="1.6" fill="#b08f58"/>
+            <!-- chest pockets with flaps -->
+            <path d="M -34,92 L -12,92 L -12,118 L -34,118 Z" fill="#9a7b58"/>
+            <path d="M -35,88 L -11,88 L -11,96 L -23,99 L -35,96 Z" fill="#7a5e40"/>
+            <path d="M 34,92 L 12,92 L 12,118 L 34,118 Z" fill="#76593c"/>
+            <path d="M 35,88 L 11,88 L 11,96 L 23,99 L 35,96 Z" fill="#5c452e"/>
+            <!-- name plate (viewer's left) + generic silver badge (viewer's right) -->
+            <rect x="-34" y="78" width="22" height="6" rx="1" fill="#17161c"/>
+            <rect x="-31" y="80.4" width="16" height="1.3" fill="#e2e4ea"/>
+            <path d="M 23,64 L 31,67 L 30,76 C 29,80 26,82 23,83 C 20,82 17,80 16,76 L 15,67 Z" fill="#c4c9d4"/>
+            <path d="M 23,64 L 31,67 L 30,76 C 29,80 26,82 23,83 Z" fill="#9aa0ad"/>
+            <circle cx="23" cy="73" r="2.6" fill="#7d8491"/>
+            <!-- shoulder boards -->
+            <path d="M -48,60 L -22,52 L -20,58 L -46,67 Z" fill="#1f2433"/>
+            <path d="M -40,61 L -34,59 M -33,59 L -27,57" stroke="#c4c9d4" stroke-width="1.6"/>
+            <path d="M 48,60 L 22,52 L 20,58 L 46,67 Z" fill="#171b27"/>
+            <path d="M 40,61 L 34,59 M 33,59 L 27,57" stroke="#9aa0ad" stroke-width="1.6"/>
+            <!-- black belt, plain buckle -->
+            <rect x="-45" y="224" width="90" height="10" fill="#17161c"/>
+            <rect x="-45" y="224" width="30" height="3" fill="#2b2a33"/>
+            <rect x="-7" y="223" width="14" height="12" rx="1.5" fill="#b9bec9"/>
+            <rect x="-4" y="226" width="8" height="6" fill="#17161c"/>
+            <use href="#hhead"/>
+            <!-- collar -->
+            <path d="M -13,49 L -3,64 L -20,60 Z" fill="#a38563"/>
+            <path d="M 13,49 L 3,64 L 20,60 Z" fill="#6a5136"/>
+            <!-- peaked cap: khaki crown, black band and visor, plain emblem -->
+            <path d="M -42,-38 C -44,-70 44,-70 42,-38 Z" fill="#8a6c4a"/>
+            <path d="M -42,-38 C -44,-58 -30,-66 -14,-67 C -26,-60 -30,-50 -30,-38 Z" fill="#a38563"/>
+            <path d="M 18,-66 C 34,-63 44,-56 42,-38 L 30,-38 C 30,-50 26,-60 18,-66 Z" fill="#6a5136"/>
+            <rect x="-38" y="-40" width="76" height="9" fill="#141418"/>
+            <path d="M -36,-31 C -20,-22 20,-22 36,-31 L 32,-27 C 16,-19 -16,-19 -32,-27 Z" fill="#0e0e12"/>
+            <path d="M -30,-29 C -16,-24 -4,-23 4,-23.4" fill="none" stroke="#3a3a46" stroke-width="1.2"/>
+            <circle cx="0" cy="-47" r="5.5" fill="#c7a46a"/>
+            <circle cx="0" cy="-47" r="2.6" fill="#8a6c4a"/>
+          </g>
+        </svg>
+        <figcaption>ชุดเครื่องแบบตำรวจ (ฉาก 1 ช่วงเล่าชีวิตก่อนขาหัก) · เสื้อกากีแขนสั้นเหน็บในกางเกง · หมวกแก๊ป · ป้ายชื่อ · ตราโล่สีเงินแบบสมมติ · เข็มขัดดำ รองเท้าหนังดำ ยังไม่มีเฝือก</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="-75 -78 150 150" role="img" aria-label="ใบหน้าพระเอกระยะใกล้">
+          <rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/>
+          <path d="M -54,72 C -52,58 -32,50 -13,49 L 13,49 C 32,50 52,58 54,72 Z" fill="#4b5a46"/>
+          <path d="M -54,72 C -52,60 -36,52 -21,50 C -25,58 -27,66 -27,72 Z" fill="#62735b"/>
+          <path d="M 23,50 C 38,53 52,60 54,72 L 31,72 C 31,64 29,56 23,50 Z" fill="#35412f"/>
+          <use href="#hhead"/>
+          <path d="M -11,56 L 11,56 L 11,60 L -11,60 Z" fill="#4b5a46"/>
+          <path d="M -13,49 C -9,61 9,61 13,49" fill="none" stroke="#323d2d" stroke-width="4"/>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · ตาเรียวคม คิ้วหนาตรงขมวดเล็กน้อย · หนวดเคราจาง ๆ เป็นบล็อกสีเดียว · รอยแผลเป็นผ่าคิ้วขวาคือจุดจำ</figcaption>
+        <div class="chips">
+          <span><i style="background:#e9bf98"></i>ผิว</span>
+          <span><i style="background:#d6a47e"></i>ผิวเงา</span>
+          <span><i style="background:#1a1517"></i>ผม</span>
+          <span><i style="background:#4b5a46"></i>เสื้อ</span>
+          <span><i style="background:#2f3442"></i>กางเกง</span>
+          <span><i style="background:#e8e5e0"></i>เฝือก</span>
+          <span><i style="background:#a3a9b6"></i>ไม้ค้ำยัน</span>
+        </div>
+        <ul class="notes">
+          <li>ผิวสองสีแทนกลาง เข้มกว่าเจมส์ชัดเจน ผมสั้นเกรียนข้าง ข้างบนเป็นปอยสั้น</li>
+          <li>หน้านิ่ง ปากตรง ดูเหนื่อยและเบื่อ ยิ้มยาก ซึ่งตรงกับบุคลิกคนบ้างานที่โดนบังคับพัก</li>
+          <li>ชุดตำรวจใช้เฉพาะช่วงเล่าอดีตในฉาก 1 ตั้งแต่ขาหักเป็นต้นไป เฝือกกับไม้ค้ำยันต้องอยู่ทุกช็อต ตอนนั่งให้พิงไม้ค้ำไว้ข้างตัว</li>
+          <li>เครื่องแบบเป็นแบบสมมติ สีกากีตามตำรวจไทย แต่ตราและป้ายไม่ลอกของจริง</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== GIRLFRIEND ===================== -->
+  <section>
+    <h2>แฟนสาว<span>นักแสดงละครเวที ราว 30 ปี · คบกันมา 5 ปี · เซ็กซี่ มั่นใจ ขี้แกล้ง</span></h2>
+    <div class="panels">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="แฟนสาวเต็มตัว หน้าตรง">
+          <rect width="400" height="900" fill="#1b1f2b"/>
+          <rect y="760" width="400" height="140" fill="#161a24"/>
+          <ellipse cx="200" cy="818" rx="76" ry="10" fill="#10131b"/>
+          <g transform="translate(200,170) scale(1.32)">
+            <use href="#gback"/>
+            <!-- legs (below the hem and through the slit) -->
+            <path d="M -25,380 L -9,380 L -10,468 L -22,468 Z" fill="#f6d6bc"/>
+            <path d="M -25,380 L -20,380 L -20,468 L -22,468 Z" fill="#fff0e3"/>
+            <path d="M 7,300 L 25,300 L 22,468 L 10,468 Z" fill="#e6b597"/>
+            <path d="M 19,300 L 25,300 L 22,468 L 17,468 Z" fill="#cc9274"/>
+            <!-- black ankle-strap heels -->
+            <path d="M -23,462 L -9,462 L -9,465 L -23,465 Z M 9,462 L 23,462 L 23,465 L 9,465 Z" fill="#141217"/>
+            <path d="M -26,468 L -8,468 C -5,474 -6,479 -10,480 L -22,480 L -24,476 L -24,486 L -27,486 Z" fill="#17151b"/>
+            <path d="M 26,468 L 8,468 C 5,474 6,479 10,480 L 22,480 L 24,476 L 24,486 L 27,486 Z" fill="#111015"/>
+            <!-- bare shoulders + collarbones -->
+            <path d="M -12,48 C -30,50 -42,55 -46,66 L -42,96 L 42,96 L 46,66 C 42,55 30,50 12,48 Z" fill="#f6d6bc"/>
+            <path d="M 18,50 C 32,53 43,58 46,66 L 42,96 L 30,96 C 32,80 28,62 18,50 Z" fill="#e6b597"/>
+            <path d="M -22,66 Q -12,70 -4,68 M 22,66 Q 12,70 4,68" fill="none" stroke="#e0ad90" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- plum satin slip dress, cowl neck, midi with side slit -->
+            <path d="M -31,82 C -20,92 -10,98 0,100 C 10,98 20,92 31,82 L 35,112 C 33,132 27,148 24,162 C 32,182 38,202 38,222 L 40,384 L 25,384 L 25,300 L 7,300 L 7,384 L -40,384 L -38,222 C -38,202 -32,182 -24,162 C -27,148 -33,132 -35,112 Z" fill="#6e2a48"/>
+            <path d="M -31,82 C -26,88 -21,92 -16,94 C -22,120 -22,140 -16,162 C -24,186 -28,220 -26,384 L -40,384 L -38,222 C -38,202 -32,182 -24,162 C -27,148 -33,132 -35,112 Z" fill="#8e3d60"/>
+            <path d="M 18,94 C 24,90 28,86 31,82 L 35,112 C 33,132 27,148 24,162 C 32,182 38,202 38,222 L 40,384 L 30,384 C 30,280 28,200 22,166 C 26,140 24,116 18,94 Z" fill="#521e36"/>
+            <!-- cowl folds + satin sheen -->
+            <path d="M -20,92 Q 0,108 20,92" fill="none" stroke="#521e36" stroke-width="1.6"/>
+            <path d="M -12,124 C -14,150 -12,170 -6,190 C -10,170 -10,148 -8,124 Z" fill="#a85678" opacity=".7"/>
+            <!-- thin straps -->
+            <path d="M -27,84 L -24,52 M 27,84 L 24,52" stroke="#5e2440" stroke-width="2" stroke-linecap="round"/>
+            <!-- left arm (viewer's left): hand on hip -->
+            <path d="M -50,62 L -39,68 L -51,150 L -63,146 Z" fill="#f6d6bc"/>
+            <path d="M -50,62 L -46,64 L -59,148 L -63,146 Z" fill="#fff0e3"/>
+            <path d="M -63,146 L -51,150 L -33,194 L -41,202 Z" fill="#f6d6bc"/>
+            <path d="M -45,196 C -40,190 -32,190 -29,195 C -30,201 -37,205 -43,203 Z" fill="#ecc0a0"/>
+            <!-- right arm (viewer's right): relaxed, gold bangle -->
+            <path d="M 39,68 L 50,62 L 54,150 L 50,228 L 40,228 L 42,150 Z" fill="#e6b597"/>
+            <path d="M 50,62 L 54,150 L 50,228 L 47,228 L 49,150 L 46,64 Z" fill="#cc9274"/>
+            <path d="M 51,226 L 40,226 C 39,240 41,250 45,252 C 50,252 53,240 51,226 Z" fill="#e6b597"/>
+            <rect x="39.5" y="214" width="12" height="3.2" rx="1.6" fill="#d8b46a"/>
+            <use href="#ghead"/>
+            <!-- fine gold chain with a small drop -->
+            <path d="M -9,56 Q 0,74 9,56" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+            <circle cx="0" cy="66.5" r="1.6" fill="#e6c47a"/>
+          </g>
+        </svg>
+        <figcaption>เต็มตัว · เตี้ยกว่าพระเอกราวครึ่งหัว · ยืนเท้าสะเอวข้างหนึ่ง · เดรสสายเดี่ยวผ้าซาตินสีพลัม คอถ่วง ยาวครึ่งน่อง ผ่าข้าง · ส้นสูงรัดข้อสีดำ · กำไลและสร้อยทองเส้นเล็ก</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="-75 -78 150 150" role="img" aria-label="ใบหน้าแฟนสาวระยะใกล้">
+          <rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/>
+          <use href="#gback"/>
+          <path d="M -54,72 C -52,58 -32,50 -12,48 L 12,48 C 32,50 52,58 54,72 Z" fill="#f6d6bc"/>
+          <path d="M 18,50 C 34,53 52,60 54,72 L 32,72 C 32,64 28,56 18,50 Z" fill="#e6b597"/>
+          <path d="M -24,64 Q -12,68 -4,66 M 24,64 Q 12,68 4,66" fill="none" stroke="#e0ad90" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M -26,72 L -24,52 M 26,72 L 24,52" stroke="#5e2440" stroke-width="2" stroke-linecap="round"/>
+          <use href="#ghead"/>
+          <path d="M -9,56 Q 0,74 9,56" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+          <circle cx="0" cy="66.5" r="1.6" fill="#e6c47a"/>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · ผมบ๊อบเรียบแสกลึก ปอยหน้าปัดเฉียง · ตาปรือครึ่งหนึ่ง อายไลเนอร์หางเชิด อายแชโดว์พลัมจาง ๆ · คิ้วยกข้างหนึ่ง · ปากอิ่มยิ้มมุมปาก · ไฝใต้ตาซ้ายคือจุดจำ</figcaption>
+        <div class="chips">
+          <span><i style="background:#f6d6bc"></i>ผิว</span>
+          <span><i style="background:#e6b597"></i>ผิวเงา</span>
+          <span><i style="background:#221519"></i>ผม</span>
+          <span><i style="background:#6e2a48"></i>เดรส</span>
+          <span><i style="background:#17151b"></i>รองเท้า</span>
+          <span><i style="background:#a8485e"></i>ปาก</span>
+          <span><i style="background:#d8b46a"></i>ทอง</span>
+        </div>
+        <ul class="notes">
+          <li>ผมดำอมน้ำตาลแดงเข้ม ทรงบ๊อบ แยกจากตะวันที่ผมยาวตรงได้ทันที</li>
+          <li>สายตามั่นใจแบบนักแสดงที่คุมเวทีได้ ยิ้มมุมปากแบบมีแผน ใช้ได้ทั้งตอนแกล้งไม่เชื่อในฉาก 6 และตอนเฉลยในฉาก 7</li>
+          <li>เซ็กซี่แบบดูแพง เปิดไหล่และขาผ่าข้างพอดี ไม่โป๊ ใช้ได้บนแพลตฟอร์มคลิปสั้น</li>
+          <li>สีพลัมเข้ากับโทนห้องมืดม่วงเทาของช่อง ไม่ทำให้ภาพออกเหลือง</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== CAST PLAN ===================== -->
+  <section>
+    <h2>ตัวละครที่จะออกแบบในขั้นถัดไป<span>ยังไม่ได้วาด รอให้ผ่านตัวหลักก่อน</span></h2>
+    <div class="cast">
+      <div><b>สามีบ้านตรงข้าม</b>ราว 35 ปี สูงโปร่ง หวีผมเรียบ เชิ้ตแขนยาวสีเทาเข้ม ยิ้มสุภาพแต่ดูไม่น่าไว้ใจ <em>· ออกฉาก 3, 4, 6, 7 · ช็อตเงยหน้ายิ้มในฉาก 4 คือภาพจำ</em></div>
+      <div><b>ภรรยาบ้านตรงข้าม</b>ราว 30 ปี ผมยาวมัดครึ่งหัว เดรสสีเขียวหม่น ถือบัวรดน้ำ <em>· ออกฉาก 3, 7 และเป็นเงาที่ทุบกระจกในฉาก 5</em></div>
+      <div><b>เพื่อนตำรวจ</b>ราว 32 ปี ตัวใหญ่ ผมเกรียน แจ็กเก็ตสีกรมเข้ม พูดกูมึง <em>· ออกฉาก 4, 7</em></div>
+      <div><b>พ่อแม่ เพื่อนสนิท</b>ตัวประกอบในฉากเซอร์ไพรส์ วาดแบบเรียบ อยู่ระยะกลางหรือติดขอบเฟรม <em>· ออกฉาก 7, 8</em></div>
+      <div><b>บุคคลปริศนา</b>เห็นเป็นเงาดำ ฮู้ดและกล้องส่องทางไกล ไม่เห็นหน้า ไม่บอกเพศ <em>· ออกฉาก 8 เท่านั้น ห้ามเฉลยตัวตน</em></div>
+    </div>
+  </section>
+</div>
