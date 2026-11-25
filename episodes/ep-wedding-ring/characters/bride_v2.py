@@ -4,11 +4,11 @@
 # รัน: python3 bride_v2.py -> bride_v2.html
 from wedding_chars import (B_SKIN, B_SKIN_S, B_SKIN_D, B_SKIN_L, SILVER, SILVER_L, SILVER_D, DRESS, DRESS_L, bride_body, crystals, CSS)
 
-H, H_L, H_D, H_SHINE = '#3a2620', '#5e4034', '#24160f', '#7a5848'
+H, H_L, H_D, H_SHINE = '#141017', '#2e2834', '#0b090d', '#4a4458'
 LASH = '#1e1210'
 FACE = 'M -31,-14 C -31,-45 31,-45 31,-14 L 30,6 C 28,22 13,37 0,40 C -13,37 -28,22 -30,6 Z'
-EYE_L = 'M -21.5,-1.6 C -18,-7.6 -8.6,-7.8 -4.8,-1.4 C -8.6,2.4 -17.6,2.6 -21.5,-1.6 Z'
-EYE_R = 'M 21.5,-1.6 C 18,-7.6 8.6,-7.8 4.8,-1.4 C 8.6,2.4 17.6,2.6 21.5,-1.6 Z'
+EYE_L = 'M -22,-2 C -18.4,-8.6 -8.4,-8.8 -4.6,-1.4 C -8.4,2.8 -17.8,3 -22,-2 Z'
+EYE_R = 'M 22,-2 C 18.4,-8.6 8.4,-8.8 4.6,-1.4 C 8.4,2.8 17.8,3 22,-2 Z'
 
 HEAD = f'''
 <g id="b2back">
@@ -35,30 +35,32 @@ HEAD = f'''
   <!-- soft straight brows -->
   <path d="M -22.6,-12.6 C -17,-14.6 -10.6,-14.6 -5.4,-12.8 L -5.8,-10.8 C -10.6,-12.4 -16.6,-12.4 -22,-10.6 Z" fill="{H}"/>
   <path d="M 22.6,-12.6 C 17,-14.6 10.6,-14.6 5.4,-12.8 L 5.8,-10.8 C 10.6,-12.4 16.6,-12.4 22,-10.6 Z" fill="{H}"/>
+  <path d="M -21.4,-3 C -18,-9.6 -8.6,-9.8 -4.6,-2.4 C -8.6,-8 -17.6,-8 -21.4,-3 Z" fill="#e2a294" opacity=".55"/>
+  <path d="M 21.4,-3 C 18,-9.6 8.6,-9.8 4.6,-2.4 C 8.6,-8 17.6,-8 21.4,-3 Z" fill="#d89688" opacity=".55"/>
   <!-- double lid crease -->
   <path d="M -20.6,-6.6 C -16,-10 -9.6,-10.2 -6,-7.2" fill="none" stroke="#d8a088" stroke-width="1"/>
   <path d="M 20.6,-6.6 C 16,-10 9.6,-10.2 6,-7.2" fill="none" stroke="#cc9480" stroke-width="1"/>
   <!-- eyes: a little longer than Tawan's, soft -->
   <path d="{EYE_L}" fill="#fdf6ee"/><path d="{EYE_R}" fill="#f4e9de"/>
-  <g clip-path="url(#b2eyeL)"><circle cx="-13" cy="-.8" r="4.9" fill="#4e2e22"/><circle cx="-13" cy="-.8" r="2.3" fill="#180c0a"/><circle cx="-14.8" cy="-2.6" r="1.5" fill="#fff"/><circle cx="-11.4" cy="1" r=".7" fill="#ffe6cc"/></g>
-  <g clip-path="url(#b2eyeR)"><circle cx="13" cy="-.8" r="4.9" fill="#4e2e22"/><circle cx="13" cy="-.8" r="2.3" fill="#180c0a"/><circle cx="11.2" cy="-2.6" r="1.5" fill="#fff"/><circle cx="14.6" cy="1" r=".7" fill="#ffe6cc"/></g>
+  <g clip-path="url(#b2eyeL)"><circle cx="-13" cy="-1.2" r="5.4" fill="#5a3426"/><path d="M -18.4,-1.2 A5.4,5.4 0 0,1 -7.6,-1.2 Z" fill="#2e1812"/><circle cx="-13" cy="-1.2" r="2.4" fill="#120808"/><circle cx="-15" cy="-3.2" r="1.7" fill="#fff"/><circle cx="-11.2" cy=".9" r=".8" fill="#ffe6cc"/><circle cx="-11.6" cy="-3.6" r=".45" fill="#fff"/></g>
+  <g clip-path="url(#b2eyeR)"><circle cx="13" cy="-1.2" r="5.4" fill="#5a3426"/><path d="M 7.6,-1.2 A5.4,5.4 0 0,1 18.4,-1.2 Z" fill="#2e1812"/><circle cx="13" cy="-1.2" r="2.4" fill="#120808"/><circle cx="11" cy="-3.2" r="1.7" fill="#fff"/><circle cx="14.8" cy=".9" r=".8" fill="#ffe6cc"/><circle cx="14.4" cy="-3.6" r=".45" fill="#fff"/></g>
   <!-- upper lash line with a small wing, just a few lashes -->
-  <path d="M -22.6,-1.4 C -18.6,-9 -8.6,-9.2 -4,-1.6 L -5,-.8 C -9,-6.4 -17.6,-6.2 -21.2,-.4 Z" fill="{LASH}"/>
-  <path d="M -21.4,-1.2 L -26.4,-4.6 L -21.8,.2 Z" fill="{LASH}"/>
-  <path d="M -16.6,-6 L -18,-8.8 M -12.6,-6.8 L -13.2,-9.6" stroke="{LASH}" stroke-width="1" stroke-linecap="round"/>
-  <path d="M 22.6,-1.4 C 18.6,-9 8.6,-9.2 4,-1.6 L 5,-.8 C 9,-6.4 17.6,-6.2 21.2,-.4 Z" fill="{LASH}"/>
-  <path d="M 21.4,-1.2 L 26.4,-4.6 L 21.8,.2 Z" fill="{LASH}"/>
-  <path d="M 16.6,-6 L 18,-8.8 M 12.6,-6.8 L 13.2,-9.6" stroke="{LASH}" stroke-width="1" stroke-linecap="round"/>
+  <path d="M -23.2,-1.8 C -19,-10.2 -8.4,-10.4 -3.8,-1.6 L -4.8,-.6 C -9,-7.2 -17.8,-7 -21.6,-.6 Z" fill="{LASH}"/>
+  <path d="M -21.8,-1.4 L -28,-5.8 L -26.2,-2.6 L -22.2,.2 Z" fill="{LASH}"/>
+  <path d="M -19.4,-5 L -21.6,-7.8 M -15.6,-7.2 L -16.8,-10.2 M -11.4,-7.6 L -11.8,-10.6" stroke="{LASH}" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M 23.2,-1.8 C 19,-10.2 8.4,-10.4 3.8,-1.6 L 4.8,-.6 C 9,-7.2 17.8,-7 21.6,-.6 Z" fill="{LASH}"/>
+  <path d="M 21.8,-1.4 L 28,-5.8 L 26.2,-2.6 L 22.2,.2 Z" fill="{LASH}"/>
+  <path d="M 19.4,-5 L 21.6,-7.8 M 15.6,-7.2 L 16.8,-10.2 M 11.4,-7.6 L 11.8,-10.6" stroke="{LASH}" stroke-width="1.1" stroke-linecap="round"/>
   <path d="M -19.4,2.4 C -15,4.2 -10,4.2 -6,2.2" fill="none" stroke="#c48a7a" stroke-width=".9"/>
   <path d="M 19.4,2.4 C 15,4.2 10,4.2 6,2.2" fill="none" stroke="#b87e6e" stroke-width=".9"/>
   <!-- beauty mark under her left eye -->
   <circle cx="15.8" cy="6.4" r="1" fill="#4a2c24"/>
-  <!-- lips: defined cupid's bow, fuller lower lip, soft rose -->
-  <path d="M -7.4,21.8 C -5,20.2 -2.6,19.6 -1.2,20.8 Q 0,21.6 1.2,20.8 C 2.6,19.6 5,20.2 7.4,21.8 C 4,22.8 -4,22.8 -7.4,21.8 Z" fill="#b65866"/>
-  <path d="M -7.4,21.8 C -4,22.8 4,22.8 7.4,21.8 C 6,26.6 3,27.8 0,27.8 C -3,27.8 -6,26.6 -7.4,21.8 Z" fill="#cc6e78"/>
-  <path d="M -7.4,21.8 C -4,22.8 4,22.8 7.4,21.8" fill="none" stroke="#8e3c4a" stroke-width=".9"/>
-  <path d="M -3.2,24.6 C -1.6,25.4 0,25.4 1.2,25" fill="none" stroke="#efa6aa" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M 6,27 C 3,28.6 -3,28.6 -6,27" fill="none" stroke="{B_SKIN_S}" stroke-width="1" opacity=".7"/>
+  <!-- lips: small and soft, lifted corners, glossy lower lip -->
+  <path d="M -5.8,22.4 C -3.8,20.8 -1.6,20.4 0,21.4 C 1.6,20.4 3.8,20.8 5.8,22.4 Q 0,23.2 -5.8,22.4 Z" fill="#c25c6a"/>
+  <path d="M -5.8,22.4 Q 0,23.2 5.8,22.4 C 4.8,25.8 2.4,26.8 0,26.8 C -2.4,26.8 -4.8,25.8 -5.8,22.4 Z" fill="#d97884"/>
+  <path d="M -5.8,22.4 Q 0,23.4 5.8,22.4" fill="none" stroke="#9a4052" stroke-width=".8"/>
+  <path d="M -5.8,22.4 l -1,-.8 M 5.8,22.4 l 1,-.8" stroke="#b25a66" stroke-width=".8" stroke-linecap="round"/>
+  <ellipse cx="-1.4" cy="24.6" rx="1.8" ry=".75" fill="#ffffff" opacity=".55"/>
   <!-- crown: soft side part, glossy dark-brown hair -->
   <path d="M -38,-6 C -40,-44 -22,-63 0,-63 C 22,-63 40,-44 38,-6 L 31,-6 C 29,-22 20,-34 8,-38 C -6,-34 -22,-24 -30,-6 Z" fill="{H}"/>
   <path d="M -32,-36 C -24,-52 -12,-58 -2,-59 C -12,-54 -22,-46 -28,-30 Z" fill="{H_SHINE}"/>
@@ -76,6 +78,13 @@ HEAD = f'''
   <path d="M -24,-50 Q 0,-60 24,-50" fill="none" stroke="{SILVER_L}" stroke-width=".9"/>
   <path d="M -12,-53.4 L -10,-59 L -8,-54 Z M -2.4,-55.6 L 0,-63 L 2.4,-55.6 Z M 8,-54 L 10,-59 L 12,-53.4 Z" fill="{SILVER_L}"/>
   <circle cx="0" cy="-58" r="2" fill="#e8f0ff"/>
+  <g>
+    <circle cx="-29.4" cy="9" r="1.6" fill="{SILVER_L}"/><path d="M -29.4,10.6 V15" stroke="{SILVER}" stroke-width=".8"/>
+    <path d="M -29.4,15 l 2.6,4 l -2.6,7 l -2.6,-7 Z" fill="#f4f8ff"/><path d="M -29.4,15 l 2.6,4 l -2.6,7 Z" fill="#c8d4ea"/>
+    <circle cx="-30.4" cy="18.6" r=".7" fill="#fff"/>
+    <circle cx="29.4" cy="9" r="1.6" fill="{SILVER}"/><path d="M 29.4,10.6 V15" stroke="{SILVER_D}" stroke-width=".8"/>
+    <path d="M 29.4,15 l 2.6,4 l -2.6,7 l -2.6,-7 Z" fill="#dde6f6"/><path d="M 29.4,15 l 2.6,4 l -2.6,7 Z" fill="#aebbd4"/>
+  </g>
 </g>'''
 
 DEFS = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -84,7 +93,7 @@ DEFS = f'''<svg width="0" height="0" style="position:absolute" aria-hidden="true
 {HEAD}</defs></svg>'''
 
 def build():
-    full = f'''<svg viewBox="0 0 400 900" role="img" aria-label="เจ้าสาวเต็มตัว ผมยาวตรงสีน้ำตาลเข้ม ชุดเกาะอกประดับเพชร">
+    full = f'''<svg viewBox="0 0 400 900" role="img" aria-label="เจ้าสาวเต็มตัว ผมยาวตรงสีดำ ชุดเกาะอกประดับเพชร">
 <rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/><ellipse cx="200" cy="790" rx="170" ry="16" fill="#10131b"/>
 <g transform="translate(200,138) scale(1.4)"><use href="#b2back"/>{bride_body()}<use href="#b2head"/></g></svg>'''
     face = f'''<svg viewBox="-75 -84 150 156" role="img" aria-label="ใบหน้าเจ้าสาวระยะใกล้">
@@ -92,10 +101,10 @@ def build():
 <path d="M -50,72 C -48,58 -30,51 -14,50 L 14,50 C 30,51 48,58 50,72 Z" fill="{B_SKIN}"/><path d="M 20,51 C 36,54 48,60 50,72 L 30,72 C 30,64 28,56 20,51 Z" fill="{B_SKIN_S}"/>
 <path d="M -12,53 Q 0,70 12,53" fill="none" stroke="{SILVER}" stroke-width=".9"/><path d="M 0,61.5 l 2,3 l -2,4 l -2,-4 Z" fill="{SILVER_L}"/>
 <use href="#b2head"/></svg>'''
-    chips = ''.join(f'<span><i style="background:{c}"></i>{n}</span>' for c, n in ((B_SKIN, 'ผิว'), (B_SKIN_S, 'ผิวเงา'), (H, 'ผมน้ำตาลเข้ม'), (H_SHINE, 'ผมเงา'), ('#cc6e78', 'ปาก'), (SILVER, 'เงิน')))
-    page = CSS.replace('<title>เจ้าสาวกับเจ้าบ่าว</title>', '<title>เจ้าสาว รอบ 2</title>') + DEFS + f'''<div class="wrap"><section><h1>เจ้าสาว รอบ 2<span>ทรงหน้าแบบเดิม · ผมยาวตรงสีน้ำตาลเข้ม · มีไฝใต้ตา</span></h1>
+    chips = ''.join(f'<span><i style="background:{c}"></i>{n}</span>' for c, n in ((B_SKIN, 'ผิว'), (B_SKIN_S, 'ผิวเงา'), (H, 'ผมดำ'), (H_SHINE, 'ผมเงา'), ('#d97884', 'ปาก'), (SILVER, 'เงิน')))
+    page = CSS.replace('<title>เจ้าสาวกับเจ้าบ่าว</title>', '<title>เจ้าสาว รอบ 2</title>') + DEFS + f'''<div class="wrap"><section><h1>เจ้าสาว รอบ 2<span>ทรงหน้าแบบเดิม · ผมยาวตรงสีดำ · มีไฝใต้ตา · ต่างหูเพชร</span></h1>
 <div class="panels"><figure>{full}<figcaption>เต็มตัว · ผมยาวตรงถึงเอว ปล่อยด้านหน้าลงบนไหล่สองข้าง ผ้าคลุมกับมงกุฎเงินเส้นบาง ชุดเกาะอกประดับเพชรแบบเดิม</figcaption></figure>
-<figure>{face}<figcaption>ใบหน้าระยะใกล้ · ทรงหน้าแบบเดิม ตาสองชั้นเรียวยาวขึ้นนิด ขนตาพอประมาณมีหางตาเล็ก ๆ คิ้วตรงนุ่ม ไฝเล็กใต้ตาข้างซ้ายของเธอ ปากมีกระจับชัด ปากล่างอิ่ม สีกุหลาบอ่อน ผมสีน้ำตาลเข้มเกือบดำมีเงาประกาย ผมกรอบหน้าเริ่มที่โหนกแก้ม</figcaption>
+<figure>{face}<figcaption>ใบหน้าระยะใกล้ · ทรงหน้าแบบเดิม ตาโตขึ้นและคมขึ้น ตาดำไล่สองโทนมีประกายสามจุด อายแชโดว์ชมพูน้ำตาลบาง ๆ อายไลเนอร์หางยาวขึ้น ขนตาสามเส้นต่อข้าง คิ้วตรงนุ่ม ไฝใต้ตา ปากเล็กอิ่ม มุมปากยกนิด ๆ ปากล่างฉ่ำ ต่างหูเพชรหยดน้ำ ผมดำมีเงาประกาย</figcaption>
 <div class="chips">{chips}</div></figure></div></section></div>'''
     open('bride_v2.html', 'w').write(page); print('ok', len(page))
 
