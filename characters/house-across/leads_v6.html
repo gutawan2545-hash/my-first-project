@@ -1,0 +1,400 @@
+<title>บ้านตรงข้าม ตัวละครหลัก</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one row per character (full bodies + face close-up), stacking on phones, then a cast plan. Single bright pastel look taken from the owner's reference (lavender sky, ivory, blush pink, silver). */
+:root {
+  --stage: #f5f0f3;
+  --panel: #ffffff;
+  --ink: #3b3346;
+  --muted: #847a90;
+  --line: #e2d9e3;
+  --accent: #8a6cc8;
+  --font: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  color-scheme: light;
+}
+html, body { background: var(--stage); color: var(--ink); }
+body {
+  font-family: var(--font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 40px;
+}
+.wrap { max-width: 1000px; margin: 0 auto; display: grid; gap: 36px; }
+header { display: grid; gap: 6px; }
+header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+h1 { font-size: 20px; font-weight: 500; margin: 0; }
+h2 { font-size: 18px; font-weight: 500; margin: 0; }
+h2 span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 14px; }
+section { display: grid; gap: 14px; }
+.panels { display: grid; grid-template-columns: 4fr 5fr; gap: 16px; align-items: start; }
+.panels.three { grid-template-columns: 1fr 1fr 1.15fr; }
+@media (max-width: 860px) { .panels.three { grid-template-columns: 1fr 1fr; } .panels.three figure:last-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .panels, .panels.three { grid-template-columns: 1fr; } }
+figure { margin: 0; min-width: 0; display: grid; gap: 8px; }
+figure svg { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
+figcaption { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 12px; color: var(--muted); }
+.chips span { display: inline-flex; align-items: center; gap: 6px; }
+.chips i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; box-shadow: 0 0 0 1px var(--line); }
+ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; color: var(--ink); }
+.cast { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.cast div { background: var(--panel); border-radius: 6px; padding: 12px 14px; font-size: 13px; line-height: 1.65; min-width: 0; }
+.cast b { display: block; font-weight: 500; color: var(--accent); margin-bottom: 2px; }
+.cast em { font-style: normal; color: var(--muted); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="skyBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ab9cd8"/><stop offset=".6" stop-color="#cdb6dd"/><stop offset="1" stop-color="#e6cfe2"/></linearGradient>
+  <!-- ================= พระเอก v4 ================= -->
+  <clipPath id="hface"><path d="M -31,-12 C -32,-46 32,-46 31,-12 C 31,4 30,18 22,29 C 15,37 7,40 0,41 C -7,40 -15,37 -22,29 C -30,18 -31,4 -31,-12 Z"/></clipPath>
+  <clipPath id="heyeL"><path d="M -23,-2 C -20,-9.5 -9,-10.4 -4.6,-3 C -8,2.4 -19,3 -23,-2 Z"/></clipPath>
+  <clipPath id="heyeR"><path d="M 23,-2 C 20,-9.5 9,-10.4 4.6,-3 C 8,2.4 19,3 23,-2 Z"/></clipPath>
+  <g id="hhead">
+    <path d="M -10,22 L 10,22 L 11,60 L -11,60 Z" fill="#e2b590"/>
+    <path d="M -10,28 L 10,28 L 10.6,46 Q 0,40 -10.4,50 Z" fill="#c99a74"/>
+    <ellipse cx="-31" cy="-1" rx="4.6" ry="8" fill="#eec6a2"/>
+    <ellipse cx="31" cy="-1" rx="4.6" ry="8" fill="#cf9f7a"/>
+    <path d="M -31,-12 C -32,-46 32,-46 31,-12 C 31,4 30,18 22,29 C 15,37 7,40 0,41 C -7,40 -15,37 -22,29 C -30,18 -31,4 -31,-12 Z" fill="#eec6a2"/>
+    <g clip-path="url(#hface)">
+      <path d="M 15,-34 C 30,-28 34,-12 32,6 C 30,22 16,37 0,41 C 12,32 19,20 20,4 C 21,-10 19,-22 15,-34 Z" fill="#dfb08a"/>
+      <path d="M 26,-24 L 34,-24 L 34,12 C 31,6 29,0 27,-8 Z" fill="#c8966f"/>
+      <path d="M -34,-24 L -24,-24 L -27,-8 L -34,-6 Z" fill="#e6ba94"/>
+      <path d="M -33,-12 C -33,-30 -28,-38 -22,-41 C -28,-32 -29,-20 -29,-10 L -28,8 C -27,20 -21,30 -15,35 C -23,31 -29,21 -31,8 Z" fill="#f9dcc0"/>
+      <path d="M 30,6 C 26,12 22,16 18,18 C 22,12 24,8 25,4 Z" fill="#c8966f" opacity=".7"/>
+      <path d="M 1.5,-4 L 6.4,13 L 1.4,15.4 Z" fill="#d6a37c"/>
+      <path d="M -4.4,13.8 C -3,16.6 -0.4,17 1.4,15.6 M 4.6,15.8 C 6,15.6 6.8,14.6 6.8,13.4" fill="none" stroke="#b8865f" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M -5,35 C -2,37 2,37 5,35" fill="none" stroke="#d6a37c" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 22,24 C 16,33 8,38 0,39.6 L 0,41 C 10,39 18,33 24,26 Z" fill="#b8865f" opacity=".55"/>
+    </g>
+    <path d="M -25.5,-10.4 C -21,-17.6 -11,-18.6 -4,-14.4 L -4.8,-10.6 C -11,-13.8 -19.6,-13.4 -24.4,-7.6 Z" fill="#1c1619"/>
+    <path d="M 25.5,-10.4 C 21,-17.6 11,-18.6 4,-14.4 L 4.8,-10.6 C 11,-13.8 19.6,-13.4 24.4,-7.6 Z" fill="#1c1619"/>
+    <path d="M -23,-2 C -20,-9.5 -9,-10.4 -4.6,-3 C -8,2.4 -19,3 -23,-2 Z" fill="#fbf6f0"/>
+    <path d="M 23,-2 C 20,-9.5 9,-10.4 4.6,-3 C 8,2.4 19,3 23,-2 Z" fill="#f0e6dc"/>
+    <g clip-path="url(#heyeL)"><circle cx="-13" cy="-2.6" r="5.4" fill="#3e2318"/><circle cx="-13" cy="-1" r="3.8" fill="#6b3f26"/><circle cx="-13" cy="-2.6" r="2.4" fill="#120a09"/><circle cx="-15" cy="-4.6" r="1.6" fill="#fff"/><circle cx="-10.8" cy="0" r=".7" fill="#ffe8cf"/></g>
+    <g clip-path="url(#heyeR)"><circle cx="13" cy="-2.6" r="5.4" fill="#3e2318"/><circle cx="13" cy="-1" r="3.8" fill="#6b3f26"/><circle cx="13" cy="-2.6" r="2.4" fill="#120a09"/><circle cx="11" cy="-4.6" r="1.6" fill="#fff"/><circle cx="15.2" cy="0" r=".7" fill="#ffe8cf"/></g>
+    <path d="M -24.4,-1.6 C -20.6,-11.4 -8.4,-11.8 -3.4,-3.2 L -4.8,-2.2 C -9,-8.4 -18.6,-8.6 -22.6,-0.4 Z" fill="#1c1619"/>
+    <path d="M 24.4,-1.6 C 20.6,-11.4 8.4,-11.8 3.4,-3.2 L 4.8,-2.2 C 9,-8.4 18.6,-8.6 22.6,-0.4 Z" fill="#1c1619"/>
+    <path d="M -21.4,-8.6 C -17,-12.8 -10,-13 -6,-10" fill="none" stroke="#d6a37c" stroke-width=".9"/>
+    <path d="M 21.4,-8.6 C 17,-12.8 10,-13 6,-10" fill="none" stroke="#c8966f" stroke-width=".9"/>
+    <path d="M -20,2.4 C -15,4 -10,3.6 -6.4,1.2" fill="none" stroke="#c8966f" stroke-width=".9"/>
+    <path d="M 20,2.4 C 15,4 10,3.6 6.4,1.2" fill="none" stroke="#b8865f" stroke-width=".9"/>
+    <ellipse cx="-19" cy="12" rx="6" ry="2.8" fill="#e2917c" opacity=".22"/>
+    <ellipse cx="19" cy="12" rx="6" ry="2.8" fill="#d4846e" opacity=".22"/>
+    <path d="M -8,23.4 C -3,25 3,24.6 9,20.6" fill="none" stroke="#8a4c40" stroke-width="2" stroke-linecap="round"/>
+    <path d="M -4.6,25.2 C -1,27.6 4,27 7,23.4 C 4,25.2 0,25.6 -4.6,25.2 Z" fill="#c98a76"/>
+    <path d="M 9,20.6 C 10.4,19.8 11,19 11,18" fill="none" stroke="#c8966f" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+  <g id="hhair">
+    <path d="M -32.6,-6 L -32.6,-24 L -29.6,-26 L -29.6,-8 Z" fill="#2e272b"/>
+    <path d="M 32.6,-6 L 32.6,-24 L 29.6,-26 L 29.6,-8 Z" fill="#241e21"/>
+    <g transform="scale(1 .86)">
+    <path d="M -33,-10 C -39,-40 -30,-63 -8,-71 C 12,-78 36,-70 41,-50 C 44,-37 40,-24 34,-14 L 32,-24 C 28,-33 20,-37 10,-37 C 0,-35 -12,-30 -20,-23 L -26,-16 L -28,-22 Z" fill="#191416"/>
+    <path d="M -24,-42 C -18,-58 -2,-68 16,-66 C 2,-62 -10,-54 -16,-40 Z" fill="#3e3439"/>
+    <path d="M 6,-50 C 14,-62 28,-64 36,-56 C 26,-58 18,-54 12,-46 Z" fill="#3e3439"/>
+    <path d="M -20,-23 C -14,-34 -2,-42 10,-44 C 0,-40 -8,-32 -12,-24 Z" fill="#2c2428"/>
+    <path d="M 10,-37 C 18,-42 28,-42 34,-36 L 34,-14 C 32,-26 24,-34 10,-37 Z" fill="#100d0f"/>
+    <path d="M -30,-30 C -33,-46 -26,-58 -14,-64 C -22,-54 -26,-42 -26,-28 Z" fill="#2c2428"/>
+    </g>
+    <path d="M 2,-28 C 4,-21 8,-17 14,-16 C 10,-21 10,-26 12,-31 Z" fill="#191416"/>
+  </g>
+
+  <!-- ================= แฟนสาว v4 ================= -->
+  <clipPath id="gface"><path d="M -30,-12 C -31,-45 31,-45 30,-12 C 30,2 27,14 19,26 C 12,35 6,40 0,41 C -6,40 -12,35 -19,26 C -27,14 -30,2 -30,-12 Z"/></clipPath>
+  <clipPath id="geyeL"><path d="M -24,-1 C -21,-10.6 -9,-11.4 -4.6,-3 C -8,3.4 -19,4 -24,-1 Z"/></clipPath>
+  <clipPath id="geyeR"><path d="M 24,-1 C 21,-10.6 9,-11.4 4.6,-3 C 8,3.4 19,4 24,-1 Z"/></clipPath>
+  <g id="gback">
+    <path d="M -44,-10 C -50,-52 -24,-70 2,-69 C 28,-69 50,-52 46,-10 C 54,10 50,30 57,50 C 61,66 51,80 43,74 C 40,87 28,89 24,80 L 22,58 L -22,58 L -24,80 C -28,89 -40,87 -43,74 C -51,80 -61,66 -57,50 C -50,30 -55,10 -44,-10 Z" fill="#26171a"/>
+    <path d="M -48,8 C -52,26 -50,40 -55,54 C -57,64 -52,72 -46,72 C -50,62 -46,52 -46,40 C -46,28 -44,18 -48,8 Z" fill="#4e2f30"/>
+    <path d="M 50,10 C 53,28 50,40 54,54 L 50,60 C 48,48 50,30 46,16 Z" fill="#1a0f12"/>
+  </g>
+  <g id="ghead">
+    <path d="M -7.4,22 L 7.4,22 L 8,58 L -8,58 Z" fill="#efc8ab"/>
+    <path d="M -7.4,28 L 7.4,28 L 7.8,45 Q 0,39 -7.6,48 Z" fill="#d7a486"/>
+    <path d="M -30,-12 C -31,-45 31,-45 30,-12 C 30,2 27,14 19,26 C 12,35 6,40 0,41 C -6,40 -12,35 -19,26 C -27,14 -30,2 -30,-12 Z" fill="#f9dcc6"/>
+    <g clip-path="url(#gface)">
+      <path d="M 15,-34 C 29,-28 32,-12 30,4 C 28,20 15,36 0,41 C 11,32 18,20 19,4 C 20,-10 18,-22 15,-34 Z" fill="#ecc0a4"/>
+      <path d="M 24,-24 L 32,-24 L 32,10 C 30,6 28,0 26,-8 Z" fill="#d6a083"/>
+      <path d="M -32,-24 L -22,-24 L -25,-8 L -32,-6 Z" fill="#f2ceb4"/>
+      <path d="M -31,-12 C -31,-30 -26,-38 -20,-41 C -26,-32 -27,-20 -27,-10 L -26,6 C -25,18 -19,28 -13,34 C -21,30 -27,20 -29,6 Z" fill="#fff2e8"/>
+      <path d="M 1.4,-2 L 5.4,12.6 L 1,14.4 Z" fill="#e2ad92"/>
+      <path d="M -3.4,13 C -2,15.4 0.4,15.6 1.8,14.4 M 3.6,14.6 C 5,14.4 5.6,13.6 5.6,12.6" fill="none" stroke="#c99076" stroke-width="1" stroke-linecap="round"/>
+    </g>
+    <ellipse cx="-18" cy="11.4" rx="6.4" ry="3" fill="#ee9494" opacity=".4"/>
+    <ellipse cx="18" cy="11.4" rx="6.4" ry="3" fill="#e08888" opacity=".4"/>
+    <path d="M -25,-11 C -21,-18.4 -11,-19.6 -4.4,-15.6 L -5,-12.6 C -11,-15.6 -19,-14.8 -24,-8.6 Z" fill="#2c1b1e"/>
+    <path d="M 25,-13 C 21,-21.6 11,-22 4.4,-17 L 5,-14 C 11,-18.2 19,-17.6 24,-10.6 Z" fill="#2c1b1e"/>
+    <path d="M -23,-4 C -19,-12.4 -9,-12.6 -5,-5.4 C -9,-8.8 -18,-9 -23,-4 Z" fill="#a7718a" opacity=".4"/>
+    <path d="M 23,-4 C 19,-12.4 9,-12.6 5,-5.4 C 9,-8.8 18,-9 23,-4 Z" fill="#94627a" opacity=".4"/>
+    <path d="M -20.6,-9.4 C -16.6,-13.4 -10.4,-13.6 -6.6,-10.6" fill="none" stroke="#dcab92" stroke-width=".9"/>
+    <path d="M 20.6,-9.4 C 16.6,-13.4 10.4,-13.6 6.6,-10.6" fill="none" stroke="#cc9a80" stroke-width=".9"/>
+    <path d="M -24,-1 C -21,-10.6 -9,-11.4 -4.6,-3 C -8,3.4 -19,4 -24,-1 Z" fill="#fcf5ee"/>
+    <path d="M 24,-1 C 21,-10.6 9,-11.4 4.6,-3 C 8,3.4 19,4 24,-1 Z" fill="#f2e7de"/>
+    <g clip-path="url(#geyeL)"><circle cx="-12" cy="-2.6" r="6.2" fill="#3e2016"/><circle cx="-12" cy="-0.6" r="4.4" fill="#7a4628"/><circle cx="-12" cy="-2.6" r="2.8" fill="#120808"/><circle cx="-14.4" cy="-5" r="1.9" fill="#fff"/><circle cx="-9.4" cy="0.6" r=".9" fill="#ffe8cf"/></g>
+    <g clip-path="url(#geyeR)"><circle cx="14" cy="-2.6" r="6.2" fill="#3e2016"/><circle cx="14" cy="-0.6" r="4.4" fill="#7a4628"/><circle cx="14" cy="-2.6" r="2.8" fill="#120808"/><circle cx="11.6" cy="-5" r="1.9" fill="#fff"/><circle cx="16.6" cy="0.6" r=".9" fill="#ffe8cf"/></g>
+    <path d="M -25.4,-0.4 C -21.6,-12.6 -8,-13 -3.2,-3.4 L -4.8,-2.2 C -9,-9.4 -19.6,-9.6 -23.4,0.8 Z" fill="#170d12"/>
+    <path d="M -23.6,-0.8 L -31,-6.6 L -29.6,-2.4 L -23.8,1.4 Z" fill="#170d12"/>
+    <path d="M -21.4,-6.6 L -26,-9.8 M -18,-9 L -21.4,-12.4 M -14.6,-10.2 L -16.6,-13.4" stroke="#170d12" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M 25.4,-0.4 C 21.6,-12.6 8,-13 3.2,-3.4 L 4.8,-2.2 C 9,-9.4 19.6,-9.6 23.4,0.8 Z" fill="#170d12"/>
+    <path d="M 23.6,-0.8 L 31,-6.6 L 29.6,-2.4 L 23.8,1.4 Z" fill="#170d12"/>
+    <path d="M 21.4,-6.6 L 26,-9.8 M 18,-9 L 21.4,-12.4 M 14.6,-10.2 L 16.6,-13.4" stroke="#170d12" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M -21,3 C -16,5 -10,4.6 -6.4,2" fill="none" stroke="#b67c66" stroke-width="1"/>
+    <path d="M 21,3 C 16,5 10,4.6 6.4,2" fill="none" stroke="#a87060" stroke-width="1"/>
+    <circle cx="18" cy="8" r="1.1" fill="#5a3430"/>
+    <path d="M -8.4,22.6 C -5,19.4 -1.8,19.6 0,21 C 2,19.4 5.4,18.6 9,20 C 4.6,22.8 -3.6,23.6 -8.4,22.6 Z" fill="#a8384c"/>
+    <path d="M -8.4,22.6 C -3.6,23.6 4.6,22.8 9,20 C 7.4,27.6 -5.6,28.4 -8.4,22.6 Z" fill="#c64a5e"/>
+    <path d="M -3,24.8 C -0.6,26 2.6,25.8 4.4,24.4" fill="none" stroke="#f29aa8" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="M 9,20 C 10.4,19.2 11.2,18.2 11.4,17.2" fill="none" stroke="#d6a083" stroke-width="1" stroke-linecap="round"/>
+    <circle cx="-30.6" cy="12" r="3.6" fill="none" stroke="#d8b46a" stroke-width="1.4"/>
+    <circle cx="30.6" cy="12" r="3.6" fill="none" stroke="#b8944e" stroke-width="1.4"/>
+    <path d="M -42,-6 C -46,-50 -22,-67 6,-67 C 30,-67 47,-50 42,-8 C 39,-24 31,-37 16,-43 C 10,-30 -8,-22 -24,-18 C -33,-14 -39,-10 -42,-6 Z" fill="#26171a"/>
+    <path d="M -34,-36 C -26,-54 -8,-63 10,-62 C -6,-58 -20,-48 -28,-32 Z" fill="#4e2f30"/>
+    <path d="M 14,-42 C 6,-30 -10,-23 -26,-19 C -14,-26 -2,-32 8,-44 Z" fill="#6a4240"/>
+    <path d="M 20,-58 C 30,-56 38,-48 40,-36 C 34,-44 28,-50 18,-54 Z" fill="#1a0f12"/>
+    <path d="M -42,-8 C -35,-2 -38,10 -32,18 C -28,26 -34,34 -30,42 C -38,47 -48,43 -50,34 C -46,24 -52,14 -46,4 Z" fill="#26171a"/>
+    <path d="M -40,-2 C -38,6 -40,14 -36,20 C -33,26 -36,32 -34,38 L -37,39 C -39,32 -37,26 -40,20 C -43,14 -41,6 -43,-2 Z" fill="#6a4240"/>
+    <path d="M 42,-8 C 36,-2 38,10 32,18 C 28,26 34,34 30,42 C 38,47 48,43 50,34 C 46,24 52,14 46,4 Z" fill="#1d1114"/>
+  </g>
+</defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>บ้านตรงข้าม · ตัวละครหลักชุดใหม่</h1>
+    <p>โทนสีสดใสตามภาพตัวอย่าง: ฟ้าลาเวนเดอร์ ขาวงาช้าง ชมพูกุหลาบ เงิน · หน้าตาตามทิศทางเกมแนวการ์ตูน: ตาโตแสดงอารมณ์ชัด คิ้วหนาโค้ง ปากอิ่ม ผมมีวอลุ่ม หุ่นสูงเพรียว ท่ายืนมั่นใจ · ยังลงเงาเป็นบล็อกสีและไม่มีเส้นขอบ เพื่อให้เข้ากับฉากของช่อง · แสงกลางส่องจากซ้าย</p>
+  </header>
+
+  <section>
+    <h2>พระเอก<span>อดีตตำรวจสายสืบ ราว 32 ปี · ชุดอยู่บ้านกับชุดเครื่องแบบ</span></h2>
+    <div class="panels three">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกชุดอยู่บ้าน เต็มตัว ถือไม้ค้ำยัน ขาขวาเข้าเฝือก">
+          <rect width="400" height="900" fill="url(#skyBg)"/>
+          <rect y="770" width="400" height="130" fill="#ede5ea"/>
+          <ellipse cx="200" cy="806" rx="112" ry="10" fill="#cfc2d2"/>
+          <g transform="translate(200,140) scale(1.18)">
+            <rect x="-75" y="132" width="4.6" height="420" fill="#a3a9b6"/>
+            <rect x="-75" y="132" width="1.6" height="420" fill="#c9ced8"/>
+            <rect x="70.4" y="132" width="4.6" height="420" fill="#7d8391"/>
+            <rect x="-79" y="124" width="13" height="10" rx="4" fill="#4a4e5c"/>
+            <rect x="66" y="124" width="13" height="10" rx="4" fill="#3a3d49"/>
+            <rect x="-76.6" y="548" width="7.6" height="12" rx="2.5" fill="#20222b"/>
+            <rect x="69" y="548" width="7.6" height="12" rx="2.5" fill="#191b22"/>
+            <rect x="-74" y="259" width="18" height="6" rx="2" fill="#2c2f3a"/>
+            <rect x="56" y="259" width="18" height="6" rx="2" fill="#24262f"/>
+            <path d="M -40,248 L 0,248 L -2,320 L -9,536 L -33,536 L -42,320 Z" fill="#56607c"/>
+            <path d="M -40,248 L -25,248 L -28,320 L -27,536 L -33,536 L -42,320 Z" fill="#7280a0"/>
+            <rect x="-34" y="530" width="26" height="9" rx="2" fill="#4a536d"/>
+            <rect x="-27" y="538" width="12" height="9" fill="#e2b590"/>
+            <path d="M -38,546 L -6,546 C -4,554 -6,560 -10,561 L -40,561 C -44,560 -43,550 -38,546 Z" fill="#3e4560"/>
+            <path d="M -37,546 L -7,546 L -8,551 L -38,551 Z" fill="#69739a"/>
+            <path d="M 0,248 L 40,248 L 42,320 L 38,382 L 4,382 L 2,320 Z" fill="#56607c"/>
+            <path d="M 24,252 L 40,248 L 42,320 L 38,382 L 28,382 C 28,330 26,280 24,252 Z" fill="#454e68"/>
+            <path d="M 4,378 L 38,378 L 38,386 L 4,386 Z" fill="#454e68"/>
+            <path d="M 6,386 L 37,386 L 35,520 C 37,538 33,548 25,549 L 14,549 C 8,548 6,538 8,520 Z" fill="#e8e5e0"/>
+            <path d="M 26,386 L 37,386 L 35,520 C 37,538 33,548 25,549 L 22,549 C 28,530 29,450 26,386 Z" fill="#c8c4be"/>
+            <path d="M 6,386 L 11,386 L 11,520 L 8,526 C 6,520 6,490 6,386 Z" fill="#f7f5f2"/>
+            <path d="M 7,426 L 36,424 M 7,466 L 36,464 M 8,504 L 35,502" stroke="#cfcbc5" stroke-width="1.2"/>
+            <path d="M 11,548 C 11,554 15,556 18,554 L 19,548 Z M 19,548 C 19,554 23,555 26,553 L 26,548 Z M 26,548 C 27,553 30,553 32,550 L 32,548 Z" fill="#e2b590"/>
+            <path d="M -64,118 L -48,124 L -54,200 L -58,262 L -71,262 L -71,200 Z" fill="#eec6a2"/>
+            <path d="M -64,118 L -59,120 L -66,200 L -67,262 L -71,262 L -71,200 Z" fill="#f9dcc0"/>
+            <path d="M -50,150 C -52,166 -54,180 -55,196" fill="none" stroke="#dfb08a" stroke-width="1.4"/>
+            <path d="M 64,118 L 48,124 L 54,200 L 58,262 L 71,262 L 71,200 Z" fill="#dfb08a"/>
+            <path d="M 64,118 L 59,120 L 66,200 L 67,262 L 71,262 L 71,200 Z" fill="#c8966f"/>
+            <path d="M -73,256 L -56,256 C -54,266 -56,274 -62,276 L -70,276 C -75,270 -75,262 -73,256 Z" fill="#eec6a2"/>
+            <path d="M 73,256 L 56,256 C 54,266 56,274 62,276 L 70,276 C 75,270 75,262 73,256 Z" fill="#dfb08a"/>
+            <path d="M -14,52 L 14,52 C 32,54 48,60 53,70 L 65,122 L 47,128 L 40,254 L -40,254 L -47,128 L -65,122 L -53,70 C -48,60 -32,54 -14,52 Z" fill="#7f9cc8"/>
+            <path d="M -53,70 C -48,60 -32,54 -20,53 C -28,76 -31,120 -28,254 L -40,254 L -47,128 L -65,122 Z" fill="#a0b8de"/>
+            <path d="M 22,53 C 35,56 48,61 53,70 L 65,122 L 47,128 L 40,254 L 27,254 C 30,190 32,110 22,53 Z" fill="#6380b0"/>
+            <path d="M -47,128 L -43,130 L -44,160 Z" fill="#6380b0"/>
+            <path d="M -18,104 C -10,110 10,110 18,104" fill="none" stroke="#6a86b6" stroke-width="1.4"/>
+            <path d="M -32,88 L -15,88 L -15,104 L -32,104 Z" fill="#7391c0"/>
+            <path d="M -32,88 L -15,88 L -15,91 L -32,91 Z" fill="#6380b0"/>
+            <use href="#hhead"/><use href="#hhair"/>
+            <path d="M -11,58 L 11,58 L 11,62 L -11,62 Z" fill="#7f9cc8"/>
+            <path d="M -14,52 C -9,64 9,64 14,52" fill="none" stroke="#5a76a6" stroke-width="4"/>
+          </g>
+        </svg>
+        <figcaption>ชุดอยู่บ้าน (ช่วงพักขา) · ไหล่กว้าง เอวสอบ ขายาว · เสื้อยืดสีฟ้าพาสเทลเข้ารูป · กางเกงจ็อกเกอร์ ขาขวาพับไว้เหนือเฝือก · ไม้ค้ำยันสองข้าง</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="พระเอกชุดเครื่องแบบตำรวจ เต็มตัว มือหนึ่งจับเข็มขัด">
+          <rect width="400" height="900" fill="url(#skyBg)"/>
+          <rect y="770" width="400" height="130" fill="#ede5ea"/>
+          <ellipse cx="200" cy="806" rx="84" ry="10" fill="#cfc2d2"/>
+          <g transform="translate(200,140) scale(1.18)">
+            <path d="M -42,244 L 42,244 L 44,320 L 38,548 L 8,548 L 2,312 L -2,312 L -8,548 L -38,548 L -44,320 Z" fill="#7a5e40"/>
+            <path d="M -42,244 L -27,244 L -30,320 L -27,548 L -38,548 L -44,320 Z" fill="#92755a"/>
+            <path d="M 24,252 L 42,244 L 44,320 L 38,548 L 27,548 C 29,450 28,330 24,252 Z" fill="#5c452e"/>
+            <path d="M -2,312 L 2,312 L 5,360 L -5,360 Z" fill="#5c452e"/>
+            <path d="M -42,546 L -6,546 C -3,555 -4,562 -9,563 L -44,563 C -48,561 -47,550 -42,546 Z" fill="#15151a"/>
+            <path d="M -38,549 L -26,549 L -28,553 L -39,553 Z" fill="#4a4c58"/>
+            <path d="M 42,546 L 6,546 C 3,555 4,562 9,563 L 44,563 C 48,561 47,550 42,546 Z" fill="#0f0f13"/>
+            <path d="M -60,118 L -50,126 L -60,190 L -74,184 Z" fill="#eec6a2"/>
+            <path d="M -74,184 L -60,190 L -34,244 L -43,252 Z" fill="#eec6a2"/>
+            <path d="M -74,184 L -69,186 L -40,248 L -43,252 Z" fill="#f9dcc0"/>
+            <path d="M 50,124 L 62,120 L 62,190 L 58,252 L 47,252 L 49,190 Z" fill="#dfb08a"/>
+            <path d="M 62,120 L 62,190 L 58,252 L 54,252 L 57,190 L 57,122 Z" fill="#c8966f"/>
+            <path d="M 59,248 L 46,248 C 45,261 47,272 52,274 C 58,274 61,262 59,248 Z" fill="#dfb08a"/>
+            <path d="M -14,52 L 14,52 C 32,54 46,60 51,68 L 46,100 L 42,246 L -42,246 L -46,100 L -51,68 C -46,60 -32,54 -14,52 Z" fill="#8a6c4a"/>
+            <path d="M -51,68 C -46,60 -32,54 -20,53 C -28,78 -30,130 -29,246 L -42,246 L -46,100 Z" fill="#a38563"/>
+            <path d="M 22,53 C 35,56 46,61 51,68 L 46,100 L 42,246 L 28,246 C 30,190 31,110 22,53 Z" fill="#6a5136"/>
+            <path d="M -51,66 L -66,72 L -72,132 L -56,136 L -47,98 Z" fill="#a38563"/>
+            <path d="M -72,128 L -56,132 L -56,137 L -72,133 Z" fill="#7a5e40"/>
+            <path d="M 51,66 L 66,72 L 68,130 L 51,132 L 47,98 Z" fill="#6a5136"/>
+            <path d="M 68,126 L 51,128 L 51,133 L 68,131 Z" fill="#5c452e"/>
+            <path d="M -2,62 L 2,62 L 2,246 L -2,246 Z" fill="#7a5e40"/>
+            <circle cx="0" cy="110" r="1.6" fill="#c7a46a"/><circle cx="0" cy="150" r="1.6" fill="#c7a46a"/><circle cx="0" cy="190" r="1.6" fill="#c7a46a"/><circle cx="0" cy="226" r="1.6" fill="#b08f58"/>
+            <path d="M -34,96 L -12,96 L -12,122 L -34,122 Z" fill="#9a7b58"/>
+            <path d="M -35,92 L -11,92 L -11,100 L -23,103 L -35,100 Z" fill="#7a5e40"/>
+            <path d="M 34,96 L 12,96 L 12,122 L 34,122 Z" fill="#76593c"/>
+            <path d="M 35,92 L 11,92 L 11,100 L 23,103 L 35,100 Z" fill="#5c452e"/>
+            <rect x="-34" y="82" width="22" height="6" rx="1" fill="#17161c"/>
+            <rect x="-31" y="84.4" width="16" height="1.3" fill="#e2e4ea"/>
+            <path d="M 23,66 L 31,69 L 30,78 C 29,82 26,84 23,85 C 20,84 17,82 16,78 L 15,69 Z" fill="#c4c9d4"/>
+            <path d="M 23,66 L 31,69 L 30,78 C 29,82 26,84 23,85 Z" fill="#9aa0ad"/>
+            <circle cx="23" cy="75" r="2.6" fill="#7d8491"/>
+            <path d="M -50,62 L -22,54 L -20,60 L -48,69 Z" fill="#1f2433"/>
+            <path d="M -42,63 L -36,61 M -35,61 L -29,59" stroke="#c4c9d4" stroke-width="1.6"/>
+            <path d="M 50,62 L 22,54 L 20,60 L 48,69 Z" fill="#171b27"/>
+            <path d="M 42,63 L 36,61 M 35,61 L 29,59" stroke="#9aa0ad" stroke-width="1.6"/>
+            <rect x="-42" y="238" width="84" height="11" fill="#17161c"/>
+            <rect x="-42" y="238" width="28" height="3" fill="#2b2a33"/>
+            <rect x="-7" y="237" width="14" height="13" rx="1.5" fill="#b9bec9"/>
+            <rect x="-4" y="240" width="8" height="7" fill="#17161c"/>
+            <path d="M -46,238 C -38,234 -29,236 -27,243 C -29,251 -37,255 -45,251 Z" fill="#e6ba94"/>
+            <path d="M -40,240 L -30,241 M -40,245 L -29,246" stroke="#d6a37c" stroke-width="1"/>
+            <use href="#hhead"/>
+            <path d="M -32.6,-6 L -32.6,-24 L -29.6,-26 L -29.6,-8 Z" fill="#2e272b"/><path d="M 32.6,-6 L 32.6,-24 L 29.6,-26 L 29.6,-8 Z" fill="#241e21"/>
+            <path d="M -14,52 L -3,67 L -21,62 Z" fill="#a38563"/>
+            <path d="M 14,52 L 3,67 L 21,62 Z" fill="#6a5136"/>
+            <path d="M -42,-36 C -44,-70 44,-70 42,-36 Z" fill="#8a6c4a"/>
+            <path d="M -42,-36 C -44,-56 -30,-65 -14,-66 C -26,-59 -30,-48 -30,-36 Z" fill="#a38563"/>
+            <path d="M 18,-65 C 34,-62 44,-55 42,-36 L 30,-36 C 30,-48 26,-58 18,-65 Z" fill="#6a5136"/>
+            <rect x="-38" y="-38" width="76" height="9" fill="#141418"/>
+            <path d="M -36,-29 C -20,-20 20,-20 36,-29 L 32,-25 C 16,-17 -16,-17 -32,-25 Z" fill="#0e0e12"/>
+            <path d="M -30,-27 C -16,-22 -4,-21 4,-21.4" fill="none" stroke="#3a3a46" stroke-width="1.2"/>
+            <circle cx="0" cy="-46" r="5.5" fill="#c7a46a"/>
+            <circle cx="0" cy="-46" r="2.6" fill="#8a6c4a"/>
+          </g>
+        </svg>
+        <figcaption>ชุดเครื่องแบบตำรวจ (ฉาก 1 ช่วงเล่าอดีต) · ยืนมือหนึ่งจับเข็มขัด · เสื้อกากีแขนสั้นเหน็บในกางเกง · หมวกแก๊ป · ตราโล่และป้ายชื่อแบบสมมติ</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="-75 -82 150 150" role="img" aria-label="ใบหน้าพระเอกระยะใกล้">
+          <rect x="-75" y="-82" width="150" height="150" fill="url(#skyBg)"/>
+          <path d="M -56,68 C -54,58 -34,51 -14,52 L 14,52 C 34,51 54,58 56,68 Z" fill="#7f9cc8"/>
+          <path d="M -56,68 C -54,60 -38,53 -22,53 C -26,58 -28,64 -28,68 Z" fill="#a0b8de"/>
+          <path d="M 24,53 C 40,55 54,60 56,68 L 32,68 C 32,62 30,57 24,53 Z" fill="#6380b0"/>
+          <use href="#hhead"/><use href="#hhair"/>
+          <path d="M -11,58 L 11,58 L 11,62 L -11,62 Z" fill="#7f9cc8"/>
+          <path d="M -14,52 C -9,64 9,64 14,52" fill="none" stroke="#5a76a6" stroke-width="4"/>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · กรามชัด คางมน · คิ้วหนาโค้งเข้ม · ตาโตแววตาคม ม่านตาน้ำตาลมีประกาย · ยิ้มมุมปาก · ผมเซตยกโคนเป็นลอนใหญ่ปัดไปข้างหนึ่ง</figcaption>
+        <div class="chips">
+          <span><i style="background:#eec6a2"></i>ผิว</span>
+          <span><i style="background:#dfb08a"></i>ผิวเงา</span>
+          <span><i style="background:#191416"></i>ผม</span>
+          <span><i style="background:#6b3f26"></i>ม่านตา</span>
+          <span><i style="background:#7f9cc8"></i>เสื้อ</span>
+          <span><i style="background:#8a6c4a"></i>เครื่องแบบ</span>
+        </div>
+        <ul class="notes">
+          <li>หล่อแบบพระเอกเกมแนวการ์ตูน ผิวสองสีแทน ตาและคิ้วใหญ่พอให้เล่นอารมณ์ได้ชัดในจอมือถือ</li>
+          <li>ชุดตำรวจใช้เฉพาะฉาก 1 หลังขาหักต้องมีเฝือกและไม้ค้ำยันทุกช็อต</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>แฟนสาว<span>นักแสดงละครเวที ราว 30 ปี · คบกันมา 5 ปี · เซ็กซี่ มั่นใจ ขี้แกล้ง</span></h2>
+    <div class="panels">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="แฟนสาวเต็มตัว มือหนึ่งเท้าสะเอว อีกมือแตะคาง">
+          <rect width="400" height="900" fill="url(#skyBg)"/>
+          <rect y="770" width="400" height="130" fill="#ede5ea"/>
+          <ellipse cx="196" cy="764" rx="70" ry="9" fill="#cfc2d2"/>
+          <g transform="translate(200,150) scale(1.2)">
+            <g transform="rotate(-4 0 40)"><use href="#gback"/></g>
+            <path d="M -28,392 L -12,392 C -12,420 -14,450 -18,492 L -25,492 C -30,450 -30,420 -28,392 Z" fill="#f9dcc6"/>
+            <path d="M -28,392 L -23,392 C -25,420 -24,450 -23,492 L -25,492 C -30,450 -30,420 -28,392 Z" fill="#fff2e8"/>
+            <path d="M 8,300 L 28,300 C 28,340 26,370 24,394 C 24,430 22,462 20,494 L 12,494 C 10,462 8,430 8,394 C 6,360 6,330 8,300 Z" fill="#ecc0a4"/>
+            <path d="M 21,300 L 28,300 C 28,340 26,370 24,394 C 24,430 22,462 20,494 L 17,494 C 19,450 21,400 21,300 Z" fill="#d6a083"/>
+            <path d="M -25,488 L -17,488 L -17,491 L -25,491 Z M 12,490 L 20,490 L 20,493 L 12,493 Z" fill="#141217"/>
+            <path d="M -26,492 L -16,492 C -14,499 -16,505 -22,507 L -34,507 C -36,503 -31,497 -26,492 Z" fill="#17151b"/>
+            <path d="M 11,494 L 21,494 C 23,501 21,507 15,509 L 5,509 C 3,505 6,499 11,494 Z" fill="#111015"/>
+            <path d="M -12,52 C -28,54 -38,58 -42,68 L -36,100 L 36,100 L 42,68 C 38,58 28,54 12,52 Z" fill="#f9dcc6"/>
+            <path d="M 18,54 C 30,56 38,60 42,68 L 36,100 L 26,100 C 28,82 26,64 18,54 Z" fill="#ecc0a4"/>
+            <path d="M -22,68 Q -12,72 -4,70 M 22,68 Q 12,72 4,70" fill="none" stroke="#e0ad90" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M -9,58 Q 0,76 9,58" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+            <circle cx="0" cy="68.5" r="1.6" fill="#e6c47a"/>
+            <path d="M -30,86 C -20,96 -10,102 0,104 C 10,102 20,96 30,86 L 33,112 C 32,132 28,150 24,162 C 34,182 42,204 42,226 C 42,280 40,330 40,394 L 28,394 L 28,300 L 8,300 L 8,394 L -40,394 C -40,330 -40,280 -38,226 C -36,204 -26,182 -18,162 C -24,150 -30,132 -33,112 Z" fill="#d88d9c"/>
+            <path d="M -30,86 C -26,92 -21,96 -16,98 C -22,124 -20,146 -12,164 C -22,188 -28,226 -26,394 L -40,394 C -40,330 -40,280 -38,226 C -36,204 -26,182 -18,162 C -24,150 -30,132 -33,112 Z" fill="#eeb0bb"/>
+            <path d="M 18,98 C 24,94 28,90 30,86 L 33,112 C 32,132 28,150 24,162 C 34,182 42,204 42,226 C 42,280 40,330 40,394 L 30,394 C 30,300 30,230 22,170 C 26,146 24,120 18,98 Z" fill="#b86c7e"/>
+            <path d="M -20,96 Q 0,112 20,96" fill="none" stroke="#b86c7e" stroke-width="1.6"/>
+            <path d="M -10,128 C -12,150 -8,170 0,186 C -4,166 -6,148 -6,128 Z" fill="#fbd3da" opacity=".7"/>
+            <path d="M -6,230 C -8,280 -6,330 -4,390 C -2,330 -2,280 -2,230 Z" fill="#fbd3da" opacity=".45"/>
+            <path d="M -27,88 L -24,56 M 27,88 L 24,56" stroke="#b35d72" stroke-width="2" stroke-linecap="round"/>
+            <path d="M -44,64 L -34,72 L -50,142 L -62,136 Z" fill="#f9dcc6"/>
+            <path d="M -44,64 L -40,67 L -58,140 L -62,136 Z" fill="#fff2e8"/>
+            <path d="M -62,136 L -50,142 L -22,174 L -28,182 Z" fill="#f9dcc6"/>
+            <path d="M -31,170 C -23,165 -14,167 -12,174 C -14,181 -22,185 -31,182 Z" fill="#efc8ab"/>
+            <path d="M -25,172 L -15,173 M -25,177 L -15,178" stroke="#d7a486" stroke-width=".9"/>
+            <g transform="rotate(-4 0 40)"><use href="#ghead"/></g>
+            <path d="M 34,72 L 44,64 L 45,140 L 33,146 Z" fill="#ecc0a4"/>
+            <path d="M 44,64 L 45,140 L 41,142 L 40,66 Z" fill="#d6a083"/>
+            <path d="M 33,146 L 45,140 L 20,64 L 10,68 Z" fill="#ecc0a4"/>
+            <path d="M 45,140 L 41,142 L 16,66 L 20,64 Z" fill="#d6a083"/>
+            <rect x="9" y="72" width="13" height="3.4" rx="1.7" transform="rotate(-18 15 73)" fill="#d8b46a"/>
+            <path d="M 6,68 C 3,60 9,53 18,55 C 22,59 22,65 18,69 Z" fill="#ecc0a4"/>
+            <path d="M 7,57 L 4.6,43 C 4.4,40 8.4,39.6 8.8,42.6 L 12,56 Z" fill="#ecc0a4"/>
+            <path d="M 8,61 L 16,60 M 8,65 L 16,64" stroke="#d6a083" stroke-width=".9"/>
+          </g>
+        </svg>
+        <figcaption>เต็มตัว · หุ่นสูงเพรียว เอวคอด ขายาว · ยืนลงน้ำหนักขาเดียว มือหนึ่งเท้าสะเอว อีกมือแตะคาง · เดรสสายเดี่ยวซาตินสีชมพูกุหลาบอ่อนผ่าข้าง · ส้นสูงหัวแหลมสีดำ</figcaption>
+      </figure>
+
+      <figure>
+        <svg viewBox="-75 -82 150 150" role="img" aria-label="ใบหน้าแฟนสาวระยะใกล้">
+          <rect x="-75" y="-82" width="150" height="150" fill="url(#skyBg)"/>
+          <g transform="rotate(-4 0 40)"><use href="#gback"/></g>
+          <path d="M -54,68 C -52,58 -32,51 -12,52 L 12,52 C 32,51 52,58 54,68 Z" fill="#f9dcc6"/>
+          <path d="M 18,53 C 34,55 52,60 54,68 L 32,68 C 32,62 28,57 18,53 Z" fill="#ecc0a4"/>
+          <path d="M -26,68 L -24,56 M 26,68 L 24,56" stroke="#b35d72" stroke-width="2" stroke-linecap="round"/>
+          <path d="M -9,58 Q 0,72 9,58" fill="none" stroke="#d8b46a" stroke-width=".8"/>
+          <g transform="rotate(-4 0 40)"><use href="#ghead"/></g>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · หน้ารูปหัวใจ คางเรียว · ตาโตเป็นประกาย ม่านตาน้ำตาลอำพัน · อายไลเนอร์หางเชิด ขนตางอน · คิ้วโค้งเข้ม ยกข้างหนึ่ง · ปากอิ่มสีกุหลาบเข้มยิ้มมุมปาก · ไฝใต้ตาซ้าย · เอียงหน้าเล็กน้อย</figcaption>
+        <div class="chips">
+          <span><i style="background:#f9dcc6"></i>ผิว</span>
+          <span><i style="background:#ecc0a4"></i>ผิวเงา</span>
+          <span><i style="background:#26171a"></i>ผม</span>
+          <span><i style="background:#7a4628"></i>ม่านตา</span>
+          <span><i style="background:#d88d9c"></i>เดรส</span>
+          <span><i style="background:#c64a5e"></i>ปาก</span>
+          <span><i style="background:#d8b46a"></i>ทอง</span>
+        </div>
+        <ul class="notes">
+          <li>ผมดำอมน้ำตาลประบ่า ลอนใหญ่มีวอลุ่ม แสกลึก ปอยหน้าปัดเฉียง</li>
+          <li>ท่าเท้าสะเอวแตะคางเป็นท่าประจำตัว เหมาะกับช็อตแกล้งไม่เชื่อในฉาก 6 และตอนเฉลยในฉาก 7</li>
+          <li>เซ็กซี่แบบดูแพง เปิดไหล่และขาผ่าข้างพอดี ไม่โป๊ ใช้ได้บนแพลตฟอร์มคลิปสั้น</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>ตัวละครที่จะออกแบบในขั้นถัดไป<span>ยังไม่ได้วาด รอให้ผ่านตัวหลักก่อน</span></h2>
+    <div class="cast">
+      <div><b>สามีบ้านตรงข้าม</b>ราว 35 ปี สูงโปร่ง หวีผมเรียบ เชิ้ตแขนยาวสีเทาเข้ม ยิ้มสุภาพแต่ดูไม่น่าไว้ใจ <em>· ออกฉาก 3, 4, 6, 7 · ช็อตเงยหน้ายิ้มในฉาก 4 คือภาพจำ</em></div>
+      <div><b>ภรรยาบ้านตรงข้าม</b>ราว 30 ปี ผมยาวมัดครึ่งหัว เดรสสีเขียวหม่น ถือบัวรดน้ำ <em>· ออกฉาก 3, 7 และเป็นเงาที่ทุบกระจกในฉาก 5</em></div>
+      <div><b>เพื่อนตำรวจ</b>ราว 32 ปี ตัวใหญ่ ผมเกรียน แจ็กเก็ตสีกรมเข้ม พูดกูมึง <em>· ออกฉาก 4, 7</em></div>
+      <div><b>พ่อแม่ เพื่อนสนิท</b>ตัวประกอบในฉากเซอร์ไพรส์ วาดแบบเรียบ อยู่ระยะกลางหรือติดขอบเฟรม <em>· ออกฉาก 7, 8</em></div>
+      <div><b>บุคคลปริศนา</b>เห็นเป็นเงาดำ ฮู้ดและกล้องส่องทางไกล ไม่เห็นหน้า ไม่บอกเพศ <em>· ออกฉาก 8 เท่านั้น ห้ามเฉลยตัวตน</em></div>
+    </div>
+  </section>
+</div>
