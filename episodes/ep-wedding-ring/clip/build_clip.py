@@ -200,6 +200,12 @@ for k in range(4):
 kt = S[24]['start'] + S[24]['lead'] + sum(len(v) for _, v in VO[24]) / SR + .25
 for k in range(3):
     add(sfx, kt + k * .55, knock(), 1.0)
+# ผู้ใช้สั่ง: ตอนจบ หลังสามีเคาะประตูเรียกจบประโยค ให้ฟ้าผ่าอีกครั้ง (ใช้เสียงฟ้าผ่าจริงถ้ามี) แล้วเข้าช็อตนางเอกตกใจ
+if os.path.exists(os.path.join(HERE, 'sfx', 'thunder.mp3')):
+    import audiolib as _A
+    add(sfx, S[26]['start'] - .15, _A.load_voice(os.path.join(HERE, 'sfx', 'thunder.mp3'), .1) * 3.5, 1.0)
+else:
+    add(sfx, S[26]['start'] - .15, thunder(5.0, .9), 1.0)
 add(sfx, S[26]['start'] + .1, boom(2.8, 45), .7)
 for k in range(1, 4):
     add(sfx, S[27]['start'] + k * 1.6, click(), 1.0)

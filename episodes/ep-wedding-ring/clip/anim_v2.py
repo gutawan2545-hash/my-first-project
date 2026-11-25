@@ -280,13 +280,14 @@ thr = score.build(N, dict(bang=bang_t, s5=T0['s5'], s6=T0['s6'], s6r=T0['s6r'], 
 def rms(x): return float(np.sqrt(np.mean(x ** 2)) + 1e-9)
 v = rms(voice[np.abs(voice) > 1e-4])
 def lvl(x, a, b, db): i0, i1 = int(a * A.SR), int(b * A.SR); return x * (v * 10 ** (-db / 20) / rms(x[i0:i1]))
-music_w = lvl(music_w, .3, bang_t - .1, 5.5); thr = lvl(thr, bang_t + 1.5, TOTAL - 1, 8)
+music_w = lvl(music_w, .3, bang_t - .1, 8); thr = lvl(thr, bang_t + 1.5, TOTAL - 1, 8)
 # เพลงจริงจาก ElevenLabs Music (gen_music.py) ถ้ามี ใช้แทนเพลงสังเคราะห์ ท่อนเพลงตั้งความยาวตามไทม์ไลน์ไว้แล้ว
 def load_raw(f):
     import subprocess
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-f', 's16le', '-ac', '1', '-ar', str(A.SR), '-'], capture_output=True).stdout
     return np.frombuffer(raw, np.int16).astype(np.float32) / 32768
-if os.path.exists('music/A_wedding.mp3'):
+# ผู้ใช้สั่ง: ช่วงเปิดเรื่องถึงงานแต่งต้องเป็นทำนอง Bridal Chorus (Here Comes the Bride) จึงใช้ออร์แกนที่เรียบเรียงเองแทน A_wedding
+if os.environ.get('AI_WEDDING') and os.path.exists('music/A_wedding.mp3'):
     w = load_raw('music/A_wedding.mp3'); music_w = np.zeros(N, np.float32); A.add(music_w, 0, w)
     k = int(.06 * A.SR); i = int(bang_t * A.SR); music_w[i:i + k] *= np.linspace(1, 0, k); music_w[i + k:] = 0   # ตัดฉับตรงเสียงปัง
     music_w = lvl(music_w, .5, bang_t - .2, 8)
