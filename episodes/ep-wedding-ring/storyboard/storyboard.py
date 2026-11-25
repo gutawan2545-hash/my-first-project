@@ -66,45 +66,105 @@ def cam(content, cx, cy, z, ty=400):
     tx = 270 - cx * z; tyy = ty - cy * z
     return f'<g transform="translate({fx(tx)},{fx(tyy)}) scale({z})">{content}</g>'
 
-# ---------------------------------------------------------------- ฉากประตูห้องจัดเลี้ยง (มองจากในห้อง)
-def doors(state='closed', figure=None, guard=False):
-    o = ['<rect width="540" height="960" fill="#e8e1d6"/>',
-         '<rect width="540" height="120" fill="#d2c8b8"/><path d="M0,120 H540" stroke="#c3c8cf" stroke-width="5"/>',
-         '<rect x="0" y="760" width="540" height="200" fill="#e9e4dc"/><path d="M0,760 H540" stroke="#c9c0b2" stroke-width="4"/>']
-    for x in range(-30, 560, 70): o.append(f'<path d="M {270 + (x - 270) * .4},760 L {x},960" stroke="#cfc6b8" stroke-width="1.2" opacity=".6"/>')
-    for x in (40, 500):
-        o.append(f'<rect x="{x - 26}" y="140" width="52" height="620" fill="#f6f1e8"/><rect x="{x + 12}" y="140" width="14" height="620" fill="#d8cfc0"/><rect x="{x - 32}" y="130" width="64" height="20" fill="#c3c8cf"/>')
-        o.append(f'<circle cx="{x}" cy="330" r="34" fill="url(#chGlow4)"/><rect x="{x - 3}" y="320" width="6" height="22" fill="#c3c8cf"/><rect x="{x - 14}" y="306" width="6" height="14" fill="#fffaf0"/><rect x="{x + 8}" y="306" width="6" height="14" fill="#fffaf0"/>')
-    o.append('<path d="M 96,760 L 96,250 A 174,174 0 0,1 444,250 L 444,760 Z" fill="#c3c8cf"/><path d="M 108,760 L 108,250 A 162,162 0 0,1 432,250 L 432,760 Z" fill="#f6f1e8"/>')
-    o.append('<path d="M 120,760 L 120,250 A 150,150 0 0,1 420,250 L 420,760 Z" fill="#141626"/>')
-    # ทางเดินมืดด้านนอก
-    o.append('<path d="M 120,760 L 220,560 L 320,560 L 420,760 Z" fill="#2a2440"/><rect x="220" y="330" width="100" height="230" fill="#1e1c30"/>')
-    for k, y in enumerate((420, 470, 500)):
-        o.append(f'<circle cx="{150 + k * 22}" cy="{y}" r="{12 - k * 3}" fill="#fff0d8" opacity=".5" filter="url(#bl4)"/><circle cx="{390 - k * 22}" cy="{y}" r="{12 - k * 3}" fill="#fff0d8" opacity=".5" filter="url(#bl4)"/>')
-    gap = {'closed': 0, 'half': 70, 'open': 150}[state]
-    lw = 150 - gap
-    if lw > 0:
-        for side, x0 in ((-1, 120), (1, 420 - lw)):
-            col, sh = ('#f8f3ea', '#e2d8c8') if side < 0 else ('#efe8dc', '#d6ccbc')
-            o.append(f'<rect x="{x0}" y="250" width="{lw}" height="510" fill="{col}"/>')
-            if lw > 40:
-                o.append(f'<rect x="{x0 + 12}" y="290" width="{lw - 24}" height="190" fill="none" stroke="#c3c8cf" stroke-width="2"/><rect x="{x0 + 12}" y="510" width="{lw - 24}" height="220" fill="none" stroke="#c3c8cf" stroke-width="2"/>')
-            o.append(f'<rect x="{x0 + (lw - 10 if side < 0 else 4)}" y="480" width="6" height="50" rx="2" fill="#c3c8cf"/>')
-        if state == 'closed':
-            o.append('<path d="M 120,250 A 150,150 0 0,1 420,250 Z" fill="#f6f1e8"/><path d="M 270,250 L 270,100" stroke="#c3c8cf" stroke-width="0"/>')
-            for i in range(9):
-                a = math.pi * (i + 1) / 10
-                o.append(f'<path d="M 270,250 L {fx(270 - math.cos(a) * 150)},{fx(250 - math.sin(a) * 150)}" stroke="#c3c8cf" stroke-width="2.4"/>')
-            o.append('<rect x="269" y="250" width="2" height="510" fill="#fff6e6"/>')
-    if gap:
-        o.append(f'<path d="M {270 - gap},760 L {270 + gap},760 L {270 + gap * 2.2},960 L {270 - gap * 2.2},960 Z" fill="#b8c4e8" opacity=".35"/>')
-    if figure:
-        key, s = figure
-        o.append(put(key, 270, 752, s, shadow=False))
-        o.append(f'<path d="M {270 - gap},250 L {270 + gap},250 L {270 + gap},760 L {270 - gap},760 Z" fill="#9fb0e0" opacity=".08"/>')
-    if guard:
-        o.append(put('guard', 380, 770, .62))
+# ---------------------------------------------------------------- ฉากประตูห้องจัดเลี้ยง (มองจากในห้อง ประตูบานคู่สูงสองชั้น)
+SV = H8.S
+DOOR_FEET = 760        # เท้าคนที่ยืนตรงกรอบประตู
+DOOR_S = .52           # ขนาดคนที่ระยะประตู
+def doors(state='closed', figures=()):
+    o = []
+    o.append('<rect width="540" height="960" fill="url(#wall7)"/>')
+    o.append('<path d="M 0,0 H 540 V 70 Q 270,20 0,70 Z" fill="#cfc6b6"/><path d="M 0,70 Q 270,20 540,70" stroke="#c3c8cf" stroke-width="5" fill="none"/>')
+    o.append(''.join(f'<rect x="{x - 3}" y="{70 - 50 * 4 * (x / 540) * (1 - x / 540) + 6:.1f}" width="6" height="6" fill="#e2d7c6"/>' for x in range(0, 541, 14)))
+    # ทางเดินด้านนอก (เห็นเมื่อเปิด)
+    ox0, ox1, top, bot = 150, 390, 196, DOOR_FEET
+    r_ = (ox1 - ox0) / 2
+    arch = f'M {ox0},{bot} L {ox0},{top + r_} A {r_},{r_} 0 0,1 {ox1},{top + r_} L {ox1},{bot} Z'
+    o.append(f'<clipPath id="dopen"><path d="{arch}"/></clipPath><g clip-path="url(#dopen)">')
+    o.append(f'<rect x="{ox0}" y="{top}" width="{ox1 - ox0}" height="{bot - top}" fill="#141228"/>')
+    o.append(f'<path d="M {ox0},{bot} L 236,560 L 304,560 L {ox1},{bot} Z" fill="#2c2444"/><rect x="236" y="380" width="68" height="180" fill="#1e1a34"/>')
+    o.append('<rect x="250" y="400" width="40" height="70" fill="#4a5a94"/><circle cx="270" cy="424" r="9" fill="#e8eefc"/>')
+    for k in range(3):
+        y = 430 + k * 34; dx = 18 + k * 26
+        o.append(f'<circle cx="{236 - dx * .6:.0f}" cy="{y}" r="{8 - k * 2}" fill="#fff0d8" opacity=".55"/><circle cx="{304 + dx * .6:.0f}" cy="{y}" r="{8 - k * 2}" fill="#fff0d8" opacity=".55"/>')
+    o.append('<ellipse cx="270" cy="560" rx="120" ry="200" fill="#9fb2e8" opacity=".22" filter="url(#bl4)"/>')
+    o.append('</g>')
+    # ประตูบานคู่: closed / half / open (บานเปิดเข้าหากล้อง)
+    if state == 'closed':
+        lw = (ox1 - ox0) / 2
+        for k, (x0, col, sh) in enumerate(((ox0, '#f8f3ea', '#e2d8c8'), (ox0 + lw, '#f0e9dd', '#d8cebe'))):
+            o.append(f'<path d="M {x0},{bot} L {x0},{top + r_} A {r_},{r_} 0 0,1 {ox1},{top + r_} L {ox1},{bot} Z" fill="{col}" clip-path="url(#dopen)"/>' if False else f'<rect x="{x0}" y="{top + r_ - 10}" width="{lw}" height="{bot - top - r_ + 10}" fill="{col}"/>')
+            for (py0, py1) in ((top + r_ + 6, 470), (486, bot - 14)):
+                o.append(f'<rect x="{x0 + 12}" y="{py0}" width="{lw - 24}" height="{py1 - py0}" fill="{sh}"/><rect x="{x0 + 15}" y="{py0 + 3}" width="{lw - 30}" height="{py1 - py0 - 6}" fill="{col}" stroke="#c3c8cf" stroke-width="2"/>')
+                o.append(f'<rect x="{x0 + 26}" y="{py0 + 14}" width="{lw - 52}" height="{py1 - py0 - 28}" fill="none" stroke="#dcd2c2" stroke-width="1.2"/>')
+            hx = x0 + lw - 12 if k == 0 else x0 + 6
+            o.append(f'<rect x="{hx}" y="450" width="6" height="64" rx="3" fill="#c3c8cf"/><rect x="{hx}" y="450" width="2" height="64" fill="#f4f6f9"/>')
+        o.append(f'<rect x="{ox0 + (ox1 - ox0) / 2 - 1}" y="{top + r_ - 10}" width="2" height="{bot - top - r_ + 10}" fill="#fff6e6"/>')
+    else:
+        fe = {'half': (112, 286, 806), 'open': (44, 250, 862)}[state]
+        fx_, ft, fb = fe
+        for side in (-1, 1):
+            hxg = ox0 if side < 0 else ox1
+            ex = fx_ if side < 0 else 540 - fx_
+            pts = f'{hxg},{top + r_ - 10} {ex},{ft} {ex},{fb} {hxg},{bot}'
+            o.append(f'<polygon points="{pts}" fill="{"#f4eee4" if side < 0 else "#e6dfd2"}"/>')
+            # แผงลวดลายบนบาน
+            def lerp(a, b, t): return a + (b - a) * t
+            for (t0, t1) in ((.08, .42), (.5, .92)):
+                p = []
+                for (u, v) in ((.15, t0), (.85, t0), (.85, t1), (.15, t1)):
+                    xx = lerp(hxg, ex, u)
+                    ytop = lerp(top + r_ - 10, ft, u); ybot = lerp(bot, fb, u)
+                    p.append(f'{xx:.1f},{lerp(ytop, ybot, v):.1f}')
+                o.append(f'<polygon points="{" ".join(p)}" fill="none" stroke="#c3c8cf" stroke-width="2.2"/>')
+            o.append(f'<line x1="{ex}" y1="{ft}" x2="{ex}" y2="{fb}" stroke="{"#ffffff" if side < 0 else "#c9bfb0"}" stroke-width="3"/>')
+    # กรอบประตูใหญ่: เสา ซุ้มโค้ง ช่องแสงรูปพัด
+    o.append(SV.pilaster(92, 138, 210, bot))
+    o.append(SV.pilaster(402, 448, 210, bot))
+    o.append(f'<path d="M {ox0 - 22},{top + r_} A {r_ + 22},{r_ + 22} 0 0,1 {ox1 + 22},{top + r_}" fill="none" stroke="#e2d7c6" stroke-width="16"/>')
+    o.append(f'<path d="M {ox0 - 30},{top + r_} A {r_ + 30},{r_ + 30} 0 0,1 {ox1 + 30},{top + r_}" fill="none" stroke="#c3c8cf" stroke-width="3"/>')
+    o.append(f'<path d="M {ox0 - 13},{top + r_} A {r_ + 13},{r_ + 13} 0 0,1 {ox1 + 13},{top + r_}" fill="none" stroke="#c3c8cf" stroke-width="2"/>')
+    o.append(f'<path d="M 258,{top - 34} L 282,{top - 34} L 288,{top - 8} L 252,{top - 8} Z" fill="#f6f1e8" stroke="#c3c8cf" stroke-width="2"/>')
+    if state == 'closed':
+        o.append(f'<path d="M {ox0},{top + r_ - 10} L {ox0},{top + r_} A {r_},{r_} 0 0,1 {ox1},{top + r_} L {ox1},{top + r_ - 10} Z" fill="#3a4a7c"/>')
+        o.append(f'<path d="M {ox0},{top + r_} A {r_},{r_} 0 0,1 {ox1},{top + r_} Z" fill="#46588e"/>')
+        for k in range(11):
+            a = math.pi * (k + 1) / 12
+            o.append(f'<path d="M 270,{top + r_} L {270 - math.cos(a) * r_:.1f},{top + r_ - math.sin(a) * r_:.1f}" stroke="#c3c8cf" stroke-width="2.4"/>')
+        o.append(f'<circle cx="270" cy="{top + r_}" r="20" fill="#c3c8cf"/><rect x="{ox0}" y="{top + r_ - 4}" width="{ox1 - ox0}" height="8" fill="#c3c8cf"/>')
+    # พื้นหินอ่อน + พรมทางเดินพุ่งไปที่ประตู
+    o.append(f'<rect x="0" y="{bot}" width="540" height="{960 - bot}" fill="url(#floor7)"/>')
+    for x in range(-200, 760, 60):
+        o.append(f'<path d="M {270 + (x - 270) * .22:.1f},{bot} L {x},960" stroke="#cfc6b8" stroke-width="1.1" opacity=".55"/>')
+    o.append(f'<path d="M {ox0 + 30},{bot} L {ox1 - 30},{bot} L 470,960 L 70,960 Z" fill="#f4f0ea"/>')
+    o.append(f'<path d="M {ox0 + 30},{bot} L {ox0 + 36},{bot} L 82,960 L 70,960 Z M {ox1 - 30},{bot} L {ox1 - 36},{bot} L 458,960 L 470,960 Z" fill="#c3c8cf"/>')
+    # ลำแสงจันทร์จากประตูเปิด + เงายาวของคน
+    if state != 'closed':
+        w = 70 if state == 'half' else 120
+        o.append(f'<path d="M {270 - w},{bot} L {270 + w},{bot} L {270 + w * 2.4},960 L {270 - w * 2.4},960 Z" fill="#d6e2ff" opacity=".42"/>')
+        o.append(f'<path d="M {ox0 + 10},{top + r_} L {ox1 - 10},{top + r_} L {270 + w * 2.6},960 L {270 - w * 2.6},960 Z" fill="url(#doorBeam)" opacity=".55" filter="url(#bl4)" style="mix-blend-mode:screen"/>')
+        for key, x, feet, sc in figures:
+            o.append(f'<path d="M {x - 16},{feet} L {x + 16},{feet} L {x + 50 + (x - 270) * 1.2},960 L {x - 50 + (x - 270) * 1.2},960 Z" fill="#14121e" opacity=".42" filter="url(#sf4)"/>')
+    # คนในกรอบประตู + แสงขอบด้านหลัง
+    for key, x, feet, sc in figures:
+        o.append(f'<ellipse cx="{x}" cy="{feet - 130 * sc}" rx="{110 * sc:.0f}" ry="{300 * sc:.0f}" fill="#b8c8ff" opacity=".28" filter="url(#bl4)"/>')
+        o.append(put(key, x, feet, sc, shadow=False))
+    # แท่นดอกไม้ เชิงเทียน
+    for x in (60, 480):
+        o.append(f'<path d="M {x - 22},{bot + 30} L {x + 22},{bot + 30} L {x + 14},{bot - 60} L {x + 26},{bot - 72} L {x - 26},{bot - 72} L {x - 14},{bot - 60} Z" fill="#f6f1e8"/><path d="M {x + 2},{bot + 30} L {x + 22},{bot + 30} L {x + 14},{bot - 60} L {x + 26},{bot - 72} L {x + 2},{bot - 72} Z" fill="#d6ccbe"/>')
+        o.append(SV.bouquetB(x, bot - 104, 50, 38, 300 + x, 1.1, 36, 8, red=0))
+    o.append(SV.floor_candelabra(168, bot + 22, 150, .8))
+    o.append(SV.floor_candelabra(372, bot + 22, 150, .8))
+    # ม่านงาช้างกรอบภาพ + โคมระย้าด้านหน้า
+    o.append(SV.drape(-1, -40, 70, 0, 560, -40, 20, n=4))
+    o.append(SV.drape(1, 470, 580, 540, 560, 520, 580, n=4))
+    o.append(f'<circle cx="270" cy="40" r="110" fill="url(#chGlow4)"/>')
+    o.append(SV.chandelier_arms(270, -150, .62))
+    o.append('<rect width="540" height="960" fill="#1a2040" opacity=".14" style="mix-blend-mode:multiply"/>')
+    o.append('<rect width="540" height="960" filter="url(#stip4)" opacity=".12" style="mix-blend-mode:overlay"/><rect width="540" height="960" fill="url(#vigD)"/>')
     return ''.join(o)
+
+WB = ('wb', 270, DOOR_FEET, DOOR_S)
+WB_FACE = (270, DOOR_FEET - 464 * DOOR_S)
 
 # ---------------------------------------------------------------- มือถือในมือ
 def phone(screen, bg='#3a3448', glow='#aac0ff'):
@@ -290,12 +350,12 @@ SHOTS = {
     1: ('WS · ซูมเข้าช้า ๆ', 'ผู้บรรยาย', 'ภาพกว้างห้องพิธีคืนพระจันทร์เต็มดวง คู่บ่าวสาวยืนกลางลายแหวน แขกยืนสองข้าง กล้องค่อย ๆ ดันเข้าหาคู่บ่าวสาว', hall()),
     2: ('WS · แพนลงจากโคม', 'ผู้บรรยาย', 'เริ่มที่โคมระย้ากับนาฬิกา แล้วแพนลงมาเห็นดอกไม้และแขกที่กำลังปรบมือ', cam(hall(), 270, 330, 1.25, 330)),
     3: ('MS · คู่บ่าวสาว', 'ผู้บรรยาย', 'ภาพสองคน เจ้าสาวยิ้ม เจ้าบ่าวยิ้มมุมปาก ดูสมบูรณ์แบบ', cam(hall(), (bx + gx) / 2, by + 60, 2.2, 360)),
-    4: ('WS · ประตู · กล้องนิ่ง', 'ผู้บรรยาย', 'ประตูห้องจัดเลี้ยงที่ปิดอยู่ค่อย ๆ แง้มออก แสงเย็นจากทางเดินลอดเข้ามา เงียบหนึ่งจังหวะ', doors('half')),
-    5: ('MS · ประตู + อินเสิร์ตแหวน', 'ผู้บรรยาย', 'ผู้หญิงชุดดำยืนครึ่งตัวในเงาตรงกรอบประตู หยุดนิ่งสั้น ๆ แล้วก้าวเข้ามา ตัดอินเสิร์ตแหวนเงินบนถุงมือดำ', doors('open', ('wb', .95)) + inset_ring()),
-    6: ('CU · ผู้หญิงชุดดำ', 'ผู้หญิงชุดดำ', 'กล้องอยู่ที่ผู้พูด หน้าเธอนิ่ง พูดเบาแต่ชัด', cam(doors('open', ('wb', .95)), 270, 320, 2.6, 380)),
-    7: ('MS · ประตู', 'ผู้บรรยาย', 'รปภ. เดินเข้ามาประกบผู้หญิงชุดดำ เจ้าบ่าวพูดกับแขก (เสียงบรรยาย ไม่ขยับปากใคร)', doors('open', ('wb', .95), guard=True)),
-    8: ('MS · หันกลับมา', 'ผู้บรรยาย', 'ก่อนพ้นประตู เธอหยุดแล้วหันกลับมามองตรงกล้อง (มุมมองเจ้าสาว)', cam(doors('open', ('wb', .95), guard=True), 270, 380, 1.7, 400)),
-    9: ('ECU · ผู้หญิงชุดดำ', 'ผู้หญิงชุดดำ', 'ใกล้มากที่ตาและปาก เสียงกระซิบเบา ๆ ไม่ตะโกน', cam(doors('open', ('wb', .95)), 270, 312, 3.6, 380)),
+    4: ('WS · ประตู · กล้องนิ่ง', 'ผู้บรรยาย', 'ประตูบานคู่สูงสองชั้นที่ปิดอยู่ค่อย ๆ แง้มออกเข้าหากล้อง แสงจันทร์เย็นจากทางเดินพาดยาวลงพรม เงียบหนึ่งจังหวะ', doors('half')),
+    5: ('MS · ประตู + อินเสิร์ตแหวน', 'ผู้บรรยาย', 'ผู้หญิงชุดดำยืนครึ่งตัวในเงาตรงกรอบประตู หยุดนิ่งสั้น ๆ แล้วก้าวเข้ามา ตัดอินเสิร์ตแหวนเงินบนถุงมือดำ', doors('open', [WB]) + inset_ring()),
+    6: ('CU · ผู้หญิงชุดดำ', 'ผู้หญิงชุดดำ', 'กล้องอยู่ที่ผู้พูด หน้าเธอนิ่ง พูดเบาแต่ชัด', cam(doors('open', [WB]), WB_FACE[0], WB_FACE[1] + 40, 3.2, 380)),
+    7: ('MS · ประตู', 'ผู้บรรยาย', 'รปภ. เดินเข้ามาประกบผู้หญิงชุดดำ เจ้าบ่าวพูดกับแขก (เสียงบรรยาย ไม่ขยับปากใคร)', doors('open', [('wb', 246, DOOR_FEET, DOOR_S), ('guard', 312, DOOR_FEET + 4, DOOR_S)])),
+    8: ('MS · หันกลับมา', 'ผู้บรรยาย', 'ก่อนพ้นประตู เธอหยุดแล้วหันกลับมามองตรงกล้อง (มุมมองเจ้าสาว)', cam(doors('open', [('wb', 246, DOOR_FEET, DOOR_S), ('guard', 312, DOOR_FEET + 4, DOOR_S)]), 270, 600, 1.7, 430)),
+    9: ('ECU · ผู้หญิงชุดดำ', 'ผู้หญิงชุดดำ', 'ใกล้มากที่ตาและปาก เสียงกระซิบเบา ๆ ไม่ตะโกน', cam(doors('open', [WB]), WB_FACE[0], WB_FACE[1] + 4, 5.2, 380)),
     10: ('MS · เจ้าสาว · ซูมเข้าช้า', 'ผู้บรรยาย', 'กลับมาที่ห้องพิธี เจ้าสาวยังยิ้มแต่ตาเริ่มสงสัย ภาพเย็นลงเล็กน้อย กล้องค่อย ๆ ดันเข้าหาหน้า', cam(hall(cool=.12), bx, by + 40, 2.4, 380)),
     11: ('MS · แขกฝั่งเจ้าบ่าว', 'ผู้บรรยาย', 'แขกฝั่งเจ้าบ่าวยืนนิ่ง ยิ้มแข็ง ไม่มีใครยกมือถือ ตัดกับเพื่อนเจ้าสาวที่ถ่ายรูปอยู่ขอบเฟรม', cam(hall(cool=.12), 420, 640, 1.9, 420)),
     12: ('CU · แม่เจ้าบ่าว', 'ผู้บรรยาย', 'แม่เจ้าบ่าวยิ้มสุภาพแต่ตาไม่ยิ้มตาม', cam(hall(cool=.12), mx, my + 20, 3.2, 380)),
@@ -315,13 +375,14 @@ SHOTS = {
     26: ('WS · หนึ่งปีต่อมา', 'ผู้บรรยาย', 'ห้องพิธีเดิม เจ้าบ่าวคนเดิมยืนยิ้มข้างเจ้าสาวคนใหม่ ป้ายเวลาที่มุมบน',
          hall({k: v for k, v in CAST.items() if k not in ('bride', 'staff', 'ph')} | {'nb': (228, 845, .58)}) + label('หนึ่งปีต่อมา')),
     27: ('WS · ประตู · กล้องนิ่ง', 'ผู้บรรยาย', 'ประตูห้องจัดเลี้ยงค่อย ๆ เปิดออกอีกครั้ง จังหวะเดียวกับช็อต 4', doors('half')),
-    28: ('MS · ประตู', 'ผู้บรรยาย', 'ผู้หญิงชุดดำที่ยืนในกรอบประตูคราวนี้คือเจ้าสาวคนแรก (หน้าเจ้าสาว ชุดดำ แหวนเงินบนถุงมือ)', doors('open', ('bride_black', .95))),
-    29: ('CU · เจ้าสาวในชุดดำ', 'เจ้าสาว (ชุดดำ)', 'กล้องอยู่ที่ผู้พูด ประโยคเดียวกับช็อต 6 คำต่อคำ', cam(doors('open', ('bride_black', .95)), 270, 320, 2.6, 380)),
+    28: ('MS · ประตู', 'ผู้บรรยาย', 'ผู้หญิงชุดดำที่ยืนในกรอบประตูคราวนี้คือเจ้าสาวคนแรก (หน้าเจ้าสาว ชุดดำ แหวนเงินบนถุงมือ)', doors('open', [('bride_black', 270, DOOR_FEET, DOOR_S)])),
+    29: ('CU · เจ้าสาวในชุดดำ', 'เจ้าสาว (ชุดดำ)', 'กล้องอยู่ที่ผู้พูด ประโยคเดียวกับช็อต 6 คำต่อคำ', cam(doors('open', [('bride_black', 270, DOOR_FEET, DOOR_S)]), WB_FACE[0], WB_FACE[1] + 40, 3.2, 380)),
     30: ('การ์ดคำถาม', '—', 'ตัดดำ แล้วขึ้นการ์ด A/B ไฮไลต์สลับไปมาพร้อมเสียงคลิก', card()),
 }
 
 EXTRA_DEFS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="dimV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
+<linearGradient id="doorBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe8ff" stop-opacity=".6"/><stop offset="1" stop-color="#dfe8ff" stop-opacity="0"/></linearGradient>
 <radialGradient id="vigD" cx=".5" cy=".45" r=".75"><stop offset=".5" stop-color="#0a0a14" stop-opacity="0"/><stop offset="1" stop-color="#0a0a14" stop-opacity=".6"/></radialGradient>
 </defs></svg>'''
 
