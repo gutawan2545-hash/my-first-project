@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""บ้านตรงข้าม: มุมหมุนรอบตัว (หน้า · ซ้าย · หลัง · ขวา) ท่ายืนตรงเป็นกลาง
+"""บ้านตรงข้าม: มุมหน้าและมุมหลัง ท่ายืนตรงเป็นกลาง (side_view เก็บไว้แต่ไม่ใช้ ตามที่ผู้ใช้สั่ง)
 หน้าตรงใช้หัวจากแผ่นที่ผ่านแล้ว (leads/cops/others) · มุมข้างหันเต็ม 90 องศา · ลายเส้นเดิม ไม่มีเส้นขอบ เงาบล็อก
 รัน: python3 turnaround.py -> turnaround.html"""
 import re
@@ -379,13 +379,10 @@ def panel(inner, k, label):
 rows = []
 for k in ('hero', 'heroine', 'moo', 'ton', 'husband', 'wife'):
     c = C[k]
-    views = [panel(front_view(k), k, 'หน้า'),
-             panel(side_view(k), k, 'ซ้าย (หันไปทางซ้ายของจอ)'),
-             panel(back_view(k), k, 'หลัง'),
-             panel(f'<g transform="scale(-1,1)">{side_view(k, near_detail=True)}</g>', k, 'ขวา (หันไปทางขวาของจอ)')]
+    views = [panel(front_view(k), k, 'หน้า'), panel(back_view(k), k, 'หลัง')]   # ผู้ใช้สั่ง: ใช้แค่หน้ากับหลัง ไม่ใช้มุมข้าง
     rows.append(f'<section><h2>{c["name"]}<span>{c["note"]}</span></h2><div class="four">{"".join(views)}</div></section>')
 
-page = f'''<title>บ้านตรงข้าม มุมหมุนรอบตัว</title>
+page = f'''<title>บ้านตรงข้าม มุมหน้าและหลัง</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: one row of four views per character (front, left, back, right); 2 per row on phones. Same look as the character sheets. */
@@ -395,7 +392,7 @@ body {{ font-family:var(--font); padding-left:max(16px,env(safe-area-inset-left,
 .wrap {{ max-width:1100px; margin:0 auto; display:grid; gap:30px; }}
 h1 {{ font-size:20px; font-weight:500; margin:0; }} header p {{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.6; }}
 h2 {{ font-size:18px; font-weight:500; margin:0 0 10px; }} h2 span {{ color:var(--muted); font-weight:400; margin-left:8px; font-size:14px; }}
-.four {{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }}
+.four {{ display:grid; grid-template-columns:repeat(2,minmax(0,300px)); gap:12px; }}
 @media (max-width:640px) {{ .four {{ grid-template-columns:repeat(2,1fr); }} }}
 figure {{ margin:0; display:grid; gap:6px; min-width:0; }}
 figure svg {{ display:block; width:100%; height:auto; border-radius:6px; box-shadow:0 0 0 1px var(--line); }}
@@ -405,8 +402,8 @@ figcaption {{ font-size:12px; color:var(--muted); text-align:center; }}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <linearGradient id="skyBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ab9cd8"/><stop offset=".6" stop-color="#cdb6dd"/><stop offset="1" stop-color="#e6cfe2"/></linearGradient>
 {HEAD_DEFS}</defs></svg>
-<div class="wrap"><header><h1>บ้านตรงข้าม · มุมหมุนรอบตัว</h1>
-<p>หน้า · ซ้าย · หลัง · ขวา ในท่ายืนตรงเป็นกลาง ใช้เป็นแบบอ้างอิงตอนจัดท่าในฉาก · มุมข้างหันเต็ม 90 องศาตามมาตรฐานช่อง · หน้าตรงใช้หัวจากแผ่นที่ผ่านแล้ว รายละเอียดที่อยู่ข้างเดียว เช่น เฝือกและตราโล่ วางตามด้านที่ถูกต้องในแต่ละมุม</p></header>
+<div class="wrap"><header><h1>บ้านตรงข้าม · มุมหน้าและมุมหลัง</h1>
+<p>ช่องใช้แค่มุมหน้าตรงกับมุมหันหลัง ไม่ใช้มุมข้าง · ท่ายืนตรงเป็นกลาง ใช้อ้างอิงตอนจัดท่าในฉาก · หน้าตรงใช้หัวจากแผ่นที่ผ่านแล้ว · ของที่อยู่ข้างเดียว เช่น เฝือกขาซ้ายของพระเอก สลับไปอีกฝั่งของจอเมื่อหันหลัง</p></header>
 {"".join(rows)}</div>'''
 open('turnaround.html', 'w', encoding='utf-8').write(page)
 print('ok')
