@@ -388,9 +388,9 @@ def c_photographer():
            '<rect x="-24" y="116" width="48" height="32" rx="4" fill="#24242c"/><rect x="-24" y="116" width="48" height="8" rx="3" fill="#3a3a46"/>'
            '<circle cx="0" cy="134" r="12" fill="#14141a"/><circle cx="0" cy="134" r="8" fill="#2c3448"/><circle cx="-3" cy="131" r="2.4" fill="#8aa0c8"/>'
            '<rect x="12" y="110" width="8" height="6" fill="#3a3a46"/>')
-    body = mbody(SK_MALE_T, ('#2e3a52', '#3e4c66', '#202a3c'), ('#1c1c22', '#2c2c36', '#121216'), lapels=False, rolled=True, shoes='#e8e4dc',
-                 vest=('#8a7e62', '#a29676', '#6a604a'), extra=cam)
-    return 'ช่างภาพ', 'อายุราว 30 ผมน้ำตาลเข้มแสกกลาง หนวดเคราจาง ๆ ยิ้มเจื่อนเหมือนเพิ่งพูดอะไรผิด เสื้อเชิ้ตดำพับแขน เสื้อกั๊กกระเป๋าเยอะสีกากี ยีนส์ สนีกเกอร์ขาว กล้องห้อยคอ', 'm', back, head, body
+    flash = '<rect x="-20" y="104" width="12" height="12" rx="1.6" fill="#2c2c36"/><rect x="-19" y="105" width="10" height="5" fill="#e8ecf4"/>'
+    body = mbody(SK_MALE_T, ('#2c2e36', '#3c3f4a', '#1e2026'), ('#2c2e36', '#3c3f4a', '#1e2026'), tie=('#141418', '#0a0a0e'), shoes='#14141a', extra=cam + flash)
+    return 'ช่างภาพ', 'อายุราว 30 ผมน้ำตาลเข้มแสกกลาง หนวดเคราจาง ๆ ยิ้มเจื่อนเหมือนเพิ่งพูดอะไรผิด ใส่สูทสีชาร์โคล เชิ้ตขาว เนกไทดำเส้นเล็ก รองเท้าหนังดำ กล้องห้อยคอติดแฟลช', 'm', back, head, body
 
 def c_guard():
     hf = mhair_buzz('#18161c', '#3a3842')
