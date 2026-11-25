@@ -173,6 +173,17 @@ def card_svg():
     return ('<rect width="540" height="960" fill="#0b0912"/><rect width="540" height="960" fill="url(#vigD)"/>' + q + opt('A', 470, 'เข้ามาช่วยคุณ') + opt('B', 560, 'หาคนมาตายแทนตัวเอง')
             + f'<text x="270" y="660" text-anchor="middle" {FT0} font-size="16" fill="#a79fc0">ตอบในคอมเมนต์ A หรือ B</text>')
 FT0 = 'font-family="IBM Plex Sans Thai, sans-serif"'
+import base64 as _b64
+_GRAIN = _b64.b64encode(open('grain256.png', 'rb').read()).decode()
+GRADE = ('<svg id="grade" viewBox="0 0 540 960"><defs><pattern id="grainP" width="256" height="256" patternUnits="userSpaceOnUse">'
+         f'<image href="data:image/png;base64,{_GRAIN}" width="256" height="256"/></pattern>'
+         '<filter id="dGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+         '<filter id="dSoft" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.6"/></filter>'
+         '<radialGradient id="gVig" cx=".5" cy=".46" r=".72"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".42"/></radialGradient></defs>'
+         '<rect id="grRect" width="540" height="960" fill="#4a5d96" opacity="0"/>'
+         '<g id="dustS" filter="url(#dGlow)">' + ''.join(f'<circle id="ds{i}" r="1.4" fill="#fff6ea" opacity="0"/>' for i in range(22)) + '</g>'
+         '<g id="dustB" filter="url(#dSoft)">' + ''.join(f'<circle id="db{i}" r="4" fill="#fff2e2" opacity="0"/>' for i in range(10)) + '</g>'
+         '<rect id="grVig" width="540" height="960" fill="url(#gVig)"/><rect id="grGrain" width="540" height="960" fill="url(#grainP)" opacity=".16"/></svg>')
 def img(name): return f'<image href="bg/{name}.jpg" width="540" height="960" preserveAspectRatio="none"/>'
 door_open = img('door_open')
 SVGS = [
@@ -300,6 +311,9 @@ OVL = EYE + (f'<defs>{RINGS}</defs><g id="hud" {FT}><rect x="20" y="22" width="1
        f'<text id="coM" x="300" y="414" text-anchor="middle" font-size="12" fill="#a79fc0" {MONO}>MATCH 0%</text></g></g>')
 TRUST = [(T0['s6'] + .4 + D['06e'] * .85, 100, 70), (T0['s7a'] + G7_POINT - 3.2, 70, 45), (T0['s9'] + .4 + D['09e'] * .7, 45, 20),
          (T0['s12'] + .4 + D['12f'] * .7, 20, 12), (T0['s13'] + .4 + D['13f'] * .8, 12, 5), (T0['s17'] + .4 + D['17f'] * .6, 5, 0)]
+ZB_T = [T0[k] for k in ('s4', 's15', 's20', 's22', 's24', 's27')]
+TW22 = T0['s22'] + .4 + D['22f'] * .82
+SHAKES = [(T0['s6r'], .45, 9), (TW22, .5, 8), (T0['s26'] + .02, .55, 9)]
 KNOCKS = [.5 + D['24f'] + .45 + k * .55 for k in range(3)]
 EVT = [(T0['s4'] + TB + .6, 'มีคนบุกงานแต่ง'), (T0['s10'], 'มีบางอย่างผิดปกติ'), (T0['s15'], 'แอบค้นมือถือเจ้าบ่าว'), (T0['s17'], 'เจ้าสาวปีที่แล้ว'),
        (T0['s19'], 'เจ้าสาวทุกคนหายตัว'), (T0['s20'], 'หนีออกไปไม่ได้'), (T0['s21'], 'สายเข้า · ผู้หญิงชุดดำ'), (T0['s24'], 'มีคนเคาะประตู')]
@@ -354,6 +368,42 @@ function thumb(n, kf, t) {   // kf = [[เวลา, x จอ, y จอ, กด(
   const r = $('rp' + n); if (rp) { r.setAttribute('cx', rp[0]); r.setAttribute('cy', rp[1]); r.setAttribute('r', (8 + 40 * rp[2]).toFixed(1)); r.setAttribute('opacity', (.8 * (1 - rp[2] / .45)).toFixed(2)); } else r.setAttribute('opacity', 0);
 }
 const KEYXY = d => [200 + ((d - 1) %% 3) * 70, 420 + Math.floor((d - 1) / 3) * 52];
+
+// ---- เอฟเฟกต์แบบหนัง
+const ZB = %(zb)s, SHAKES = %(shakes)s;
+const GRADES = [[0, '#ffe3d4', .16, 'contrast(1.04) saturate(1.02)'], [BANG + .1, '#4a5d96', .32, 'contrast(1.08) saturate(.88)'],
+  [T0.s10, '#56689a', .28, 'contrast(1.06) saturate(.86) brightness(.99)'], [T0.s15, '#3d5f84', .30, 'contrast(1.08) saturate(.9)'],
+  [T0.s20, '#2e3e74', .38, 'contrast(1.1) saturate(.86) brightness(.98)'], [T0.s27, '#000000', 0, 'none']];
+const HALLZ = [[270, 250, 190, 170]], DOORZ = [[270, 470, 110, 250]];
+const DUSTZ = { s1: HALLZ, s2: HALLZ, s3: HALLZ, s4: DOORZ, s4r: HALLZ, s5: DOORZ, s6: DOORZ, s6r: HALLZ, s7a: HALLZ, s7b: DOORZ, s8: DOORZ, s9: DOORZ, s9r: HALLZ,
+  s10: HALLZ, s11: HALLZ, s12: HALLZ, s13: HALLZ, s14: HALLZ, s20: [[270, 190, 150, 110]], s22: [[270, 330, 160, 200]], s23: [[270, 330, 160, 200]],
+  s24: [[270, 300, 210, 150]], s25: [[270, 330, 230, 110]], s26: [[390, 330, 110, 210]] };
+const hsh = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+function filmFX(cur, gt) {
+  // คุมสีตามช่วงเรื่อง ช่วงหลังเสียงปังค่อย ๆ เย็นลง
+  let g = GRADES[0]; for (const G of GRADES) if (gt >= G[0]) g = G;
+  let op = g[2]; if (g === GRADES[1]) op *= Math.min(1, (gt - BANG - .1) / .6);
+  $('grRect').setAttribute('fill', g[1]); $('grRect').setAttribute('opacity', op.toFixed(3));
+  $('grGrain').setAttribute('opacity', cur === 's27' ? .1 : .16); $('grVig').setAttribute('opacity', cur === 's27' ? 0 : 1);
+  $('grain' + 'P') && $('grainP').setAttribute('patternTransform', `translate(${Math.floor(hsh(Math.floor(gt * 24)) * 256)},${Math.floor(hsh(Math.floor(gt * 24) + 7) * 256)})`);
+  // ซูมเบลอตอนตัดเปลี่ยนสถานที่
+  let zk = 0; for (const B of ZB) { if (gt > B - .22 && gt < B) zk = Math.max(zk, (gt - (B - .22)) / .22); if (gt >= B && gt < B + .3) zk = Math.max(zk, 1 - (gt - B) / .3); }
+  // กล้องสั่นตอนหักมุม
+  let sx = 0, sy = 0; for (const [a, d, amp] of SHAKES) if (gt >= a && gt < a + d) { const q = 1 - (gt - a) / d; sx += Math.sin(gt * 93) * amp * q; sy += Math.cos(gt * 71) * amp * q; }
+  const el = $(cur); el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + .22 * zk + (sx || sy ? .02 : 0)).toFixed(3)})`;
+  el.style.filter = (g[3] === 'none' ? '' : g[3]) + (zk > .01 ? ` blur(${(7 * zk).toFixed(1)}px) brightness(${(1 + .25 * zk).toFixed(2)})` : '');
+  // ฝุ่นลอยในลำแสง: จุดคมเรืองนิด ๆ กับจุดเบลอไกล ลอยขึ้นช้า ๆ กะพริบเบา ๆ
+  const Z = DUSTZ[cur] || [], nS = 22, nB = 10;
+  for (let i = 0; i < nS + nB; i++) {
+    const c = i < nS ? $('ds' + i) : $('db' + (i - nS)); if (!Z.length) { c.setAttribute('opacity', 0); continue; }
+    const [zx, zy, rx, ry] = Z[i %% Z.length], u = hsh(i + 1), v = hsh(i + 50), ph = hsh(i + 90) * 6.28;
+    const x = zx + rx * (u * 2 - 1) + 10 * Math.sin(gt * .25 + ph), yy = (v * 2 * ry + gt * (i < nS ? 7 : 4)) %% (2 * ry), y = zy + ry - yy;
+    const dd = Math.pow((x - zx) / rx, 2) + Math.pow((y - zy) / ry, 2), fall = Math.max(0, 1 - dd);
+    const tw = .55 + .45 * Math.sin(gt * (1.3 + u) + ph);
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', (i < nS ? 1 + 1.1 * u : 3 + 2.5 * u).toFixed(2));
+    c.setAttribute('opacity', ((i < nS ? .75 : .28) * fall * tw).toFixed(2));
+  }
+}
 const R = { // การแสดงของแต่ละช็อต: t = เวลาในช็อต, gt = เวลารวม
   s1(t, gt) { cam('s1', lerp(1.0, 1.75, ease(t / SH.s1)), lerp(270, %(cx3)s, ease(t / SH.s1)), lerp(520, %(cy3)s, ease(t / SH.s1)), lerp(480, 380, ease(t / SH.s1)));
     blinkAt('b1', t, 3.4, .7); blinkAt('g1', t, 3.9, 2.1); breathe('b1', t, .005, 2.0, .6); breathe('g1', t, .004, 1.8, -.4);
@@ -490,7 +540,7 @@ window.renderAt = function (gt) {
   if (!cur) cur = Object.keys(SH).pop();
   document.querySelectorAll('svg.shot').forEach(s => s.setAttribute('display', s.id === cur ? 'inline' : 'none'));
   document.querySelectorAll('.place').forEach(el => { if (!el.dataset.init) { el.dataset.init = 1; place(el); } });
-  R[cur](gt - T0[cur], gt);
+  R[cur](gt - T0[cur], gt); filmFX(cur, gt);
   for (const [a, b, id] of SUBS) $(id).setAttribute('display', gt >= a && gt < b ? 'inline' : 'none');
   // ป้ายเวลาแบบตอนแรก: นาฬิกาเดิน หลังประตูเปิดจุดเป็นสีแดงกะพริบ และป้ายเหตุการณ์แดงเลื่อนเข้ามา
   let mins = gt < T0.s15 ? Math.floor(gt / 3.2) : gt < T0.s20 ? 160 + Math.floor((gt - T0.s15) / 3) : gt < T0.s24 ? 281 + Math.min(17, Math.floor((gt - T0.s20) / 2.5)) : 299;
@@ -531,7 +581,7 @@ window.renderAt = function (gt) {
 '''
 js = JS % dict(shots=json.dumps(dict(SHOTS)), t0=json.dumps(T0), env=json.dumps(ENV), vat=json.dumps(VOICE_AT), subs=json.dumps(subs), fps=FPS,
                cx3=(BX + GX) / 2, cy3=BY + 60, tb=TB, bx=BX, by=BY + 40, gx=GX, gy=GY, df=SB.DOOR_FEET, ds=SB.DOOR_S, ringt=.4 + D['05c'] * .55,
-               wfx=WF[0], wfy=WF[1], gpt=G7_POINT, mx=MX, my=MY, px=PX, py=PY, sx=SX, sy=SY, vd=json.dumps(D), knocks=json.dumps(KNOCKS), evt=json.dumps(EVT, ensure_ascii=False), trust=json.dumps(TRUST), bang=T0['s4'] + TB)
+               wfx=WF[0], wfy=WF[1], gpt=G7_POINT, zb=json.dumps(ZB_T), shakes=json.dumps(SHAKES), mx=MX, my=MY, px=PX, py=PY, sx=SX, sy=SY, vd=json.dumps(D), knocks=json.dumps(KNOCKS), evt=json.dumps(EVT, ensure_ascii=False), trust=json.dumps(TRUST), bang=T0['s4'] + TB)
 
 base = SB.N9.H8.S.DEFS
 for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
@@ -539,10 +589,10 @@ for gid in ('drapeShadeL', 'drapeShadeR', 'glass4', 'vig4'):
 DEFS = (base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.DEFS + SB.P2.DEFS2 + SB.EXTRA_DEFS + SB.CHAR_DEFS
         + f'<svg width="0" height="0" style="position:absolute"><defs>{gh}{gp}</defs></svg>')
 html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">'
-        '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px}'
+        '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px;transform-origin:50% 50%}#grRect,#grGrain{mix-blend-mode:soft-light}'
         '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#ffffff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
         '.hp{fill:#c04dff}.hr{fill:#ff3b4e}.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
-        + DEFS + '<div id="stage">' + ''.join(SVGS) + f'<svg viewBox="0 0 540 960">{OVL}{"".join(sub_svg)}</svg></div><script>{js}</script>')
+        + DEFS + '<div id="stage">' + ''.join(SVGS) + GRADE + f'<svg viewBox="0 0 540 960">{OVL}{"".join(sub_svg)}</svg></div><script>{js}</script>')
 open('anim_full.html', 'w').write(html)
 os.makedirs('bg', exist_ok=True)
 bg_html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap"><style>html,body{margin:0}svg{display:block}</style>'
@@ -623,7 +673,8 @@ def whoosh(dur=.6):
     n = int(dur * SR); x = np.arange(n) / SR
     return (A.bp(A.rng.standard_normal(n).astype(np.float32), 300, 2500) * np.sin(np.pi * x / dur) ** 2 * .5).astype(np.float32)
 sfx2 = np.zeros(N, np.float32)
-for st in ('s15', 's20'): A.add(sfx2, T0[st] - .3, whoosh(), .8)
+for b in ZB_T: A.add(sfx2, b - .3, whoosh(.65), .9)
+A.add(sfx2, T0['s6r'], A.boom(2.4, 50), .6); A.add(sfx2, TW22, A.boom(2.6, 46), .8)
 A.add(sfx2, T0['s17'] + .4 + D['17f'] * .55, A.boom(2.6, 48), .9); A.add(sfx2, T0['s19'] + .4 + D['19f'] * .25, A.boom(2.8, 44), 1.0)
 for k in range(3): A.add(sfx2, T0['s20'] + .5 + k * (SH_D['s20'] - 1.2) / 2.4, ding(), 1.0)
 for k in range(4): A.add(sfx2, T0['s21'] + .2 + k * .8, buzz(), 1.0)

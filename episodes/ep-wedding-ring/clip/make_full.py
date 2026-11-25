@@ -308,5 +308,71 @@ r"""  s21(t, gt) { const vib = t > .2 && t < SH.s21 - .5 && (t * 1.25) %% 1 < .4
     const tr = 1.5 * Math.sin(t * 23);   // นิ้วโป้งสั่นลังเล แล้วค่อย ๆ เลื่อนไปกดรับสาย
     thumb(21, [[0, 300, 630, 0], [SH.s21 - 1.1, 310 + tr, 610, 0], [SH.s21 - .55, 330, 560, 0], [SH.s21 - .4, 330, 560, 1], [SH.s21, 330, 575, 0]], t); },""")
 
+# ================================================================ รอบแก้ 2: เอฟเฟกต์แบบหนัง (ผู้ใช้สั่ง)
+# ซูมเบลอ + เสียงวูบตอนเปลี่ยนสถานที่/เหตุการณ์สำคัญ · คุมสีแนวหนังตามช่วงเรื่อง + เกรนฟิล์ม · ฝุ่นลอยในแสง · กล้องสั่นพร้อมเสียงทุ้มตอนหักมุม
+import base64 as _b64
+_GRAIN = _b64.b64encode(open('grain256.png', 'rb').read()).decode()
+rep("""+ DEFS + '<div id="stage">' + ''.join(SVGS) +""", """+ DEFS + '<div id="stage">' + ''.join(SVGS) + GRADE +""")
+rep("#stage svg{position:absolute;inset:0;width:540px;height:960px}", "#stage svg{position:absolute;inset:0;width:540px;height:960px;transform-origin:50% 50%}#grRect,#grGrain{mix-blend-mode:soft-light}")
+rep("def img(name):", '''import base64 as _b64
+_GRAIN = _b64.b64encode(open('grain256.png', 'rb').read()).decode()
+GRADE = ('<svg id="grade" viewBox="0 0 540 960"><defs><pattern id="grainP" width="256" height="256" patternUnits="userSpaceOnUse">'
+         f'<image href="data:image/png;base64,{_GRAIN}" width="256" height="256"/></pattern>'
+         '<filter id="dGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
+         '<filter id="dSoft" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.6"/></filter>'
+         '<radialGradient id="gVig" cx=".5" cy=".46" r=".72"><stop offset=".55" stop-color="#05040a" stop-opacity="0"/><stop offset="1" stop-color="#05040a" stop-opacity=".42"/></radialGradient></defs>'
+         '<rect id="grRect" width="540" height="960" fill="#4a5d96" opacity="0"/>'
+         '<g id="dustS" filter="url(#dGlow)">' + ''.join(f'<circle id="ds{i}" r="1.4" fill="#fff6ea" opacity="0"/>' for i in range(22)) + '</g>'
+         '<g id="dustB" filter="url(#dSoft)">' + ''.join(f'<circle id="db{i}" r="4" fill="#fff2e2" opacity="0"/>' for i in range(10)) + '</g>'
+         '<rect id="grVig" width="540" height="960" fill="url(#gVig)"/><rect id="grGrain" width="540" height="960" fill="url(#grainP)" opacity=".16"/></svg>')
+def img(name):''', 1)
+FXJS = r"""
+// ---- เอฟเฟกต์แบบหนัง
+const ZB = %(zb)s, SHAKES = %(shakes)s;
+const GRADES = [[0, '#ffe3d4', .16, 'contrast(1.04) saturate(1.02)'], [BANG + .1, '#4a5d96', .32, 'contrast(1.08) saturate(.88)'],
+  [T0.s10, '#56689a', .28, 'contrast(1.06) saturate(.86) brightness(.99)'], [T0.s15, '#3d5f84', .30, 'contrast(1.08) saturate(.9)'],
+  [T0.s20, '#2e3e74', .38, 'contrast(1.1) saturate(.86) brightness(.98)'], [T0.s27, '#000000', 0, 'none']];
+const HALLZ = [[270, 250, 190, 170]], DOORZ = [[270, 470, 110, 250]];
+const DUSTZ = { s1: HALLZ, s2: HALLZ, s3: HALLZ, s4: DOORZ, s4r: HALLZ, s5: DOORZ, s6: DOORZ, s6r: HALLZ, s7a: HALLZ, s7b: DOORZ, s8: DOORZ, s9: DOORZ, s9r: HALLZ,
+  s10: HALLZ, s11: HALLZ, s12: HALLZ, s13: HALLZ, s14: HALLZ, s20: [[270, 190, 150, 110]], s22: [[270, 330, 160, 200]], s23: [[270, 330, 160, 200]],
+  s24: [[270, 300, 210, 150]], s25: [[270, 330, 230, 110]], s26: [[390, 330, 110, 210]] };
+const hsh = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+function filmFX(cur, gt) {
+  // คุมสีตามช่วงเรื่อง ช่วงหลังเสียงปังค่อย ๆ เย็นลง
+  let g = GRADES[0]; for (const G of GRADES) if (gt >= G[0]) g = G;
+  let op = g[2]; if (g === GRADES[1]) op *= Math.min(1, (gt - BANG - .1) / .6);
+  $('grRect').setAttribute('fill', g[1]); $('grRect').setAttribute('opacity', op.toFixed(3));
+  $('grGrain').setAttribute('opacity', cur === 's27' ? .1 : .16); $('grVig').setAttribute('opacity', cur === 's27' ? 0 : 1);
+  $('grain' + 'P') && $('grainP').setAttribute('patternTransform', `translate(${Math.floor(hsh(Math.floor(gt * 24)) * 256)},${Math.floor(hsh(Math.floor(gt * 24) + 7) * 256)})`);
+  // ซูมเบลอตอนตัดเปลี่ยนสถานที่
+  let zk = 0; for (const B of ZB) { if (gt > B - .22 && gt < B) zk = Math.max(zk, (gt - (B - .22)) / .22); if (gt >= B && gt < B + .3) zk = Math.max(zk, 1 - (gt - B) / .3); }
+  // กล้องสั่นตอนหักมุม
+  let sx = 0, sy = 0; for (const [a, d, amp] of SHAKES) if (gt >= a && gt < a + d) { const q = 1 - (gt - a) / d; sx += Math.sin(gt * 93) * amp * q; sy += Math.cos(gt * 71) * amp * q; }
+  const el = $(cur); el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + .22 * zk + (sx || sy ? .02 : 0)).toFixed(3)})`;
+  el.style.filter = (g[3] === 'none' ? '' : g[3]) + (zk > .01 ? ` blur(${(7 * zk).toFixed(1)}px) brightness(${(1 + .25 * zk).toFixed(2)})` : '');
+  // ฝุ่นลอยในลำแสง: จุดคมเรืองนิด ๆ กับจุดเบลอไกล ลอยขึ้นช้า ๆ กะพริบเบา ๆ
+  const Z = DUSTZ[cur] || [], nS = 22, nB = 10;
+  for (let i = 0; i < nS + nB; i++) {
+    const c = i < nS ? $('ds' + i) : $('db' + (i - nS)); if (!Z.length) { c.setAttribute('opacity', 0); continue; }
+    const [zx, zy, rx, ry] = Z[i %% Z.length], u = hsh(i + 1), v = hsh(i + 50), ph = hsh(i + 90) * 6.28;
+    const x = zx + rx * (u * 2 - 1) + 10 * Math.sin(gt * .25 + ph), yy = (v * 2 * ry + gt * (i < nS ? 7 : 4)) %% (2 * ry), y = zy + ry - yy;
+    const dd = Math.pow((x - zx) / rx, 2) + Math.pow((y - zy) / ry, 2), fall = Math.max(0, 1 - dd);
+    const tw = .55 + .45 * Math.sin(gt * (1.3 + u) + ph);
+    c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', (i < nS ? 1 + 1.1 * u : 3 + 2.5 * u).toFixed(2));
+    c.setAttribute('opacity', ((i < nS ? .75 : .28) * fall * tw).toFixed(2));
+  }
+}
+"""
+rep("const R = { // การแสดงของแต่ละช็อต: t = เวลาในช็อต, gt = เวลารวม\n", FXJS + "const R = { // การแสดงของแต่ละช็อต: t = เวลาในช็อต, gt = เวลารวม\n", 1)
+rep("  R[cur](gt - T0[cur], gt);", "  R[cur](gt - T0[cur], gt); filmFX(cur, gt);")
+rep("gpt=G7_POINT,", "gpt=G7_POINT, zb=json.dumps(ZB_T), shakes=json.dumps(SHAKES),")
+rep("KNOCKS = [", """ZB_T = [T0[k] for k in ('s4', 's15', 's20', 's22', 's24', 's27')]
+TW22 = T0['s22'] + .4 + D['22f'] * .82
+SHAKES = [(T0['s6r'], .45, 9), (TW22, .5, 8), (T0['s26'] + .02, .55, 9)]
+KNOCKS = [""")
+# เสียงวูบตอนซูมเบลอ และเสียงทุ้มกระแทกตอนหักมุมใหม่
+rep("for st in ('s15', 's20'): A.add(sfx2, T0[st] - .3, whoosh(), .8)",
+    "for b in ZB_T: A.add(sfx2, b - .3, whoosh(.65), .9)\nA.add(sfx2, T0['s6r'], A.boom(2.4, 50), .6); A.add(sfx2, TW22, A.boom(2.6, 46), .8)")
+
 open('anim_full.py', 'w').write(s)
 print('wrote anim_full.py')
