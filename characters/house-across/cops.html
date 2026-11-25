@@ -1,0 +1,250 @@
+<title>บ้านตรงข้าม แก๊งเพื่อนตำรวจ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one row per character (full body + face close-up), stacking on phones. Same look as the lead sheet. */
+:root {
+  --stage: #f5f0f3; --panel: #ffffff; --ink: #3b3346; --muted: #847a90; --line: #e2d9e3; --accent: #8a6cc8;
+  --font: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  color-scheme: light;
+}
+html, body { background: var(--stage); color: var(--ink); }
+body { font-family: var(--font); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 40px; }
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 36px; }
+header { display: grid; gap: 6px; } header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+h1 { font-size: 20px; font-weight: 500; margin: 0; }
+h2 { font-size: 18px; font-weight: 500; margin: 0; } h2 span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 14px; }
+section { display: grid; gap: 14px; }
+.panels { display: grid; grid-template-columns: 4fr 5fr; gap: 16px; align-items: start; }
+@media (max-width: 640px) { .panels { grid-template-columns: 1fr; } }
+figure { margin: 0; min-width: 0; display: grid; gap: 8px; }
+figure svg { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
+figcaption { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 12px; color: var(--muted); }
+.chips span { display: inline-flex; align-items: center; gap: 6px; }
+.chips i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; box-shadow: 0 0 0 1px var(--line); }
+ul.notes { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="skyBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ab9cd8"/><stop offset=".6" stop-color="#cdb6dd"/><stop offset="1" stop-color="#e6cfe2"/></linearGradient>
+
+  <!-- ===== หมู (คนอ้วน) : round face, happy squint, big grin, thin moustache ===== -->
+  <clipPath id="aface"><path d="M -38,-10 C -38,-46 38,-46 38,-10 C 38,14 30,34 0,40 C -30,34 -38,14 -38,-10 Z"/></clipPath>
+  <g id="ahead">
+    <rect x="-15" y="18" width="30" height="34" fill="#c99868"/>
+    <ellipse cx="-38" cy="-2" rx="6.5" ry="9.5" fill="#d9a47a"/><ellipse cx="38" cy="-2" rx="6.5" ry="9.5" fill="#b8825a"/>
+    <path d="M -38,-10 C -38,-46 38,-46 38,-10 C 38,14 30,34 0,40 C -30,34 -38,14 -38,-10 Z" fill="#d9a47a"/>
+    <g clip-path="url(#aface)">
+      <path d="M 18,-36 C 34,-28 40,-10 38,8 C 36,26 24,36 4,40 C 20,30 26,16 26,0 C 26,-14 24,-26 18,-36 Z" fill="#c08a62"/>
+      <path d="M -40,-12 C -40,-30 -34,-40 -26,-43 C -32,-32 -34,-20 -34,-8 C -34,10 -28,24 -18,32 C -30,26 -38,14 -40,-2 Z" fill="#e8b890"/>
+      <path d="M -22,30 Q 0,44 22,30 Q 0,38 -22,30 Z" fill="#c08a62"/>
+    </g>
+    <!-- double chin -->
+    <path d="M -18,38 Q 0,48 18,38 Q 0,44 -18,38 Z" fill="#b8825a"/>
+    <ellipse cx="-23" cy="11" rx="9" ry="5" fill="#e0806a" opacity=".42"/><ellipse cx="23" cy="11" rx="9" ry="5" fill="#d07460" opacity=".42"/>
+    <!-- brows raised high: "heh heh" -->
+    <path d="M -27,-17 C -21,-26 -10,-26 -5,-19 L -6.5,-16 C -11,-21.5 -19,-21.5 -24.5,-13.5 Z" fill="#221a1c"/>
+    <path d="M 27,-17 C 21,-26 10,-26 5,-19 L 6.5,-16 C 11,-21.5 19,-21.5 24.5,-13.5 Z" fill="#221a1c"/>
+    <!-- happy squint -->
+    <path d="M -23,-3 Q -15.5,-11 -8,-3" fill="none" stroke="#1d1416" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M 23,-3 Q 15.5,-11 8,-3" fill="none" stroke="#1d1416" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M -24,-4 L -27,-6 M 24,-4 L 27,-6" stroke="#1d1416" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- round nose -->
+    <ellipse cx="0" cy="6" rx="6.5" ry="5.2" fill="#c99466"/><ellipse cx="-2" cy="4" rx="2.4" ry="1.6" fill="#e8b890" opacity=".7"/>
+    <circle cx="-3" cy="9" r="1.1" fill="#8a5a3c"/><circle cx="3" cy="9" r="1.1" fill="#8a5a3c"/>
+    <!-- thin moustache -->
+    <path d="M -11,13 Q -5,10.6 0,12.6 Q 5,10.6 11,13 Q 5,15.4 0,14 Q -5,15.4 -11,13 Z" fill="#2a2224"/>
+    <!-- big open grin -->
+    <path d="M -15,17 Q 0,35 15,17 Q 0,21 -15,17 Z" fill="#5a2a2c"/>
+    <path d="M -12.5,18.2 Q 0,22.4 12.5,18.2 L 11.6,21.4 Q 0,24.6 -11.6,21.4 Z" fill="#fbf6f2"/>
+    <path d="M -6,27 Q 0,24 6,27 Q 0,31 -6,27 Z" fill="#d8737a"/>
+    <!-- flat-top buzz cut -->
+    <path d="M -37,-18 C -39,-44 -22,-55 0,-55 C 22,-55 39,-44 37,-18 L 33,-26 C 20,-31 -20,-31 -33,-26 Z" fill="#2a2224"/>
+    <path d="M -30,-42 C -20,-50 -6,-52 6,-52 C -6,-48 -18,-44 -26,-36 Z" fill="#4a3e42"/>
+    <path d="M -37.5,-18 L -34,-24 L -34,-8 L -37,-6 Z M 37.5,-18 L 34,-24 L 34,-8 L 37,-6 Z" fill="#3a3034"/>
+  </g>
+
+  <!-- ===== ต้น (คนผอม) : long face, half-lidded smug look, one brow up, toothpick ===== -->
+  <clipPath id="bface"><path d="M -26,-14 C -26,-48 26,-48 26,-14 L 25,10 C 23,28 12,44 0,47 C -12,44 -23,28 -25,10 Z"/></clipPath>
+  <clipPath id="beyeL"><path d="M -20,-4 C -16,-8.5 -9,-8.5 -5,-4 C -9,-0.8 -16,-0.8 -20,-4 Z"/></clipPath>
+  <clipPath id="beyeR"><path d="M 20,-4 C 16,-8.5 9,-8.5 5,-4 C 9,-0.8 16,-0.8 20,-4 Z"/></clipPath>
+  <g id="bhead">
+    <rect x="-8" y="26" width="16" height="38" fill="#e2b590"/><path d="M -8,32 L 8,32 L 8,50 Q 0,45 -8,53 Z" fill="#c99a74"/>
+    <ellipse cx="-26" cy="-2" rx="4.6" ry="8.4" fill="#efc8a2"/><ellipse cx="26" cy="-2" rx="4.6" ry="8.4" fill="#d3a47e"/>
+    <path d="M -26,-14 C -26,-48 26,-48 26,-14 L 25,10 C 23,28 12,44 0,47 C -12,44 -23,28 -25,10 Z" fill="#efc8a2"/>
+    <g clip-path="url(#bface)">
+      <path d="M 13,-36 C 24,-30 28,-14 26,6 C 24,26 13,42 0,47 C 9,36 15,22 16,4 C 17,-10 16,-24 13,-36 Z" fill="#dcae88"/>
+      <path d="M -28,-12 C -28,-30 -24,-38 -18,-41 C -23,-32 -24,-20 -24,-8 L -23,10 C -22,22 -17,32 -12,38 C -19,33 -24,22 -25,10 Z" fill="#fadbbd"/>
+      <path d="M 1,-2 L 6,18 L 1,20 Z" fill="#d6a37c"/>
+    </g>
+    <ellipse cx="-16" cy="12" rx="5.6" ry="3" fill="#e2917c" opacity=".3"/><ellipse cx="16" cy="12" rx="5.6" ry="3" fill="#d4846e" opacity=".3"/>
+    <!-- brows: left cocked high, right low and flat -->
+    <path d="M -22,-17 C -17,-26 -9,-26 -4.5,-20.5 L -6,-18 C -10,-22.4 -16,-22 -20.6,-14.6 Z" fill="#1e1a1c"/>
+    <path d="M 22,-12.4 L 5,-13.4 L 5.4,-10.4 L 21.6,-9.4 Z" fill="#1e1a1c"/>
+    <!-- half-lidded eyes glancing sideways -->
+    <path d="M -20,-4 C -16,-8.5 -9,-8.5 -5,-4 C -9,-0.8 -16,-0.8 -20,-4 Z" fill="#f8f1ea"/>
+    <path d="M 20,-4 C 16,-8.5 9,-8.5 5,-4 C 9,-0.8 16,-0.8 20,-4 Z" fill="#ece0d4"/>
+    <g clip-path="url(#beyeL)"><circle cx="-15.5" cy="-3.4" r="3.4" fill="#2a1a16"/><circle cx="-16.6" cy="-4" r=".9" fill="#fff"/></g>
+    <g clip-path="url(#beyeR)"><circle cx="9.5" cy="-3.4" r="3.4" fill="#2a1a16"/><circle cx="8.4" cy="-4" r=".9" fill="#fff"/></g>
+    <path d="M -21,-9 L -4,-9 L -4,-4.6 C -9,-6.4 -16,-6.4 -21,-4.6 Z" fill="#efc8a2"/>
+    <path d="M 21,-9 L 4,-9 L 4,-4.6 C 9,-6.4 16,-6.4 21,-4.6 Z" fill="#dcae88"/>
+    <path d="M -21.4,-4.4 C -16,-6.8 -9,-6.8 -3.8,-4.4" fill="none" stroke="#1e1a1c" stroke-width="2"/>
+    <path d="M 21.4,-4.4 C 16,-6.8 9,-6.8 3.8,-4.4" fill="none" stroke="#1e1a1c" stroke-width="2"/>
+    <!-- smirk + toothpick + tiny goatee -->
+    <path d="M -6,30 Q 2,31.4 9.6,26" fill="none" stroke="#8a4c40" stroke-width="1.9" stroke-linecap="round"/>
+    <path d="M 9,27.4 L 22,21.6" stroke="#e8d2a0" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M -4,37 Q 0,40 4,37 L 2.4,42.6 L -2.4,42.6 Z" fill="#241c1e"/>
+    <!-- slick pompadour with a little mullet at the back -->
+    <path d="M -26,-4 L -30,30 L -22,26 L -24,0 Z M 26,-4 L 29,28 L 22,24 L 24,0 Z" fill="#1e1a1c"/>
+    <path d="M -28,-8 C -32,-42 -18,-62 4,-63 C 26,-64 35,-46 30,-14 L 27,-24 C 21,-34 12,-38 2,-38 C -8,-38 -18,-34 -24,-26 L -26,-12 Z" fill="#1e1a1c"/>
+    <path d="M -20,-44 C -10,-60 14,-66 30,-50 C 18,-55 0,-55 -14,-40 Z" fill="#433a3e"/>
+    <path d="M 2,-38 C 10,-46 22,-46 28,-38 L 27,-24 C 22,-32 12,-36 2,-38 Z" fill="#0f0c0e"/>
+    <!-- aviators pushed up on the head -->
+    <g transform="translate(0,-50)"><ellipse cx="-11" cy="0" rx="10" ry="6.4" fill="#2e3e50"/><ellipse cx="11" cy="0" rx="10" ry="6.4" fill="#26323f"/>
+      <path d="M -1.4,-2 Q 0,-3.6 1.4,-2" fill="none" stroke="#c8b07a" stroke-width="1.4"/><path d="M -15,-3 L -9,-4" stroke="#8fa6c0" stroke-width="1.4" stroke-linecap="round"/>
+      <ellipse cx="-11" cy="0" rx="10" ry="6.4" fill="none" stroke="#c8b07a" stroke-width="1.2"/><ellipse cx="11" cy="0" rx="10" ry="6.4" fill="none" stroke="#c8b07a" stroke-width="1.2"/></g>
+  </g>
+</defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>บ้านตรงข้าม · แก๊งเพื่อนตำรวจ</h1>
+    <p>สองคนนี้คือเพื่อนตำรวจของพระเอก ลายเส้นเดียวกับพระเอกและนางเอก · หน้ากวนท่ากวน แต่เป็นเพื่อนแท้ที่มาช่วยกันทำเซอร์ไพรส์ · ชื่อในแผ่นเป็นชื่อเรียกชั่วคราว</p>
+  </header>
+
+  <!-- ===================== หมู ===================== -->
+  <section>
+    <h2>หมู<span>คนอ้วน · สายตรวจในเครื่องแบบ · ยิ้มตาหยีตลอดเวลา</span></h2>
+    <div class="panels">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="หมู ตำรวจอ้วนในเครื่องแบบ ถือหมูปิ้ง มือลูบพุง">
+          <rect width="400" height="900" fill="url(#skyBg)"/><rect y="770" width="400" height="130" fill="#ede5ea"/><ellipse cx="200" cy="756" rx="90" ry="10" fill="#cfc2d2"/>
+          <g transform="translate(200,176) scale(1.2)">
+            <!-- shoes + trousers -->
+            <path d="M -46,466 L -8,466 C -6,476 -8,482 -12,483 L -50,483 C -54,481 -52,470 -46,466 Z" fill="#15151a"/><path d="M 46,466 L 8,466 C 6,476 8,482 12,483 L 50,483 C 54,481 52,470 46,466 Z" fill="#0f0f13"/>
+            <path d="M -50,232 L 50,232 L 52,300 L 44,468 L 8,468 L 3,300 L -3,300 L -8,468 L -44,468 L -52,300 Z" fill="#7a5e40"/>
+            <path d="M -50,232 L -34,232 L -36,300 L -32,468 L -44,468 L -52,300 Z" fill="#92755a"/>
+            <path d="M 32,240 L 50,232 L 52,300 L 44,468 L 32,468 C 34,380 34,300 32,240 Z" fill="#5c452e"/>
+            <!-- right arm (viewer right): hand resting on the belly -->
+            <path d="M 58,66 L 74,62 L 82,142 L 66,148 Z" fill="#c99868"/>
+            <path d="M 66,148 L 82,142 L 48,178 L 38,168 Z" fill="#d9a47a"/>
+            <!-- shirt over a round belly -->
+            <path d="M -16,46 L 16,46 C 36,48 54,56 58,68 L 70,124 L 54,130 C 68,160 72,198 60,226 C 46,252 -46,252 -60,226 C -72,198 -68,160 -54,130 L -70,124 L -58,68 C -54,56 -36,48 -16,46 Z" fill="#8a6c4a"/>
+            <path d="M -58,68 C -54,56 -36,48 -22,47 C -34,80 -44,120 -48,160 C -50,190 -44,214 -40,240 C -50,236 -56,232 -60,226 C -72,198 -68,160 -54,130 L -70,124 Z" fill="#a38563"/>
+            <path d="M 24,48 C 40,51 54,58 58,68 L 70,124 L 54,130 C 68,160 72,198 60,226 C 52,240 40,246 30,248 C 46,220 50,180 44,140 C 40,100 34,70 24,48 Z" fill="#6a5136"/>
+            <!-- straining buttons -->
+            <path d="M 0,60 C 2,110 4,170 2,244" fill="none" stroke="#7a5e40" stroke-width="3"/>
+            <g fill="#c7a46a"><circle cx="0.6" cy="84" r="2"/><circle cx="2" cy="118" r="2"/><circle cx="3.4" cy="154" r="2"/><circle cx="3.6" cy="190" r="2"/><circle cx="2.6" cy="224" r="2"/></g>
+            <path d="M -4,150 L 0,154 L -4,158 M 9,150 L 5,154 L 9,158 M -4,186 L 0,190 L -4,194 M 10,186 L 6,190 L 10,194" fill="none" stroke="#6a5136" stroke-width="1.2"/>
+            <!-- pockets, name plate, badge, shoulder boards -->
+            <path d="M -40,88 L -16,88 L -16,112 L -40,112 Z" fill="#9a7b58"/><path d="M -41,84 L -15,84 L -15,92 L -28,95 L -41,92 Z" fill="#7a5e40"/>
+            <rect x="-40" y="74" width="24" height="6" rx="1" fill="#17161c"/><rect x="-37" y="76.4" width="18" height="1.3" fill="#e2e4ea"/>
+            <path d="M 28,66 L 36,69 L 35,78 C 34,82 31,84 28,85 C 25,84 22,82 21,78 L 20,69 Z" fill="#c4c9d4"/><path d="M 28,66 L 36,69 L 35,78 C 34,82 31,84 28,85 Z" fill="#9aa0ad"/>
+            <path d="M -54,60 L -24,52 L -22,58 L -52,67 Z" fill="#1f2433"/><path d="M 54,60 L 24,52 L 22,58 L 52,67 Z" fill="#171b27"/>
+            <!-- belt slung under the belly -->
+            <path d="M -58,226 C -42,248 42,248 58,226 L 56,238 C 42,258 -42,258 -56,238 Z" fill="#17161c"/>
+            <rect x="-7" y="240" width="14" height="13" rx="1.5" fill="#b9bec9"/><rect x="-4" y="243" width="8" height="7" fill="#17161c"/>
+            <!-- sleeves -->
+            <path d="M -56,64 L -74,60 L -86,120 L -66,124 Z" fill="#a38563"/><path d="M -86,116 L -66,120 L -66,125 L -86,121 Z" fill="#7a5e40"/>
+            <path d="M 56,64 L 74,60 L 78,120 L 60,123 Z" fill="#6a5136"/><path d="M 78,116 L 60,119 L 60,124 L 78,121 Z" fill="#5c452e"/>
+            <!-- hand on belly (over the shirt) -->
+            <ellipse cx="40" cy="172" rx="11" ry="8.5" fill="#d9a47a"/><path d="M 32,170 L 46,168 M 32,175 L 46,174" stroke="#c08a62" stroke-width="1"/>
+            <!-- left arm raised with two moo-ping skewers -->
+            <path d="M -84,118 L -68,124 L -78,156 L -94,150 Z" fill="#d9a47a"/>
+            <path d="M -94,150 L -78,156 L -82,96 L -96,92 Z" fill="#e8b890"/>
+            <path d="M -96,92 L -90,92 L -94,152 Z" fill="#f2c8a0"/>
+            <g stroke="#e6d0a0" stroke-width="1.8" stroke-linecap="round"><line x1="-94" y1="88" x2="-104" y2="4"/><line x1="-86" y1="88" x2="-86" y2="2"/></g>
+            <g fill="#8a4628"><rect x="-108" y="14" width="12" height="13" rx="4" transform="rotate(-7 -102 20)"/><rect x="-106" y="30" width="12" height="13" rx="4" transform="rotate(-7 -100 36)"/><rect x="-104" y="46" width="12" height="13" rx="4" transform="rotate(-7 -98 52)"/>
+              <rect x="-92" y="12" width="12" height="13" rx="4"/><rect x="-92" y="28" width="12" height="13" rx="4"/><rect x="-92" y="44" width="12" height="13" rx="4"/></g>
+            <g fill="#c06a3a" opacity=".8"><rect x="-106" y="16" width="5" height="4" rx="2"/><rect x="-104" y="32" width="5" height="4" rx="2"/><rect x="-90" y="14" width="5" height="4" rx="2"/><rect x="-90" y="30" width="5" height="4" rx="2"/></g>
+            <ellipse cx="-90" cy="90" rx="10" ry="9" fill="#d9a47a"/><path d="M -98,88 L -82,86 M -98,93 L -82,92" stroke="#c08a62" stroke-width="1"/>
+            <use href="#ahead"/>
+            <path d="M -16,46 L -4,62 L -24,58 Z" fill="#a38563"/><path d="M 16,46 L 4,62 L 24,58 Z" fill="#6a5136"/>
+          </g>
+        </svg>
+        <figcaption>เต็มตัว · เตี้ยกว่าพระเอกเกือบหัวหนึ่ง พุงกลมจนกระดุมตึง เข็มขัดคาดใต้พุง · มือหนึ่งชูหมูปิ้งสองไม้ อีกมือลูบพุง</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="-75 -78 150 150" role="img" aria-label="ใบหน้าหมูระยะใกล้">
+          <rect x="-75" y="-78" width="150" height="150" fill="url(#skyBg)"/>
+          <path d="M -62,72 C -60,58 -38,50 -16,46 L 16,46 C 38,50 60,58 62,72 Z" fill="#8a6c4a"/><path d="M -62,72 C -60,60 -42,52 -24,48 C -30,58 -32,66 -32,72 Z" fill="#a38563"/>
+          <use href="#ahead"/>
+          <path d="M -16,46 L -4,62 L -24,58 Z" fill="#a38563"/><path d="M 16,46 L 4,62 L 24,58 Z" fill="#6a5136"/>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · หน้ากลมแก้มยุ้ย คางสองชั้น · ยิ้มตาหยีจนตาเป็นเส้นโค้ง คิ้วเลิกสูงแบบ "เฮะ ๆ" · หนวดเส้นบาง ยิ้มกว้างเห็นฟัน · ผมเกรียนทรงสั้นเรียบ</figcaption>
+        <div class="chips">
+          <span><i style="background:#d9a47a"></i>ผิว</span><span><i style="background:#c08a62"></i>ผิวเงา</span><span><i style="background:#2a2224"></i>ผม</span><span><i style="background:#8a6c4a"></i>เครื่องแบบ</span><span><i style="background:#8a4628"></i>หมูปิ้ง</span>
+        </div>
+        <ul class="notes">
+          <li>บุคลิก: ยิ้มกวนตลอด มีของกินติดมือทุกฉาก แซวเพื่อนเก่งแต่ใจดี</li>
+          <li>ประโยค "กูเช็กให้แล้ว ไม่มีอะไรหรอกมึง พักผ่อนบ้างเหอะ" ในฉาก 4 ให้หมูพูด พร้อมเคี้ยวหมูปิ้ง</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== ต้น ===================== -->
+  <section>
+    <h2>ต้น<span>คนผอม · นักสืบนอกเครื่องแบบ · หน้าตาเหมือนรู้อะไรมากกว่าคนอื่น</span></h2>
+    <div class="panels">
+      <figure>
+        <svg viewBox="0 0 400 900" role="img" aria-label="ต้น ตำรวจผอมสูง ใส่แจ็กเก็ตหนัง ทำมือเป็นปืน อีกมือล้วงกระเป๋า">
+          <rect width="400" height="900" fill="url(#skyBg)"/><rect y="770" width="400" height="130" fill="#ede5ea"/><ellipse cx="200" cy="752" rx="64" ry="9" fill="#cfc2d2"/>
+          <g transform="translate(200,112) scale(1.15)">
+            <!-- sneakers + slim jeans -->
+            <path d="M -30,538 L -6,538 C -2,546 -4,553 -10,554 L -34,554 C -38,552 -36,542 -30,538 Z" fill="#f2eef4"/><path d="M -33,550 L -6,550 L -7,554 L -34,554 Z" fill="#cfc8d6"/>
+            <path d="M 30,538 L 6,538 C 2,546 4,553 10,554 L 34,554 C 38,552 36,542 30,538 Z" fill="#e6e0ec"/><path d="M 33,550 L 6,550 L 7,554 L 34,554 Z" fill="#c2bacb"/>
+            <path d="M -30,262 L 30,262 L 32,330 L 26,540 L 6,540 L 2,320 L -2,320 L -6,540 L -26,540 L -32,330 Z" fill="#3d4a6a"/>
+            <path d="M -30,262 L -20,262 L -22,330 L -19,540 L -26,540 L -32,330 Z" fill="#50608a"/>
+            <path d="M 18,268 L 30,262 L 32,330 L 26,540 L 19,540 C 21,450 21,330 18,268 Z" fill="#2e3854"/>
+            <path d="M 18,272 L 30,270" stroke="#2a3450" stroke-width="2"/>
+            <!-- belt with gold badge -->
+            <rect x="-30" y="258" width="60" height="8" fill="#2a1e1a"/><path d="M 14,262 L 24,262 L 24,272 C 24,276 19,278 19,278 C 19,278 14,276 14,272 Z" fill="#d9b25a"/>
+            <!-- inner tee -->
+            <path d="M -13,58 L 13,58 L 18,262 L -18,262 Z" fill="#4a4652"/><path d="M -13,58 L -5,58 L -8,262 L -18,262 Z" fill="#5a5664"/>
+            <!-- right arm (viewer right): hand in the jeans pocket -->
+            <path d="M 40,68 L 52,72 L 58,160 L 45,163 Z" fill="#5a3a2c"/>
+            <path d="M 45,163 L 58,160 L 40,264 L 29,260 Z" fill="#46291f"/>
+            <path d="M 28,258 L 42,262 L 40,276 L 30,272 Z" fill="#2e3854"/>
+            <!-- open leather jacket -->
+            <path d="M -12,56 C -26,58 -38,62 -42,72 L -48,130 L -44,270 L -16,270 L -17,94 Z" fill="#5a3a2c"/>
+            <path d="M -42,72 C -38,62 -28,58 -20,57 C -26,90 -30,160 -28,270 L -44,270 L -48,130 Z" fill="#6e4838"/>
+            <path d="M 12,56 C 26,58 38,62 42,72 L 48,130 L 44,270 L 16,270 L 17,94 Z" fill="#46291f"/>
+            <path d="M -12,56 L -22,96 L -17,98 Z M 12,56 L 22,96 L 17,98 Z" fill="#3a2219"/>
+            <path d="M -18,100 L -16,268 M 18,100 L 16,268" stroke="#c8b07a" stroke-width="1.2" opacity=".6"/>
+            <rect x="-44" y="262" width="28" height="8" fill="#3a2219"/><rect x="16" y="262" width="28" height="8" fill="#2e1a12"/>
+            <!-- left arm (viewer left): finger gun -->
+            <path d="M -40,68 L -52,72 L -62,152 L -48,156 Z" fill="#6e4838"/>
+            <path d="M -62,150 L -48,158 L -16,128 L -26,116 Z" fill="#5a3a2c"/>
+            <path d="M -26,116 L -16,128 L -20,132 L -30,120 Z" fill="#3a2219"/>
+            <circle cx="-16" cy="120" r="7.4" fill="#efc8a2"/>
+            <path d="M -12,116 L 4,113 L 4.6,117.6 L -11,121 Z" fill="#efc8a2"/>
+            <path d="M -15,114 L -14,105 L -10.4,105.4 L -11,114 Z" fill="#efc8a2"/>
+            <path d="M -10,124 L -2,122.6 M -10,127 L -3,126" stroke="#dcae88" stroke-width="1.2" stroke-linecap="round"/>
+            <use href="#bhead"/>
+          </g>
+        </svg>
+        <figcaption>เต็มตัว · สูงกว่าพระเอกครึ่งหัว ผอมเก้งก้าง ยืนหลังค่อมนิด ๆ · แจ็กเก็ตหนังน้ำตาลเปิดหน้า เสื้อยืดเทาเข้ม ยีนส์เข้ารูป สนีกเกอร์ขาว ตราตำรวจเหน็บเข็มขัด · มือหนึ่งทำมือเป็นปืนชี้ อีกมือล้วงกระเป๋า</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="-75 -82 150 150" role="img" aria-label="ใบหน้าต้นระยะใกล้">
+          <rect x="-75" y="-82" width="150" height="150" fill="url(#skyBg)"/>
+          <path d="M -50,68 C -48,60 -30,56 -12,56 L 12,56 C 30,56 48,60 50,68 Z" fill="#5a3a2c"/><path d="M -13,56 L 13,56 L 14,68 L -14,68 Z" fill="#4a4652"/>
+          <use href="#bhead"/>
+        </svg>
+        <figcaption>ใบหน้าระยะใกล้ · หน้ายาว คางแหลม เคราแพะเล็ก ๆ · คิ้วซ้ายเลิกสูง คิ้วขวาแบน ตาปรือครึ่งหนึ่งชำเลืองข้าง · ยิ้มมุมปากคาบไม้จิ้มฟัน · ผมหวีเสยมีวอลุ่ม ท้ายทอยยาวนิด ๆ แว่นกันแดดทรงนักบินดันขึ้นไว้บนหัว</figcaption>
+        <div class="chips">
+          <span><i style="background:#efc8a2"></i>ผิว</span><span><i style="background:#dcae88"></i>ผิวเงา</span><span><i style="background:#1e1a1c"></i>ผม</span><span><i style="background:#5a3a2c"></i>แจ็กเก็ต</span><span><i style="background:#3d4a6a"></i>ยีนส์</span><span><i style="background:#d9b25a"></i>ตรา</span>
+        </div>
+        <ul class="notes">
+          <li>บุคลิก: พูดน้อย ชอบทำหน้าเหมือนรู้ทัน ยักคิ้วแซวเพื่อน เป็นคู่ตบมุกกับหมู</li>
+          <li>ในฉาก 7 ต้นเป็นคนเปิดไฟตอนเซอร์ไพรส์ แล้วชี้มือเป็นปืนใส่พระเอก</li>
+          <li>สองคนต่างกันชัดทั้งรูปร่าง สีชุด และสีหน้า มองไกลก็แยกออก</li>
+        </ul>
+      </figure>
+    </div>
+  </section>
+</div>
