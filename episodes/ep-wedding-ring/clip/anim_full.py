@@ -104,9 +104,51 @@ def shot_svg(sid, content):
 BG = {'hall_nbg': SB.hall(CAST_NO('bride', 'groom')), 'hall_nb': SB.hall(CAST_NO('bride')), 'hall_ng': SB.hall(CAST_NO('groom')),
       'hall_nb_cool': SB.hall(CAST_NO('bride'), cool=.15), 'door_closed': SB.doors('closed'), 'door_half': SB.doors('half'), 'door_open': SB.doors('open')}
 P2 = SB.P2
+THUMB_OLD = '<path d="M 300,630 C 320,580 340,540 352,510 C 362,496 382,500 380,520 C 372,560 360,610 340,660 Z" fill="#fbe2cf"/><ellipse cx="366" cy="512" rx="12" ry="9" fill="#ffffff" opacity=".5"/>'
+THUMB = ('<path d="M 286,880 C 296,760 322,590 352,510 C 362,496 382,500 380,520 C 374,580 362,700 350,880 Z" fill="#fbe2cf"/>'
+         '<path d="M 352,520 C 356,560 352,620 344,700" stroke="#efc3a8" stroke-width="3" fill="none" opacity=".6"/><ellipse cx="366" cy="512" rx="12" ry="9" fill="#ffffff" opacity=".5"/>')
+def phone_bg(bg):
+    o = P2.phone_hand('', bg); assert THUMB_OLD in o; return o.replace(THUMB_OLD, '')
+FTP = 'font-family="IBM Plex Sans Thai, sans-serif"'
+def scr_lock():
+    keys = ''.join(f'<g id="k15_{d}"><circle cx="{200 + (i % 3) * 70}" cy="{420 + (i // 3) * 52}" r="20" fill="#2a2e44"/><text x="{200 + (i % 3) * 70}" y="{427 + (i // 3) * 52}" text-anchor="middle" {FTP} font-size="18" fill="#eef0f6">{d}</text></g>'
+                   for i, d in enumerate('123456789') ) + f'<circle cx="270" cy="576" r="20" fill="#2a2e44"/><text x="270" y="583" text-anchor="middle" {FTP} font-size="18" fill="#eef0f6">0</text>'
+    dots = ''.join(f'<circle id="pd15_{i}" cx="{240 + i * 20}" cy="350" r="6" fill="none" stroke="#c9a8ff" stroke-width="2"/>' for i in range(4))
+    return (f'<rect x="156" y="156" width="228" height="488" fill="#141826"/><text x="270" y="250" text-anchor="middle" {FTP} font-size="44" font-weight="300" fill="#eef0f6">21:41</text>'
+            f'<text x="270" y="275" text-anchor="middle" {FTP} font-size="11" fill="#9aa2b8">มือถือของเขา · ใส่รหัสผ่าน</text>{dots}{keys}')
+def scr_album_long(n=15, scroll_id='al'):
+    hairs = ['#3a2620', '#141017', '#6a4a3c', '#2a1c18', '#141017', '#5a3a2a', '#0e0b10', '#3a2a24', '#7a5848', '#2c1e1a', '#4a3028', '#141017', '#6a4a3c', '#3a2620', '#141017']
+    cells = ''
+    for i in range(n):
+        x = 162 + (i % 3) * 74; y = 206 + (i // 3) * 132
+        cells += SB.mini_couple(x, y, 68, 104, hairs[i], i + 3) + f'<text x="{x + 34}" y="{y + 120}" text-anchor="middle" font-size="10" fill="#9aa2b8" {FTP}>{2011 + i}</text>'
+    hl = f'<rect id="{scroll_id}HL" x="{162 + 2 * 74}" y="{206 + 4 * 132}" width="68" height="104" fill="none" stroke="#c9a8ff" stroke-width="3" opacity="0"/>'
+    return (f'<rect x="156" y="156" width="228" height="488" fill="#1a1c28"/><g id="{scroll_id}">{cells}{hl}</g>'
+            f'<rect x="156" y="156" width="228" height="40" fill="#2a2c3c"/><text x="170" y="182" font-size="13" font-weight="600" fill="#e8ecf4" {FTP}>อัลบั้ม · งานแต่ง</text>')
+def scr_type():
+    rows = ''.join(f'<g id="r18_{i}" opacity="0"><rect x="166" y="{254 + i * 72}" width="208" height="60" rx="8" fill="#22263a"/><rect x="176" y="{264 + i * 72}" width="40" height="40" rx="4" fill="#3a3f58"/>'
+                   f'<rect x="226" y="{268 + i * 72}" width="{120 - i * 8}" height="8" rx="4" fill="#8a94b4"/><rect x="226" y="{286 + i * 72}" width="{90 + i * 6}" height="6" rx="3" fill="#4e5674"/></g>' for i in range(5))
+    kb = ('<g id="kb18"><rect x="156" y="470" width="228" height="174" fill="#262a3a"/>' +
+          ''.join(f'<rect x="{162 + c * 22.4}" y="{480 + r * 40}" width="19" height="32" rx="4" fill="#3c4258"/>' for r in range(3) for c in range(10)) +
+          '<rect x="200" y="600" width="140" height="30" rx="5" fill="#3c4258"/></g>')
+    return (f'<rect x="156" y="156" width="228" height="488" fill="#1a1c28"/><rect x="156" y="156" width="228" height="40" fill="#2a2c3c"/>'
+            f'<rect x="166" y="206" width="208" height="30" rx="15" fill="#2c3044"/><text id="q18" x="182" y="226" font-size="12" fill="#e8ecf4" {FTP}></text>'
+            f'<rect id="cur18" x="182" y="214" width="1.6" height="15" fill="#c9a8ff"/>{rows}{kb}')
+def scr_missing_live():
+    s = SB.scr_missing(); parts = s.split('<rect x="')
+    return s
+def phone_live(n, screen):
+    return (f'<g transform="rotate(-4 270 420)"><clipPath id="sc{n}"><rect x="152" y="140" width="236" height="520" rx="24"/></clipPath>'
+            f'<g clip-path="url(#sc{n})"><g transform="translate(152,140) scale({236 / 228:.4f},{520 / 488:.4f}) translate(-156,-156)">{screen}'
+            f'<circle id="rp{n}" r="10" fill="none" stroke="#ffffff" stroke-width="3" opacity="0"/></g></g></g><g id="th{n}">{THUMB}</g>')
+LAST = f'<g id="ly17" opacity="0">{SB.scr_lastyear()}</g>'
+MISS = SB.scr_missing()
+# แยกโปสเตอร์ตามหาคนหายเป็นชิ้น ให้ขึ้นทีละใบ
+_m = re.split(r'(?=<rect x="\d+" y="\d+" width="102" height="136")', MISS)
+MISS_LIVE = _m[0] + '<g id="ms19">' + ''.join(f'<g id="ms19_{i}" opacity="0">{p}</g>' for i, p in enumerate(_m[1:])) + '</g>'
 BG.update({'hall_all': SB.hall(), 'hall_cool': SB.hall(cool=.12), 'hall_nmom': SB.hall(CAST_NO('mom'), cool=.12), 'hall_nph': SB.hall(CAST_NO('ph'), cool=.12),
-           'hall_nstaff': SB.hall(CAST_NO('staff'), cool=.12), 'hall_nb_cool2': SB.hall(CAST_NO('bride'), cool=.12),
-           'ph15': P2.phone_hand(SB.scr_search().replace('ชื่อเจ้าสาว 2025', 'รหัสผ่าน ••••'), P2.bridal_room_bg()), 'ph16': P2.phone_hand(SB.scr_album(), P2.bridal_room_bg()),
+           'hall_nstaff': SB.hall(CAST_NO('staff', 'ph'), cool=.12), 'hall_nb_cool2': SB.hall(CAST_NO('bride'), cool=.12),
+           'phb_bridal': phone_bg(P2.bridal_room_bg()), 'phb_suite': phone_bg('<g filter="url(#blurBG)">' + P2.suite_room() + '</g>'),
            'ph17': P2.phone_hand(SB.scr_lastyear(), P2.bridal_room_bg()), 'ph18': P2.phone_hand(SB.scr_search(), P2.bridal_room_bg()),
            'ph19': P2.phone_hand(SB.scr_missing(), P2.bridal_room_bg()), 'ph21': P2.phone_hand(SB.scr_call(), '<g filter="url(#blurBG)">' + P2.suite_room() + '</g>'),
            'elev': P2.elevator_lux(''), 'sdoor': P2.suite_door_lux(True), 'suite': P2.suite_room(''),
@@ -152,9 +194,13 @@ SVGS = [
     shot_svg('s12', img('hall_nmom') + placed(sup_rig('m12', SP.c_mother), *SB.CAST['mom'])),
     shot_svg('s13', img('hall_nph') + placed(sup_rig('p13', SP.c_photographer), *SB.CAST['ph'])),
     shot_svg('s14', img('hall_nstaff') + placed(sup_rig('t14', SP.c_staff), *SB.CAST['staff'])),
-    *[shot_svg(f's{n}', img(f'ph{n}')) for n in (15, 16, 17, 18, 19)],
+    shot_svg('s15', img('phb_bridal') + phone_live(15, scr_lock() + f'<g id="al15" opacity="0">{scr_album_long(15, "a15")}</g>')),
+    shot_svg('s16', img('phb_bridal') + phone_live(16, scr_album_long(15, 'a16'))),
+    shot_svg('s17', img('phb_bridal') + phone_live(17, scr_album_long(15, 'a17') + LAST)),
+    shot_svg('s18', img('phb_bridal') + phone_live(18, scr_type())),
+    shot_svg('s19', img('phb_bridal') + phone_live(19, MISS_LIVE)),
     shot_svg('s20', img('elev') + placed(bride_rig('b20'), 270, 905, .64)),
-    shot_svg('s21', img('ph21')),
+    shot_svg('s21', img('phb_suite') + phone_live(21, SB.scr_call() + '<circle id="ring21" cx="270" cy="300" r="44" fill="none" stroke="#9aa8ff" stroke-width="2"/>')),
     shot_svg('s22', img('darkbg') + placed(woman_rig('w22'), 270, 330 + 464 * 1.7, 1.7) + DARK_TOP),
     shot_svg('s23', img('darkbg') + placed(woman_rig('w23'), 270, 330 + 464 * 1.7, 1.7) + DARK_TOP),
     shot_svg('s24', img('sdoor')),
@@ -280,7 +326,9 @@ function talk(rig, key, gt) {
   m.setAttribute('display', 'inline'); $(rig + 'Mo').setAttribute('ry', (1.1 + a * 4.4).toFixed(2)); $(rig + 'Mo').setAttribute('rx', (4 + a * 1.4).toFixed(2));
   $(rig + 'Mt').setAttribute('display', a > .35 ? 'inline' : 'none');
 }
-function cam(sid, z, cx, cy, ty, sx, sy) { $(sid + 'c').setAttribute('transform', `translate(${270 - cx * z + (sx||0)},${(ty||400) - cy * z + (sy||0)}) scale(${z})`); }
+function cam(sid, z, cx, cy, ty, sx, sy) { let X = 270 - cx * z + (sx||0), Y = (ty||400) - cy * z + (sy||0);
+  if (z >= 1) { X = Math.min(0, Math.max(540 - 540 * z, X)); Y = Math.min(0, Math.max(960 - 960 * z, Y)); }
+  $(sid + 'c').setAttribute('transform', `translate(${X},${Y}) scale(${z})`); }
 const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 const lerp = (a, b, x) => a + (b - a) * x;
 function shake(t, t0, d, amp) { if (t < t0 || t > t0 + d) return [0, 0]; const q = 1 - (t - t0) / d; return [Math.sin(t * 90) * amp * q, Math.cos(t * 77) * amp * q]; }
@@ -293,6 +341,19 @@ function idleArms(p, t, ph) { arm(p, 'L', 1.6 * Math.sin(t * .9 + ph), -5 - 2.5 
 function env(key, gt) { const e = ENV[key]; if (!e) return 0; const i = Math.floor((gt - VAT[key]) * FPS); return (i >= 0 && i < e.length) ? e[i] : 0; }
 function breathe(p, t, amp, rate, sway) { place(P(p), 0, 0, 1 + amp * Math.sin(t * rate), sway * Math.sin(t * .45)); }
 const CLASP = [-12, -18, 12, 18], SHOCK = [-28, -138, 10, 140], RELAX = [0, -5, 0, 5], RINGUP = [0, -5, 15, 122], CHEST = [0, -5, 12, 128];
+
+function scrXY(cx, cy) { const px = 152 + (cx - 156) * 236 / 228, py = 140 + (cy - 156) * 520 / 488, a = -4 * Math.PI / 180, dx = px - 270, dy = py - 420;
+  return [270 + dx * Math.cos(a) - dy * Math.sin(a), 420 + dx * Math.sin(a) + dy * Math.cos(a)]; }
+function thumb(n, kf, t) {   // kf = [[เวลา, x จอ, y จอ, กด(0/1)], ...] นิ้วโป้งเคลื่อนนุ่ม ๆ ระหว่างจุด กดแล้วจุ่มลงนิดหนึ่งพร้อมวงคลื่นบนจอ
+  let i = 0; while (i < kf.length - 1 && t > kf[i + 1][0]) i++;
+  const A = kf[i], B = kf[Math.min(i + 1, kf.length - 1)], k = B[0] > A[0] ? ease((t - A[0]) / (B[0] - A[0])) : 0;
+  const cx = lerp(A[1], B[1], k), cy = lerp(A[2], B[2], k); let press = 0, rp = null;
+  for (const K of kf) if (K[3]) { const u = t - K[0]; if (u >= 0 && u < .16) press = Math.sin(u / .16 * Math.PI); if (u >= 0 && u < .45) rp = [K[1], K[2], u]; }
+  const [x, y] = scrXY(cx, cy), dx = x - 366, dy = y - 512 + press * 5;
+  $('th' + n).setAttribute('transform', `translate(${dx.toFixed(1)},${dy.toFixed(1)}) rotate(${(dx * .04).toFixed(2)} 330 880)`);
+  const r = $('rp' + n); if (rp) { r.setAttribute('cx', rp[0]); r.setAttribute('cy', rp[1]); r.setAttribute('r', (8 + 40 * rp[2]).toFixed(1)); r.setAttribute('opacity', (.8 * (1 - rp[2] / .45)).toFixed(2)); } else r.setAttribute('opacity', 0);
+}
+const KEYXY = d => [200 + ((d - 1) %% 3) * 70, 420 + Math.floor((d - 1) / 3) * 52];
 const R = { // การแสดงของแต่ละช็อต: t = เวลาในช็อต, gt = เวลารวม
   s1(t, gt) { cam('s1', lerp(1.0, 1.75, ease(t / SH.s1)), lerp(270, %(cx3)s, ease(t / SH.s1)), lerp(520, %(cy3)s, ease(t / SH.s1)), lerp(480, 380, ease(t / SH.s1)));
     blinkAt('b1', t, 3.4, .7); blinkAt('g1', t, 3.9, 2.1); breathe('b1', t, .005, 2.0, .6); breathe('g1', t, .004, 1.8, -.4);
@@ -368,18 +429,45 @@ const R = { // การแสดงของแต่ละช็อต: t = �
     breathe('p13', t, .006, 3, -.6); },
   s14(t, gt) { cam('s14', lerp(3.2, 3.6, t / SH.s14), %(sx)s, %(sy)s + 20, 380); head('t14', t < SH.s14 * .55 ? -2 + Math.sin(t * 1.2) : lerp(-2, 8, ease((t - SH.s14 * .55) / .6)), t > SH.s14 * .55 ? 1.5 : 0);
     breathe('t14', t, .004, 1.5, .3); },
-  s15(t, gt) { cam('s15', lerp(1.0, 1.06, t / SH.s15), 270 + 3 * Math.sin(t * .9), 470 + 4 * Math.sin(t * 1.3), 470); },
-  s16(t, gt) { cam('s16', lerp(1.02, 1.16, ease(t / SH.s16)), 270 + 2 * Math.sin(t * .8), lerp(470, 430, ease(t / SH.s16)) + 3 * Math.sin(t * 1.1), 470); },
-  s17(t, gt) { const tp = .4 + VD['17f'] * .55, [sx, sy] = shake(t, tp, .4, 9); cam('s17', 1.04 + (t > tp ? .14 * backOut((t - tp) / .3) : 0), 270, 420, 470, sx, sy); flash('s17', t, [[tp, .12]]); },
-  s18(t, gt) { cam('s18', lerp(1.0, 1.05, t / SH.s18), 270 + 3 * Math.sin(t), 470 + 3 * Math.sin(t * 1.4), 470); },
+  s15(t, gt) { cam('s15', lerp(1.0, 1.06, t / SH.s15), 270 + 3 * Math.sin(t * .9), 470 + 4 * Math.sin(t * 1.3), 470);
+    const pin = [2, 5, 8, 0], tt = [.9, 1.45, 2.0, 2.55], KF = [[0, 330, 600, 0]];   // พิมพ์รหัสสี่ตัว แล้วปลดล็อกเข้าอัลบั้ม
+    pin.forEach((d, i) => { const [x, y] = d ? KEYXY(d) : [270, 576]; KF.push([tt[i] - .25, x, y, 0], [tt[i], x, y, 1]); }); KF.push([3.2, 340, 610, 0], [SH.s15, 330, 610, 0]);
+    thumb(15, KF, t); for (let i = 0; i < 4; i++) $('pd15_' + i).setAttribute('fill', t > tt[i] ? (t > 2.8 ? '#6fe0a0' : '#c9a8ff') : 'none');
+    $('al15').setAttribute('opacity', Math.max(0, Math.min(1, (t - 3.0) / .35)).toFixed(2)); },
+  s16(t, gt) { cam('s16', lerp(1.02, 1.12, ease(t / SH.s16)), 270 + 2 * Math.sin(t * .8), 450 + 3 * Math.sin(t * 1.1), 470);
+    const sw = [[.8, 1.3, 0, -110], [3.0, 3.5, -110, -222]];   // ปัดขึ้นสองครั้ง จอเลื่อนตามแบบมีแรงเหวี่ยง
+    let sy = 0; for (const [a, b, f, to] of sw) { if (t >= a) sy = lerp(f, to, 1 - Math.pow(1 - Math.min(1, (t - a) / (b - a + .5)), 3)); }
+    $('a16').setAttribute('transform', `translate(0,${sy.toFixed(1)})`);
+    thumb(16, [[0, 330, 600, 0], [.6, 300, 600, 0], [.8, 300, 600, 0], [1.25, 300, 470, 0], [1.6, 330, 600, 0], [2.8, 300, 600, 0], [3.0, 300, 600, 0], [3.45, 300, 470, 0], [3.9, 335, 605, 0], [SH.s16, 335, 605, 0]], t);
+    $('a16HL').setAttribute('opacity', t > SH.s16 - 2.2 ? (.6 + .4 * Math.sin(t * 6)).toFixed(2) : 0); },
+  s17(t, gt) { const tp = .4 + VD['17f'] * .55, [sx, sy] = shake(t, tp, .4, 9); cam('s17', 1.04 + (t > tp ? .14 * backOut((t - tp) / .3) : 0), 270, 420, 470, sx, sy); flash('s17', t, [[tp, .12]]);
+    $('a17').setAttribute('transform', 'translate(0,-222)'); $('a17HL').setAttribute('opacity', .9);
+    thumb(17, [[0, 335, 605, 0], [.35, 344, 566, 0], [.55, 344, 566, 1], [1.0, 330, 640, 0], [SH.s17, 330, 640, 0]], t);   // แตะรูปปี 2025 แล้วรูปขยายเต็มจอ
+    const o = ease((t - .65) / .35); $('ly17').setAttribute('opacity', o.toFixed(2));
+    $('ly17').setAttribute('transform', `translate(${lerp(344, 270, o).toFixed(1)},${lerp(566, 400, o).toFixed(1)}) scale(${lerp(.3, 1, o).toFixed(3)}) translate(-270,-400)`); },
+  s18(t, gt) { cam('s18', lerp(1.0, 1.05, t / SH.s18), 270 + 3 * Math.sin(t), 470 + 3 * Math.sin(t * 1.4), 470);
+    const W = ['ชื่อ', 'เจ้าสาว', ' ', '2025', ' ', 'หาย'], t0 = .35, dt = .22, nT = W.length, done = t0 + nT * dt;   // พิมพ์ค้นหาทีละคำ นิ้วกดคีย์บอร์ดตามจังหวะ
+    $('q18').textContent = W.slice(0, Math.max(0, Math.min(nT, Math.floor((t - t0) / dt) + 1))).join('').trim();
+    $('cur18').setAttribute('x', (183 + $('q18').getComputedTextLength()).toFixed(1)); $('cur18').setAttribute('opacity', (t * 2) %% 1 < .6 ? 1 : 0);
+    const KF = [[0, 330, 610, 0]]; for (let i = 0; i < nT; i++) { const x = 175 + ((i * 97) %% 200), y = 496 + ((i * 53) %% 3) * 40; KF.push([t0 + i * dt - .14, x, y, 0], [t0 + i * dt, x, y, 1]); }
+    KF.push([done + .2, 270, 615, 0], [done + .45, 270, 615, 1], [done + 1, 330, 640, 0], [SH.s18, 330, 640, 0]); thumb(18, KF, t);
+    const kd = ease((t - done - .55) / .35); $('kb18').setAttribute('transform', `translate(0,${(190 * kd).toFixed(1)})`);
+    for (let i = 0; i < 5; i++) $('r18_' + i).setAttribute('opacity', Math.max(0, Math.min(1, (t - done - .7 - i * .15) / .25)).toFixed(2)); },
   s19(t, gt) { const tp = .4 + VD['19f'] * .25, [sx, sy] = shake(t, tp, .45, 10); cam('s19', 1.03 + (t > tp ? .16 * backOut((t - tp) / .3) : 0), 270, 420, 470, sx, sy);
+    for (let i = 0; i < 6; i++) { const u = (t - .25 - i * .28) / .3, e = Math.max(0, Math.min(1, u)); const g = $('ms19_' + i); if (!g) continue;   // โปสเตอร์คนหายขึ้นทีละใบ
+      g.setAttribute('opacity', e.toFixed(2)); }
+    const sy2 = -70 * ease((t - 2.6) / .8); $('ms19').setAttribute('transform', `translate(0,${sy2.toFixed(1)})`);
+    thumb(19, [[0, 330, 620, 0], [2.4, 300, 610, 0], [2.6, 300, 610, 0], [3.2, 300, 520, 0], [3.7, 335, 625, 0], [SH.s19, 335, 625, 0]], t);
     $('s19k').setAttribute('opacity', Math.max(0, (t - SH.s19 + .5) / .5).toFixed(2)); },
   s20(t, gt) { const dings = [.5, .5 + (SH.s20 - 1.2) / 2.4, .5 + (SH.s20 - 1.2) / 1.2]; let bump = 0, look = 0;
     for (const d of dings) { if (t > d && t < d + .5) { bump = 4 * Math.sin((t - d) * 20) * (1 - (t - d) / .5); } if (t > d) look = Math.max(look, 1 - Math.min(1, (t - d) / 1.4)); }
     cam('s20', lerp(1.0, 1.12, ease(t / SH.s20)), 270, 640, 520, 0, bump); face('b20', 1, 3); blinkAt('b20', t, 2.4, .3);
     pose('b20', CLASP, CLASP, 1); arm('b20', 'L', -12 + 2 * Math.sin(t * 3), -18 - 4 * Math.sin(t * 3)); arm('b20', 'R', 12, 18 + 4 * Math.sin(t * 3));
     head('b20', 3 * Math.sin(t * 1.7), -4 * look); breathe('b20', t, .01, 6, 0); },
-  s21(t, gt) { const vib = t > .2 && t < SH.s21 - .3 && (t * 1.25) %% 1 < .45; cam('s21', 1.02, 270 + (vib ? 2.5 * Math.sin(t * 90) : 0), 470, 470); },
+  s21(t, gt) { const vib = t > .2 && t < SH.s21 - .5 && (t * 1.25) %% 1 < .45; cam('s21', 1.02, 270 + (vib ? 2.5 * Math.sin(t * 90) : 0), 470, 470);
+    const pr = (t * .8) %% 1; $('ring21').setAttribute('r', (44 + 26 * pr).toFixed(1)); $('ring21').setAttribute('opacity', (1 - pr).toFixed(2));
+    const tr = 1.5 * Math.sin(t * 23);   // นิ้วโป้งสั่นลังเล แล้วค่อย ๆ เลื่อนไปกดรับสาย
+    thumb(21, [[0, 300, 630, 0], [SH.s21 - 1.1, 310 + tr, 610, 0], [SH.s21 - .55, 330, 560, 0], [SH.s21 - .4, 330, 560, 1], [SH.s21, 330, 575, 0]], t); },
   s22(t, gt) { cam('s22', lerp(1.0, 1.12, t / SH.s22), 270, 470, 480); blinkAt('w22', t, 3.6, 1.0); const e = env('22f', gt); talk('w22', '22f', gt);
     head('w22', -3 + 1.2 * Math.sin(t * .7) + 2 * e, -1.2 * e); arm('w22', 'L', 1.5 * Math.sin(t), -5); arm('w22', 'R', -100, 219); breathe('w22', t, .004, 1.5, .3); },
   s23(t, gt) { cam('s23', lerp(1.55, 1.75, t / SH.s23), 270, 400, 440); blinkAt('w23', t, 4.1, 2.2); const e = env('23f', gt); talk('w23', '23f', gt);
