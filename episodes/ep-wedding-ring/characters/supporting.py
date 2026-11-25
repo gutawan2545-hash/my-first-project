@@ -414,11 +414,11 @@ def c_guest_w():
                        dict(inner=-12, outer=-12, arch=.6, t=1.8), 'blank', '#a8626a', (hb, hf), blush_op=0, brow_col='#22181c', extra=ear_drop(pearl=True))
     hands = '<path d="M -20,206 C -10,200 10,200 20,206 L 18,220 C 8,224 -8,224 -18,220 Z" fill="#f1d8cc"/>'
     longp = ''.join(f'<circle cx="{fx(-12 + i * 2)}" cy="{fx(54 + 40 * math.sin(math.pi * i / 12))}" r="1.3" fill="#ece6dc"/>' for i in range(13))
-    brooch = '<circle cx="22" cy="72" r="4" fill="#c3c8cf"/><circle cx="22" cy="72" r="2.4" fill="#5e7a6c"/>'
-    sheen = '<path d="M -28,156 C -32,260 -34,360 -34,452 L -26,452 C -26,360 -24,260 -20,156 Z" fill="#9aa69e" opacity=".5"/>'
-    body = fbody(SK_PALE, ('#5e6e66', '#7a8a82', '#46544c'), ('#5e6e66', '#7a8a82', '#46544c'), hem=456, flare=36, neckline='high', sleeves='long',
-                 sleeve_col=('#5e6e66', '#7a8a82', '#46544c'), extra=sheen + longp + brooch)
-    return 'แขกหญิงฝั่งเจ้าบ่าว', 'ผมเกล้ามวยตึงแสกกลาง แต่งตัวเรียบร้อยแบบโบราณ ชุดผ้าซาตินยาวสีเขียวหม่นแขนยาว สร้อยไข่มุกยาว เข็มกลัดเงิน ต่างหูมุก ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกฝั่งเจ้าบ่าวทุกคน ไม่ถือมือถือ', 'f', back, head, body
+    brooch = '<circle cx="22" cy="72" r="4" fill="#c3c8cf"/><circle cx="22" cy="72" r="2.4" fill="#3e5cb0"/>'
+    sheen = '<path d="M -28,156 C -32,260 -34,360 -34,452 L -26,452 C -26,360 -24,260 -20,156 Z" fill="#7a8aae" opacity=".5"/>'
+    body = fbody(SK_PALE, ('#3a4a6a', '#52628a', '#28344e'), ('#3a4a6a', '#52628a', '#28344e'), hem=456, flare=36, neckline='high', sleeves='long',
+                 sleeve_col=('#3a4a6a', '#52628a', '#28344e'), extra=sheen + longp + brooch)
+    return 'แขกหญิงฝั่งเจ้าบ่าว', 'ผมเกล้ามวยตึงแสกกลาง แต่งตัวเรียบร้อยแบบโบราณ ชุดผ้าซาตินยาวสีน้ำเงินหม่นแขนยาว เข้าธีมน้ำเงินของงาน สร้อยไข่มุกยาว เข็มกลัดเงิน ต่างหูมุก ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกฝั่งเจ้าบ่าวทุกคน ไม่ถือมือถือ', 'f', back, head, body
 
 def c_photographer():
     hf = mhair_curtain('#3a2a24', '#5e4438', '#24170f')
@@ -445,8 +445,8 @@ def c_guest_m():
     hf = mhair_slick('#1c1a20', '#8e8a94')
     back, head = mhead('gmm', SK_PALE, 'normal', dict(iris='#22181a', wing=0, lashes=0, crease=False, catch=False, r=3.4),
                        dict(inner=-12, outer=-12.6, t=2.2), 'blank', hf)
-    body = mbody(SK_PALE, ('#4a4c54', '#5c5e68', '#36383e'), ('#4a4c54', '#5c5e68', '#36383e'), tie=('#5e3a44', '#422830'), extra=tie_pin() + pocket_sq() + watch_m() + cufflinks())
-    return 'แขกชายฝั่งเจ้าบ่าว', 'ผมหวีเสยเรียบแปล้ จอนสีเทา สูทเทาเน็คไทแดงหม่นติดที่หนีบเงิน ผ้าเช็ดหน้าเงิน นาฬิกาเงิน ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกหญิงฝั่งเจ้าบ่าว ยืนนิ่ง ไม่ถือมือถือ', 'm', back, head, body
+    body = mbody(SK_PALE, ('#2e3446', '#424a60', '#1e2230'), ('#2e3446', '#424a60', '#1e2230'), tie=('#6a7ca8', '#4a5a84'), extra=tie_pin() + pocket_sq() + watch_m() + cufflinks())
+    return 'แขกชายฝั่งเจ้าบ่าว', 'ผมหวีเสยเรียบแปล้ จอนสีเทา สูทสีกรมเทา เน็คไทฟ้าหม่นติดที่หนีบเงิน ผ้าเช็ดหน้าเงิน นาฬิกาเงิน ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกหญิงฝั่งเจ้าบ่าว ยืนนิ่ง ไม่ถือมือถือ', 'm', back, head, body
 
 CHARS = [c_woman_black, c_mother, c_photographer, c_staff, c_guard, c_new_bride, c_bridesmaid, c_guest_w, c_guest_m]
 
