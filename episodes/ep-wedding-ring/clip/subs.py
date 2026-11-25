@@ -26,8 +26,8 @@ EN = {
  17: "And the woman in black was last year's bride.",
  18: "You searched each bride's name online.",
  19: "Every one of them was reported missing, just one day after the wedding.",
- 20: "When you tried to run, the elevator kept bringing you back to the same floor.",
- 21: "Your phone rang. It was the woman in black.",
+ 20: "As I tried to escape the hotel, the elevator kept bringing me back to the same spot, again and again.",
+ 21: "Suddenly, an unknown number called. When I answered, it turned out to be the woman in black.",
  22: "He isn't my husband... I was just a bride, like you.",
  23: "And if you want to live, you have to find the next woman to marry him instead.",
  24: "Three knocks at the door.",
@@ -43,7 +43,7 @@ def thai_lines(text, n=22):
     global _TRIE
     if '_TRIE' not in globals():
         _TRIE = Trie(set(thai_words()) | {'เดรส', 'ชุดเดรส', 'เจ้าบ่าว', 'เจ้าสาว', 'แหวนแต่งงาน', 'ห้องจัดเลี้ยง', 'แบบเดียวกับ',
-                                          'แฟนเก่า', 'ทุกประการ', 'ปัญหาทางจิต', 'พนักงานรักษาความปลอดภัย', 'สามีของฉัน', 'จากนิ้ว'})
+                                          'แฟนเก่า', 'ทุกประการ', 'ปัญหาทางจิต', 'พนักงานรักษาความปลอดภัย', 'สามีของฉัน', 'จากนิ้ว', 'ไม่ทราบชื่อ', 'เบอร์ไม่ทราบชื่อ', 'จุดเดิม', 'ซ้ำแล้วซ้ำเล่า'})
     toks = [t for t in word_tokenize(text, engine='newmm', custom_dict=_TRIE, keep_whitespace=True)]
     merged = []   # เครื่องหมาย ! ? … ติดคำหน้าเสมอ ไม่ขึ้นบรรทัดใหม่เดี่ยว ๆ
     for tk in toks:

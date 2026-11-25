@@ -228,7 +228,7 @@ EMPH = {1: [('วันแต่งงาน', 'p'), ('ภรรยา', 'r'), (
         9: [('อย่าให้เขาถอดแหวน', 'r'), ('เด็ดขาด', 'r')], 2: [('โรงแรมหรู', 'p')], 10: [('ความผิดปกติ', 'p')],
         11: [('ไม่มีใครถ่ายรูป', 'p')], 12: [('ผิดชื่อ', 'r')], 13: [('ครั้งที่แล้ว', 'r')], 14: [('สายตาสงสาร', 'p')], 15: [('โทรศัพท์ของเจ้าบ่าว', 'p')],
         16: [('โรงแรมเดียวกัน', 'p'), ('เจ้าบ่าวคนเดียวกัน', 'p'), ('ไม่เคยซ้ำหน้า', 'r')], 17: [('เจ้าสาวของปีที่แล้ว', 'r')], 18: [('ชื่อเจ้าสาว', 'p')],
-        19: [('ประกาศตามหาคนหาย', 'r'), ('หนึ่งวัน', 'r')], 20: [('ชั้นเดิม', 'p'), ('ซ้ำแล้วซ้ำเล่า', 'r')], 21: [('ผู้หญิงชุดดำ', 'p')],
+        19: [('ประกาศตามหาคนหาย', 'r'), ('หนึ่งวัน', 'r')], 20: [('จุดเดิม', 'p'), ('ซ้ำแล้วซ้ำเล่า', 'r')], 21: [('เบอร์ไม่ทราบชื่อ', 'p'), ('ผู้หญิงชุดดำ', 'r')],
         22: [('ไม่ใช่สามี', 'r'), ('เจ้าสาว', 'p')], 23: [('อยากรอด', 'p'), ('ผู้หญิงคนต่อไป', 'r')], 24: [('สามครั้ง', 'p')], 25: [('ถอดแหวน', 'r')]}
 def colorize(full, lines, n):
     col = [''] * len(full)
@@ -591,7 +591,7 @@ DEFS = (base + SB.H8.DEFS_EXTRA + SB.N9.EXTRA_DEFS + WC.DEFS + SB.B2.DEFS + SP.D
 html = ('<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">'
         '<style>html,body{margin:0;background:#000}#stage{position:relative;width:540px;height:960px;overflow:hidden}#stage svg{position:absolute;inset:0;width:540px;height:960px;transform-origin:50% 50%}#grRect,#grGrain{mix-blend-mode:soft-light}'
         '.th{font-family:"IBM Plex Sans Thai";font-weight:700;font-size:20px;fill:#ffffff;stroke:#12081c;stroke-width:5px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}'
-        '.hp{fill:#c04dff}.hr{fill:#ff3b4e}.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
+        '.hp{fill:#ffd84a}.hr{fill:#ffd84a}.en{font-family:Inter,sans-serif;font-weight:600;font-size:13px;fill:#fff;stroke:#14121a;stroke-width:3.4px;paint-order:stroke;stroke-linejoin:round;text-anchor:middle}</style>'
         + DEFS + '<div id="stage">' + ''.join(SVGS) + GRADE + f'<svg viewBox="0 0 540 960">{OVL}{"".join(sub_svg)}</svg></div><script>{js}</script>')
 open('anim_full.html', 'w').write(html)
 os.makedirs('bg', exist_ok=True)
@@ -684,7 +684,23 @@ A.add(sfx2, T0['s25'] + SH_D['s25'] - .35, th2, 1.0)                      # ผ�
 A.add(sfx2, T0['s26'] + .3, A.boom(3.0, 42), .5)
 for k in range(5): A.add(sfx2, T0['s27'] + 1.0 + k * 1.4, click(), 1.0)
 if os.path.exists('music/C_night.mp3'):
-    c_ = load_raw('music/C_night.mp3'); mc = np.zeros(N, np.float32); A.add(mc, T0['s10'], c_)
+    c_ = load_raw('music/C_night.mp3'); mc = np.zeros(N, np.float32)
+    O = json.load(open('music/C_night_timeline.json'))['t0']   # ไทม์ไลน์ตอนแต่งเพลง: ตัดเป็นท่อนแล้ววางตามเวลาใหม่ ท่อนลิฟต์-สายเข้ายืดหดให้พอดี
+    cut = lambda a, b: c_[int((O[a] - O['s10']) * A.SR):int((O[b] - O['s10']) * A.SR)] if b else c_[int((O[a] - O['s10']) * A.SR):]
+    def stretch(x, n):
+        import subprocess, tempfile
+        f = len(x) / n
+        if abs(f - 1) < .01: return x
+        if f < .9:   # ยาวขึ้นมาก: วนท่อนกลางซ้ำแบบเฟดซ้อน แทนการยืดจนเสียงยาน
+            k = int(.6 * A.SR); body = x[len(x) // 4:]; out = x.copy()
+            while len(out) < n:
+                w = np.linspace(0, 1, k); out = np.concatenate([out[:-k], out[-k:] * (1 - w) + body[:k] * w, body[k:]])
+            return out[:n]
+        raw = subprocess.run(['ffmpeg', '-v', 'error', '-f', 'f32le', '-ar', str(A.SR), '-ac', '1', '-i', '-', '-filter:a', f'atempo={f:.4f}', '-f', 'f32le', '-'], input=x.astype(np.float32).tobytes(), capture_output=True).stdout
+        return np.frombuffer(raw, np.float32)
+    def put_xf(x, at):
+        k = int(.25 * A.SR); x = x.copy(); x[:k] *= np.linspace(0, 1, k); x[-k:] *= np.linspace(1, 0, k); A.add(mc, at - .12, x)
+    put_xf(cut('s10', 's20'), T0['s10']); put_xf(stretch(cut('s20', 's22'), int((T0['s22'] - T0['s20']) * A.SR)), T0['s20']); put_xf(cut('s22', None), T0['s22'])
     mc = lvl(mc, T0['s10'] + 1, T0['s26'], 9); thr = thr + mc
 rn = A.lp(rn, 1200) * (10 ** (-12 / 20)) * 2.2   # ตัดเสียงแหลมแบบสังกะสีออก เหลือฝนทุ้ม ๆ ไกล ๆ เบากว่าเดิมราว 5 dB
 venv = A.lp(np.abs(voice), 4); duck = 1 - .3 * np.clip(venv / (venv.max() * .25 + 1e-6), 0, 1)
