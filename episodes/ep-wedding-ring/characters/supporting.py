@@ -298,6 +298,36 @@ def mbody(sk, pants, top, shirt='#f7f5f1', tie=None, lapels=True, rolled=False, 
     o.append(extra)
     return ''.join(o)
 
+
+# ---------------------------------------------------------------- เครื่องประดับ (เงินทั้งหมด ให้เข้ากับห้องพิธี)
+def ear_drop(gem='#dde6f6', gem_d='#aebbd4', pearl=False):
+    o = ''
+    for x, sh in ((-30, False), (30, True)):
+        o += f'<circle cx="{x}" cy="10" r="1.4" fill="#f4f6f9"/><path d="M {x},11.4 V15.6" stroke="#c3c8cf" stroke-width=".8"/>'
+        if pearl:
+            o += f'<ellipse cx="{x}" cy="19" rx="2.6" ry="3.2" fill="{"#e2dcd2" if sh else "#f6f2ec"}"/><ellipse cx="{x - .8}" cy="18" rx=".9" ry="1.1" fill="#fff"/>'
+        else:
+            o += f'<path d="M {x},15.6 l 2.4,3.6 l -2.4,6.4 l -2.4,-6.4 Z" fill="{gem_d if sh else gem}"/><path d="M {x},15.6 l 2.4,3.6 l -2.4,6.4 Z" fill="{gem_d}"/>'
+    return o
+def ear_stud(c='#f4f6f9'):
+    return f'<circle cx="-30" cy="11" r="1.8" fill="{c}"/><circle cx="30" cy="11" r="1.8" fill="#c3c8cf"/>'
+def necklace(pendant=True, y=53, depth=13):
+    o = f'<path d="M -11,{y} Q 0,{y + depth} 11,{y}" fill="none" stroke="#c3c8cf" stroke-width=".9"/>'
+    if pendant:
+        py = y + depth / 2 + .5
+        o += f'<path d="M 0,{py} l 2,3 l -2,4 l -2,-4 Z" fill="#f4f6f9"/><circle cx="-.6" cy="{py + 2.4}" r=".6" fill="#fff"/>'
+    return o
+def bracelet(x=45.5, y=206):
+    return f'<rect x="{x - 6}" y="{y}" width="12" height="3.4" rx="1.6" fill="#c3c8cf"/><rect x="{x - 6}" y="{y}" width="12" height="1.2" rx=".6" fill="#f4f6f9"/>' + ''.join(f'<circle cx="{x - 4 + i * 2.7}" cy="{y + 1.8}" r=".7" fill="#fff"/>' for i in range(4))
+def watch_m(x=51.5, y=218):
+    return f'<rect x="{x - 7}" y="{y}" width="14" height="5" rx="1.4" fill="#868d97"/><rect x="{x - 3.4}" y="{y - 1}" width="6.8" height="7" rx="1.6" fill="#c3c8cf"/><rect x="{x - 2.4}" y="{y}" width="4.8" height="5" rx="1" fill="#e8ecf4"/>'
+def tie_pin(y=104):
+    return f'<rect x="-6" y="{y}" width="12" height="2" fill="#c3c8cf"/><rect x="-6" y="{y}" width="12" height=".7" fill="#f4f6f9"/>'
+def cufflinks():
+    return '<circle cx="-51.5" cy="225.5" r="1.6" fill="#f4f6f9"/><circle cx="51.5" cy="225.5" r="1.6" fill="#c3c8cf"/>'
+def pocket_sq(c='#c3c8cf'):
+    return f'<path d="M -40,106 L -26,106 L -26,109 L -40,109 Z" fill="#0e0e12"/><path d="M -38,106 L -35,100 L -32,104 L -29,99 L -27,106 Z" fill="{c}"/>'
+
 # ================================================================ ตัวละคร
 SK_PALE = ('#f1d8cc', '#dcb7aa', '#c49688', '#fbeae2')
 SK_FAIR = ('#fbe2cf', '#efc3a8', '#d9a089', '#fff4ea')
@@ -320,64 +350,75 @@ def c_woman_black():
               '<path d="M -51,210 L -40,210 C -39,224 -41,236 -46,238 C -51,238 -53,226 -51,210 Z M 51,210 L 40,210 C 39,224 41,236 46,238 C 51,238 53,226 51,210 Z" fill="#141218"/>'
               '<path d="M -51,150 L -40,150 L -40,154 L -51,154 Z M 51,150 L 40,150 L 40,154 L 51,154 Z" fill="#2c2a34"/>'
               f'<rect x="41.5" y="224" width="7" height="2.6" rx="1.2" fill="{SILVER_L}"/><circle cx="45" cy="223.4" r="1.6" fill="#e8f0ff"/>')
-    body = fbody(SK_PALE, ('#16141a', '#2a2832', '#0c0b10'), ('#16141a', '#2a2832', '#0c0b10'), hem=458, flare=48, neckline='square', extra=gloves)
-    return 'ผู้หญิงชุดดำ', 'เจ้าสาวของปีที่แล้ว สวยแบบลึกลับ หน้าเรียว ผิวซีดเย็น ผมยาวตรงสีดำแสกกลาง ทัดหูข้างหนึ่ง ตาเฉี่ยวหางตาเชิด อายแชโดว์บาง ๆ ปากทรงสวยสีแดงเข้ม ต่างหูเพชรหยดน้ำ หมวกเล็กมีตาข่ายบางคลุมแค่หน้าผาก เดรสดำคอเหลี่ยมยาวถึงพื้น ถุงมือดำ และแหวนเงินแบบเดียวกับเจ้าสาวทับถุงมือ', 'f', back, head, body
+    choker = '<path d="M -8,44 Q 0,48 8,44" fill="none" stroke="#c3c8cf" stroke-width="1.4"/><circle cx="0" cy="47.6" r="1.4" fill="#f4f6f9"/>' + necklace(True, 54, 16)
+    body = fbody(SK_PALE, ('#16141a', '#2a2832', '#0c0b10'), ('#16141a', '#2a2832', '#0c0b10'), hem=458, flare=48, neckline='square', extra=gloves + choker)
+    return 'ผู้หญิงชุดดำ', 'เจ้าสาวของปีที่แล้ว สวยแบบลึกลับ หน้าเรียว ผิวซีดเย็น ผมยาวตรงสีดำแสกกลาง ทัดหูข้างหนึ่ง ตาเฉี่ยวหางตาเชิด อายแชโดว์บาง ๆ ปากทรงสวยสีแดงเข้ม ต่างหูเพชรหยดน้ำ โชคเกอร์เงินกับสร้อยจี้ หมวกเล็กมีตาข่ายบางคลุมแค่หน้าผาก เดรสดำคอเหลี่ยมยาวถึงพื้น ถุงมือดำ และแหวนเงินแบบเดียวกับเจ้าสาวทับถุงมือ', 'f', back, head, body
 
 def c_mother():
     hb, hf = hair_mom('#2a2226', '#a39ca6')
-    pearls = ''.join(f'<circle cx="{fx(-11 + i * 2.2)}" cy="{fx(53 + 7 * math.sin(math.pi * i / 10))}" r="1.3" fill="#f6f2ea"/>' for i in range(11))
-    ear = '<circle cx="-30" cy="11" r="2.2" fill="#f6f2ea"/><circle cx="30" cy="11" r="2.2" fill="#e2dcd2"/>'
-    back, head = fhead('mmf', SK_WARM, 'mature', dict(iris='#3e2418', h=.88, wing=1.6, lashes=1, heavy=.4, under=True, r=4.3),
-                       dict(inner=-11.4, outer=-12.4, arch=1.4, t=1.8), 'polite', '#b8606a', (hb, hf), blush_op=.25, extra=ear)
-    lace = ''.join(f'<circle cx="{x}" cy="{y}" r="1.4" fill="#b98ea6"/>' for x in range(-32, 34, 8) for y in range(70, 146, 10))
-    clutch = '<rect x="-60" y="226" width="22" height="14" rx="3" fill="#4a2e44"/><rect x="-60" y="226" width="22" height="4" rx="2" fill="#c3c8cf"/>'
-    body = fbody(SK_WARM, ('#9a6e8a', '#b48aa4', '#7a5270'), ('#5a2e4a', '#74405e', '#40203a'), hem=458, flare=40, neckline='high', sleeves='three',
-                 sleeve_col=('#a07892', '#b894aa', '#80587a'), extra=lace + pearls + clutch)
-    return 'แม่เจ้าบ่าว', 'อายุราว 55 ผมเกล้ามวยมีผมขาวแซม ตาเปลือกตาหนักนิด ๆ ยิ้มสุภาพแต่ตาไม่ยิ้มตาม ใส่เสื้อลูกไม้สีม่วงหม่นแขนสามส่วน ผ้าถุงยาวสีพลัม สร้อยไข่มุก ต่างหูมุก กระเป๋าคลัตช์', 'f', back, head, body
+    pearls = ''.join(f'<circle cx="{fx(-11 + i * 2.2)}" cy="{fx(53 + 6 * math.sin(math.pi * i / 10))}" r="1.3" fill="#f6f2ea"/>' for i in range(11))
+    pearls2 = ''.join(f'<circle cx="{fx(-14 + i * 2.33)}" cy="{fx(55 + 14 * math.sin(math.pi * i / 12))}" r="1.2" fill="#ece6dc"/>' for i in range(13))
+    pend = '<path d="M 0,68 l 3,4 l -3,6 l -3,-6 Z" fill="#f4f8ff"/><path d="M 0,68 l 3,4 l -3,6 Z" fill="#c8d4ea"/>'
+    hairpin = '<path d="M 10,-66 l 6,-4 l 2,3 l -6,4 Z" fill="#c3c8cf"/><circle cx="16" cy="-69" r="1.6" fill="#e8f0ff"/>'
+    back, head = fhead('mmf', SK_WARM, 'mature', dict(iris='#3e2418', h=.88, wing=1.8, lashes=1, heavy=.4, under=True, r=4.3),
+                       dict(inner=-11.4, outer=-12.4, arch=1.4, t=1.8), 'polite', '#b25a68', (hb, hf), blush_op=.25,
+                       extra=ear_drop('#f4f8ff', '#c8d4ea', pearl=True) + hairpin)
+    embroid = ''.join(f'<path d="M {x},{y} l 1.6,-1.6 l 1.6,1.6 l -1.6,1.6 Z" fill="#b9c4dc"/>' for x in range(-32, 34, 8) for y in range(72, 146, 10))
+    hem_band = '<path d="M -40,438 L 40,438 L 41,452 L -41,452 Z" fill="#c3c8cf"/><path d="M -40,438 L 40,438 L 40,441 L -40,441 Z" fill="#f4f6f9"/>' + ''.join(f'<path d="M {x},445 l 2,-2 l 2,2 l -2,2 Z" fill="#1e2a52"/>' for x in range(-38, 40, 6))
+    sash = ('<path d="M -38,60 L -22,52 L 38,146 L 24,150 Z" fill="#8e9cc0"/><path d="M -38,60 L -30,56 L 30,148 L 24,150 Z" fill="#b2bed8"/>'
+            '<path d="M -22,52 L 38,146" stroke="#e8ecf4" stroke-width="1.2"/><path d="M -38,60 L 24,150" stroke="#e8ecf4" stroke-width="1.2"/>')
+    brooch = '<circle cx="-24" cy="74" r="4.4" fill="#c3c8cf"/><circle cx="-24" cy="74" r="2.8" fill="#3e5cb0"/><circle cx="-25" cy="73" r=".9" fill="#cfe0ff"/>'
+    clutch = '<rect x="-62" y="224" width="24" height="15" rx="3" fill="#c3c8cf"/><rect x="-62" y="224" width="24" height="5" rx="2" fill="#f4f6f9"/><circle cx="-50" cy="229" r="1.6" fill="#3e5cb0"/>'
+    body = fbody(SK_WARM, ('#2a3a6a', '#3e5290', '#1c2850'), ('#1e2a52', '#2e3e74', '#141c3a'), hem=458, flare=40, neckline='high', sleeves='three',
+                 sleeve_col=('#33467c', '#4a60a0', '#22305c'), extra=embroid + hem_band + sash + pearls + pearls2 + pend + brooch + bracelet(-45.5, 172) + clutch)
+    return 'แม่เจ้าบ่าว', 'อายุราว 55 ผมเกล้ามวยมีผมขาวแซม ปิ่นเพชร ยิ้มสุภาพแต่ตาไม่ยิ้มตาม ใส่เสื้อผ้าไหมลูกไม้สีน้ำเงินแซฟไฟร์ปักลายเงิน แขนสามส่วน ผ้าถุงยาวสีกรมขอบเงิน พาดสไบสีฟ้าเงิน สร้อยไข่มุกสองชั้นกับจี้เพชร เข็มกลัดแซฟไฟร์ ต่างหูมุก กำไลเพชร กระเป๋าคลัตช์เงิน', 'f', back, head, body
 
 def c_staff():
     hb, hf = hair_low_bun('#1c1418', '#3a2e34', '#100a0c')
     back, head = fhead('stf', SK_TAN, 'oval', dict(iris='#3e2418', wing=1.6, lashes=1, r=4.6),
-                       dict(inner=-14.4, outer=-11.6, arch=.4, t=2), 'sad', '#b26a6a', (hb, hf), blush_op=.3)
+                       dict(inner=-14.4, outer=-11.6, arch=.4, t=2), 'sad', '#b26a6a', (hb, hf), blush_op=.3, extra=ear_stud())
     tag = '<rect x="-30" y="92" width="18" height="6" rx="1" fill="#c3c8cf"/><rect x="-28" y="94" width="10" height="1.4" fill="#5a5a66"/>'
     vest = ('<path d="M -14,50 L 0,86 L 14,50 C 26,52 36,56 40,64 L 37,150 L -37,150 L -40,64 C -36,56 -26,52 -14,50 Z" fill="#232a44"/>'
             '<path d="M -40,64 C -36,56 -26,52 -16,51 L -12,58 L -24,150 L -37,150 Z" fill="#323a5a"/><path d="M -6,58 L 0,86 L 6,58 L 0,64 Z" fill="#f7f5f1"/>')
     body = fbody(SK_TAN, ('#f7f5f1', '#ffffff', '#d8d4ce'), ('#232a44', '#323a5a', '#161c30'), hem=320, flare=40, neckline='high', sleeves='long',
-                 sleeve_col=('#f7f5f1', '#ffffff', '#d8d4ce'), extra=vest + tag)
-    return 'พนักงานโรงแรม', 'อายุราว 26 ผมเกล้ามวยต่ำเรียบร้อย คิ้วหัวยกขึ้นแบบสงสาร ปากคว่ำนิด ๆ เสื้อเชิ้ตขาว เสื้อกั๊กกับกระโปรงสีกรมท่า ป้ายชื่อเงิน', 'f', back, head, body
+                 sleeve_col=('#f7f5f1', '#ffffff', '#d8d4ce'), extra=vest + tag + watch_m(45.5, 204))
+    return 'พนักงานโรงแรม', 'อายุราว 26 ผมเกล้ามวยต่ำเรียบร้อย คิ้วหัวยกขึ้นแบบสงสาร ปากคว่ำนิด ๆ เสื้อเชิ้ตขาว เสื้อกั๊กกับกระโปรงสีกรมท่า ป้ายชื่อเงิน ต่างหูเม็ดเล็กกับนาฬิกาเงิน เรียบร้อยตามแบบพนักงาน', 'f', back, head, body
 
 def c_new_bride():
     hb, hf = hair_wavy_shoulder('#3a2620', '#6a4a3c', '#24160f', clip='#f6f2ec')
     veil = '<path d="M -26,-50 C -60,20 -92,180 -104,330 C -60,345 60,345 104,330 C 92,180 60,20 26,-50 Z" fill="#ffffff" opacity=".16"/>'
     crown = ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{c}"/>' for x, y, r, c in ((-24, -47, 3.4, '#fbf6ee'), (-12, -53, 3, '#f8dcd6'), (0, -55, 3.4, '#ffffff'), (12, -53, 3, '#f8dcd6'), (24, -47, 3.4, '#fbf6ee')))
     back, head = fhead('nbf', SK_FAIR, 'oval', dict(iris='#5a3a2c', h=1.08, wing=2.4, lashes=2, r=5.2),
-                       dict(inner=-11.2, outer=-12, arch=1.2, t=1.8), 'small', '#e0707e', (hb, hf), blush_op=.55, extra=crown)
+                       dict(inner=-11.2, outer=-12, arch=1.2, t=1.8), 'small', '#e0707e', (hb, hf), blush_op=.55, extra=crown + ear_drop())
     lace = ''.join(f'<circle cx="{x + (y % 20) / 4}" cy="{y}" r="1.2" fill="#e6dcd0"/>' for x in range(-60, 62, 9) for y in range(160, 452, 14) if abs(x) < 30 + (y - 146) * .2)
     sleeves_sheer = '<path d="M -10,50 L 10,50 C 22,51 34,55 39,64 L 37,84 L -37,84 L -39,64 C -34,55 -22,51 -10,50 Z" fill="#ffffff" opacity=".35"/>'
     body = fbody(SK_FAIR, ('#f8f3ec', '#ffffff', '#ddd3c8'), ('#f5efe7', '#fffdf9', '#ddd3c8'), hem=456, flare=96, neckline='square', sleeves='sheer',
-                 sleeve_col=('#ffffff', '#ffffff', '#e8e2da'), extra=sleeves_sheer + lace)
+                 sleeve_col=('#ffffff', '#ffffff', '#e8e2da'), extra=sleeves_sheer + lace + necklace())
     return 'เจ้าสาวคนใหม่', 'เจ้าสาวในฉากหนึ่งปีต่อมา หน้ากลมหวาน ตาโต ผมน้ำตาลลอนประบ่า มงกุฎดอกไม้ ชุดลูกไม้คอเหลี่ยม แขนยาวซีทรู กระโปรงบานกว้างกว่าชุดเจ้าสาวคนแรก ทำให้แยกออกได้ทันทีในฉากจบ', 'f', back + veil, head, body
 
 def c_bridesmaid():
     hb, hf = hair_wavy_shoulder('#2a1c18', '#5a3e34', '#1a100c')
     back, head = fhead('bmf', SK_WARM, 'oval', dict(iris='#4a2a1e', wing=2.6, lashes=2, r=4.8),
-                       dict(inner=-12.6, outer=-13, arch=1.6, t=2), 'grin', '#d06a76', (hb, hf), blush_op=.5)
+                       dict(inner=-12.6, outer=-13, arch=1.6, t=2), 'grin', '#d06a76', (hb, hf), blush_op=.5, extra=ear_drop())
     phone = ('<rect x="38" y="200" width="14" height="24" rx="2.4" fill="#1e1e26"/><rect x="39.6" y="202" width="10.8" height="18" rx="1.4" fill="#5a78c0"/>'
              '<circle cx="45" cy="221.6" r=".9" fill="#3a3a46"/>')
     belt = '<path d="M -34,144 L 34,144 L 34,149 L -34,149 Z" fill="#c3c8cf"/><path d="M -34,144 L 34,144 L 34,145.6 L -34,145.6 Z" fill="#f4f6f9"/>'
     sheen = '<path d="M -30,156 C -38,220 -44,290 -46,338 L -38,338 C -34,290 -28,220 -22,156 Z" fill="#5a6680" opacity=".55"/>'
     straps = '<path d="M -22,52 L -18,52 L -10,72 L -14,72 Z M 22,52 L 18,52 L 10,72 L 14,72 Z" fill="#2b3244"/>'
-    body = fbody(SK_WARM, ('#2b3244', '#414a60', '#1b202c'), ('#2b3244', '#414a60', '#1b202c'), hem=340, flare=54, neckline='v', shoes='#1e2230', extra=straps + belt + sheen + phone)
-    return 'เพื่อนเจ้าสาว', 'แขกฝั่งเจ้าสาว ร่าเริง ยิ้มกว้าง ผมลอนประบ่าติดกิ๊บ ใส่ชุดธีมของเพื่อนเจ้าสาวทุกคน: เดรสค็อกเทลยาวคลุมเข่า สีน้ำเงินเทาเข้มเกือบดำ ผ้าซาตินมีเงา คอวีสายเล็ก เข็มขัดเงินเส้นบาง รองเท้าส้นสูงสีกรม ถือมือถือถ่ายรูปตลอด ตัดกับแขกฝั่งเจ้าบ่าวที่ไม่ถ่ายรูปเลย', 'f', back, head, body
+    body = fbody(SK_WARM, ('#2b3244', '#414a60', '#1b202c'), ('#2b3244', '#414a60', '#1b202c'), hem=340, flare=54, neckline='v', shoes='#1e2230', extra=straps + belt + sheen + necklace() + bracelet(-45.5, 204) + phone)
+    return 'เพื่อนเจ้าสาว', 'แขกฝั่งเจ้าสาว ร่าเริง ยิ้มกว้าง ผมลอนประบ่าติดกิ๊บ ใส่ชุดธีมของเพื่อนเจ้าสาวทุกคน: เดรสค็อกเทลยาวคลุมเข่า สีน้ำเงินเทาเข้มเกือบดำ ผ้าซาตินมีเงา คอวีสายเล็ก เข็มขัดเงินเส้นบาง ต่างหูเพชรหยดน้ำ สร้อยจี้เพชร กำไลเงิน รองเท้าส้นสูงสีกรม ถือมือถือถ่ายรูปตลอด ตัดกับแขกฝั่งเจ้าบ่าวที่ไม่ถ่ายรูปเลย', 'f', back, head, body
 
 def c_guest_w():
     hb, hf = hair_tight_bun('#18141a', '#34303a')
     back, head = fhead('gwf', SK_PALE, 'oval', dict(iris='#22181a', wing=0, lashes=0, catch=False, r=3.6),
-                       dict(inner=-12, outer=-12, arch=.6, t=1.8), 'blank', '#a8626a', (hb, hf), blush_op=0, brow_col='#22181c')
+                       dict(inner=-12, outer=-12, arch=.6, t=1.8), 'blank', '#a8626a', (hb, hf), blush_op=0, brow_col='#22181c', extra=ear_drop(pearl=True))
     hands = '<path d="M -20,206 C -10,200 10,200 20,206 L 18,220 C 8,224 -8,224 -18,220 Z" fill="#f1d8cc"/>'
-    body = fbody(SK_PALE, ('#6e7a72', '#86928a', '#56605a'), ('#6e7a72', '#86928a', '#56605a'), hem=456, flare=36, neckline='high', sleeves='long',
-                 sleeve_col=('#6e7a72', '#86928a', '#56605a'), extra='')
-    return 'แขกหญิงฝั่งเจ้าบ่าว', 'ผมเกล้ามวยตึงแสกกลาง แต่งตัวเรียบร้อยแบบโบราณ ชุดยาวสีเขียวเทาแขนยาว ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกฝั่งเจ้าบ่าวทุกคน ไม่ถือมือถือ', 'f', back, head, body
+    longp = ''.join(f'<circle cx="{fx(-12 + i * 2)}" cy="{fx(54 + 40 * math.sin(math.pi * i / 12))}" r="1.3" fill="#ece6dc"/>' for i in range(13))
+    brooch = '<circle cx="22" cy="72" r="4" fill="#c3c8cf"/><circle cx="22" cy="72" r="2.4" fill="#5e7a6c"/>'
+    sheen = '<path d="M -28,156 C -32,260 -34,360 -34,452 L -26,452 C -26,360 -24,260 -20,156 Z" fill="#9aa69e" opacity=".5"/>'
+    body = fbody(SK_PALE, ('#5e6e66', '#7a8a82', '#46544c'), ('#5e6e66', '#7a8a82', '#46544c'), hem=456, flare=36, neckline='high', sleeves='long',
+                 sleeve_col=('#5e6e66', '#7a8a82', '#46544c'), extra=sheen + longp + brooch)
+    return 'แขกหญิงฝั่งเจ้าบ่าว', 'ผมเกล้ามวยตึงแสกกลาง แต่งตัวเรียบร้อยแบบโบราณ ชุดผ้าซาตินยาวสีเขียวหม่นแขนยาว สร้อยไข่มุกยาว เข็มกลัดเงิน ต่างหูมุก ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกฝั่งเจ้าบ่าวทุกคน ไม่ถือมือถือ', 'f', back, head, body
 
 def c_photographer():
     hf = mhair_curtain('#3a2a24', '#5e4438', '#24170f')
@@ -389,23 +430,23 @@ def c_photographer():
            '<circle cx="0" cy="134" r="12" fill="#14141a"/><circle cx="0" cy="134" r="8" fill="#2c3448"/><circle cx="-3" cy="131" r="2.4" fill="#8aa0c8"/>'
            '<rect x="12" y="110" width="8" height="6" fill="#3a3a46"/>')
     flash = '<rect x="-20" y="104" width="12" height="12" rx="1.6" fill="#2c2c36"/><rect x="-19" y="105" width="10" height="5" fill="#e8ecf4"/>'
-    body = mbody(SK_MALE_T, ('#2c2e36', '#3c3f4a', '#1e2026'), ('#2c2e36', '#3c3f4a', '#1e2026'), tie=('#141418', '#0a0a0e'), shoes='#14141a', extra=cam + flash)
-    return 'ช่างภาพ', 'อายุราว 30 ผมน้ำตาลเข้มแสกกลาง หนวดเคราจาง ๆ ยิ้มเจื่อนเหมือนเพิ่งพูดอะไรผิด ใส่สูทสีชาร์โคล เชิ้ตขาว เนกไทดำเส้นเล็ก รองเท้าหนังดำ กล้องห้อยคอติดแฟลช', 'm', back, head, body
+    body = mbody(SK_MALE_T, ('#2c2e36', '#3c3f4a', '#1e2026'), ('#2c2e36', '#3c3f4a', '#1e2026'), tie=('#141418', '#0a0a0e'), shoes='#14141a', extra=tie_pin(96) + cam + flash + watch_m() + cufflinks())
+    return 'ช่างภาพ', 'อายุราว 30 ผมน้ำตาลเข้มแสกกลาง หนวดเคราจาง ๆ ยิ้มเจื่อนเหมือนเพิ่งพูดอะไรผิด ใส่สูทสีชาร์โคล เชิ้ตขาว เนกไทดำเส้นเล็กติดที่หนีบเงิน นาฬิกาเงิน กระดุมข้อมือเงิน รองเท้าหนังดำ กล้องห้อยคอติดแฟลช', 'm', back, head, body
 
 def c_guard():
     hf = mhair_buzz('#18161c', '#3a3842')
     ear = '<path d="M 33,4 C 38,10 34,16 38,22 C 42,28 36,34 40,42 C 42,48 38,52 36,56" fill="none" stroke="#24242c" stroke-width="1.4"/><circle cx="33" cy="2" r="2.4" fill="#24242c"/>'
     back, head = mhead('gdm', SK_MALE_T, 'square', dict(iris='#1e1414', wing=0, lashes=0, crease=False, heavy=.5, r=3.8),
                        dict(inner=-10.4, outer=-13.4, t=3), 'm_stern', hf, extra=ear)
-    body = mbody(SK_MALE_T, ('#141418', '#24242c', '#0c0c10'), ('#141418', '#24242c', '#0c0c10'), tie=('#141418', '#0a0a0e'))
-    return 'รปภ.', 'อายุราว 40 หน้าเหลี่ยม ผมเกรียน คิ้วหนากดต่ำ หน้านิ่งไม่ยิ้ม สูทดำ เน็คไทดำ หูฟังมีสายขดที่หูขวา', 'm', back, head, body
+    body = mbody(SK_MALE_T, ('#141418', '#24242c', '#0c0c10'), ('#141418', '#24242c', '#0c0c10'), tie=('#141418', '#0a0a0e'), extra=tie_pin() + watch_m() + cufflinks())
+    return 'รปภ.', 'อายุราว 40 หน้าเหลี่ยม ผมเกรียน คิ้วหนากดต่ำ หน้านิ่งไม่ยิ้ม สูทดำ เน็คไทดำติดที่หนีบเงิน นาฬิกาเงิน หูฟังมีสายขดที่หูขวา', 'm', back, head, body
 
 def c_guest_m():
     hf = mhair_slick('#1c1a20', '#8e8a94')
     back, head = mhead('gmm', SK_PALE, 'normal', dict(iris='#22181a', wing=0, lashes=0, crease=False, catch=False, r=3.4),
                        dict(inner=-12, outer=-12.6, t=2.2), 'blank', hf)
-    body = mbody(SK_PALE, ('#4a4c54', '#5c5e68', '#36383e'), ('#4a4c54', '#5c5e68', '#36383e'), tie=('#5e3a44', '#422830'))
-    return 'แขกชายฝั่งเจ้าบ่าว', 'ผมหวีเสยเรียบแปล้ จอนสีเทา สูทเทาเน็คไทแดงหม่น ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกหญิงฝั่งเจ้าบ่าว ยืนนิ่ง ไม่ถือมือถือ', 'm', back, head, body
+    body = mbody(SK_PALE, ('#4a4c54', '#5c5e68', '#36383e'), ('#4a4c54', '#5c5e68', '#36383e'), tie=('#5e3a44', '#422830'), extra=tie_pin() + pocket_sq() + watch_m() + cufflinks())
+    return 'แขกชายฝั่งเจ้าบ่าว', 'ผมหวีเสยเรียบแปล้ จอนสีเทา สูทเทาเน็คไทแดงหม่นติดที่หนีบเงิน ผ้าเช็ดหน้าเงิน นาฬิกาเงิน ตาดำเล็กไม่มีประกาย ยิ้มแข็งเส้นเดียวกับแขกหญิงฝั่งเจ้าบ่าว ยืนนิ่ง ไม่ถือมือถือ', 'm', back, head, body
 
 CHARS = [c_woman_black, c_mother, c_photographer, c_staff, c_guard, c_new_bride, c_bridesmaid, c_guest_w, c_guest_m]
 
