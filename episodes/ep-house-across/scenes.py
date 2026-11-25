@@ -29,7 +29,8 @@ DEFS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"
 <filter id="moteGlow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
 <filter id="dof" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="1.4"/></filter>
-<filter id="silSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.6"/></filter>
+<filter id="silSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.3"/></filter>
+<filter id="silWide" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>
 <filter id="dof2" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="2.6"/></filter>
 <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="12"/></filter>
 <filter id="haze" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>
@@ -1412,7 +1413,8 @@ def shadow_window(mode='closed', inside=''):
     else:
         o.append(f'<rect x="{X0}" y="{Y0}" width="{X1-X0}" height="{Y1-Y0}" fill="#f4cdb0"/>' + glow((X0 + X1) / 2, Y0 + 150, 230, '#fff4e0', .7))
         o.append(''.join(f'<rect x="{xx}" y="{Y0}" width="16" height="{Y1-Y0}" fill="#e6ab8e" opacity=".5"/>' for xx in range(X0 + 4, X1, 30)))
-        o.append(f'<g filter="url(#silSoft)" opacity=".93">{inside}</g>')
+        o.append(f'<g filter="url(#silWide)" opacity=".45">{inside}</g><g filter="url(#silSoft)" opacity=".9">{inside}</g>')
+        o.append(''.join(f'<rect x="{xx}" y="{Y0}" width="9" height="{Y1-Y0}" fill="#fff0e0" opacity=".07"/>' for xx in range(X0 + 10, X1, 30)))
         o.append(f'<rect x="{X0}" y="{Y0}" width="{X1-X0}" height="18" fill="#d89a80" opacity=".6"/>' + ''.join(f'<circle cx="{xx}" cy="{Y0+9}" r="4" fill="#b88a70"/>' for xx in range(X0 + 12, X1, 30)))
     o.append('</g>')
     o.append(f'<path d="M {X0+8},{Y0+22} L {X0+60},{Y0+22} L {X0+8},{Y0+74} Z" fill="#ffffff" opacity=".12"/>')
@@ -1439,7 +1441,7 @@ def pound_window2(inside='', cracks=()):
     o.append(f'<clipPath id="{cid}"><rect x="{X0}" y="{Y0}" width="{X1-X0}" height="{Y1-Y0}"/></clipPath><g clip-path="url(#{cid})">')
     o.append(f'<rect x="{X0}" y="{Y0}" width="{X1-X0}" height="{Y1-Y0}" fill="#e8b898"/>' + glow(X1 - 80, Y0 + 110, 260, '#fff0d8', .8))
     o.append(''.join(f'<rect x="{xx}" y="{Y0}" width="14" height="{Y1-Y0}" fill="#d8a080" opacity=".45"/>' for xx in range(X0 + 4, X1, 28)))
-    o.append(f'<g filter="url(#silSoft)">{inside}</g></g>')
+    o.append(f'<g filter="url(#silWide)" opacity=".45">{inside}</g><g filter="url(#silSoft)">{inside}</g>' + ''.join(f'<rect x="{xx}" y="{Y0}" width="8" height="{Y1-Y0}" fill="#fff0e0" opacity=".06"/>' for xx in range(X0 + 10, X1, 28)) + '</g>')
     for hx, hy in cracks:
         o.append(''.join(f'<path d="M {hx},{hy} L {hx+dx},{hy+dy} L {hx+dx*1.7+ex},{hy+dy*1.7+ey}" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".9"/>' for dx, dy, ex, ey in
                          [(-40, -30, -6, 10), (30, -46, 8, -4), (46, 10, 10, 8), (-30, 40, -10, 6), (8, 54, 6, 10), (-56, -4, -8, -10)])
@@ -1886,6 +1888,141 @@ o.append(dust(42, (150, 430, 420, 920), 18, '#e2deff'))
 S.append(('8B', 'ฉาก 8 · ห้องมืดในบ้านหลังที่สาม', 'ห้องเปอร์สเปกทีฟ มืดและเย็นที่สุดในเรื่อง แสงจันทร์จากหน้าต่างเป็นแหล่งเดียว เห็นงานเลี้ยงไกล ๆ แบบเบลอ รูปถ่ายติดเต็มผนังสองข้าง โต๊ะเต็มไปด้วยรูป รวมรูปหน้าต่างห้องพระเอก กล้องส่องทางไกลบนขาตั้ง', ''.join(o)))
 
 # ---------------- page ----------------
+# ---------------- v11: bright hospital corridor (1C) + anatomical silhouette poser for the shadow play ----------------
+HOSP_ROOM = ((270, 376), 196, 300, 344, 452, 2.8)   # vp, x0, y0, x1, y1, ceiling (m): corridor 2.7 m wide, 2.8 m high
+
+def hospital_corridor():
+    """1C: clean, bright hospital corridor (ward wing), daylight at the far end; the hero is wheeled in (characters added in the storyboard)"""
+    vp, x0, y0, x1, y1, ceil = HOSP_ROOM
+    R = Room(vp, x0, y0, x1, y1); F = 12; Hh = y1 - y0
+    o = [f'<rect width="{W}" height="{H}" fill="#eef1f3"/>']
+    o.append(f'<polygon points="{pts(R.TL, R.TR, R.at(R.TR, F), R.at(R.TL, F))}" fill="#f7f8fa"/>')                       # ceiling
+    o.append(f'<polygon points="{pts(R.BL, R.BR, R.at(R.BR, F), R.at(R.BL, F))}" fill="#d9dfe0"/>')                       # floor
+    o.append(f'<polygon points="{pts(R.TL, R.BL, R.at(R.BL, F), R.at(R.TL, F))}" fill="#e9ecee"/>')                       # left wall
+    o.append(f'<polygon points="{pts(R.TR, R.BR, R.at(R.BR, F), R.at(R.TR, F))}" fill="#dfe3e7"/>')                       # right wall
+    # far end: big window with daylight and trees
+    o.append(f'<rect x="{x0}" y="{y0}" width="{x1-x0}" height="{Hh}" fill="#f2f4f6"/>'
+             f'<rect x="{x0+18}" y="{y0+22}" width="{x1-x0-36}" height="{Hh*.6:.0f}" fill="#cfe2ee"/>'
+             f'<circle cx="{x0+40}" cy="{y0+Hh*.55:.0f}" r="22" fill="#a9c8b0"/><circle cx="{x0+70}" cy="{y0+Hh*.5:.0f}" r="18" fill="#bcd6c0"/><circle cx="{x1-40}" cy="{y0+Hh*.56:.0f}" r="20" fill="#a9c8b0"/>'
+             f'<rect x="{(x0+x1)/2-2}" y="{y0+22}" width="4" height="{Hh*.6:.0f}" fill="#e6eaee"/>' + glow((x0 + x1) / 2, y0 + Hh * .35, 160, '#ffffff', .9))
+    # floor shine: reflection of the window and the ceiling lights
+    o.append(f'<polygon points="{pts(R.P("F",1,.25), R.P("F",1,.75), R.P("F",3.6,.7), R.P("F",3.6,.3))}" fill="#ffffff" opacity=".35" filter="url(#soft)"/>')
+    for s_ in (1.25, 1.6, 2.1, 2.8, 3.8):
+        a, b = R.P('F', s_, 0), R.P('F', s_, 1)
+        o.append(f'<line x1="{a[0]:.0f}" y1="{a[1]:.0f}" x2="{b[0]:.0f}" y2="{b[1]:.0f}" stroke="#c8d0d2" stroke-width="1.2"/>')
+    # ceiling light panels down the middle
+    for s_ in (1.15, 1.45, 1.85, 2.4, 3.2):
+        a, b, c, d = R.P('C', s_, .36), R.P('C', s_, .64), R.P('C', s_ + .1 * s_ / 1.4, .64), R.P('C', s_ + .1 * s_ / 1.4, .36)
+        o.append(f'<polygon points="{pts(a, b, c, d)}" fill="#ffffff"/><polygon points="{pts(a, b, c, d)}" fill="none" stroke="#d6dce2" stroke-width="2"/>')
+        p = R.P('F', s_ + .05, .5); o.append(f'<ellipse cx="{p[0]:.0f}" cy="{p[1]:.0f}" rx="{30*s_:.0f}" ry="{6*s_:.0f}" fill="#ffffff" opacity=".45"/>')
+    # side walls: wainscot band, bumper rail, wooden handrail, doors with windows and room numbers
+    for face, wall_dk in (('L', '#d6dde0'), ('R', '#cdd4d8')):
+        o.append(R.quad(face, 1, F, .78, 1, wall_dk))
+        o.append(R.quad(face, 1, F, .7, .72, '#b8c4c8'))
+        o.append(R.quad(face, 1, F, .655, .675, '#b88a5e') + R.quad(face, 1, F, .675, .69, '#9a7048'))
+        o.append(R.quad(face, 1, F, .97, 1, '#9aa6aa'))
+        for (s0, s1, num) in ((1.1, 1.34, '204' if face == 'L' else '205'), (1.62, 2.02, '206' if face == 'L' else '207'), (2.6, 3.4, '208' if face == 'L' else '209')):
+            o.append(R.quad(face, s0 - .02 * s0, s1 + .02 * s1, .22, 1, '#e4e8ea'))
+            o.append(R.quad(face, s0, s1, .25, 1, '#8fb8b6') + R.quad(face, s0 + .02 * (s1 - s0) * 10, s0 + .5 * (s1 - s0), .33, .5, '#dcebf2'))
+            hp = R.P(face, s0 + .85 * (s1 - s0), .64); o.append(f'<circle cx="{hp[0]:.0f}" cy="{hp[1]:.0f}" r="{2.2*s0:.1f}" fill="#9aa4a8"/>')
+            np_ = R.P(face, s0 + .5 * (s1 - s0), .16)
+            o.append(f'<g transform="translate({np_[0]:.0f},{np_[1]:.0f}) scale({s0*.8:.2f})"><rect x="-14" y="-7" width="28" height="14" rx="2" fill="#2e6e78"/><text x="0" y="4" font-family="Inter,sans-serif" font-weight="700" font-size="9" fill="#ffffff" text-anchor="middle">{num}</text></g>')
+    # hand sanitiser, a row of waiting chairs on the right, a plant, the hanging department sign
+    sp_ = R.P('L', 1.48, .5); o.append(f'<rect x="{sp_[0]-6:.0f}" y="{sp_[1]-18:.0f}" width="13" height="26" rx="3" fill="#f6f8f8" stroke="#c4ccd0"/><rect x="{sp_[0]-3:.0f}" y="{sp_[1]-10:.0f}" width="7" height="6" fill="#4aa0c8"/>')
+    for i, s_ in enumerate((2.15, 2.3, 2.45)):
+        p = on_floor(R, s_, .93); k = s_ * Hh / ceil / 100
+        o.append(f'<g transform="translate({p[0]:.0f},{p[1]:.0f}) scale({k:.3f})"><rect x="-22" y="-46" width="44" height="8" rx="3" fill="#3e8a9a"/><rect x="-22" y="-86" width="44" height="40" rx="6" fill="#4a9aaa"/>'
+                 f'<rect x="-20" y="-38" width="4" height="38" fill="#7a8a90"/><rect x="16" y="-38" width="4" height="38" fill="#7a8a90"/></g>')
+    pp = on_floor(R, 1.3, .06); o.append(big_plant(pp[0], pp[1], 1.3 * Hh / ceil * 1.2 / 200, '#e8ecee'))
+    sg = R.P('C', 1.7, .5)
+    o.append(f'<line x1="{sg[0]-40:.0f}" y1="{sg[1]:.0f}" x2="{sg[0]-40:.0f}" y2="{sg[1]+26:.0f}" stroke="#9aa4a8" stroke-width="2"/><line x1="{sg[0]+40:.0f}" y1="{sg[1]:.0f}" x2="{sg[0]+40:.0f}" y2="{sg[1]+26:.0f}" stroke="#9aa4a8" stroke-width="2"/>'
+             f'<rect x="{sg[0]-72:.0f}" y="{sg[1]+26:.0f}" width="144" height="40" rx="5" fill="#2e6e78"/>'
+             f'<text x="{sg[0]:.0f}" y="{sg[1]+45:.0f}" font-family="IBM Plex Sans Thai,sans-serif" font-weight="700" font-size="15" fill="#ffffff" text-anchor="middle">แผนกกระดูกและข้อ</text>'
+             f'<text x="{sg[0]:.0f}" y="{sg[1]+59:.0f}" font-family="Inter,sans-serif" font-size="9" fill="#d8eef0" text-anchor="middle">ORTHOPEDICS  →  WARD 2</text>')
+    o.append(f'<rect width="{W}" height="{H}" fill="#ffffff" opacity=".06"/>')
+    o.append(dust(43, (180, 260, 380, 700), 10, '#ffffff'))
+    return ''.join(o)
+
+def _cap(p, q, r1, r2):
+    """tapered limb between two joints, round ends"""
+    dx, dy = q[0] - p[0], q[1] - p[1]; L = math.hypot(dx, dy) or 1e-6
+    nx, ny = -dy / L, dx / L
+    return (f'<path d="M {p[0]+nx*r1:.4f},{p[1]+ny*r1:.4f} L {q[0]+nx*r2:.4f},{q[1]+ny*r2:.4f} L {q[0]-nx*r2:.4f},{q[1]-ny*r2:.4f} L {p[0]-nx*r1:.4f},{p[1]-ny*r1:.4f} Z"/>'
+            f'<circle cx="{p[0]:.4f}" cy="{p[1]:.4f}" r="{r1:.4f}"/><circle cx="{q[0]:.4f}" cy="{q[1]:.4f}" r="{r2:.4f}"/>')
+
+def sil2(x, y, ppm, sp, col='#2a1418'):
+    """anatomical front-on silhouette for shadow play. x,y = feet, ppm = px per metre.
+    sp: h, fem, dress, hair ('half'|'bob'|'slick'), lean, tilt (deg), L/R = (upper, fore) angles from straight down
+    (+ toward screen right), handL/handR = fist|open|glass|grab, legs = (left, right) angles"""
+    fem = sp.get('fem', False); k = sp.get('h', 1.7) / 1.7
+    sw = .175 if fem else .205
+    o = []
+    # legs or dress
+    la, ra = sp.get('legs', (-3, 3))
+    for hx, a in ((-.085, la), (.085, ra)):
+        kn = (hx + .45 * math.sin(math.radians(a)), .45); an = (kn[0] + .4 * math.sin(math.radians(a * .5)), .85)
+        o.append(_cap((hx, 0), kn, .075 if fem else .08, .05) + _cap(kn, an, .05, .032))
+        o.append(f'<ellipse cx="{an[0] + (.03 if hx > 0 else -.03):.3f}" cy=".87" rx=".06" ry=".025"/>')
+    if sp.get('dress'):
+        o.append('<path d="M -.12,-.16 C -.15,-.04 -.2,.2 -.27,.44 C -.12,.48 .12,.48 .27,.44 C .2,.2 .15,-.04 .12,-.16 Z"/>')
+    up = []
+    waist, hip = (.115, .165) if fem else (.145, .16)
+    up.append(f'<path d="M -.05,-.575 C -.08,-.545 {-sw+.03},-.53 {-sw},-.495 C {-sw-.025},-.46 {-sw+.005},-.38 {-sw+.03},-.32 '
+              f'C {-waist-.01},-.24 {-waist},-.17 {-waist},-.14 C {-hip},-.08 {-hip},-.02 {-hip+.01},.02 L {hip-.01},.02 '
+              f'C {hip},-.02 {hip},-.08 {waist},-.14 C {waist},-.17 {waist+.01},-.24 {sw-.03},-.32 C {sw-.005},-.38 {sw+.025},-.46 {sw},-.495 '
+              f'C {sw-.03},-.53 .08,-.545 .05,-.575 Z"/>')
+    if not fem:   # collar points
+        up.append('<path d="M -.05,-.575 L -.075,-.54 L -.02,-.55 Z M .05,-.575 L .075,-.54 L .02,-.55 Z"/>')
+    up.append('<path d="M -.034,-.64 L .034,-.64 L .042,-.56 L -.042,-.56 Z"/>')
+    # head + hair (tilts around the neck)
+    hair = sp.get('hair', 'slick')
+    hd = ['<ellipse cx="0" cy="-.705" rx=".083" ry=".108"/><path d="M -.083,-.69 C -.075,-.62 -.04,-.6 0,-.598 C .04,-.6 .075,-.62 .083,-.69 Z"/>',
+          '<ellipse cx="-.083" cy="-.7" rx=".014" ry=".024"/><ellipse cx=".083" cy="-.7" rx=".014" ry=".024"/>']
+    if hair == 'half':
+        hd.append('<path d="M -.094,-.74 C -.12,-.66 -.135,-.52 -.15,-.4 C -.12,-.37 -.1,-.38 -.085,-.41 C -.08,-.5 -.075,-.6 -.07,-.66 Z"/>'
+                  '<path d="M .094,-.74 C .12,-.66 .135,-.52 .15,-.4 C .12,-.37 .1,-.38 .085,-.41 C .08,-.5 .075,-.6 .07,-.66 Z"/>'
+                  '<path d="M -.095,-.73 C -.105,-.83 .105,-.83 .095,-.73 C .06,-.76 -.06,-.76 -.095,-.73 Z"/><ellipse cx=".035" cy="-.825" rx=".045" ry=".032"/>'
+                  '<path d="M -.14,-.42 C -.13,-.38 -.12,-.35 -.13,-.33 M .14,-.42 C .13,-.38 .12,-.35 .13,-.33" stroke-width=".02" stroke="currentColor" fill="none"/>')
+    elif hair == 'bob':
+        hd.append('<path d="M -.1,-.72 C -.115,-.84 .115,-.84 .1,-.72 C .108,-.66 .11,-.62 .118,-.585 C .1,-.57 .085,-.575 .078,-.6 C .06,-.65 .05,-.7 0,-.71 '
+                  'C -.05,-.7 -.06,-.65 -.078,-.6 C -.085,-.575 -.1,-.57 -.118,-.585 C -.11,-.62 -.108,-.66 -.1,-.72 Z"/>'
+                  '<path d="M -.105,-.72 C -.06,-.74 .06,-.74 .105,-.72 L .1,-.76 C .05,-.79 -.05,-.79 -.1,-.76 Z"/>')
+    else:
+        hd.append('<path d="M -.088,-.72 C -.1,-.83 .02,-.86 .095,-.79 C .1,-.76 .095,-.73 .088,-.71 C .05,-.77 -.05,-.77 -.088,-.72 Z"/>')
+    up.append(f'<g transform="rotate({sp.get("tilt", 0)} 0 -.6)">{"".join(hd)}</g>')
+    # arms
+    for side, sx in (('L', -1), ('R', 1)):
+        a1, a2 = sp.get(side, (sx * 8, sx * 4))
+        r1, r2 = math.radians(a1), math.radians(a2)
+        sh = (sx * (sw - .03), -.475)
+        el = (sh[0] + .28 * math.sin(r1), sh[1] + .28 * math.cos(r1))
+        wr = (el[0] + .245 * math.sin(r2), el[1] + .245 * math.cos(r2))
+        ru = .043 if fem else .05
+        up.append(_cap(sh, el, ru, ru * .78) + _cap(el, wr, ru * .76, ru * .55))
+        hand = sp.get('hand' + side, 'fist')
+        tr = f'translate({wr[0]:.4f},{wr[1]:.4f}) rotate({-a2:.1f})'
+        if hand == 'open':
+            up.append(f'<g transform="{tr}"><path d="M -.035,0 C -.045,.04 -.04,.08 -.03,.095 L .03,.095 C .04,.08 .045,.04 .035,0 Z"/>'
+                      + ''.join(_cap((fx, .09), (fx * 1.5, .17 - abs(fx) * .8), .011, .009) for fx in (-.024, -.008, .008, .024))
+                      + _cap((-.035 * sx, .03), (-.075 * sx, .085), .012, .01) + '</g>')
+        elif hand == 'grab':
+            up.append(f'<g transform="{tr}"><ellipse cx="0" cy=".045" rx=".04" ry=".05"/>' + ''.join(_cap((fx, .07), (fx * 1.3, .11), .011, .01) for fx in (-.022, -.007, .008, .023)) + '</g>')
+        else:
+            up.append(f'<g transform="{tr}"><ellipse cx="0" cy=".045" rx=".037" ry=".05"/>' + _cap((-.03 * sx, .02), (-.045 * sx, .05), .012, .011) + '</g>')
+        if hand == 'glass':
+            up.append(f'<g transform="translate({wr[0]:.4f},{wr[1]:.4f}) rotate({-a2-180:.1f})"><rect x="-.005" y="-.17" width=".01" height=".12"/>'
+                      f'<path d="M -.04,-.25 C -.044,-.19 -.02,-.165 0,-.165 C .02,-.165 .044,-.19 .04,-.25 Z"/><ellipse cx="0" cy="-.045" rx=".028" ry=".007"/></g>')
+    o.append(f'<g transform="rotate({sp.get("lean", 0)})">{"".join(up)}</g>')
+    return f'<g transform="translate({x:.1f},{y - .88 * ppm * k:.1f}) scale({ppm * k:.2f})" fill="{col}" color="{col}">{"".join(o)}</g>'
+
+def sil2_hand(x, y, ppm, sp, side):
+    """screen point at the palm of a sil2 figure (for glass cracks / pressed palms)"""
+    fem = sp.get('fem', False); k = sp.get('h', 1.7) / 1.7; sw = .175 if fem else .205; sx = -1 if side == 'L' else 1
+    a1, a2 = sp[side]; r1, r2 = math.radians(a1), math.radians(a2)
+    px = sx * (sw - .03) + .28 * math.sin(r1) + .305 * math.sin(r2); py = -.475 + .28 * math.cos(r1) + .305 * math.cos(r2)
+    L = math.radians(sp.get('lean', 0)); rx = px * math.cos(L) - py * math.sin(L); ry = px * math.sin(L) + py * math.cos(L)
+    return (x + rx * ppm * k, y - .88 * ppm * k + ry * ppm * k)
+
 # ---- v10: clean watching window (2B/3A/3B/4), true shadow-play windows (3C/3D/6C/5C), new stairs (7A), watcher's room (8B) ----
 _truck = ('<g transform="translate(20,452) scale(1.05)"><rect width="170" height="96" rx="5" fill="#ece4f6"/><rect width="170" height="12" fill="#cfc2e6"/><rect x="0" y="80" width="170" height="16" fill="#b9aad6"/>'
           '<rect x="170" y="28" width="60" height="68" rx="6" fill="#8f7cc8"/><rect x="180" y="38" width="40" height="26" rx="3" fill="#4a3f86"/>'
@@ -1904,7 +2041,7 @@ _NEW = {
     '3B': watch_window('fight', extra_front=dust(33, (80, 300, 300, 560), 10, '#ffe8d4')),
     '3C': shadow_window('closed'), '3D': shadow_window('dark'), '6C': shadow_window('closed'),
     '4': watch_window('dark', moon=(110, 120), extra_front=_car + dust(34, (390, 240, 540, 560), 12, '#ffe8d4')),
-    '5C': pound_window2(), '7A': stairs_down(), '8B': watcher_room(),
+    '5C': pound_window2(), '7A': stairs_down(), '8B': watcher_room(), '1C': hospital_corridor(),
 }
 S = [(sid, t, n, _NEW.get(sid, b)) for sid, t, n, b in S]
 

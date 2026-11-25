@@ -171,18 +171,24 @@ def ab_card():
 # ---------------- custom bodies ----------------
 SEAT = SG['WATCH_SEAT_Y']
 # 3C: wife hurls the wine glass, husband points at her
-s3c = (sw_sil(185, dict(WIFE, lean=7, tilt=6, L=(-158, -172), handL='glass', R=(35, 75))) +
-       sw_sil(360, dict(HUSB, lean=-6, tilt=-4, L=(-82, -88), handL='point', R=(28, -35))) +
-       ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#24121a"/>' for x, y, r in ((128, 268, 4), (114, 290, 3), (140, 252, 2.5), (106, 312, 2))))
-# 6C: the husband grabs her shoulders, she pushes him off
-s6c = (sw_sil(205, dict(GIRL, lean=-14, tilt=-12, L=(-140, -168), handL='open', R=(72, 92), handR='open')) +
-       sw_sil(345, dict(HUSB, lean=-9, L=(-62, -92), R=(-48, -80))))
-# 5C: woman presses both palms on the glass, an arm from the dark grabs her shoulder
-X0, Y0, X1, Y1 = SG['POUND_WIN']
-PW = dict(WIFE, lean=-3, tilt=8, L=(-152, -176), handL='open', R=(154, 178), handR='open')
-pw_feet, pw_ppm = (262, 905), 300
-s5c = sil(pw_feet[0], pw_feet[1], pw_ppm, PW) + f'<path d="M {X1+10},{Y0+170} C {X1-50},{Y0+190} 360,{Y0+250} 318,{Y0+262} L 322,{Y0+284} C 368,{Y0+276} {X1-40},{Y0+226} {X1+10},{Y0+222} Z" fill="#0c0608"/>'
-cracks = [hand_pos(*pw_feet, pw_ppm, PW, 'L')]
+sil2, sil2_hand = SG['sil2'], SG['sil2_hand']
+FY = SG['SHADOW_WIN'][3] + .9 * 250
+# 3C: wife winds up to hurl the wine glass, husband shields himself with a raised palm
+s3c = (sil2(190, FY, 270, dict(WIFE, lean=-8, tilt=-10, L=(-150, 160), handL='glass', R=(28, 55))) +
+       sil2(368, FY, 270, dict(HUSB, lean=8, tilt=10, L=(-35, -170), handL='open', R=(25, -10))))
+# 6C: husband grabs her arm and shoulder, she leans away, one hand up, pushing him off
+s6c = (sil2(228, FY, 270, dict(GIRL, lean=-12, tilt=0, L=(-165, -178), handL='open', R=(75, 100), handR='open', legs=(-8, 6))) +
+       sil2(372, FY, 270, dict(HUSB, lean=-10, tilt=-6, L=(-70, -95), handL='grab', R=(-40, -100), handR='grab', legs=(-6, 4))))
+# 5C: woman presses both palms on the glass (sharp, pressed), an arm from the dark grabs her shoulder
+PW = dict(WIFE, lean=0, tilt=10, L=(-58, -176), handL='open', R=(58, 176), handR='open')
+s5c = sil2(270, 900, 360, PW); palms = ''; cracks = []
+for side in 'LR':
+    hx, hy = sil2_hand(270, 900, 360, PW, side); cracks.append((round(hx), round(hy) - 6))
+    palms += (f'<g transform="translate({hx:.0f},{hy:.0f}) scale(1.25)" fill="#160a0e"><ellipse cx="0" cy="6" rx="17" ry="20"/>'
+              + ''.join(f'<rect x="{fx-4}" y="{-26+abs(fx)*.5:.0f}" width="8" height="30" rx="4"/>' for fx in (-12, -4, 4, 12))
+              + f'<rect x="{-30 if side == "R" else 14}" y="4" width="16" height="8" rx="4"/></g>')
+s5c += palms + '<path d="M 440,404 C 400,410 366,428 338,446 L 348,466 C 378,450 410,436 440,436 Z" fill="#0c0608"/><ellipse cx="336" cy="454" rx="20" ry="14" fill="#0c0608"/>'
+cracks = cracks[:1]
 SC['3C*'] = SG['shadow_window']('closed', s3c)
 SC['6C*'] = SG['shadow_window']('closed', s6c)
 SC['5C*'] = SG['pound_window2'](s5c, cracks)
@@ -191,22 +197,59 @@ pj = SG['stairs_pj']
 ft, hd = pj(0, 1.62, 2.3), pj(0, 1.62 + 1.78, 2.3)
 hero_stairs = put(tfig('hero', 'front'), ft[0], ft[1], ft[1] - hd[1])
 
+
+def wheelchair_shot():
+    vp, x0, y0, x1, y1, ceil = SG['HOSP_ROOM']
+    R = Room(vp, x0, y0, x1, y1); Hh = y1 - y0
+    sh, sg = 6.0, 5.4
+    fx, fy = R.P('F', sh, .42); gx, gy = R.P('F', sg, .7)
+    pc, pg = Hh / ceil * sh, Hh / ceil * sg
+    o = [put(tfig('heroine'), gx, gy, HM['heroine'] * pg)]
+    navy, navy_lt, steel, steel_dk, tire = '#2e3a5a', '#3e4c72', '#c4ccd4', '#8a949e', '#1e2026'
+    back = (f'<rect x="-.23" y="-.92" width=".46" height=".44" rx=".03" fill="{navy}"/><rect x="-.23" y="-.92" width=".46" height=".05" fill="{navy_lt}"/>'
+            f'<rect x="-.255" y="-.95" width=".025" height=".5" fill="{steel}"/><rect x=".23" y="-.95" width=".025" height=".5" fill="{steel_dk}"/>'
+            f'<circle cx="-.243" cy="-.955" r=".03" fill="{tire}"/><circle cx=".243" cy="-.955" r=".03" fill="{tire}"/>'
+            f'<ellipse cx="-.34" cy="-.3" rx=".05" ry=".3" fill="{tire}"/><ellipse cx=".34" cy="-.3" rx=".05" ry=".3" fill="{tire}"/>'
+            f'<ellipse cx="-.385" cy="-.3" rx=".02" ry=".26" fill="none" stroke="{steel}" stroke-width=".012"/><ellipse cx=".385" cy="-.3" rx=".02" ry=".26" fill="none" stroke="{steel_dk}" stroke-width=".012"/>')
+    o.append(f'<ellipse cx="{fx}" cy="{fy}" rx="{.5*pc:.0f}" ry="{.05*pc:.0f}" fill="#8a949e" opacity=".35" filter="url(#sbBlur)"/>')
+    o.append(f'<g transform="translate({fx},{fy}) scale({pc:.2f})">{back}</g>')
+    # hero torso: standing figure placed so the seat line is at .48 m, clipped just below it
+    hh = HM['hero'] * pc; grp, f, t_ = tfig('hero_sit')
+    top = fy - (.48 + .94) * pc
+    o.append(put((grp, f, t_), fx, top + hh, hh, shadow=False, clip_y=fy - .44 * pc))
+    b, lt, dk = C['hero']['bot']
+    legs = (f'<rect x="-.2" y="-.56" width=".19" height=".13" rx=".05" fill="{lt}"/><rect x=".01" y="-.56" width=".19" height=".13" rx=".05" fill="{lt}"/>'
+            f'<rect x="-.18" y="-.47" width=".14" height=".38" rx=".03" fill="{b}"/><rect x="-.18" y="-.47" width=".04" height=".38" fill="{dk}"/>'
+            f'<path d="M -.2,-.12 L -.02,-.12 C -.01,-.07 -.02,-.04 -.04,-.03 L -.19,-.03 C -.21,-.05 -.21,-.09 -.2,-.12 Z" fill="#2a2a30"/>'
+            f'<rect x=".02" y="-.5" width=".17" height=".08" rx=".02" fill="{b}"/>'
+            f'<rect x=".015" y="-.45" width=".18" height=".22" rx=".07" fill="#f4f4f2"/><rect x=".015" y="-.45" width=".05" height=".22" rx=".02" fill="#dcdcd8"/>'
+            + ''.join(f'<circle cx="{x:.3f}" cy="-.46" r=".02" fill="#f8d8c0"/>' for x in (.05, .085, .12, .155))
+            + f'<path d="M .03,-.22 L .2,-.22 L .24,-.1 L .3,-.1" fill="none" stroke="{steel}" stroke-width=".02"/>')
+    front = (f'<rect x="-.25" y="-.5" width=".5" height=".04" fill="{navy}"/>'
+             f'<rect x="-.31" y="-.75" width=".1" height=".04" rx=".015" fill="#1e2026"/><rect x=".21" y="-.75" width=".1" height=".04" rx=".015" fill="#1e2026"/>'
+             f'<rect x="-.275" y="-.72" width=".02" height=".26" fill="{steel}"/><rect x=".255" y="-.72" width=".02" height=".26" fill="{steel_dk}"/>'
+             f'<path d="M -.23,-.46 L -.21,-.08 M .23,-.46 L .21,-.08" stroke="{steel}" stroke-width=".02"/>'
+             f'<ellipse cx="-.21" cy="-.05" rx=".022" ry=".05" fill="{tire}"/><ellipse cx=".21" cy="-.05" rx=".022" ry=".05" fill="{tire}"/>'
+             f'<rect x="-.22" y="-.1" width=".2" height=".025" fill="{steel_dk}"/>')
+    o.append(f'<g transform="translate({fx},{fy}) scale({pc:.2f})">{legs}{front}</g>')
+    return ''.join(o)
+
 # ---------------- shots ----------------
 SHOTS = [
  ('1A', 'ฉาก 1 · สถานี', RP('ton', '1A', 1.15, .2, clip_y=room_y('1A', 1.51, .21)) + RP('moo', '1A', 1.15, .8, clip_y=room_y('1A', 1.51, .21)) + RP('hero_cop', '1A', 2.6, .5),
   'เดิมทีผมเป็นตำรวจสายสืบ\nชีวิตของผมแทบไม่เคยมีวันหยุด', 'I used to be a detective.\nMy life had almost no days off.', 'เปิดเรื่องที่ห้องนักสืบ พระเอกยืนในทางเดินกลางห้อง หมูกับต้นยืนหลังโต๊ะแถวหลัง กล้องค่อย ๆ ดันเข้า'),
  ('1B', 'ฉาก 1 · ย้อนอดีต', RP('hero_cop', '1B', 3.3, .45, 'back'),
   'จนกระทั่งวันหนึ่ง ผมประสบอุบัติเหตุ\nระหว่างไล่จับคนร้าย', 'Until one day, I had an accident\nwhile chasing a suspect.', 'หันหลังวิ่งไล่เข้าซอย ตัวขนาดจริงเทียบกับตึกแถว โทนอุ่นซีดแบบความทรงจำ ตัดด้วยซูมเบลอพร้อมเสียงวูบ'),
- ('1C', 'ฉาก 1 · โรงพยาบาล', RP('heroine', '1C', 2.3, .76) + RP('hero', '1C', 2.45, .36),
-  'ทำให้ขาหักและต้องพักรักษาตัว\nอยู่บ้านเป็นเวลาสองเดือน', 'I broke my leg and had to rest\nat home for two months.', 'พระเอกเข้าเฝือกยืนปลายเตียง แฟนมาเยี่ยมยืนหน้าเก้าอี้เยี่ยม'),
+ ('1C', 'ฉาก 1 · โรงพยาบาล', '@wheel',
+  'ทำให้ขาหักและต้องพักรักษาตัว\nอยู่บ้านเป็นเวลาสองเดือน', 'I broke my leg and had to rest\nat home for two months.', 'ทางเดินโรงพยาบาลสว่างขาว พระเอกเข้าเฝือกนั่งรถเข็น แฟนยืนข้าง ๆ มาเยี่ยม'),
  ('1D', 'ฉาก 1 · บ้าน', EP('hero', 140, 846) + EP('heroine', 370, 884),
   'ก็ดีแล้วไง จะได้พักบ้าง\nทำแต่งานอยู่นั่นแหละ', '"Good. You finally get to rest.\nAll you ever do is work."', 'แฟนพูด กล้องอยู่ที่แฟน ยืนใกล้กล้องกว่า พระเอกฟังอยู่ข้างประตู ทำหน้าเบื่อ'),
  ('2A', 'ฉาก 2 · ห้องนั่งเล่นชั้นสอง', RP('hero', '2A', 2.15, .3),
   'ตอนแรกผมก็คิดแบบนั้นเหมือนกัน…\nแต่ผมคิดผิด', 'At first, I thought so too...\nbut I was wrong.', 'พระเอกยืนข้างโต๊ะกลาง เว้นจังหวะเงียบก่อน "แต่ผมคิดผิด"'),
  ('2A', 'ฉาก 2 · ห้องนั่งเล่นชั้นสอง', RP('hero', '2A', 1.2, .5, 'back'),
   'สำหรับคนอย่างผม\nมันแทบจะเป็นการลงโทษ', 'For someone like me,\nit felt like a punishment.', 'หันหลังยืนหน้าหน้าต่าง มองออกไปข้างนอก'),
- ('2B', 'ฉาก 2 · หน้าต่าง', WP('husband', 262, 548) + WP('wife', 345, 548) + seated_back('hero_sit', 440, SEAT - 6, 270),
-  'รถขนของคันหนึ่ง\nก็เข้ามาจอดที่บ้านตรงข้าม', 'A moving truck pulled up\nat the house across the street.', 'ข้ามไหล่: พระเอกนั่งบนเบาะริมหน้าต่างหันหลัง มองสามีภรรยาที่เพิ่งย้ายเข้า'),
+ ('2B', 'ฉาก 2 · หน้าต่าง', WP('husband', 262, 548) + WP('wife', 345, 548) + put(tfig('hero', 'back'), 446, 822, 600),
+  'รถขนของคันหนึ่ง\nก็เข้ามาจอดที่บ้านตรงข้าม', 'A moving truck pulled up\nat the house across the street.', 'ข้ามไหล่: พระเอกยืนพิงไม้ค้ำยันหันหลังหน้าหน้าต่าง มองสามีภรรยาที่เพิ่งย้ายเข้า'),
  ('3A', 'ฉาก 3 · เช้า', WP('wife', 120, 552),
   'ภรรยาชอบออกมารดน้ำต้นไม้ทุกเช้า\nส่วนสามีมักจะกลับบ้านตอนสองทุ่ม', 'The wife watered the plants every morning.\nThe husband came home at eight.', 'มุมมองพระเอกผ่านกระจกใส ภรรยารดน้ำแปลงดอกไม้ ป้าย "วันที่ 3 · 07:00"'),
  ('3B', 'ฉาก 3 · คืนวันศุกร์', '',
@@ -215,8 +258,8 @@ SHOTS = [
   '', '', 'ละครเงาบนผ้าม่าน: ภรรยาเงื้อแก้วไวน์จะปา สามีชี้หน้า แล้วเสียงแก้วแตก ไม่มี VO'),
  ('3D', 'ฉาก 3 · ไฟดับ', '',
   'นับตั้งแต่คืนนั้น\nผมก็ไม่เคยเห็นภรรยาของเขาอีกเลย', 'Since that night,\nI never saw his wife again.', 'ไฟดับ เงียบสั้น ๆ แล้ว VO'),
- ('4', 'ฉาก 4 · 02:00', WP('husband', 350, 556) + bag(384, 556, 1.25) + seated_back('hero_sit', 90, SEAT - 6, 270),
-  'ตีสอง ผมเห็นผู้ชายบ้านตรงข้าม\nลากถุงดำขนาดใหญ่ขึ้นท้ายรถ', 'At 2 a.m., I saw the man across the street\ndrag a huge black bag into his car.', 'ข้ามไหล่พระเอกที่นั่งเฝ้าริมหน้าต่าง ไฟถนนวงเดียว สามีลากถุงไปท้ายรถ'),
+ ('4', 'ฉาก 4 · 02:00', WP('husband', 350, 556) + bag(384, 556, 1.25) + put(tfig('hero', 'back'), 96, 822, 600),
+  'ตีสอง ผมเห็นผู้ชายบ้านตรงข้าม\nลากถุงดำขนาดใหญ่ขึ้นท้ายรถ', 'At 2 a.m., I saw the man across the street\ndrag a huge black bag into his car.', 'ข้ามไหล่พระเอกที่ยืนเฝ้าริมหน้าต่าง ไฟถนนวงเดียว สามีลากถุงไปท้ายรถ'),
  ('1D', 'ฉาก 4 · บ้าน', EP('ton', 130, 846) + EP('moo', 372, 888),
   'กูเช็กให้แล้ว ไม่มีอะไรหรอกมึง\nพักผ่อนบ้างเหอะ', '"I checked. It\'s nothing, man.\nGet some rest."', 'หมูพูด เคี้ยวหมูปิ้ง ต้นยืนยักคิ้วข้างหลัง'),
  ('4', 'ฉาก 4 · หน้าต่าง', '@zoom', 'ผู้ชายคนนั้นเงยหน้าขึ้นมามองผม\nแล้วค่อย ๆ ยิ้มให้', 'The man looked up at me...\nand slowly smiled.', 'ซูมช้าเข้าหาสามี (ทั้งภาพขยาย ขนาดตัวกับบ้านคงสัดส่วน) ดนตรีเงียบ แล้วกล้องสั่นเบา ๆ'),
@@ -267,11 +310,15 @@ for n, (sid, tg, chars, th, en, note) in enumerate(SHOTS, 1):
     else:
         if chars == '@zoom':
             body = zoom(350, 520, 2.2, SC['4'] + WP('husband', 350, 556))
+        elif chars == '@wheel':
+            body = SC['1C'] + wheelchair_shot()
         elif chars == '@party':
             body = SC['7C'] + party
         else:
             body = SC[sid] + chars
         svg = frame_svg_inner(body).replace('</svg>', tag(tg) + watermark() + subs(th, en) + '</svg>')
+        if chars == '@wheel':
+            svg = svg.replace('<rect width="540" height="960" fill="url(#vig)"/>', '<rect width="540" height="960" fill="url(#vig)" opacity=".3"/>')
     cards.append(f'<figure><div class="fr">{svg}</div><figcaption><b>{n:02d}</b> <i>{sid.rstrip("*")}</i> {html.escape(note)}</figcaption></figure>')
 
 page = f'''<title>บ้านตรงข้าม สตอรีบอร์ด</title>
