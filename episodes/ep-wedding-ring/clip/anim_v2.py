@@ -167,19 +167,34 @@ def mini_ring(skin, sleeve, label, cx, cy, gid):
             f'<rect x="-46" y="66" width="92" height="28" rx="14" fill="#f6f2fb"/><text x="0" y="86" text-anchor="middle" {FT} font-size="15" font-weight="600" fill="#1a1626">{label}</text></g>')
 EYE = ('<g id="wm" transform="translate(500,48)" opacity=".85"><ellipse cx="0" cy="0" rx="20" ry="15" fill="#7a1fff"/>'
        '<path d="M -15,0 C -8,-8.5 8,-8.5 15,0 C 8,8.5 -8,8.5 -15,0 Z" fill="#05040a"/><circle cx="0" cy="0" r="4.2" fill="#d6b0ff"/></g>')   # ลายน้ำดวงตาของช่อง (จาก ep-4am-transfer)
-OVL = EYE + (f'<g id="hud" {FT}><rect x="22" y="26" width="196" height="38" rx="19" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".7"/>'
-       f'<circle id="hudDot" cx="41" cy="45" r="5" fill="#9a86ff"/><text id="hudTxt" x="54" y="51" font-size="16" font-weight="500" fill="#f2eefa">วันแต่งงาน · 19:00</text>'
-       f'<g id="trust"><rect x="22" y="72" width="196" height="34" rx="17" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".45"/>'
-       f'<path d="M 40,93 C 31,86 33,79 37.5,79 C 39.5,79 40,80.6 40,81.4 C 40,80.6 40.5,79 42.5,79 C 47,79 49,86 40,93 Z" id="trustHeart" fill="#ff5c8a"/>'
-       f'<text x="53" y="94" font-size="13" fill="#d9d2ee">ความไว้ใจ</text><rect x="114" y="84" width="64" height="10" rx="5" fill="#2c2540"/>'
-       f'<rect id="trustBar" x="114" y="84" width="64" height="10" rx="5" fill="#c04dff"/><text id="trustPct" x="208" y="94" text-anchor="end" font-size="13" font-weight="600" fill="#f2eefa">100%</text></g>'
-       f'<text id="trustDrop" x="226" y="94" font-size="15" font-weight="700" fill="#ff3b4e" opacity="0"></text></g>'
-       f'<g id="callout"><path id="coLine" d="M 0,0 L 0,0" stroke="#ffffff" stroke-width="2.4" stroke-dasharray="6 5" fill="none" opacity="0"/>'
-       f'<circle id="coDot" r="5" fill="#ffffff" opacity="0"/><circle id="coPulse" r="10" fill="none" stroke="#ffffff" stroke-width="2" opacity="0"/>'
-       + mini_ring('#26222e', '#2c2a34', 'ของเธอ', 170, 205, 'coA') + mini_ring('#fbe2cf', '#f3d2bc', 'ของคุณ', 370, 205, 'coB')
-       + f'<text id="coEq" x="270" y="222" text-anchor="middle" {FT} font-size="44" font-weight="700" fill="#ffffff" stroke="#12081c" stroke-width="5" paint-order="stroke" opacity="0">=</text>'
-       f'<g id="coCard" opacity="0"><rect x="128" y="318" width="284" height="40" rx="12" fill="#f6f2fb" fill-opacity=".96"/>'
-       f'<text x="270" y="344" text-anchor="middle" {FT} font-size="18" font-weight="700" fill="#1a1626">แหวนแบบเดียวกัน<tspan fill="#c0263a">ทุกประการ</tspan></text></g></g>')
+RINGS = ('<g id="ringBlack"><path d="M -70,-14 L 70,-16 C 80,-15 80,15 70,16 L -70,14 Z" fill="#1d1a24"/><path d="M -70,-14 L 70,-16 L 70,-8 L -70,-6 Z" fill="#34303f"/>'
+         '<path d="M -9,-17 L 9,-17 L 9,17 L -9,17 Z" fill="#cfd5df"/><path d="M -9,-17 L -3,-17 L -3,17 L -9,17 Z" fill="#f4f7fb"/><path d="M 5,-17 L 9,-17 L 9,17 L 5,17 Z" fill="#9aa3b2"/>'
+         '<path d="M 0,-34 L 11,-22 L 0,-14 L -11,-22 Z" fill="#e6f0ff"/><path d="M 0,-34 L -11,-22 L 0,-22 Z" fill="#ffffff"/><path d="M 0,-22 L 11,-22 L 0,-14 Z" fill="#a9c4ea"/></g>'
+         '<g id="ringSkin"><path d="M -70,-14 L 70,-16 C 80,-15 80,15 70,16 L -70,14 Z" fill="#f6d6c2"/><path d="M -70,6 L 70,8 L 70,16 L -70,14 Z" fill="#e8bea6"/>'
+         '<path d="M -9,-17 L 9,-17 L 9,17 L -9,17 Z" fill="#cfd5df"/><path d="M -9,-17 L -3,-17 L -3,17 L -9,17 Z" fill="#f4f7fb"/><path d="M 5,-17 L 9,-17 L 9,17 L 5,17 Z" fill="#9aa3b2"/>'
+         '<path d="M 0,-34 L 11,-22 L 0,-14 L -11,-22 Z" fill="#e6f0ff"/><path d="M 0,-34 L -11,-22 L 0,-22 Z" fill="#ffffff"/><path d="M 0,-22 L 11,-22 L 0,-14 Z" fill="#a9c4ea"/></g>'
+         '<clipPath id="lensSm"><circle r="44"/></clipPath>')
+MONO = 'font-family="IBM Plex Mono, monospace"'
+WARN = '<path d="M 0,-7 L 7,6 L -7,6 Z" fill="#ff3b4e"/><rect x="-.9" y="-3" width="1.8" height="5" fill="#fff"/><circle cx="0" cy="3.8" r=".9" fill="#fff"/>'
+# ป้ายสถานะแบบ C (ผู้ใช้เลือก): แคปซูลเวลาแบบตอนแรก · ป้ายเหตุการณ์แดงขึ้นตอนมีเรื่อง · ตัวเลขความไว้ใจขึ้นกลางบนแว้บเดียวตอนลดลง
+OVL = EYE + (f'<defs>{RINGS}</defs><g id="hud" {FT}><rect x="20" y="22" width="112" height="38" rx="19" fill="#120e1c" fill-opacity=".82" stroke="#9a86ff" stroke-opacity=".7"/>'
+       f'<circle id="hudDot" cx="39" cy="41" r="5" fill="#9a86ff"/><text id="hudTxt" x="52" y="47" font-size="17" font-weight="600" fill="#f2eefa" {MONO}>19:00</text>'
+       f'<g id="evt" opacity="0"><rect x="20" y="68" width="150" height="30" rx="15" fill="#3a0f1a" fill-opacity=".85" stroke="#ff3b4e" stroke-opacity=".7"/>'
+       f'<g transform="translate(38,83)">{WARN}</g><text x="52" y="88" font-size="13" font-weight="600" fill="#ffd2d7">มีคนบุกงานแต่ง</text></g>'
+       f'<g id="trustT" opacity="0" text-anchor="middle"><rect x="178" y="24" width="184" height="34" rx="17" fill="#120e1c" fill-opacity=".8" stroke="#ff3b4e" stroke-opacity=".5"/>'
+       f'<text x="270" y="47" font-size="14" fill="#f2eefa">ความไว้ใจ <tspan id="trustPct" fill="#ff3b4e" font-weight="700">100%</tspan> <tspan id="trustDel" fill="#ff3b4e" font-size="12">▼ 30</tspan></text></g></g>'
+       # กราฟิกชี้แหวนแบบ 3 (ผู้ใช้เลือก): มุมกรอบม่วงล็อกแหวน → เส้นประหักมุม → การ์ดเทียบแหวน MATCH
+       f'<g id="callout" opacity="0"><g id="coBr" stroke="#c9a8ff" stroke-width="3" fill="none" stroke-linecap="round">'
+       f'<path d="M -22,-11 V -21 H -12"/><path d="M 12,-21 H 22 V -11"/><path d="M 22,11 V 21 H 12"/><path d="M -12,21 H -22 V 11"/></g>'
+       f'<circle id="coDot" r="4" fill="#c9a8ff"/><path id="coLine" d="M 0,0" fill="none" stroke="#c9a8ff" stroke-width="2.4" stroke-dasharray="6 5"/>'
+       f'<g id="coCard" opacity="0"><rect x="150" y="236" width="300" height="188" rx="16" fill="#120e1c" fill-opacity=".9" stroke="#9a86ff" stroke-opacity=".8" stroke-width="1.5"/>'
+       f'<circle cx="172" cy="260" r="5" fill="#9a86ff"/><text x="184" y="266" font-size="15" font-weight="500" fill="#d9d2ee">ตรวจพบแหวนวงเดียวกัน</text>'
+       f'<g id="coA" opacity="0"><circle r="44" fill="#2a2433" stroke="#9a86ff" stroke-width="1.5"/><g clip-path="url(#lensSm)"><use href="#ringBlack" transform="scale(.85) translate(0,10)"/></g>'
+       f'<text y="70" text-anchor="middle" font-size="14" fill="#f2eefa">ของเธอ</text></g>'
+       f'<g id="coB" opacity="0"><circle r="44" fill="#efe6dc" stroke="#9a86ff" stroke-width="1.5"/><g clip-path="url(#lensSm)"><use href="#ringSkin" transform="scale(.85) translate(0,10)"/></g>'
+       f'<text y="70" text-anchor="middle" font-size="14" fill="#f2eefa">ของคุณ</text></g>'
+       f'<text id="coEq" x="300" y="342" text-anchor="middle" font-size="30" font-weight="700" fill="#c9a8ff" opacity="0">=</text>'
+       f'<text id="coM" x="300" y="414" text-anchor="middle" font-size="12" fill="#a79fc0" {MONO}>MATCH 0%</text></g></g>')
 TRUST = [(T0['s6'] + .4 + D['06e'] * .85, 100, 70), (T0['s7a'] + G7_POINT - 3.2, 70, 45), (T0['s9'] + .4 + D['09e'] * .7, 45, 20)]
 
 # ---------------------------------------------------------------- JS ขับการเคลื่อนไหวทุกเฟรม
@@ -290,34 +305,36 @@ window.renderAt = function (gt) {
   document.querySelectorAll('.place').forEach(el => { if (!el.dataset.init) { el.dataset.init = 1; place(el); } });
   R[cur](gt - T0[cur], gt);
   for (const [a, b, id] of SUBS) $(id).setAttribute('display', gt >= a && gt < b ? 'inline' : 'none');
-  // ป้ายเวลา: นาฬิกาเดินระหว่างงาน หลังประตูเปิดจุดเปลี่ยนเป็นสีแดงกะพริบ
+  // ป้ายเวลาแบบตอนแรก: นาฬิกาเดิน หลังประตูเปิดจุดเป็นสีแดงกะพริบ และป้ายเหตุการณ์แดงเลื่อนเข้ามา
   const mins = Math.floor(gt / 3.2), hh = 19 + Math.floor(mins / 60), mm = mins %% 60;
-  $('hudTxt').textContent = (gt < BANG ? 'วันแต่งงาน · ' : 'มีคนบุกงาน · ') + hh + ':' + String(mm).padStart(2, '0');
+  $('hudTxt').textContent = hh + ':' + String(mm).padStart(2, '0');
   $('hudDot').setAttribute('fill', gt < BANG ? '#9a86ff' : ((gt * 2) %% 1 < .5 ? '#ff3b4e' : '#5a1520'));
-  // มาตรความไว้ใจในตัวเจ้าบ่าว ลดลงเป็นช่วง ๆ ตามเหตุการณ์ พร้อมตัวเลขแดงลอยขึ้น
-  let pct = 100, drop = null;
-  for (const [t, a, b] of TRUST) { if (gt >= t) { const k = ease((gt - t) / .7); pct = a + (b - a) * k; if (gt - t < 1.6) drop = [b - a, gt - t]; } }
-  $('trustBar').setAttribute('width', (64 * pct / 100).toFixed(1)); $('trustPct').textContent = Math.round(pct) + '%%';
-  $('trustBar').setAttribute('fill', pct > 60 ? '#c04dff' : pct > 30 ? '#ff7a59' : '#ff3b4e');
-  const hb = 1 + (drop ? .35 * Math.max(0, 1 - drop[1] / .4) : 0); $('trustHeart').setAttribute('transform', `translate(40,86) scale(${hb}) translate(-40,-86)`);
-  if (drop) { $('trustDrop').textContent = drop[0] + '%%'; $('trustDrop').setAttribute('opacity', Math.max(0, 1 - drop[1] / 1.6).toFixed(2)); $('trustDrop').setAttribute('y', (94 - drop[1] * 10).toFixed(1)); }
-  else $('trustDrop').setAttribute('opacity', 0);
-  // กราฟิกชี้แหวน (ช็อต 5): จุดกะพริบที่แหวน → เส้นประค่อย ๆ ลากขึ้น → วงขยายแหวนของเธอ → เครื่องหมายเท่ากับ → แหวนของคุณ → การ์ดคำอธิบาย
-  const on = cur === 's5', tt = gt - T0.s5 - RT5, ids = ['coLine', 'coDot', 'coPulse', 'coA', 'coB', 'coEq', 'coCard'];
-  if (!on || tt < .15) { ids.forEach(i => $(i).setAttribute('opacity', 0)); }
+  const ev = ease((gt - BANG - .6) / .4); $('evt').setAttribute('opacity', ev.toFixed(2)); $('evt').setAttribute('transform', `translate(${(-14 * (1 - ev)).toFixed(1)},0)`);
+  // ความไว้ใจ: ขึ้นกลางบนแว้บเดียวตอนลดลง ตัวเลขนับลง แล้วจางหาย
+  let tr = null; for (const T of TRUST) if (gt >= T[0] && gt < T[0] + 2.6) tr = T;
+  if (tr) { const u = gt - tr[0], o = Math.min(1, u / .25) * Math.min(1, (2.6 - u) / .4), pct = tr[1] + (tr[2] - tr[1]) * ease((u - .3) / .7);
+    $('trustT').setAttribute('opacity', o.toFixed(2)); $('trustT').setAttribute('transform', `translate(0,${(-8 * (1 - Math.min(1, u / .3))).toFixed(1)})`);
+    $('trustPct').textContent = Math.round(pct) + '%%'; $('trustDel').textContent = '▼ ' + (tr[1] - tr[2]); }
+  else $('trustT').setAttribute('opacity', 0);
+  // กราฟิกชี้แหวน (ช็อต 5): มุมกรอบหุบเข้าล็อกแหวน → เส้นประหักมุมค่อย ๆ ลากขึ้น → การ์ด → แหวนของเธอ = แหวนของคุณ → MATCH นับถึงร้อย
+  const tt = gt - T0.s5 - RT5;
+  if (cur !== 's5' || tt < .1) $('callout').setAttribute('opacity', 0);
   else {
-    const fadeAll = Math.max(0, Math.min(1, (SH.s5 - RT5 - tt) / .35));
+    const fo = Math.max(0, Math.min(1, (SH.s5 - RT5 - tt) / .35)); $('callout').setAttribute('opacity', (Math.min(1, (tt - .1) / .15) * fo).toFixed(2));
     const rr = $('w5Ring').getBoundingClientRect(), st = $('stage').getBoundingClientRect(), x0 = rr.x + rr.width / 2 - st.x, y0 = rr.y + rr.height / 2 - st.y;
-    $('coDot').setAttribute('cx', x0); $('coDot').setAttribute('cy', y0); $('coPulse').setAttribute('cx', x0); $('coPulse').setAttribute('cy', y0);
-    const pl = ((tt - .15) %% .9) / .9; $('coPulse').setAttribute('r', (8 + 16 * pl).toFixed(1)); $('coPulse').setAttribute('opacity', ((1 - pl) * .9 * fadeAll).toFixed(2));
-    $('coDot').setAttribute('opacity', fadeAll);
-    const x1 = 170, y1 = 262, k = ease((tt - .35) / .55);
-    $('coLine').setAttribute('d', `M ${x0.toFixed(1)},${y0.toFixed(1)} L ${(x0 + (x1 - x0) * k).toFixed(1)},${(y0 + (y1 - y0) * k).toFixed(1)}`); $('coLine').setAttribute('opacity', (tt > .35 ? .95 : 0) * fadeAll);
-    const pop = (id, t0, cx, cy) => { const e = Math.min(1.15, backOut((tt - t0) / .4)), o = Math.max(0, Math.min(1, (tt - t0) / .2));
-      $(id).setAttribute('opacity', (o * fadeAll).toFixed(2)); $(id).setAttribute('transform', `translate(${cx},${cy}) scale(${Math.max(.01, e).toFixed(3)})`); };
-    pop('coA', .8, 170, 205); pop('coB', 1.35, 370, 205);
-    $('coEq').setAttribute('opacity', (Math.max(0, Math.min(1, (tt - 1.2) / .25)) * fadeAll).toFixed(2));
-    $('coCard').setAttribute('opacity', (Math.max(0, Math.min(1, (tt - 1.75) / .3)) * fadeAll).toFixed(2));
+    const sc = 1 + 1.2 * (1 - backOut((tt - .1) / .35)); $('coBr').setAttribute('transform', `translate(${x0.toFixed(1)},${y0.toFixed(1)}) scale(${sc.toFixed(3)})`);
+    $('coDot').setAttribute('cx', x0.toFixed(1)); $('coDot').setAttribute('cy', y0.toFixed(1));
+    const P = [[x0 + 22, y0 - 21], [330, y0 - 89], [330, 424]], seg = [Math.hypot(P[1][0] - P[0][0], P[1][1] - P[0][1]), Math.hypot(P[2][0] - P[1][0], P[2][1] - P[1][1])];
+    let d = (seg[0] + seg[1]) * ease((tt - .45) / .55), path = `M ${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`;
+    if (d > 0) { const k = Math.min(1, d / seg[0]); path += ` L ${(P[0][0] + (P[1][0] - P[0][0]) * k).toFixed(1)},${(P[0][1] + (P[1][1] - P[0][1]) * k).toFixed(1)}`;
+      if (d > seg[0]) { const k2 = Math.min(1, (d - seg[0]) / seg[1]); path += ` L 330,${(P[1][1] + (424 - P[1][1]) * k2).toFixed(1)}`; } }
+    $('coLine').setAttribute('d', path);
+    const c = Math.max(0, Math.min(1, (tt - .95) / .25)); $('coCard').setAttribute('opacity', c.toFixed(2)); $('coCard').setAttribute('transform', `translate(300,424) scale(${(.9 + .1 * backOut((tt - .95) / .3)).toFixed(3)}) translate(-300,-424)`);
+    const pop = (id, t0, cx) => { const o = Math.max(0, Math.min(1, (tt - t0) / .2)), e = Math.max(.01, backOut((tt - t0) / .35));
+      $(id).setAttribute('opacity', o.toFixed(2)); $(id).setAttribute('transform', `translate(${cx},330) scale(${e.toFixed(3)})`); };
+    pop('coA', 1.25, 222); pop('coB', 1.7, 378);
+    $('coEq').setAttribute('opacity', Math.max(0, Math.min(1, (tt - 1.55) / .2)).toFixed(2));
+    $('coM').textContent = 'MATCH ' + Math.round(100 * ease((tt - 1.9) / .6)) + '%%';
   }
 };
 '''

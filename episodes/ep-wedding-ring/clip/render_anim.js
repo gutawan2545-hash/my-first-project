@@ -4,13 +4,13 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 (async () => {
-  const tl = JSON.parse(fs.readFileSync(path.join(__dirname, 'out', 'test_timeline.json')));
+  const tl = JSON.parse(fs.readFileSync(path.join(__dirname, 'out', process.env.TL || 'test_timeline.json')));
   const n = Math.floor(tl.total * tl.fps);
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 });
   await p.goto('file://' + path.join(__dirname, process.env.PAGE || 'anim_test.html'));
   await p.waitForTimeout(2500);
-  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(tl.fps), '-i', '-', '-i', path.join(__dirname, 'out', 'test_audio.wav'),
+  const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(tl.fps), '-i', '-', '-i', path.join(__dirname, 'out', process.env.WAV || 'test_audio.wav'),
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-shortest', path.join(__dirname, 'out', process.env.OUT || 'test_anim.mp4')]);
   const stage = await p.$('#stage');
   for (let f = 0; f < n; f++) {

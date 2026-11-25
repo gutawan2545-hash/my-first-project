@@ -18,6 +18,18 @@ CUES = {
      sec('dread', T0['s9r'] - .5, END + .5, ['dissonant orchestral swell rising to a sharp cutoff', 'horror']),
  ]),
 }
+if os.path.exists('out/full_timeline.json'):
+    F = json.load(open('out/full_timeline.json'))['t0']
+    CUES['C_night'] = dict(positive_global_styles=['dark cinematic horror mystery score', 'instrumental', 'orchestral', 'eerie and elegant'], negative_global_styles=NEG, sections=[
+        sec('unease', F['s10'], F['s15'], ['quiet uneasy suspense', 'soft pizzicato strings and low cello', 'curious, something is wrong']),
+        sec('searching', F['s15'], F['s17'], ['tense ticking pulse', 'muted piano notes', 'secretive investigation']),
+        sec('revelation', F['s17'], F['s18'], ['heavy dark orchestral hit then a low ominous drone']),
+        sec('missing', F['s18'], F['s20'], ['rising dread', 'dissonant strings slowly swelling', 'ends with a deep hit']),
+        sec('trapped', F['s20'], F['s22'], ['claustrophobic repeating eerie motif', 'pulsing low strings', 'panic underneath']),
+        sec('the call', F['s22'], F['s24'], ['hushed and haunting', 'sparse piano and breathy high strings', 'sad and cold']),
+        sec('knocking', F['s24'], F['s26'], ['near silence', 'very low sub drone', 'unbearable tension']),
+        sec('terror', F['s26'], F['s27'] + .4, ['high violin cluster swelling', 'sharp cutoff']),
+    ])
 if __name__ == '__main__':
     names = [a for a in sys.argv[1:] if not a.startswith('--')] or list(CUES)
     for n in names:

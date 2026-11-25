@@ -4,7 +4,7 @@ const path = require('path');
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 560, height: 980 }, deviceScaleFactor: 3 });
-  await p.goto('file://' + path.join(__dirname, 'bg.html'));
+  await p.goto('file://' + path.join(__dirname, process.env.PAGE || 'bg.html'));
   await p.waitForTimeout(2000);
   for (const e of await p.$$('body > svg[id]')) {
     const id = await e.getAttribute('id');
