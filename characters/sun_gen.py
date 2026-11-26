@@ -208,6 +208,9 @@ _J = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "james.html")
 _a = _J.index('<clipPath id="face">'); _b = _J.index('</defs>')
 JDEFS = _J[_a:_b]
 JDEFS = re.sub(r'\s*<!-- headphones -->.*?(?=\n  </g>)', '', JDEFS, flags=re.S).replace('id="jhead"', 'id="shead"')
+# slim face (owner's rule): V jaw, slightly longer chin; everything else is James's head
+JDEFS = JDEFS.replace("M -32,-14 C -32,-46 32,-46 32,-14 L 31,6 C 29,22 13,37 0,40 C -13,37 -29,22 -31,6 Z",
+                      "M -31,-14 C -31,-46 31,-46 31,-14 L 30,1 C 28,17 14,34 0,41.5 C -14,34 -28,17 -30,1 Z")
 
 html = f'''<title>Odd Hours ซัน</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -254,7 +257,7 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
 </svg>
 
 <div class="wrap">
-  <h1>ซัน<span>27 ปี · Bangkok Native สายอินดี้ · หน้าเดียวกับเจม เปลี่ยนแค่ชุด · หน้าตรง · แสงกลางจากซ้าย</span></h1>
+  <h1>ซัน<span>27 ปี · Bangkok Native สายอินดี้ · หน้าแบบเจมแต่เรียวกว่า · หน้าตรง · แสงกลางจากซ้าย</span></h1>
 
   <div class="panels">
     <figure>
@@ -287,7 +290,7 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
         <path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/>
         <path d="M -9,58 L -13,72 M 9,58 L 8,72" stroke="#2a2024" stroke-width="1.8"/>
       </svg>
-      <figcaption>ใบหน้าระยะใกล้ · ใช้หัวและหน้าของเจมจาก characters/james.html ทุกเส้น ไม่ใส่หูฟัง</figcaption>
+      <figcaption>ใบหน้าระยะใกล้ · ใช้หัวของเจมจาก characters/james.html แต่หน้าเรียว กรามทรง V คางยาวขึ้นนิด · ไม่ใส่หูฟัง</figcaption>
       <div class="chips">
                 <span><i style="background:#2f5a5e"></i>เชิ้ตหัวเป็ด</span>
         <span><i style="background:#f2eee6"></i>เสื้อยืด</span>
