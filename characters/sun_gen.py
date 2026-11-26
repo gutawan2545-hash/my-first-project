@@ -1,5 +1,5 @@
 # Generates characters/sun.html. Face construction follows characters/james.html.
-SK, SKS, SKD, SKH = "#f3cfb1", "#e1b293", "#c79478", "#fbe2cc"
+SK, SKS, SKD, SKH = "#fbe7d8", "#efc7b0", "#d29d86", "#fff5ee"
 HAIR, HAIRM, HAIRH = "#17141a", "#2a2530", "#3d3646"
 MOUTH = "#8a4a46"
 
@@ -65,8 +65,8 @@ BASE = f'''<g id="sbase">
     <path d="M -37,-6 C -44,-34 -36,-60 -16,-68 C -2,-74 16,-73 28,-64 C 42,-54 44,-30 38,-6 L 34,-12 L 31,-4 L -31,-4 L -34,-12 Z" fill="{HAIR}"/>
     <path d="M -30,-6 L -34,14 L -28,8 Z M 30,-6 L 35,14 L 28,8 Z" fill="{HAIR}"/>
     <!-- neck + under-chin shadow -->
-    <rect x="-9.5" y="20" width="19" height="38" fill="#e6bb9c"/>
-    <path d="M -9.5,26 L 9.5,26 L 9.5,46 Q 0,41 -9.5,49 Z" fill="#cf9d80"/>
+    <rect x="-9.5" y="20" width="19" height="38" fill="#f4d4c0"/>
+    <path d="M -9.5,26 L 9.5,26 L 9.5,46 Q 0,41 -9.5,49 Z" fill="#efc7b0"/>
     <!-- ears -->
     <ellipse cx="-32" cy="1" rx="5.5" ry="8.5" fill="{SKH}"/>
     <ellipse cx="32" cy="1" rx="5.5" ry="8.5" fill="{SKS}"/>
@@ -120,8 +120,8 @@ BODY = f'''
           <path d="M -3,298 L 3,298 L 7,350 L -7,350 Z" fill="#1e2027"/>
           <path d="M -12,300 L -10,454 M 14,300 L 18,454" stroke="#24262e" stroke-width="1.4"/>
           <!-- ankles -->
-          <rect x="-36" y="452" width="15" height="12" fill="#e6bb9c"/>
-          <rect x="21" y="452" width="15" height="12" fill="#cf9d80"/>
+          <rect x="-36" y="452" width="15" height="12" fill="#f4d4c0"/>
+          <rect x="21" y="452" width="15" height="12" fill="#efc7b0"/>
           <!-- off-white canvas sneakers, gum sole -->
           <path d="M -46,462 L -16,462 C -11,468 -8,476 -8,483 L -50,483 C -52,476 -50,466 -46,462 Z" fill="#ece6da"/>
           <path d="M -46,462 L -36,462 L -40,483 L -50,483 C -52,476 -50,466 -46,462 Z" fill="#f8f4ec"/>
@@ -203,6 +203,12 @@ expr_figs = "\n".join(f'''    <figure>
       <figcaption><b>{t}</b><br>{d}</figcaption>
     </figure>''' for i,t,d in EXPR)
 
+import os, re
+_J = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "james.html")).read()
+_a = _J.index('<clipPath id="face">'); _b = _J.index('</defs>')
+JDEFS = _J[_a:_b]
+JDEFS = re.sub(r'\s*<!-- headphones -->.*?(?=\n  </g>)', '', JDEFS, flags=re.S).replace('id="jhead"', 'id="shead"')
+
 html = f'''<title>Odd Hours ซัน</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -243,16 +249,12 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
   <pattern id="print" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M 3,4 l 2.4,-2 l 2.4,2 l -2.4,2 Z" fill="#e9e1d0" opacity=".55"/><path d="M 11,12 q 2,-2.4 4,0" fill="none" stroke="#e9e1d0" stroke-width="1" opacity=".45"/></pattern>
-  <clipPath id="face"><path d="M -32,-14 C -32,-47 32,-47 32,-14 L 31.5,7 C 30.5,24 17,37.5 0,40.5 C -17,37.5 -30.5,24 -31.5,7 Z"/></clipPath>
-  <clipPath id="eyeL"><path d="M -21,-3 C -17,-7.5 -9,-7.5 -5,-2 C -9,1 -17,1 -21,-3 Z"/></clipPath>
-  <clipPath id="eyeR"><path d="M 21,-3 C 17,-7.5 9,-7.5 5,-2 C 9,1 17,1 21,-3 Z"/></clipPath>
-  {BASE}
-  {HEADS}
+  {JDEFS}
 </defs>
 </svg>
 
 <div class="wrap">
-  <h1>ซัน<span>27 ปี · Bangkok Native สายอินดี้ · มั่นใจ กวนแบบหน้าตาย · หน้าตรง · แสงกลางจากซ้าย</span></h1>
+  <h1>ซัน<span>27 ปี · Bangkok Native สายอินดี้ · หน้าเดียวกับเจม เปลี่ยนแค่ชุด · หน้าตรง · แสงกลางจากซ้าย</span></h1>
 
   <div class="panels">
     <figure>
@@ -262,7 +264,7 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
         <ellipse cx="200" cy="818" rx="84" ry="10" fill="#10131b"/>
         <g transform="translate(200,132) scale(1.4)">
           {BODY}
-          <use href="#s_dead"/>
+          <use href="#shead"/>
           <path d="M -9.5,56 L 9.5,56 L 9.5,58 L -9.5,58 Z" fill="#f2eee6"/>
           <path d="M -9,47 C -5,55 5,55 9,47" fill="none" stroke="#cfd3dc" stroke-width="0.9"/>
           <path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/>
@@ -281,16 +283,13 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
         <path d="M -12,50 L -24,54 L -18,72 L -9,64 Z" fill="#4b8286"/>
         <path d="M 12,50 L 24,54 L 18,72 L 9,64 Z" fill="#1f3f43"/>
         <path d="M 30,52 L 34,72 M 38,54 L 43,72" stroke="#bfb397" stroke-width="3.2"/>
-        <use href="#s_dead"/>
+        <use href="#shead"/>
         <path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/>
         <path d="M -9,58 L -13,72 M 9,58 L 8,72" stroke="#2a2024" stroke-width="1.8"/>
       </svg>
-      <figcaption>ใบหน้าระยะใกล้ · ผมยุ่งทรงเซอร์ หน้าม้าหนาเป็นปอยหยักปรกคิ้ว ปัดไปทางซ้ายของเขา ผมชี้ฟูด้านบน เห็นหู · ตาชั้นเดียวปรือ ๆ · จมูกปลายมน · ปากอิ่ม · หนวดบางหางตก · เงาบล็อกที่ขมับ ข้างจมูก แก้มฝั่งไกลแสง ใต้คาง</figcaption>
+      <figcaption>ใบหน้าระยะใกล้ · ใช้หัวและหน้าของเจมจาก characters/james.html ทุกเส้น ไม่ใส่หูฟัง</figcaption>
       <div class="chips">
-        <span><i style="background:{SK}"></i>ผิว</span>
-        <span><i style="background:{SKS}"></i>ผิวเงา</span>
-        <span><i style="background:{HAIR}"></i>ผม</span>
-        <span><i style="background:#2f5a5e"></i>เชิ้ตหัวเป็ด</span>
+                <span><i style="background:#2f5a5e"></i>เชิ้ตหัวเป็ด</span>
         <span><i style="background:#f2eee6"></i>เสื้อยืด</span>
         <span><i style="background:#2b2d36"></i>กางเกง</span>
         <span><i style="background:#d8cdb4"></i>กระเป๋าผ้า</span>
@@ -298,10 +297,6 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
     </figure>
   </div>
 
-  <h2>สีหน้าหลักสำหรับมุก</h2>
-  <div class="expr">
-{expr_figs}
-  </div>
 </div>
 '''
 import os; open(os.path.join(os.path.dirname(os.path.abspath(__file__)),"sun.html"),"w").write(html)
