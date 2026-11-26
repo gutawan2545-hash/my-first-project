@@ -41,7 +41,7 @@ def beam_set(fid, quads, color='#fff0d4', op=.3):
     g, c = uid('bm'), uid('bc')
     d = (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{color}"/><stop offset="1" stop-color="{color}" stop-opacity="0"/></linearGradient>'
          f'<clipPath id="{c}">' + ''.join(f'<polygon points="{" ".join(f"{x:.0f},{y:.0f}" for x, y in q)}"/>' for q in quads) + '</clipPath>')
-    s = ''.join(f'<polygon points="{" ".join(f"{x:.0f},{y:.0f}" for x, y in q)}" fill="url(#{g})" opacity="{op * random.Random(i).uniform(.65, 1):.2f}" filter="url(#s4soft)" style="mix-blend-mode:screen"/>' for i, q in enumerate(quads))
+    s = ''.join(f'<polygon points="{" ".join(f"{x:.0f},{y:.0f}" for x, y in q)}" class="om-beam" fill="url(#{g})" opacity="{op * random.Random(i).uniform(.65, 1):.2f}" filter="url(#s4soft)" style="mix-blend-mode:screen"/>' for i, q in enumerate(quads))
     return d, s, c
 
 
@@ -56,7 +56,7 @@ def fine_dust(box, n, seed=1, color='#fff4e2', clip=None, density_far=.6):
             soft += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{rnd.uniform(.8, 1.8):.2f}" opacity="{rnd.uniform(.15, .38):.2f}"/>'
         else:
             sharp += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{rnd.uniform(.35, .85):.2f}" opacity="{rnd.uniform(.55, .95):.2f}"/>'
-    inner = f'<g fill="{color}"><g filter="url(#cl-moteFar)">{soft}</g><g filter="url(#s4mote)">{sharp}</g></g>'
+    inner = f'<g class="om-dust" data-seed="{seed}" fill="{color}"><g filter="url(#cl-moteFar)">{soft}</g><g filter="url(#s4mote)">{sharp}</g></g>'
     return f'<g clip-path="url(#{clip})">{inner}</g>' if clip else inner
 
 

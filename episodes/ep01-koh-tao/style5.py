@@ -69,7 +69,7 @@ def cloud_bank(x, y, w, h, lit, mid, shade, seed=1, sun_left=False):
     gx1, gx2 = (0, 1) if sun_left else (1, 0)
     defs = (f'<linearGradient id="{g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{lit}"/><stop offset=".55" stop-color="{mid}"/><stop offset="1" stop-color="{shade}"/></linearGradient>'
             f'<linearGradient id="{g}r" x1="{gx2}" y1="0" x2="{gx1}" y2="0"><stop offset="0" stop-color="{lit}" stop-opacity=".9"/><stop offset=".6" stop-color="{lit}" stop-opacity="0"/></linearGradient>')
-    return (f'<defs>{defs}</defs><g filter="url(#s5cloud)"><path d="{shape}" fill="url(#{g})"/>'
+    return (f'<defs>{defs}</defs><g class="om-cloud" filter="url(#s5cloud)"><path d="{shape}" fill="url(#{g})"/>'
             f'<path d="{top}" fill="none" stroke="url(#{g}r)" stroke-width="3" opacity=".8"/></g>')
 
 

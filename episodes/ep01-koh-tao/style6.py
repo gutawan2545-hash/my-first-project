@@ -151,11 +151,12 @@ def rough_sea():
         y = hz + 4 + t * 300
         spread = 10 + t * 100
         sea += f'<rect x="{sunx + rnd.uniform(-spread, spread):.0f}" y="{y:.0f}" width="{4 + t * 20:.0f}" height="{1 + t * 2:.1f}" rx="1" fill="#ffe4cc" opacity="{.25 + (1 - t) * .45:.2f}"/>'
-    sea += whitecaps(hz + 6, 800, 160, 8)
+    sea += '<g class="om-caps">' + whitecaps(hz + 6, 800, 160, 8) + '</g>'
     waves = big_wave(-40, 690, 380, 120, '#18485c', '#2f7f8e', 3) + big_wave(250, 640, 330, 80, '#1c5266', '#3a8a96', 4)
+    waves = f'<g class="om-wave">{waves}</g>'
     rocks = (boulder(-120, 980, 330, 280, 1) + boulder(120, 990, 160, 110, 0))
     ledge = boulder(250, 1000, 340, 250, 1) + '<path d="M 290,790 C 360,770 470,770 560,786 L 560,800 C 470,790 360,790 290,806 Z" fill="#c9c5c8" opacity=".6"/>'
-    crash = spray(150, 830, 110, 5) + spray(330, 860, 70, 6)
+    crash = '<g class="om-spray">' + spray(150, 830, 110, 5) + spray(330, 860, 70, 6) + '</g>'
     foam_band = '<path d="M -20,850 C 80,820 200,860 300,840 C 400,820 480,850 560,836 L 560,880 L -20,880 Z" fill="#f2f8fa" opacity=".75" filter="url(#s6foam)"/>'
     back = sky + f'<g filter="url(#s4dof)">{islands}</g>' + sea + waves
     j_tr = 'translate(446,508) scale(.58)'
