@@ -7,6 +7,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, '..', '..', 'pipeline', 'lighting'))
 import cinelight as CL
 import sunrig as R
+import scenes as SC
 
 FONT_TH = 'font-family="IBM Plex Sans Thai, Noto Sans Thai, sans-serif"'
 FONT_EN = 'font-family="Inter, system-ui, sans-serif"'
@@ -161,16 +162,14 @@ def sea_sky(fid, horizon=420):
 # ================================================================ shots
 def s01():
     fid = 'f01'
-    d, bg = condo_room(fid)
-    suitcase = ('<g><rect x="356" y="560" width="150" height="60" rx="8" fill="#3d4f6e"/><rect x="356" y="560" width="150" height="14" rx="6" fill="#516687"/>'
-                '<rect x="364" y="566" width="134" height="40" rx="4" fill="#2c3a54"/><path d="M 370,566 L 430,566 L 420,590 L 372,590 Z" fill="#f2eee6"/>'
-                '<path d="M 432,566 L 494,566 L 490,584 L 440,588 Z" fill="#2f5a5e"/><path d="M 362,560 L 500,560 L 486,500 L 376,500 Z" fill="#46597a"/></g>')
-    ch = [sun_char(fid, 210, 300, .95, (-60, 300), head='dead', tote=False, camera=False)]
-    sh = CL.contact_shadow(210, 768, 52) + drop(suitcase, 10, 10, .3) + CL.ao_line(0, 606, 540, 606, 16, .35)
-    light = CL.glow(230, 300, 300, '#ffffff', .18, core=False) + CL.shaft([(28, 158), (226, 158), (420, 960), (0, 960)], '#fff4e8', .16, src=(120, 160), end=(200, 900), dust_n=40, seed=2)
+    d, bg, fg, sh0 = SC.condo(fid)
+    ch = [sun_char(fid, 240, 300, .95, (-60, 250), head='dead', tote=False, camera=False)]
+    sh = sh0 + CL.contact_shadow(240, 768, 52) + CL.ao_line(0, 606, 540, 606, 14, .3) + CL.ao_line(470, 0, 470, 606, 12, .22)
+    light = (CL.glow(180, 330, 320, '#ffffff', .18, core=False)
+             + CL.shaft([(22, 112), (338, 112), (600, 880), (150, 880)], '#fff4e8', .15, src=(180, 120), end=(380, 860), dust_n=46, seed=2))
     ui = tag('EP.01 · เกาะเต่า') + subs('จะเป็นยังไง ถ้าคุณเป็น Bangkok Native/ที่เบื่อชีวิตในกรุงเทพ/แล้วตัดสินใจเก็บกระเป๋า/ย้ายไปอยู่เกาะเต่า',
                                       'What if you were a Bangkok native, tired of the city,/who packed up and moved to Koh Tao?')
-    return frame(fid, 'ช็อต 1', bg=bg, shadow=sh, chars=ch, fg=suitcase, light=light, ui=ui, defs=d)
+    return frame(fid, 'ช็อต 1', bg=bg, shadow=sh, chars=ch, fg=fg, light=light, ui=ui, defs=d)
 
 
 def s02():
@@ -241,19 +240,11 @@ def s03():
 
 def s04():
     fid = 'f04'
-    d, bg = sea_sky(fid, 360)
-    bg += ('<path d="M 360,362 C 380,330 420,316 460,322 C 490,326 520,340 540,350 L 540,362 Z" fill="#6f9e78"/>'
-           '<path d="M 0,362 C 30,350 60,346 90,352 L 120,362 Z" fill="#86ad86"/>')
-    bg = blur(bg, 2.4)
-    spray = ''.join(f'<path d="M {i * 60 - 20},{560 + (i % 2) * 30} q 30,-10 60,0" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none"/>' for i in range(10))
-    boat = ('<path d="M -20,700 L 560,640 L 560,960 L -20,960 Z" fill="#f2eee6"/><path d="M -20,700 L 560,640 L 560,660 L -20,722 Z" fill="#d7d0c4"/>'
-            '<rect x="-20" y="610" width="580" height="8" fill="#c8ccd6" transform="rotate(-6 270 610)"/>'
-            + ''.join(f'<rect x="{x}" y="{614 - x * .105:.0f}" width="5" height="{96 + x * .0:.0f}" fill="#b8bcc8"/>' for x in range(10, 540, 66))
-            + '<rect x="-20" y="560" width="580" height="7" fill="#d9dce4" transform="rotate(-6 270 560)"/>')
+    d, bg, fg, spray = SC.ferry(fid)
     ch = [sun_char(fid, 270, 330, 1.75, (-200, 120), head='wind', L='L_hang', R='R_hang', camera=True)]
     lines = ''.join(f'<path d="M {x},{y} L {x + 90},{y - 8}" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>' for x, y in ((40, 260), (420, 300), (60, 420), (380, 470), (30, 520)))
     ui = tag('เรื่องที่ 1 · ทะเลคือประตูบ้าน')
-    return frame(fid, 'ช็อต 4', bg=bg + spray, chars=ch, fg=boat, light=CL.glow(-40, 80, 380, '#ffffff', .3, core=False), atmos=lines, ui=ui, defs=d)
+    return frame(fid, 'ช็อต 4', bg=bg, chars=ch, fg=fg, light=CL.glow(-40, 80, 380, '#ffffff', .26, core=False), atmos=lines + spray, ui=ui, defs=d)
 
 
 def s05():
@@ -521,14 +512,19 @@ def notif(x, y, title, body, col='#d8655a', s=1.0, rot=0):
 
 def s16():
     fid = 'f16'
-    d, bg = cafe(fid)
-    ch = [sun_char(fid, 270, 360, 1.15, (-220, 120), head='smirk', L='table', R='R_hang', front='R_coffee', camera=False, tote=False)]
-    fg = TABLE + drop(laptop(250, 630), 8, 8, .3) + laptop(250, 630)
-    pops = notif(30, 120, 'อีเมลงาน', 'แก้ไฟล์ด่วนก่อนเที่ยง', '#5a6c8e', .95, -3) + notif(300, 190, 'แชทลูกค้า', '“ว่างคุยไหมครับ”', '#2fb3b8', .9, 4)
-    light = CL.glow(-30, 120, 380, '#ffffff', .3, core=False) + CL.shaft([(0, 60), (160, 0), (420, 640), (200, 700)], '#fff8ee', .14, src=(60, 40), end=(330, 640), dust_n=30, seed=4)
+    d, bg, fg, sh = SC.beach_cafe(fid)
+    ch = [sun_char(fid, 270, 360, 1.15, (-220, 120), head='smirk', L='table', R='R_hang', front='R_coffee', camera=False, tote=False, legs=False)]
+    chair = ('<path d="M 180,684 L 360,684 L 372,716 L 168,716 Z" fill="#c9a47e"/><path d="M 168,716 L 372,716 L 372,726 L 168,726 Z" fill="#a8835f"/>'
+             + ''.join(f'<path d="M {x},{684 + k * 8} L {x + 16},{684 + k * 8}" stroke="#b08a64" stroke-width="2"/>' for x in range(186, 356, 24) for k in range(4))
+             + '<rect x="178" y="726" width="10" height="200" fill="#8f6c4c"/><rect x="352" y="726" width="10" height="200" fill="#7a5b40"/>')
+    fg = chair + fg
+    mark = '<rect width="540" height="40" fill="#7d5c40"/>'
+    fg = fg.replace(mark, SC.castsh(laptop(250, 630), 8, 8, .3) + laptop(250, 630) + mark, 1)
+    pops = notif(30, 150, 'อีเมลงาน', 'แก้ไฟล์ด่วนก่อนเที่ยง', '#5a6c8e', .95, -3) + notif(300, 210, 'แชทลูกค้า', '“ว่างคุยไหมครับ”', '#2fb3b8', .9, 4)
+    light = CL.glow(-30, 160, 380, '#ffffff', .26, core=False) + CL.shaft([(40, 60), (200, 40), (440, 640), (220, 700)], '#fff8ee', .13, src=(100, 60), end=(330, 640), dust_n=30, seed=4)
     ui = tag('เรื่องที่ 6 · ชีวิตการทำงานเปลี่ยนไป') + pops + subs('คุณอาจทำงานเกี่ยวกับการท่องเที่ยว/หรือถ้าทำงานออนไลน์ได้/ก็อาจย้ายโต๊ะทำงานมาไว้ริมทะเล',
                                                                   'You might work in tourism,/or if you work online, move your desk to the beach.')
-    return frame(fid, 'ช็อต 16', bg=bg, chars=ch, fg=fg, light=light, ui=ui, defs=d)
+    return frame(fid, 'ช็อต 16', bg=bg, shadow=sh, chars=ch, fg=fg, light=light, ui=ui, defs=d)
 
 
 def s17():

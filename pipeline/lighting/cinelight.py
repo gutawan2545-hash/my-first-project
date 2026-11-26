@@ -44,7 +44,7 @@ RIGS = {
     'day': dict(rim='#ffd9a8', rim_op=.75, rim_soft_op=.26, rim_w=2.2, bloom=.32,
                 amb='#5a6f96', shade_op=.32, shade_k=14, shade_blur=10,
                 face_shade=.2, chin_ao=.38,
-                sat=.92, lift=(.012, .016, .03), gamma=(1.0, 1.0, .99), gain=(1.0, .99, .98),
+                sat=.95, lift=(.003, .005, .014), gamma=(1.04, 1.03, 1.0), gain=(1.0, .995, .985),
                 vig=.32, grain=.05),
 }
 
