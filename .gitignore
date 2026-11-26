@@ -17,3 +17,5 @@ episodes/ep-4am-transfer/v2/ep01_final_v5.mp4
 episodes/ep-4am-transfer/v2/ep01_final_v6.mp4
 episodes/ep-4am-transfer/v2/mix.wav
 pipeline/v2/outro.wav
+__pycache__/
+*.pyc
