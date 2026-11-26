@@ -250,6 +250,115 @@ GECKO = ('<g>'
          '<path d="M -5,-23 Q 0,-19 5,-23" stroke="#4a5a74" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
          '</g>')
 
+# ---------------------------------------------------------------- more islanders (added after the first review)
+UNCLE_SKIN = ['#d9a07a', '#c08860', '#9e6a48', '#cf9672', '#b27c58', '#e8bc98', '#b07a56', '#a87452']
+un_kit = recolor(JK, J_SKIN, UNCLE_SKIN).replace('fill="#17151d"', 'fill="#8a8590"')          # grey brows
+un_kit = un_kit.replace('<path d="M -6,24.4 Q 1,25.6 7.5,21.4" fill="none" stroke="#a05a50" stroke-width="1.8" stroke-linecap="round"/><path d="M 7.5,21.4 L 9,20.4" stroke="#d29d86" stroke-width="1.2" stroke-linecap="round"/>', GRIN)
+UNCLE_HEAD = ('<g id="h_uncle">' + un_kit +
+              '<path d="M -18,-26 q 18,-4 36,0 M -14,-21 q 14,-3 28,0" stroke="#a87452" stroke-width="1.1" fill="none" opacity=".8"/>'
+              '<path d="M -12,15 C -14,19 -13,23 -10,26 M 12,15 C 14,19 13,23 10,26" fill="none" stroke="#a06a48" stroke-width="1.2"/>'
+              '<path d="M -1,18.4 C -6,17.4 -11,18.6 -13,21.6 C -8,20.6 -4,20.2 -1,20.4 Z M 1,18.4 C 6,17.4 11,18.6 13,21.6 C 8,20.6 4,20.2 1,20.4 Z" fill="#cfcbd2"/>'
+              '<path d="M -32,-8 C -34,-40 -18,-50 0,-50 C 18,-50 34,-40 32,-8 C 30,-24 22,-36 0,-38 C -22,-36 -30,-24 -32,-8 Z" fill="#9a96a0"/>'
+              '<path d="M -26,-34 C -16,-44 4,-46 16,-42 C 4,-40 -12,-38 -22,-30 Z" fill="#c4c0c8"/>'
+              '</g>')
+
+el_kit = recolor(JK, J_SKIN, TAN).replace('<path d="M 22,-14.6 C 17,-16 11,-14.6 7,-12.6 L 7,-9.8 C 11,-11.6 17,-12.6 21,-11.4 Z" fill="#17151d"/>',
+                                           '<path d="M 22,-12.5 L 7,-12 L 7,-9.2 L 21,-9.4 Z" fill="#17151d"/>')
+el_kit = el_kit.replace('<path d="M -6,24.4 Q 1,25.6 7.5,21.4" fill="none" stroke="#a05a50" stroke-width="1.8" stroke-linecap="round"/><path d="M 7.5,21.4 L 9,20.4" stroke="#d29d86" stroke-width="1.2" stroke-linecap="round"/>',
+                        '<path d="M -7,22.4 Q 0,26 7,22.4" fill="none" stroke="#8c4a42" stroke-width="1.9" stroke-linecap="round"/>')
+ELEC_HEAD = ('<g id="h_elec">'
+             '<path d="M -34,-6 C -36,-30 -24,-40 0,-40 C 24,-40 36,-30 34,-6 L 30,-14 L -30,-14 Z" fill="#1a171d"/>' + el_kit +
+             # cap + headlamp
+             '<path d="M -34,-24 C -34,-52 34,-52 34,-24 Z" fill="#2c3a54"/><path d="M -34,-24 C -34,-48 -10,-52 0,-52 C -18,-46 -26,-36 -28,-24 Z" fill="#3d4f6e"/>'
+             '<path d="M -36,-24 L 44,-24 C 46,-20 40,-18 30,-18 L -36,-20 Z" fill="#22304a"/>'
+             '<path d="M -36,-30 L 36,-30" stroke="#1b1d24" stroke-width="4"/><rect x="-8" y="-38" width="16" height="11" rx="3" fill="#1b1d24"/><circle cx="0" cy="-32.5" r="4" fill="#fff6dc"/>'
+             '</g>')
+LAMP_GLOW = '<circle cx="0" cy="-32.5" r="22" fill="#fff4d6" opacity=".22"/><circle cx="0" cy="-32.5" r="10" fill="#fff4d6" opacity=".35"/>'
+
+VENDOR_SKIN = ['#eebd94', '#d6a27a', '#b88158', '#e5b38a', '#c99670', '#dba27a', '#f7d8b6', '#c78c66', '#c08562']
+ve_kit = recolor(TK, T_SKIN, VENDOR_SKIN)
+VENDOR_HEAD = ('<g id="h_vendor">'
+               '<path d="M -36,0 C -40,-40 -22,-58 0,-58 C 22,-58 40,-40 36,0 L 28,-10 L -28,-10 Z" fill="#1d171c"/>' + ve_kit +
+               '<path d="M -34,-6 C -36,-42 -18,-56 2,-56 C 22,-56 36,-42 34,-6 C 30,-26 18,-38 2,-40 C -16,-38 -30,-26 -34,-6 Z" fill="#1d171c"/>'
+               '<circle cx="0" cy="-62" r="14" fill="#1d171c"/><path d="M -10,-66 q 10,-8 20,0" stroke="#3a3038" stroke-width="2" fill="none"/>'
+               '<path d="M -14,-56 L 14,-56" stroke="#e8835f" stroke-width="4" stroke-linecap="round"/>'
+               '</g>')
+
+dv_kit = recolor(JK, J_SKIN, ['#f3cdb3', '#e2b294', '#c7967a', '#ecc2a6', '#d3a486', '#fbe2cf', '#d9a286', '#cfa088'])
+dv_kit = dv_kit.replace('<path d="M -6,24.4 Q 1,25.6 7.5,21.4" fill="none" stroke="#a05a50" stroke-width="1.8" stroke-linecap="round"/><path d="M 7.5,21.4 L 9,20.4" stroke="#d29d86" stroke-width="1.2" stroke-linecap="round"/>', GRIN)
+DIVER_HEAD = ('<g id="h_diver">'
+              '<path d="M -34,-4 C -38,-38 -22,-56 0,-56 C 22,-56 38,-38 34,-4 L 28,-14 L -28,-14 Z" fill="#3a2a22"/>' + dv_kit +
+              '<path d="M -34,-10 C -38,-40 -20,-56 2,-56 C 24,-56 38,-40 34,-10 C 30,-30 16,-38 -2,-38 C -18,-38 -30,-28 -34,-10 Z" fill="#3a2a22"/>'
+              '<path d="M -24,-42 C -14,-50 4,-52 14,-48 C 2,-46 -12,-42 -20,-34 Z" fill="#5e4636"/>'
+              '<g><path d="M -36,-30 C -30,-36 30,-36 36,-30" stroke="#22303f" stroke-width="3.4" fill="none"/><rect x="-23" y="-46" width="46" height="17" rx="7" fill="#22303f"/>'
+              '<rect x="-19.5" y="-43.6" width="39" height="12" rx="5" fill="#9ad7e3" opacity=".9"/><path d="M -16,-42 L -9,-42 L -15,-33 Z" fill="#fff" opacity=".55"/></g>'
+              '</g>')
+
+PAKAOMA = ('<g><path d="M 14,50 C 26,52 40,58 46,70 L 42,92 C 34,78 24,70 10,66 Z" fill="#c4463d"/>'
+           + ''.join(f'<path d="M {14 + i * 7},{52 + i * 3} L {10 + i * 8},{68 + i * 5}" stroke="#2f6d72" stroke-width="2.4"/>' for i in range(5))
+           + '<path d="M 20,60 L 44,76" stroke="#f2eee6" stroke-width="1.6"/><path d="M 42,92 L 40,130 L 30,128 L 34,90 Z" fill="#c4463d"/>'
+           '<path d="M 32,98 L 41,100 M 31,110 L 40,112 M 31,122 L 40,124" stroke="#2f6d72" stroke-width="2"/></g>')
+UNCLE_BODY = ('<path d="M -44,226 L 44,226 L 46,350 L 6,352 L 2,292 L -2,292 L -6,352 L -46,350 Z" fill="#2c3a54"/>'
+              '<path d="M -44,226 L -28,226 L -30,350 L -46,350 Z" fill="#3d4f6e"/>'
+              '<path d="M -38,350 L -12,350 L -13,462 L -33,462 Z" fill="#d9a07a"/><path d="M 38,350 L 12,350 L 13,462 L 33,462 Z" fill="#c08860"/>'
+              + flipflops('#3c4458', '#5e6270', '#d9a07a', '#c08860')
+              + arms('#d9a07a', '#c08860', '#e8bc98', tank=True)
+              + tank('#f2eee6', '#ffffff', '#d6d0c4') + PAKAOMA
+              + '<g transform="translate(52,268)"><circle r="5" fill="none" stroke="#c9ced8" stroke-width="2"/><rect x="-4" y="5" width="8" height="12" rx="2" fill="#2c3040"/></g>')
+ELEC_BODY = ('<path d="M -41,228 L 41,228 L 44,300 L 38,420 L 9,420 L 2,292 L -2,292 L -9,420 L -38,420 L -44,300 Z" fill="#5e6650"/>'
+             '<path d="M -41,228 L -24,228 L -28,300 L -26,420 L -38,420 L -44,300 Z" fill="#717a62"/>'
+             '<rect x="-46" y="300" width="14" height="30" rx="3" fill="#4f5644"/><rect x="32" y="300" width="14" height="30" rx="3" fill="#4f5644"/>'
+             '<path d="M -40,416 L -8,416 L -6,480 L -44,480 Z" fill="#1d1f26"/><path d="M 40,416 L 8,416 L 6,480 L 44,480 Z" fill="#14161c"/>'
+             '<rect x="-46" y="476" width="42" height="9" rx="3" fill="#2c2f38"/><rect x="4" y="476" width="42" height="9" rx="3" fill="#24262e"/>'
+             + arms('#e9b993', '#d29e78', '#f5d2b2')
+             + tee('#2c3a54', '#3d4f6e', '#1f2a40', hem=232)
+             + '<path d="M -44,150 L 44,150 L 44,160 L -44,160 Z" fill="#e8835f"/><path d="M -44,154 L 44,154" stroke="#f6d0b8" stroke-width="2"/>'
+             '<rect x="-44" y="222" width="88" height="12" fill="#6f5442"/><rect x="18" y="226" width="16" height="26" rx="3" fill="#5e4636"/>'
+             '<path d="M -26,226 L -26,252 M -20,226 L -18,250" stroke="#9aa1b0" stroke-width="4" stroke-linecap="round"/><rect x="-30" y="238" width="10" height="16" rx="2" fill="#c4463d"/>'
+             '<g transform="translate(-60,266)"><rect x="-6" y="-24" width="12" height="30" rx="4" fill="#1b1d24"/><rect x="-8" y="-30" width="16" height="8" rx="2" fill="#2c3040"/><circle cx="0" cy="-26" r="4" fill="#fff6dc"/></g>')
+VENDOR_BODY = ('<path d="M -42,206 L 42,206 L 48,452 L -48,452 Z" fill="#5e4a6a"/><path d="M -42,206 L -26,206 L -30,452 L -48,452 Z" fill="#6f5a7c"/>'
+               + ''.join(f'<path d="M -46,{y} L 46,{y}" stroke="#c9a87a" stroke-width="3" opacity=".7"/>' for y in (260, 330, 400))
+               + '<path d="M -34,450 L -12,450 L -12,462 L -34,462 Z" fill="#eebd94"/><path d="M 34,450 L 12,450 L 12,462 L 34,462 Z" fill="#d6a27a"/>'
+               + flipflops('#2f6d72', '#e9e4dc', '#eebd94', '#d6a27a')
+               + arms('#eebd94', '#d6a27a', '#f7d8b6')
+               + tee('#e9a090', '#f2b6a6', '#c98272', hem=214, sleeve_len=126)
+               + '<path d="M -30,96 L 30,96 L 34,236 L -34,236 Z" fill="#2f8f94"/><path d="M -30,96 L -16,96 L -20,236 L -34,236 Z" fill="#3fa2a6"/>'
+               '<path d="M -26,96 L -30,58 M 26,96 L 30,58" stroke="#2f8f94" stroke-width="4"/><rect x="-16" y="150" width="32" height="24" rx="4" fill="#257a7e"/>')
+DIVER_BODY = ('<path d="M -44,226 L 44,226 L 46,300 L 40,456 L 8,456 L 3,298 L -3,298 L -8,456 L -40,456 L -46,300 Z" fill="#1f2b46"/>'
+              '<path d="M -44,226 L -30,226 L -32,300 L -30,456 L -40,456 L -46,300 Z" fill="#2c3b5e"/>'
+              '<path d="M -40,300 L -36,456 M 38,300 L 36,456" stroke="#2fb3b8" stroke-width="3"/>'
+              '<path d="M -40,454 L -10,454 L -8,470 L -44,470 Z" fill="#f3cdb3"/><path d="M 40,454 L 10,454 L 8,470 L 44,470 Z" fill="#e2b294"/>'
+              '<path d="M -55,114 L -41,118 L -40,170 L -42,236 L -54,236 L -57,170 Z" fill="#1f2b46"/><path d="M 55,114 L 41,118 L 40,170 L 42,236 L 54,236 L 57,170 Z" fill="#162036"/>'
+              '<path d="M -55,234 L -41,234 C -40,248 -42,262 -48,264 C -54,264 -57,250 -55,234 Z" fill="#f3cdb3"/><path d="M 55,234 L 41,234 C 40,248 42,262 48,264 C 54,264 57,250 55,234 Z" fill="#e2b294"/>'
+              + tee('#1f2b46', '#2c3b5e', '#162036', hem=234, sleeve_len=230)
+              + '<path d="M -48,72 L -40,180 M 48,72 L 40,180" stroke="#2fb3b8" stroke-width="3.2"/>'
+              '<g transform="translate(70,300) rotate(10)"><path d="M -10,-50 L 10,-50 L 18,40 L -18,40 Z" fill="#2fb3b8"/><path d="M -10,-50 L 0,-50 L -4,40 L -18,40 Z" fill="#4fc6ca"/></g>')
+
+DOG = ('<g>'
+       '<path d="M 70,-30 C 92,-46 100,-70 86,-76 C 82,-62 74,-48 62,-40 Z" fill="#b98057"/>'                          # curled tail
+       '<path d="M -40,10 L -32,10 L -30,62 L -40,62 Z M -14,10 L -4,10 L -4,62 L -14,62 Z" fill="#93623f"/>'           # far legs
+       '<ellipse cx="14" cy="-14" rx="62" ry="32" fill="#b98057"/>'
+       '<path d="M -48,-14 C -48,-34 -20,-46 14,-46 C 40,-46 64,-38 72,-24 C 50,-34 20,-38 -6,-36 C -26,-34 -40,-26 -48,-14 Z" fill="#d4a274"/>'
+       '<path d="M 30,8 C 50,8 68,0 74,-14 C 70,4 52,16 28,16 Z" fill="#93623f"/>'
+       '<path d="M -52,-6 C -50,10 -36,18 -24,14 C -30,6 -36,-2 -38,-14 Z" fill="#f2e6d6"/>'                             # white chest
+       '<path d="M -26,14 L -16,14 L -16,66 L -27,66 Z M 46,8 L 56,4 L 58,64 L 47,64 Z M 20,14 L 30,12 L 31,64 L 21,64 Z" fill="#b98057"/>'
+       '<path d="M -27,62 L -14,62 C -12,68 -14,72 -18,72 L -30,72 C -32,68 -31,64 -27,62 Z M 47,60 L 60,60 C 62,66 60,70 56,70 L 44,70 C 42,66 43,62 47,60 Z M 21,60 L 33,60 C 35,66 33,70 29,70 L 18,70 C 16,66 17,62 21,60 Z" fill="#f2e6d6"/>'
+       # head, side view (full 90 degrees)
+       '<path d="M -44,-40 C -50,-70 -30,-86 -10,-80 C 4,-76 10,-60 4,-44 C 0,-34 -14,-28 -28,-30 Z" fill="#b98057"/>'
+       '<path d="M -44,-40 C -50,-70 -30,-86 -10,-80 C -26,-76 -36,-62 -34,-44 Z" fill="#d4a274"/>'
+       '<path d="M -44,-52 L -76,-50 C -82,-48 -82,-38 -76,-36 L -46,-32 Z" fill="#d4a274"/>'                           # snout
+       '<path d="M -76,-36 L -46,-32 L -46,-28 L -72,-30 Z" fill="#f2e6d6"/>'
+       '<ellipse cx="-79" cy="-46" rx="5" ry="4" fill="#2a2024"/>'
+       '<path d="M -10,-80 L -2,-104 L 8,-78 Z" fill="#93623f"/><path d="M -8,-82 L -2,-98 L 4,-80 Z" fill="#c98f6a"/>'      # ear
+       '<circle cx="-40" cy="-58" r="4.6" fill="#2a2024"/><circle cx="-41.6" cy="-59.6" r="1.6" fill="#fff"/>'
+       '<path d="M -70,-32 Q -62,-26 -54,-30" stroke="#6a4430" stroke-width="1.6" fill="none"/>'
+       '<ellipse cx="-50" cy="-44" rx="5" ry="2.6" fill="#e88a7a" opacity=".5"/>'
+       '<path d="M -36,-30 L -12,-28 L -14,-22 L -36,-24 Z" fill="#2fb3b8"/>'                                           # collar from a neighbour
+       '</g>')
+
+EXTRA_TOURIST = runpy.run_path(os.path.join(H, '..', 'episodes', 'ep01-koh-tao', 'sunrig.py'))['TOURIST']
+
+
 # ---------------------------------------------------------------- page
 def fig(svg_inner, cap, title, chips, view='0 0 400 900', h=None):
     return (f'<figure><svg viewBox="{view}" role="img" aria-label="{title}">{svg_inner}</svg>'
@@ -264,6 +373,17 @@ def stage(inner, tx=200, ty=132, s=1.4, floor=True):
 
 SUN_CITY = SG['BODY']
 cards = [
+
+    fig('<rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/><ellipse cx="200" cy="826" rx="96" ry="9" fill="#10131b"/>'
+        + '<g transform="translate(210,700) scale(1.6)">' + DOG + '</g>',
+        'หมาเกาะประจำซอย · หันข้างเต็ม 90 องศา ขนสั้นสีน้ำตาลอ่อน อกขาว หูตั้ง หางม้วน ปลอกคอสีฟ้าที่เพื่อนบ้านใส่ให้ · ตอนแรกเห่าซัน ตอนจบนั่งซ้อนท้ายมอเตอร์ไซค์', 'หมาเกาะ',
+        [('#b98057', 'ขน'), ('#f2e6d6', 'อก'), ('#2fb3b8', 'ปลอกคอ')]),
+    fig(stage(UNCLE_BODY + '<use href="#h_uncle"/>'),
+        'ลุงรถกระบะที่ท่าเรือ · ต่อยอดจากหัวเจม ผิวคล้ำแดด ผมเกรียนสีดอกเลา หนวดขาว ยิ้มกว้าง เสื้อกล้ามขาว ผ้าขาวม้าพาดไหล่ กางเกงขาสั้น รองเท้าแตะ ถือกุญแจรถ', 'ลุงรถกระบะ',
+        [('#d9a07a', 'ผิว'), ('#f2eee6', 'เสื้อกล้าม'), ('#c4463d', 'ผ้าขาวม้า')]),
+    fig(stage(ELEC_BODY + '<use href="#h_elec"/>' + LAMP_GLOW),
+        'พี่ช่างไฟ · ต่อยอดจากหัวเจม ผิวแทน หน้านิ่ง ๆ ชิล ๆ หมวกแก๊ปติดไฟฉายคาดหัว เสื้อช่างสีกรมแถบสะท้อนแสง กางเกงคาร์โก รองเท้าบูต เข็มขัดเครื่องมือ', 'พี่ช่างไฟ',
+        [('#2c3a54', 'เสื้อ'), ('#e8835f', 'แถบสะท้อนแสง'), ('#5e6650', 'กางเกง')]),
     fig(stage(SUN_CITY + '<use href="#h_sun"/>' + '<path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/><path d="M -9,58 L -11,66 M 9,58 L 9.6,66" stroke="#2a2024" stroke-width="1.8"/>'),
         'ใช้ตอนย้อนอดีต · ชุดอินดี้เดิมตาม characters/sun.html', 'ซัน · ลุคกรุงเทพ (อดีต)', [('#2f5a5e', 'เชิ้ต'), ('#2b2d36', 'กางเกง')]),
     fig(stage(SUN_ISLAND + '<use href="#h_sun"/>' + neck_after()),
@@ -282,6 +402,13 @@ cards = [
         + '<g transform="translate(200,440) rotate(-10) scale(2.6)">' + GECKO + '</g>',
         'ตุ๊กแกประจำบ้านแบบน่ารัก · หัวกลมโต ตาโตมีประกาย แก้มแดง ยิ้มนิด ๆ ตัวป้อม นิ้วกลม ไม่มีผิวตะปุ่มตะป่ำ ในฉากจะตัวเล็กอยู่มุมภาพ ไม่ซูมใกล้ · โผล่ 2 ครั้ง (คืนแรก และตอนไฟดับ)', 'ตุ๊กแก', [('#7d93b0', 'ตัว'), ('#e8835f', 'จุด'), ('#e2b04a', 'ตา')]),
 ]
+cards = cards[3:] + cards[:3]          # Sun first, new islanders after the first-round cast
+extras = ('<rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/>'
+          + '<g transform="translate(70,330) scale(.8)">' + VENDOR_BODY + '<use href="#h_vendor"/></g>'
+          + '<g transform="translate(200,330) scale(.8)">' + DIVER_BODY + '<use href="#h_diver"/></g>'
+          + '<g transform="translate(330,330) scale(.8)">' + EXTRA_TOURIST + '</g>')
+cards.append(fig(extras, 'ตัวประกอบไม่มีบท · แม่ค้าในตลาด (หัวตะวัน) · นักดำน้ำ (หัวเจม) · นักท่องเที่ยวหันหลัง ในฉากจะตัวเล็กและเบลอเป็นฉากหลัง', 'ตัวประกอบ', []))
+
 close = (fig('<rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/><path d="M -50,72 C -48,58 -30,50 -12,49 L 12,49 C 30,50 48,58 50,72 Z" fill="#86b9c8"/><use href="#h_sun"/>',
              'สีผิวเดิมของเจม (ตามกฎตอนนี้)', 'ผิวเดิม', [], view='-75 -78 150 150')
          + fig('<rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/><path d="M -50,72 C -48,58 -30,50 -12,49 L 12,49 C 30,50 48,58 50,72 Z" fill="#86b9c8"/><use href="#h_suntan"/>',
@@ -309,7 +436,7 @@ figcaption {{ font-size:13px; color:var(--muted); line-height:1.55; }} figcaptio
 .chips i {{ width:14px; height:14px; border-radius:3px; display:inline-block; box-shadow:0 0 0 1px var(--line); }}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{CLIPS}{SUN_HEADDEFS}{SUN_HEAD}{SUN_TAN}{AUNT_HEAD}{NB_HEAD}{AGENT_HEAD}</defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{CLIPS}{SUN_HEADDEFS}{SUN_HEAD}{SUN_TAN}{AUNT_HEAD}{NB_HEAD}{AGENT_HEAD}{UNCLE_HEAD}{ELEC_HEAD}{VENDOR_HEAD}{DIVER_HEAD}</defs></svg>
 <div class="wrap">
   <h1>ตัวละคร EP.01 เกาะเต่า<span>ร่างแรก · หน้าตรง · แสงกลางจากซ้าย · หน้าต่อยอดจากหัวเจมและตะวัน</span></h1>
   <div class="grid">{''.join(cards)}</div>
