@@ -195,3 +195,28 @@ TOURIST = ('<g>'
            '<circle cx="2" cy="-46" r="13" fill="#cdb48e"/><circle cx="-2" cy="-50" r="6" fill="#dcc6a2"/>'
            '<path d="M -26,-30 C -16,-36 16,-36 26,-30" stroke="#e0786a" stroke-width="3" fill="none"/>'
            '</g>')
+
+
+# ---------------------------------------------------------------- tanned skin (islander, present day: owner's choice)
+J_SKIN = ['#fbe7d8', '#efc7b0', '#d29d86', '#f4d4c0', '#ddb19c', '#fff5ee', '#e6b29c', '#dcae99', '#e6bba5']
+TAN = ['#e9b993', '#d29e78', '#b4805e', '#dfac85', '#c4906c', '#f5d2b2', '#c8906c', '#c08a6a', '#cc9a76']
+
+
+def tanify(svg):
+    for o, n in zip(J_SKIN, TAN):
+        svg = svg.replace(f'"{o}"', f'"{n}"')
+    return svg
+
+
+_tan_heads = HEAD_DEFS[len(CLIPS):]
+for v in HEADS.values():
+    _tan_heads = _tan_heads.replace(f'id="{v}"', f'id="{v}_t"')
+HEAD_DEFS += tanify(_tan_heads)
+
+
+def body_tan(**kw):
+    """Same as body() but with the tanned skin; head ids get the _t suffix."""
+    out = body(**kw)
+    for v in HEADS.values():
+        out = out.replace(f'href="#{v}"', f'href="#{v}_t"')
+    return tanify(out)
