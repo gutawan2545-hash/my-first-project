@@ -160,19 +160,18 @@ UNCLE_STATIC = ISL['UNCLE_BODY'] + '<use href="#h_uncle"/>'
 tp0, tp1 = at('N04', .5), at('U01') - .1
 pier_j = C.james_then('jp1', 'jP3', [(0, 'rest'), (tp1 + 1, 'rest'), (at('U01', .7), 'hip')], [(0, 'relax')], tote=True, camera=True)
 uncle_seqR = [(0, 'relax'), (tp1 - .5, 'relax')] + RG.talk_seq([T['U01'][:2]], 'relax', 'explain', 'point_up', seed=5)[1:]
-pier_svg = put(pier, J_PIER, pier_j)
-pier_svg = put(pier_svg, UNCLE_STATIC, C.uncle('un1', [(0, 'relax')], uncle_seqR, head='unA'))
-pier_svg = pier_svg.replace('translate(30,420) scale(1.0)', 'translate(96,430) scale(1.0)')
+pier_un = C.uncle('un1', [(0, 'relax')], uncle_seqR, head='unA')
+pier_svg = CS.pier2([(pier_un, 'translate(66,420) scale(.8)', (66, 804), None), (pier_j, 'translate(176,425) scale(1.0)', (176, 905), 'sun')])
 labels = ''
-for i, (txt, x, y, fr) in enumerate((('พัดลม', 380, 520, .64), ('หม้อหุงข้าว', 468, 556, .76), ('กระทะ', 400, 470, .88))):
+for i, (txt, x, y, fr) in enumerate((('พัดลม', 300, 668, .64), ('หม้อหุงข้าว', 452, 470, .76), ('กระทะ', 436, 392, .88))):
     a = at('N04', fr)
     labels += M.pop(f'<g transform="translate({x},{y})"><rect x="{-12 - len(txt) * 6.5:.0f}" y="-15" width="{24 + len(txt) * 13:.0f}" height="30" rx="15" fill="#120e1c" fill-opacity=".86" stroke="#9a86ff"/>'
                     f'<text x="0" y="5" {M.TH} font-size="14" font-weight="800" fill="#f2eefa" text-anchor="middle">{txt}</text></g>', a, tp1 - .1, .45)
 shot('pier', tp0, tp1, breath(pier_svg), [face('jP3', glance=[[tp0, 2.2, -1.2]], seed=10)], M.tag('วันย้ายบ้าน · ท่าเรือแม่หาด', tp0 + .2, tp1 - .1) + labels,
      cam=f'1,1.05,10,0,{tp0},{tp1}', past=True)
-pier_u = pier_svg.replace('translate(170,330) scale(1.4)', 'translate(372,344) scale(1.4)').replace('translate(96,430) scale(1.0)', 'translate(124,430) scale(1.0)')
+pier_u = pier_svg
 shot('pier_uncle', tp1, at('G01') - .1, breath(pier_u), [face('unA', 'U01', seed=11), face('jP3', glance=[[tp1, -2.4, 0]], seed=10)],
-     frame=(1.6, 150, 600), cam=f'1,1.04,0,0,{tp1},{at("G01")}', past=True)
+     frame=(1.45, 120, 600), cam=f'1,1.04,0,0,{tp1},{at("G01")}', past=True)
 
 # ================================================================ 8. the stairs: agent at the foot, James climbing
 A('h_agent', 'agA'); A('sh_annoy', 'jP4'); A('sh_pant', 'jP5')

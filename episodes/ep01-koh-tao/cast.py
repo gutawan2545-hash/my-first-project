@@ -176,7 +176,7 @@ def neighbour(uid, seqL=None, seqR=None, head='h_nb'):
 
 
 # ---------------------------------------------------------------- animated heads
-ALL_DEFS = R.HEAD_DEFS + ISL['CLIPS'] + ISL['AUNT_HEAD'] + ISL['AGENT_HEAD'] + ISL['UNCLE_HEAD'] + ISL['ELEC_HEAD'] + ISL['NB_HEAD']
+ALL_DEFS = R.HEAD_DEFS + ISL['CLIPS'] + ISL['AUNT_HEAD'] + ISL['AGENT_HEAD'] + ISL['UNCLE_HEAD'] + ISL['ELEC_HEAD'] + ISL['NB_HEAD'] + ISL['LAE_BACK'] + ISL['LAE_HEAD']
 _made = {}
 
 

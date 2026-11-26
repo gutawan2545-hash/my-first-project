@@ -259,3 +259,37 @@ def ab_card(t0, t1, toggles):
     foot = M.reveal(f'<text x="270" y="590" {TH} font-size="15" font-weight="700" fill="#a99cc8" text-anchor="middle">ตอบในคอมเมนต์ได้เลย</text>', t0 + 1.6, t1, 'fade', .6)
     light = fine_dust((0, 0, 540, 960), 120, 131, '#c9a8ff')
     return compose(fid, 'night', bg, '', [], eye + q + opts + hl + foot, light, '', '', '')
+
+
+# ================================================================ Mae Haad pier, true scale (people stand ON the deck, full figures)
+def pier2(chars_in):
+    """chars_in: [(inner, transform, foot_xy, face)]. Horizon y=360; James scale 1.0 = 320 px/m at feet y=905."""
+    fid = 'PR'
+    from style4 import fine_dust as FD
+    sky = '<rect width="540" height="380" fill="#8ec4e8"/><rect y="230" width="540" height="150" fill="#d6ecf4"/>' + S5.cloud_bank(-20, 170, 280, 50, '#ffffff', '#eef3f8', '#c9d4e4', 3) + S5.cloud_bank(300, 120, 260, 40, '#ffffff', '#eef3f8', '#c9d4e4', 6)
+    isl = S6.tropical_island(430, 372, 260, 70, 41, .4, '#d6ecf4', False, True, 2)
+    sea = ('<rect y="360" width="540" height="140" fill="url(#s5sea)"/>' + S6.whitecaps(366, 480, 40, 5)
+           + f'<g transform="translate(330,402) scale(.62)">{K.ferry(0, 0, 1)}</g>' + K.longtail(90, 430, .42))
+    # deck in perspective: vanishing point (270,360)
+    deck = '<path d="M -10,480 L 550,480 L 550,970 L -10,970 Z" fill="#b89a7a"/>'
+    for i in range(-9, 11):
+        x = 270 + i * 60
+        deck += f'<path d="M {270 + (x - 270) * .22:.0f},480 L {x},970" stroke="#9a7c5e" stroke-width="2"/>'
+    for k in range(9):
+        y = 480 + (k / 8) ** 1.7 * 490
+        deck += f'<path d="M -10,{y:.0f} L 550,{y:.0f}" stroke="#a68866" stroke-width="{1 + k * .35:.1f}" opacity=".7"/>'
+    deck += '<rect x="-10" y="474" width="560" height="8" fill="#7d6450"/>'
+    posts = ''.join(f'<rect x="{x}" y="436" width="9" height="44" rx="2" fill="#7d553c"/>' for x in (20, 140, 260, 380, 500)) + '<path d="M 24,446 Q 84,462 144,446 Q 204,462 264,446 Q 324,462 384,446 Q 444,462 504,446" stroke="#c9b08a" stroke-width="2.4" fill="none"/>'
+    bollard = '<g transform="translate(470,940)"><rect x="-26" y="-60" width="52" height="60" rx="8" fill="#3a3d48"/><rect x="-32" y="-66" width="64" height="12" rx="5" fill="#4a4e5a"/></g>'
+    # the move: boxes ~45 cm, fan, rice cooker, wok on top (320 px/m at y~900)
+    stack = (K.cardboard(330, 760, 150, 140, 'ครัว') + K.cardboard(344, 626, 130, 134, 'มีด') + K.cardboard(354, 506, 116, 120)
+             + '<g transform="translate(412,506)"><rect x="-34" y="-70" width="68" height="70" rx="8" fill="#f4efe6"/><rect x="-34" y="-70" width="68" height="18" rx="8" fill="#d6d0c4"/><rect x="18" y="-60" width="5" height="12" fill="#9aa1b0"/></g>'
+             + '<g transform="translate(410,436)"><ellipse cx="0" cy="0" rx="50" ry="10" fill="#2a2c34"/><path d="M 46,-2 L 96,-14" stroke="#2a2c34" stroke-width="7" stroke-linecap="round"/></g>'
+             + '<g transform="translate(292,905)"><rect x="-6" y="-120" width="12" height="120" fill="#d6d0c4"/><ellipse cx="0" cy="0" rx="40" ry="10" fill="#c9c3b8"/>'
+             '<circle cx="0" cy="-160" r="48" fill="none" stroke="#e8e4dc" stroke-width="4"/><circle cx="0" cy="-160" r="48" fill="#7fb3c4" opacity=".25"/>'
+             + ''.join(f'<ellipse cx="0" cy="-186" rx="12" ry="26" fill="#9ccbd6" transform="rotate({a} 0 -160)"/>' for a in (0, 120, 240)) + '<circle cx="0" cy="-160" r="9" fill="#e8e4dc"/></g>')
+    ch = [char(fid, inner, tr, (-40, -40), foot, 'warm', face) for inner, tr, foot, face in chars_in]
+    sh = ''.join(CL.contact_shadow(f[0], f[1], 60 * (f[1] - 360) / 545) for _, _, f, _ in chars_in) + CL.contact_shadow(405, 902, 90, 8) + CL.contact_shadow(292, 906, 46, 6)
+    back = f'<g filter="url(#s4dof2)">{sky}{isl}</g><g filter="url(#s4dof)">{sea}</g>' + deck + posts
+    light = CL.glow(-40, -40, 420, '#fffaf0', .2, core=False) + FD((0, 340, 540, 760), 140, 22, '#ffffff', density_far=.75)
+    return compose(fid, 'warm', back, sh, ch, stack + bollard, light, '', '', S5.S5DEFS + S6.S6DEFS)
