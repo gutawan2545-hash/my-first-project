@@ -19,3 +19,5 @@ episodes/ep-4am-transfer/v2/mix.wav
 pipeline/v2/outro.wav
 __pycache__/
 *.pyc
+episodes/ep01-koh-tao/clip_pages/
+episodes/ep01-koh-tao/mix.wav

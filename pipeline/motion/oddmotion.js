@@ -11,6 +11,11 @@
  *   data-float="amp,period"  idle bob     data-breath="amp,period"  character breathing (inner transform group)
  * Classes picked up for micro animation: .om-dust (drift + twinkle) .om-beam (soft flicker) .om-cloud (slow drift)
  *   .om-wave (swell) .om-caps (whitecaps slide) .om-spray (burst pulse)
+ * Joints (articulated limbs): <g data-rot="px,py" data-k="t,deg;t,deg;..." data-sway="amp,period,phase"> rotates about the pivot;
+ *   nest an elbow group inside a shoulder group so the forearm follows the upper arm (shoulder -> elbow -> hand).
+ * Moves: data-mv="t,x,y;t,x,y" keyframed translation (walk in / out of frame) with data-bob="amp" step bob while moving.
+ * Zoom blur transition: data-zb="t0,dur,in|out,blurId" on a wrapper group (blurId = feGaussianBlur element id).
+ * Lip sync: talk entries may be [t0,t1,key] with window.OM_ENV[key] = loudness 0..1 at 50 fps (from the voice file).
  * Faces: OM.face(svg, id, {talk:[[t0,t1],...], glance:[[t,dx,dy],...], blinkEvery, seed})
  *   expects defs groups  #id-iL #id-iR (irises)  #id-bl (closed lids, display none)  #id-m1 #id-m2 (open mouths)
  *   <use> clones follow their source, so state is set on the source groups (display attribute, not CSS).
@@ -39,6 +44,17 @@
   const clamp = v => Math.max(0, Math.min(1, v));
   const prog = (t, at, dur) => clamp((t - at) / Math.max(dur, 1e-6));
   const rnd = seed => { let s = seed >>> 0 || 1; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
+
+  function keyed(keys, t, n) {                      // keys: [[t, v1, v2...]], eased inOut between keys
+    if (!keys.length) return Array(n).fill(0);
+    if (t <= keys[0][0]) return keys[0].slice(1);
+    for (let i = 1; i < keys.length; i++) if (t < keys[i][0]) {
+      const a = keys[i - 1], b = keys[i], q = E.inOut((t - a[0]) / Math.max(1e-6, b[0] - a[0]));
+      return a.slice(1).map((v, j) => v + (b[j + 1] - v) * q);
+    }
+    return keys[keys.length - 1].slice(1);
+  }
+  const parseKeys = str => (str || '').split(';').filter(x => x.trim()).map(x => x.split(',').map(Number));
 
   // ---------------------------------------------------------------- element setup
   function prepare(el) {
@@ -132,7 +148,10 @@
     const S = { svg, dur: opts.dur || 8, items: [], micro: [], faces: [], cam: null, t: 0 };
     svg.querySelectorAll('[data-in]').forEach(el => S.items.push(prepare(el)));
     const cam = svg.querySelector('[data-cam]');
-    if (cam) { const [s0, s1, dx, dy] = cam.dataset.cam.split(',').map(Number); S.cam = { el: cam, s0, s1, dx, dy, base: cam.getAttribute('transform') || '' }; }
+    if (cam) { const [s0, s1, dx, dy, c0, c1] = cam.dataset.cam.split(',').map(Number); S.cam = { el: cam, s0, s1, dx, dy, c0: isNaN(c0) ? 0 : c0, c1: isNaN(c1) ? S.dur : c1, base: cam.getAttribute('transform') || '' }; }
+    svg.querySelectorAll('[data-rot]').forEach(el => { const [px, py] = el.dataset.rot.split(',').map(Number); const sw = (el.dataset.sway || '0,3,0').split(',').map(Number); S.micro.push({ type: 'rot', el, px, py, keys: parseKeys(el.dataset.k), sw, base: el.getAttribute('transform') || '' }); });
+    svg.querySelectorAll('[data-mv]').forEach(el => S.micro.push({ type: 'mv', el, keys: parseKeys(el.dataset.mv), bob: +(el.dataset.bob || 0), base: el.getAttribute('transform') || '' }));
+    svg.querySelectorAll('[data-zb]').forEach(el => { const [z0, zd, dir, bid] = el.dataset.zb.split(','); S.micro.push({ type: 'zb', el, z0: +z0, zd: +zd, dir, blur: svg.ownerDocument.getElementById(bid), base: el.getAttribute('transform') || '' }); });
     svg.querySelectorAll('[data-par]').forEach(el => S.micro.push({ type: 'par', el, k: +el.dataset.par, base: el.getAttribute('transform') || '' }));
     svg.querySelectorAll('[data-float]').forEach(el => { const [a, p] = el.dataset.float.split(',').map(Number); S.micro.push({ type: 'float', el, a, p, ph: Math.random() * 6, base: el.getAttribute('transform') || '' }); });
     svg.querySelectorAll('[data-breath]').forEach(el => { const [a, p] = (el.dataset.breath || '1.2,3.6').split(',').map(Number); S.micro.push({ type: 'breath', el, a, p, base: el.getAttribute('transform') || '' }); });
@@ -142,15 +161,16 @@
     svg.querySelectorAll('.om-wave').forEach((el, i) => S.micro.push({ type: 'wave', el, i, base: el.getAttribute('transform') || '' }));
     svg.querySelectorAll('.om-caps').forEach((el, i) => S.micro.push({ type: 'caps', el, i, base: el.getAttribute('transform') || '' }));
     svg.querySelectorAll('.om-spray').forEach((el, i) => S.micro.push({ type: 'spray', el, i, base: el.getAttribute('transform') || '' }));
+    svg.querySelectorAll('.om-rain').forEach((el, i) => S.micro.push({ type: 'rain', el, i }));
+    svg.querySelectorAll('.om-envbar').forEach(el => S.micro.push({ type: 'envbar', el, key: el.dataset.key, t0: +el.dataset.t0, i: +el.dataset.i }));
     (opts.faces || []).forEach(f => S.faces.push(faceSetup(svg, f)));
     return S;
   }
 
   function seekScene(S, t) {
     S.t = t;
-    const u = t / S.dur;
     if (S.cam) {
-      const q = E.inOut(clamp(u));
+      const q = E.inOut(clamp((t - S.cam.c0) / Math.max(1e-6, S.cam.c1 - S.cam.c0)));
       const s = S.cam.s0 + (S.cam.s1 - S.cam.s0) * q, dx = S.cam.dx * q, dy = S.cam.dy * q;
       S.cam.el.setAttribute('transform', `${S.cam.base} translate(${270 + dx},${480 + dy}) scale(${s.toFixed(4)}) translate(-270,-480)`);
       S.camState = { dx, dy };
@@ -165,6 +185,11 @@
         case 'cloud': m.el.setAttribute('transform', `${m.base} translate(${(t * (2 + m.i % 3)).toFixed(2)},0)`); break;
         case 'wave': m.el.setAttribute('transform', `${m.base} translate(${(8 * Math.sin(t * .9 + m.i)).toFixed(2)},${(5 * Math.sin(t * 1.3 + m.i)).toFixed(2)})`); break;
         case 'caps': m.el.setAttribute('transform', `${m.base} translate(${((t * 9) % 30 - 15).toFixed(2)},0)`); m.el.setAttribute('opacity', (.85 + .15 * Math.sin(t * 2)).toFixed(3)); break;
+        case 'rot': { const [a] = keyed(m.keys, t, 1); const sw = m.sw[0] ? m.sw[0] * Math.sin(2 * Math.PI * t / m.sw[1] + m.sw[2]) : 0; m.el.setAttribute('transform', `${m.base} rotate(${(a + sw).toFixed(2)} ${m.px} ${m.py})`); break; }
+        case 'mv': { const [x, y] = keyed(m.keys, t, 2); let b = 0; if (m.bob) { const [x2, y2] = keyed(m.keys, t - .04, 2); if (Math.hypot(x - x2, y - y2) > .05) b = -m.bob * Math.abs(Math.sin(t * Math.PI * 3.6)); } m.el.setAttribute('transform', `${m.base} translate(${x.toFixed(2)},${(y + b).toFixed(2)})`); break; }
+        case 'zb': { let q = clamp((t - m.z0) / m.zd); q = m.dir === 'out' ? E.in(q) : 1 - E.out(q); const sc = 1 + .35 * q; m.el.setAttribute('transform', `${m.base} translate(270,480) scale(${sc.toFixed(4)}) translate(-270,-480)`); if (m.blur) m.blur.setAttribute('stdDeviation', (14 * q).toFixed(2)); m.el.setAttribute('opacity', (1 - .25 * q).toFixed(3)); break; }
+        case 'rain': m.el.setAttribute('transform', `translate(${(-(t * 90) % 18).toFixed(2)},${((t * 420 + m.i * 37) % 60).toFixed(2)})`); break;
+        case 'envbar': { const env = window.OM_ENV && window.OM_ENV[m.key]; const j = Math.floor((t - m.t0) * 50); const v = env && j >= 0 && j < env.length ? env[j] : 0; const k = .18 + .82 * v * (.55 + .45 * Math.sin(m.i * 1.9 + t * 11)); m.el.setAttribute('transform', `scale(1,${k.toFixed(3)})`); break; }
         case 'spray': { const ph = (t % 2.6) / 2.6; const s = .85 + .3 * Math.sin(ph * Math.PI); m.el.setAttribute('transform', `${m.base} translate(150,860) scale(${s.toFixed(3)}) translate(-150,-860)`); m.el.setAttribute('opacity', (.55 + .45 * Math.sin(ph * Math.PI)).toFixed(3)); break; }
       }
     }
@@ -178,7 +203,8 @@
     const g = id => root.getElementById(`${f.id}-${id}`);
     const r = rnd(f.seed || 7);
     const blinks = [];
-    for (let t = .6 + r() * 1.5; t < 120; t += (f.blinkEvery || 3.2) * (.6 + r() * .8)) blinks.push(t);
+    for (let t = .6 + r() * 1.5; t < 200; t += (f.blinkEvery || 3.2) * (.6 + r() * .8)) blinks.push(t);
+    (f.blinkAt || []).forEach(b => blinks.push(b));
     const talkPat = [];                                       // mouth shapes cycle ~9 Hz with natural variation
     for (let i = 0; i < 2000; i++) talkPat.push(r() < .55 ? 2 : (r() < .7 ? 1 : 0));
     return { f, iL: g('iL'), iR: g('iR'), bl: g('bl'), m1: g('m1'), m2: g('m2'), blinks, talkPat };
@@ -190,7 +216,11 @@
     for (const [at, dx, dy] of (f.glance || [])) { const q = E.inOut(prog(t, at, .35)); gx = gx + (dx - gx) * q; gy = gy + (dy - gy) * q; }
     [F.iL, F.iR].forEach(e => e && e.setAttribute('transform', `translate(${gx.toFixed(2)},${gy.toFixed(2)})`));
     let shape = 0;
-    for (const [a, b] of (f.talk || [])) if (t >= a && t < b) { shape = F.talkPat[Math.floor((t - a) * 9) % F.talkPat.length]; if (b - t < .08) shape = 0; }
+    for (const [a, b, key] of (f.talk || [])) if (t >= a && t < b) {
+      const env = key && window.OM_ENV && window.OM_ENV[key];
+      if (env) { const i = Math.floor((t - a) * 50), v = Math.max(env[i] || 0, .7 * (env[i + 1] || 0)); shape = v < .2 ? 0 : (v < .56 ? 1 : 2); }
+      else { shape = F.talkPat[Math.floor((t - a) * 9) % F.talkPat.length]; if (b - t < .08) shape = 0; }
+    }
     if (F.m1) F.m1.setAttribute('display', shape === 1 ? 'inline' : 'none');
     if (F.m2) F.m2.setAttribute('display', shape === 2 ? 'inline' : 'none');
   }
