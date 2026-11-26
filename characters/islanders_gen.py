@@ -231,17 +231,23 @@ NB_BODY = (shorts('#d8655a', '#e8836f', '#b44e46', '#f8d8c6', '#ebbca6')
            '<path d="M -16,0 C -24,-2 -26,12 -18,16 M 16,0 C 24,-2 26,12 18,16" stroke="#22303f" stroke-width="3" fill="none"/></g>')
 
 GECKO = ('<g>'
-         '<path d="M 0,-70 C 14,-70 18,-54 16,-40 C 14,-20 14,20 10,40 C 6,60 -6,60 -10,40 C -14,20 -14,-20 -16,-40 C -18,-54 -14,-70 0,-70 Z" fill="#7d93b0"/>'
-         '<path d="M 6,46 C 10,70 22,86 40,92 C 28,94 14,86 4,70 Z" fill="#7d93b0"/>'
-         '<path d="M -16,-36 L -40,-48 M 16,-36 L 40,-50 M -14,24 L -38,40 M 14,24 L 38,36" stroke="#7d93b0" stroke-width="9" stroke-linecap="round"/>'
-         + ''.join(f'<circle cx="{x}" cy="{y}" r="4" fill="#7d93b0"/><circle cx="{x + dx}" cy="{y + dy}" r="3.4" fill="#7d93b0"/><circle cx="{x - dy}" cy="{y + dx}" r="3.4" fill="#7d93b0"/>'
-                   for x, y, dx, dy in ((-44, -50, -4, -4), (44, -52, 4, -4), (-42, 42, -4, 4), (42, 38, 4, 4)))
-         + '<path d="M 0,-70 C 8,-70 12,-60 12,-50 C 6,-56 -6,-56 -12,-50 C -12,-60 -8,-70 0,-70 Z" fill="#9ab0c8"/>'
-         + ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e8835f"/>' for x, y, r in ((-6, -30, 3), (6, -18, 3.4), (-7, -4, 3), (7, 10, 3.4), (-5, 24, 3), (4, 36, 2.6), (12, 64, 2.4), (24, 80, 2)))
-         + '<ellipse cx="-9" cy="-60" rx="5.5" ry="6" fill="#e2b04a"/><ellipse cx="9" cy="-60" rx="5.5" ry="6" fill="#d6a43e"/>'
-         '<rect x="-10" y="-64" width="2.4" height="8" rx="1.2" fill="#1a1626"/><rect x="8" y="-64" width="2.4" height="8" rx="1.2" fill="#1a1626"/>'
-         '<circle cx="-11" cy="-62" r="1.4" fill="#fff"/><circle cx="7" cy="-62" r="1.4" fill="#fff"/>'
-         '<path d="M -6,-50 Q 0,-46 6,-50" stroke="#4a5a74" stroke-width="1.4" fill="none"/>'
+         # tail: short, chubby, curled
+         '<path d="M 4,40 C 14,62 34,70 42,58 C 48,48 40,40 32,44 C 38,48 36,54 30,54 C 20,54 14,44 12,34 Z" fill="#8aa2c2"/>'
+         # stubby legs with round toe pads
+         + ''.join(f'<path d="M {x0},{y0} L {x1},{y1}" stroke="#8aa2c2" stroke-width="11" stroke-linecap="round"/>'
+                   f'<circle cx="{x1 + dx}" cy="{y1 - 5}" r="4.2" fill="#9cb3d0"/><circle cx="{x1 + dx * 1.6:.1f}" cy="{y1}" r="4.2" fill="#9cb3d0"/><circle cx="{x1 + dx}" cy="{y1 + 5}" r="4.2" fill="#9cb3d0"/>'
+                   for x0, y0, x1, y1, dx in ((-14, -4, -30, -16, -5), (14, -4, 30, -16, 5), (-12, 26, -28, 38, -5), (12, 26, 28, 38, 5)))
+         # round body, soft belly-light band on the lit side
+         + '<ellipse cx="0" cy="12" rx="20" ry="30" fill="#8aa2c2"/><path d="M -20,12 C -20,-6 -12,-16 -4,-18 C -12,-6 -14,10 -12,30 C -16,26 -20,20 -20,12 Z" fill="#a7bcd8"/>'
+         # big round head
+         '<ellipse cx="0" cy="-34" rx="27" ry="23" fill="#8aa2c2"/><path d="M -27,-34 C -27,-48 -16,-56 -4,-57 C -16,-50 -21,-40 -20,-26 C -24,-28 -27,-31 -27,-34 Z" fill="#a7bcd8"/>'
+         # a few round orange spots, no bumps
+         + ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#f0956e"/>' for x, y, r in ((-7, 0, 3.6), (8, 10, 3.2), (-5, 24, 3), (10, -48, 2.6), (-14, -46, 2.2), (30, 56, 2.4)))
+         # big sparkly eyes, blush, tiny smile
+         + '<circle cx="-11" cy="-36" r="8.5" fill="#2a2433"/><circle cx="11" cy="-36" r="8.5" fill="#2a2433"/>'
+         '<circle cx="-13.6" cy="-39" r="3.2" fill="#fff"/><circle cx="8.4" cy="-39" r="3.2" fill="#fff"/><circle cx="-8.6" cy="-33" r="1.4" fill="#fff"/><circle cx="13.4" cy="-33" r="1.4" fill="#fff"/>'
+         '<ellipse cx="-19" cy="-24" rx="5" ry="2.8" fill="#f09a9a" opacity=".7"/><ellipse cx="19" cy="-24" rx="5" ry="2.8" fill="#f09a9a" opacity=".7"/>'
+         '<path d="M -5,-23 Q 0,-19 5,-23" stroke="#4a5a74" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
          '</g>')
 
 # ---------------------------------------------------------------- page
@@ -273,8 +279,8 @@ cards = [
         'เพื่อนบ้านต่างชาติ ครูสอนดำน้ำ · ต่อยอดจากหัวเจม ผิวขาวโดนแดดแดง กระที่จมูก ผมน้ำตาลอ่อนซีดแดด หนวดเคราจาง เสื้อยืดร้านดำน้ำ ถือหน้ากาก เดินเท้าเปล่า', 'เพื่อนบ้านต่างชาติ',
         [('#f8d8c6', 'ผิว'), ('#a87c50', 'ผม'), ('#2c3a54', 'เสื้อ'), ('#d8655a', 'กางเกง')]),
     fig('<rect width="400" height="900" fill="#1b1f2b"/>' + ''.join(f'<rect x="{x}" y="{y}" width="78" height="78" fill="#e9e4dc" stroke="#d2ccc2" stroke-width="2"/>' for x in range(4, 400, 80) for y in range(250, 650, 80))
-        + '<g transform="translate(200,450) rotate(-14) scale(2.1)">' + GECKO + '</g>',
-        'ตุ๊กแกประจำบ้าน · สีเทาอมฟ้า จุดส้ม ตาโต เกาะผนังกระเบื้อง โผล่ 2 ครั้ง (คืนแรก และตอนไฟดับ)', 'ตุ๊กแก', [('#7d93b0', 'ตัว'), ('#e8835f', 'จุด'), ('#e2b04a', 'ตา')]),
+        + '<g transform="translate(200,440) rotate(-10) scale(2.6)">' + GECKO + '</g>',
+        'ตุ๊กแกประจำบ้านแบบน่ารัก · หัวกลมโต ตาโตมีประกาย แก้มแดง ยิ้มนิด ๆ ตัวป้อม นิ้วกลม ไม่มีผิวตะปุ่มตะป่ำ ในฉากจะตัวเล็กอยู่มุมภาพ ไม่ซูมใกล้ · โผล่ 2 ครั้ง (คืนแรก และตอนไฟดับ)', 'ตุ๊กแก', [('#7d93b0', 'ตัว'), ('#e8835f', 'จุด'), ('#e2b04a', 'ตา')]),
 ]
 close = (fig('<rect x="-75" y="-78" width="150" height="150" fill="#1b1f2b"/><path d="M -50,72 C -48,58 -30,50 -12,49 L 12,49 C 30,50 48,58 50,72 Z" fill="#86b9c8"/><use href="#h_sun"/>',
              'สีผิวเดิมของเจม (ตามกฎตอนนี้)', 'ผิวเดิม', [], view='-75 -78 150 150')
