@@ -356,6 +356,98 @@ DOG = ('<g>'
        '<path d="M -36,-30 L -12,-28 L -14,-22 L -36,-24 Z" fill="#2fb3b8"/>'                                           # collar from a neighbour
        '</g>')
 
+# ---------------------------------------------------------------- dog v2: sitting, front view, built like Dean's sheet (round head, full cheeks, block shading)
+DC, DL, DS, DCR, DCS = '#c8915e', '#deb183', '#a5703f', '#f6eadb', '#e2cfb6'
+DOG = (f'<g>'
+       # tail wagging up on the viewer's right
+       f'<path d="M 52,150 C 80,140 92,110 86,92 C 96,104 98,130 84,150 C 76,160 62,164 52,162 Z" fill="{DC}"/>'
+       f'<path d="M 86,92 C 92,100 94,112 92,122 C 90,110 88,100 86,92 Z" fill="{DL}"/>'
+       # haunches + body
+       f'<ellipse cx="-44" cy="140" rx="26" ry="30" fill="{DC}"/><ellipse cx="44" cy="140" rx="26" ry="30" fill="{DS}"/>'
+       f'<path d="M -56,146 C -62,90 -40,36 0,34 C 40,36 62,90 56,146 C 54,164 34,172 0,172 C -34,172 -54,164 -56,146 Z" fill="{DC}"/>'
+       f'<path d="M 22,40 C 48,52 62,96 56,146 C 54,162 40,170 20,172 C 36,150 42,104 22,40 Z" fill="{DS}"/>'
+       f'<path d="M -46,80 C -40,56 -26,42 -12,38 C -30,54 -38,80 -40,116 Z" fill="{DL}"/>'
+       # cream chest
+       f'<path d="M -24,44 C -14,36 14,36 24,44 C 28,84 16,114 0,120 C -16,114 -28,84 -24,44 Z" fill="{DCR}"/>'
+       f'<path d="M 8,38 C 18,38 24,42 24,44 C 28,84 16,114 0,120 C 12,100 16,70 8,38 Z" fill="{DCS}"/>'
+       # front legs, a bit longer than the cat's, round paws
+       f'<path d="M -24,166 L -24,108 C -24,98 -6,98 -6,108 L -6,166 Z" fill="{DL}"/>'
+       f'<path d="M 6,166 L 6,108 C 6,98 24,98 24,108 L 24,166 Z" fill="{DC}"/>'
+       f'<ellipse cx="-15" cy="168" rx="13" ry="7" fill="{DCR}"/><ellipse cx="15" cy="168" rx="13" ry="7" fill="{DCS}"/>'
+       f'<path d="M -19,164 L -19,170 M -11,164 L -11,170 M 11,164 L 11,170 M 19,164 L 19,170" stroke="{DCS}" stroke-width="1.2"/>'
+       # collar with a tag
+       f'<path d="M -28,40 C -14,50 14,50 28,40 L 28,47 C 14,57 -14,57 -28,47 Z" fill="#2fb3b8"/><circle cx="0" cy="56" r="5" fill="#e2b04a"/>'
+       # head: ears up with soft folded tips
+       f'<path d="M -46,-30 L -54,-76 C -42,-74 -28,-60 -22,-46 Z" fill="{DC}"/><path d="M -44,-36 L -50,-68 C -42,-64 -34,-54 -30,-44 Z" fill="#e8b4a0"/>'
+       f'<path d="M -54,-76 C -50,-70 -46,-66 -40,-64 L -48,-60 Z" fill="{DS}"/>'
+       f'<path d="M 46,-30 L 54,-76 C 42,-74 28,-60 22,-46 Z" fill="{DS}"/><path d="M 44,-36 L 50,-68 C 42,-64 34,-54 30,-44 Z" fill="#d49c8a"/>'
+       f'<path d="M -54,4 C -56,-34 -30,-52 0,-52 C 30,-52 56,-34 54,4 C 52,32 30,46 0,46 C -30,46 -52,32 -54,4 Z" fill="{DC}"/>'
+       f'<path d="M 30,-46 C 50,-34 58,-10 54,8 C 50,32 28,46 0,46 C 24,38 40,22 42,2 C 44,-18 40,-34 30,-46 Z" fill="{DS}"/>'
+       f'<path d="M -50,-20 C -42,-40 -22,-50 -6,-50 C -24,-44 -36,-34 -44,-14 Z" fill="{DL}"/>'
+       # cream muzzle (longer than the cat's), black round nose, happy open mouth
+       f'<path d="M -22,12 C -24,-4 -8,-8 0,-2 C 8,-8 24,-4 22,12 C 20,30 10,38 0,38 C -10,38 -20,30 -22,12 Z" fill="{DCR}"/>'
+       f'<path d="M 4,-2 C 12,-8 24,-4 22,12 C 20,30 10,38 2,38 C 12,30 16,16 4,-2 Z" fill="{DCS}"/>'
+       f'<ellipse cx="0" cy="4" rx="7.5" ry="5.6" fill="#2a2024"/><ellipse cx="-2.4" cy="2.4" rx="2.4" ry="1.4" fill="#6a5a60"/>'
+       f'<path d="M 0,9.6 L 0,14 M -9,15 Q -4.5,21 0,15 Q 4.5,21 9,15" fill="none" stroke="#6a4430" stroke-width="1.5" stroke-linecap="round"/>'
+       f'<path d="M -5,18 Q 0,30 5,18 Z" fill="#e8838a"/><path d="M 0,19 L 0,25" stroke="#c96a70" stroke-width="1"/>'
+       f'<ellipse cx="-32" cy="12" rx="7" ry="4" fill="#f09a8c" opacity=".5"/><ellipse cx="32" cy="12" rx="7" ry="4" fill="#e08c7c" opacity=".45"/>'
+       # big friendly eyes, a brow tuft each (a Thai street dog's expressive "eyebrows")
+       f'<ellipse cx="-20" cy="-14" rx="7.4" ry="8.2" fill="#3a2614"/><ellipse cx="20" cy="-14" rx="7.4" ry="8.2" fill="#3a2614"/>'
+       f'<circle cx="-22.6" cy="-17.4" r="2.8" fill="#fff8ee"/><circle cx="17.4" cy="-17.4" r="2.8" fill="#fff8ee"/><circle cx="-17.6" cy="-11" r="1.2" fill="#fff8ee"/><circle cx="22.4" cy="-11" r="1.2" fill="#fff8ee"/>'
+       f'<ellipse cx="-20" cy="-28" rx="5" ry="2.6" fill="{DL}"/><ellipse cx="20" cy="-28" rx="5" ry="2.6" fill="#c9966a"/>'
+       f'</g>')
+
+# ---------------------------------------------------------------- Lae: island-born dive instructor (built on Tawan's head)
+LAE_SKIN = ['#f0c29a', '#dca27c', '#bb7e5a', '#e8b690', '#fbe2c6', '#cf9270', '#e6b48c', '#c88c68', '#c88c6a']
+lae_kit = recolor(TK, T_SKIN, LAE_SKIN)
+HAIR_L, HAIR_LH = '#2a1c18', '#6e4a34'
+LAE_BACK = ('<g id="h_lae_back">'
+            f'<path d="M -38,-4 C -42,-46 -22,-64 0,-64 C 22,-64 42,-46 38,-4 C 44,20 40,40 46,60 C 52,80 44,100 50,122 L 40,132 C 36,116 30,124 22,118 L 18,58 L -18,58 L -22,118 C -30,124 -36,116 -40,132 L -50,122 C -44,100 -52,80 -46,60 C -40,40 -44,20 -38,-4 Z" fill="{HAIR_L}"/>'
+            f'<path d="M -42,30 C -46,50 -40,70 -46,92 C -42,104 -46,114 -44,124 L -48,122 C -50,104 -42,84 -48,64 C -46,52 -46,40 -42,30 Z" fill="{HAIR_LH}"/>'
+            '</g>')
+LAE_HEAD = ('<g id="h_lae">' + lae_kit +
+            # centre-parted crown + wavy curtains framing the face down to the shoulders
+            f'<path d="M -38,-4 C -40,-46 -22,-64 0,-64 C 22,-64 40,-46 38,-4 L 31,-6 C 29,-24 18,-36 0,-40 C -18,-36 -29,-24 -31,-6 Z" fill="{HAIR_L}"/>'
+            f'<path d="M -30,-42 C -22,-56 -10,-60 -2,-61 C -12,-54 -22,-46 -27,-34 Z" fill="{HAIR_LH}"/>'
+            f'<path d="M -38,-10 L -30,-10 C -32,10 -26,26 -32,44 C -36,58 -28,72 -32,90 L -40,96 C -36,80 -44,66 -40,52 C -36,36 -42,18 -38,-10 Z" fill="{HAIR_L}"/>'
+            f'<path d="M -36,0 C -38,20 -33,32 -37,48 C -40,60 -34,70 -37,84 L -38,84 C -38,70 -42,60 -39,48 C -36,32 -40,20 -36,0 Z" fill="{HAIR_LH}"/>'
+            f'<path d="M 38,-10 L 30,-10 C 32,10 26,26 32,44 C 36,58 28,72 32,90 L 40,96 C 36,80 44,66 40,52 C 36,36 42,18 38,-10 Z" fill="{HAIR_L}"/>'
+            # frangipani behind the left ear
+            '<g transform="translate(-34,-14)">' + ''.join(f'<ellipse cx="0" cy="-6" rx="4.2" ry="7" fill="#fbf7f0" transform="rotate({a})"/>' for a in (0, 72, 144, 216, 288))
+            + '<circle r="3" fill="#f2c26a"/></g>'
+            '<path d="M -26,46 C -14,58 14,58 26,46" stroke="#e9e1d0" stroke-width="1.4" fill="none"/>'
+            + ''.join(f'<ellipse cx="{x}" cy="{y}" rx="2.6" ry="1.8" fill="#f3ece0"/>' for x, y in ((-18, 52), (-9, 55.6), (0, 57), (9, 55.6), (18, 52)))
+            + '</g>')
+LAE_BODY = ('<use href="#h_lae_back"/>'
+            # legs + sandals
+            '<path d="M -40,236 L -12,236 L -13,446 L -33,446 Z" fill="#f0c29a"/><path d="M 40,236 L 12,236 L 13,446 L 33,446 Z" fill="#dca27c"/>'
+            '<path d="M -40,236 L -34,236 L -32,446 L -35,446 Z" fill="#fbe2c6" opacity=".6"/>'
+            '<path d="M -34,446 L -12,446 C -10,454 -12,460 -16,462 L -38,462 C -41,458 -40,450 -34,446 Z" fill="#f0c29a"/>'
+            '<path d="M 34,446 L 12,446 C 10,454 12,460 16,462 L 38,462 C 41,458 40,450 34,446 Z" fill="#dca27c"/>'
+            '<rect x="-42" y="460" width="34" height="6" rx="3" fill="#8a6a50"/><rect x="8" y="460" width="34" height="6" rx="3" fill="#6f5442"/>'
+            '<path d="M -36,454 L -24,448 L -12,454 M 36,454 L 24,448 L 12,454" stroke="#8a6a50" stroke-width="3.4" fill="none" stroke-linecap="round"/>'
+            '<path d="M -34,436 C -26,440 -18,440 -12,436" stroke="#f3ece0" stroke-width="2" fill="none" stroke-dasharray="2 2"/>'
+            # high-waist denim shorts
+            '<path d="M -40,150 L 40,150 L 44,240 L 6,244 L 2,206 L -2,206 L -6,244 L -44,240 Z" fill="#7f9cc2"/>'
+            '<path d="M -40,150 L -26,150 L -30,240 L -44,240 Z" fill="#9db6d6"/><path d="M 24,152 L 40,150 L 44,240 L 32,242 C 32,210 28,180 24,152 Z" fill="#647fa6"/>'
+            '<path d="M -44,236 L -6,240 M 6,240 L 44,236" stroke="#e8eef6" stroke-width="2.4"/>'
+            # bare arms
+            '<path d="M -38,60 C -46,64 -49,80 -49,100 L -51,212 L -40,212 L -38,110 Z" fill="#f0c29a"/><path d="M -46,92 C -47,100 -48,110 -48,120 L -49,212 L -46,212 L -45,120 Z" fill="#fbe2c6"/>'
+            '<path d="M 38,60 C 46,64 49,80 49,100 L 51,212 L 40,212 L 38,110 Z" fill="#dca27c"/>'
+            '<path d="M -51,210 L -40,210 C -39,224 -41,236 -46,238 C -51,238 -53,226 -51,210 Z" fill="#f0c29a"/>'
+            '<path d="M 51,210 L 40,210 C 39,224 41,236 46,238 C 51,238 53,226 51,210 Z" fill="#dca27c"/>'
+            # teal crop top
+            '<path d="M -26,62 C -14,58 14,58 26,62 L 30,140 L -30,140 Z" fill="#2f9a9e"/><path d="M -26,62 C -20,60 -16,60 -12,60 L -16,140 L -30,140 Z" fill="#45b0b2"/>'
+            '<path d="M -30,140 L 30,140 L 30,152 L -30,152 Z" fill="#f0c29a"/>'
+            # open white linen shirt, sleeves rolled to the elbow, knotted at the waist
+            '<path d="M -12,50 C -24,52 -36,56 -40,64 L -50,108 L -38,112 L -36,140 L -24,150 L -20,64 Z" fill="#f6f2ea"/>'
+            '<path d="M 12,50 C 24,52 36,56 40,64 L 50,108 L 38,112 L 36,140 L 24,150 L 20,64 Z" fill="#dcd5c8"/>'
+            '<path d="M -50,100 L -38,104 L -38,112 L -50,108 Z M 50,100 L 38,104 L 38,112 L 50,108 Z" fill="#e6e0d4"/>'
+            '<path d="M -22,140 C -10,146 10,146 22,140 L 18,156 L 6,150 L 0,160 L -6,150 L -18,156 Z" fill="#ece6da"/><circle cx="0" cy="146" r="5" fill="#dcd5c8"/>'
+            # iced coffee in the right hand
+            '<g transform="translate(56,206)"><path d="M -10,0 L 10,0 L 8,30 L -8,30 Z" fill="#f4efe6" opacity=".9"/><path d="M -9,10 L 9,10 L 8,30 L -8,30 Z" fill="#a9785a"/>'
+            '<rect x="-11" y="-3" width="22" height="4" rx="2" fill="#e8e2da"/><path d="M 3,-3 L 6,-16" stroke="#2fb3b8" stroke-width="2"/></g>')
+
 EXTRA_TOURIST = runpy.run_path(os.path.join(H, '..', 'episodes', 'ep01-koh-tao', 'sunrig.py'))['TOURIST']
 
 
@@ -374,10 +466,13 @@ def stage(inner, tx=200, ty=132, s=1.4, floor=True):
 SUN_CITY = SG['BODY']
 cards = [
 
-    fig('<rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/><ellipse cx="200" cy="826" rx="96" ry="9" fill="#10131b"/>'
-        + '<g transform="translate(210,700) scale(1.6)">' + DOG + '</g>',
-        'หมาเกาะประจำซอย · หันข้างเต็ม 90 องศา ขนสั้นสีน้ำตาลอ่อน อกขาว หูตั้ง หางม้วน ปลอกคอสีฟ้าที่เพื่อนบ้านใส่ให้ · ตอนแรกเห่าซัน ตอนจบนั่งซ้อนท้ายมอเตอร์ไซค์', 'หมาเกาะ',
-        [('#b98057', 'ขน'), ('#f2e6d6', 'อก'), ('#2fb3b8', 'ปลอกคอ')]),
+    fig('<rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/><ellipse cx="200" cy="790" rx="110" ry="11" fill="#10131b"/>'
+        + '<g transform="translate(200,440) scale(2.0)">' + DOG + '</g>',
+        'หมาเกาะประจำซอย · นั่งหน้าตรง วาดแบบเดียวกับดีน (แมวส้มของเจม) หัวกลม แก้มเต็ม ตาโตมีประกาย จมูกกลม ยิ้มแลบลิ้นนิด ๆ ขนสั้นสีน้ำตาลอ่อน อกครีม หูตั้งปลายพับ หางกระดิก ปลอกคอสีฟ้ามีป้ายชื่อ', 'หมาเกาะ',
+        [('#c8915e', 'ขน'), ('#f6eadb', 'อก'), ('#2fb3b8', 'ปลอกคอ')]),
+    fig(stage(LAE_BODY + '<use href="#h_lae"/>', ty=138),
+        'เล · สาวเกาะโดยกำเนิด ครูสอนดำน้ำ · ต่อยอดจากหัวตะวัน ผิวแทนสวย ผมยาวลอนดำอมน้ำตาลซีดแดด แสกกลาง ทัดดอกลีลาวดี สร้อยเปลือกหอย · เสื้อครอปสีเขียวทะเลกับเชิ้ตลินินขาวผูกเอว กางเกงยีนส์ขาสั้นเอวสูง รองเท้าแตะหนัง ถือกาแฟเย็น', 'เล (ตัวละครหญิง)',
+        [('#f0c29a', 'ผิว'), ('#2a1c18', 'ผม'), ('#2f9a9e', 'เสื้อครอป'), ('#7f9cc2', 'ยีนส์')]),
     fig(stage(UNCLE_BODY + '<use href="#h_uncle"/>'),
         'ลุงรถกระบะที่ท่าเรือ · ต่อยอดจากหัวเจม ผิวคล้ำแดด ผมเกรียนสีดอกเลา หนวดขาว ยิ้มกว้าง เสื้อกล้ามขาว ผ้าขาวม้าพาดไหล่ กางเกงขาสั้น รองเท้าแตะ ถือกุญแจรถ', 'ลุงรถกระบะ',
         [('#d9a07a', 'ผิว'), ('#f2eee6', 'เสื้อกล้าม'), ('#c4463d', 'ผ้าขาวม้า')]),
@@ -402,7 +497,7 @@ cards = [
         + '<g transform="translate(200,440) rotate(-10) scale(2.6)">' + GECKO + '</g>',
         'ตุ๊กแกประจำบ้านแบบน่ารัก · หัวกลมโต ตาโตมีประกาย แก้มแดง ยิ้มนิด ๆ ตัวป้อม นิ้วกลม ไม่มีผิวตะปุ่มตะป่ำ ในฉากจะตัวเล็กอยู่มุมภาพ ไม่ซูมใกล้ · โผล่ 2 ครั้ง (คืนแรก และตอนไฟดับ)', 'ตุ๊กแก', [('#7d93b0', 'ตัว'), ('#e8835f', 'จุด'), ('#e2b04a', 'ตา')]),
 ]
-cards = cards[3:] + cards[:3]          # Sun first, new islanders after the first-round cast
+cards = cards[4:6] + [cards[1]] + cards[6:] + [cards[0]] + cards[2:4]          # Sun first, new islanders after the first-round cast
 extras = ('<rect width="400" height="900" fill="#1b1f2b"/><rect y="760" width="400" height="140" fill="#161a24"/>'
           + '<g transform="translate(70,330) scale(.8)">' + VENDOR_BODY + '<use href="#h_vendor"/></g>'
           + '<g transform="translate(200,330) scale(.8)">' + DIVER_BODY + '<use href="#h_diver"/></g>'
@@ -436,7 +531,7 @@ figcaption {{ font-size:13px; color:var(--muted); line-height:1.55; }} figcaptio
 .chips i {{ width:14px; height:14px; border-radius:3px; display:inline-block; box-shadow:0 0 0 1px var(--line); }}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&display=swap">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{CLIPS}{SUN_HEADDEFS}{SUN_HEAD}{SUN_TAN}{AUNT_HEAD}{NB_HEAD}{AGENT_HEAD}{UNCLE_HEAD}{ELEC_HEAD}{VENDOR_HEAD}{DIVER_HEAD}</defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>{CLIPS}{SUN_HEADDEFS}{SUN_HEAD}{SUN_TAN}{AUNT_HEAD}{NB_HEAD}{AGENT_HEAD}{UNCLE_HEAD}{ELEC_HEAD}{VENDOR_HEAD}{DIVER_HEAD}{LAE_BACK}{LAE_HEAD}</defs></svg>
 <div class="wrap">
   <h1>ตัวละคร EP.01 เกาะเต่า<span>ร่างแรก · หน้าตรง · แสงกลางจากซ้าย · หน้าต่อยอดจากหัวเจมและตะวัน</span></h1>
   <div class="grid">{''.join(cards)}</div>
