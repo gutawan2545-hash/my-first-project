@@ -1,23 +1,22 @@
 # Generates characters/sun.html. Face construction follows characters/james.html.
-SK, SKS, SKD, SKH = "#efc4a0", "#dba882", "#c08a64", "#f8d8ba"
+SK, SKS, SKD, SKH = "#f3cfb1", "#e1b293", "#c79478", "#fbe2cc"
 HAIR, HAIRM, HAIRH = "#17141a", "#2a2530", "#3d3646"
-MOUTH = "#8c4f45"
+MOUTH = "#8a4a46"
 
-def eyes(look=0, lid=-6.0, lidR=None):
+def eyes(look=0, lid=-4.2, lidR=None):
     lidR = lid if lidR is None else lidR
     out = []
     for s, l, white, sh in ((-1, lid, "#f8f1ea", SKS), (1, lidR, "#eee3d8", SKD)):
         cid = "eyeL" if s < 0 else "eyeR"
         cx = 13*s + look
-        out.append(f'<path d="M {22*s},-4.6 C {17*s},-8.4 {9*s},-8 {5*s},-2 C {9*s},0.8 {17*s},0.6 {22*s},-4.6 Z" fill="{white}"/>')
-        out.append(f'<g clip-path="url(#{cid})"><circle cx="{cx}" cy="-2.6" r="4.4" fill="#2b1c17"/>'
-                   f'<circle cx="{cx}" cy="-2.6" r="2.2" fill="#120c0a"/>'
-                   f'<circle cx="{cx-1.6}" cy="-4" r="1.2" fill="#fff"/><circle cx="{cx+1.6}" cy="-0.8" r="0.6" fill="#fff" opacity=".8"/>'
-                   f'<path d="M {24*s},-11 L {2*s},-11 L {2*s},{l-0.4} C {9*s},{l-1.6} {17*s},{l-1.8} {24*s},{l-0.6} Z" fill="{sh}"/></g>')
-        out.append(f'<path d="M {4*s},{l+3.6} C {9*s},{l-1.4} {17*s},{l-1.8} {23*s},{l-0.2}" fill="none" stroke="#17141a" stroke-width="2.1" stroke-linecap="round"/>')
-        out.append(f'<path d="M {21*s},{l-0.6} L {25.5*s},{l-2.6} L {22.6*s},{l+1.6} Z" fill="#17141a"/>')
-        out.append(f'<path d="M {6*s},{l-2.4} C {10*s},{l-5.6} {17*s},{l-6} {21*s},{l-4}" fill="none" stroke="{SKD}" stroke-width="0.9" opacity=".8"/>')
-        out.append(f'<path d="M {19*s},0.8 C {15*s},2.4 {10*s},2.6 {6*s},1" fill="none" stroke="{sh}" stroke-width="0.9"/>')
+        out.append(f'<path d="M {22*s},-3.4 C {17*s},-6.8 {9*s},-6.6 {5*s},-1.8 C {9*s},0.6 {17*s},0.4 {22*s},-3.4 Z" fill="{white}"/>')
+        out.append(f'<g clip-path="url(#{cid})"><circle cx="{cx}" cy="-1.8" r="4" fill="#2b1c17"/>'
+                   f'<circle cx="{cx}" cy="-1.8" r="2" fill="#120c0a"/>'
+                   f'<circle cx="{cx-1.4}" cy="-2.9" r="1" fill="#fff"/>'
+                   f'<path d="M {24*s},-11 L {2*s},-11 L {2*s},{l+0.2} C {9*s},{l-1.2} {17*s},{l-1.4} {24*s},{l} Z" fill="{sh}"/></g>')
+        out.append(f'<path d="M {4*s},{l+2.8} C {9*s},{l-1} {17*s},{l-1.4} {23*s},{l+0.4}" fill="none" stroke="#17141a" stroke-width="2.1" stroke-linecap="round"/>')
+        out.append(f'<path d="M {21.5*s},{l} L {24.4*s},{l-0.8} L {22.4*s},{l+1.8} Z" fill="#17141a"/>')
+        out.append(f'<path d="M {19*s},1.6 C {15*s},3.2 {10*s},3.4 {6*s},1.8" fill="none" stroke="{sh}" stroke-width="0.9"/>')
     return "\n".join(out)
 
 BROW_FLAT_L = '<path d="M -24,-15 C -18,-16 -11,-15.4 -5.6,-14.4 L -5.8,-10.4 C -11,-11.2 -17,-11.6 -22.8,-11.2 Z" fill="#17141a"/>'
@@ -27,10 +26,12 @@ BROW_WORRY_L= '<path d="M -23,-11.2 L -6.4,-15 L -6,-10.8 L -22.4,-7.6 Z" fill="
 BROW_WORRY_R= '<path d="M 23,-11.2 L 6.4,-15 L 6,-10.8 L 22.4,-7.6 Z" fill="#17141a"/>'
 BROW_LOW_L  = '<path d="M -23.5,-12.2 L -6,-11.6 L -6.4,-7.6 L -22.6,-8.4 Z" fill="#17141a"/>'
 
-MUST = ('<path d="M -1,20.2 C -4.6,19.6 -8,20.2 -10,22 C -6.8,21.4 -3.8,21.3 -1,21.5 Z" fill="#2a2024" opacity=".8"/>'
-        '<path d="M 1,20.2 C 4.6,19.6 8,20.2 10,22 C 6.8,21.4 3.8,21.3 1,21.5 Z" fill="#2a2024" opacity=".8"/>'
-        '<path d="M -2.4,33 Q 0,34.4 2.4,33 L 1.6,35 Q 0,35.6 -1.6,35 Z" fill="#2a2024" opacity=".35"/>')
-LOWLIP = f'<path d="M -4,27.6 Q 0,29 4,27.6" fill="none" stroke="{SKS}" stroke-width="1.4" stroke-linecap="round"/>'
+MUST = ('<path d="M -1,19.8 C -4.6,19 -8.6,19.8 -10.6,23.4 C -7.4,21.4 -4,21 -1,21.2 Z" fill="#3a2a2a" opacity=".62"/>'
+        '<path d="M 1,19.8 C 4.6,19 8.6,19.8 10.6,23.4 C 7.4,21.4 4,21 1,21.2 Z" fill="#3a2a2a" opacity=".62"/>'
+        '<ellipse cx="0" cy="34.5" rx="6" ry="2.6" fill="#5e4644" opacity=".07"/>')
+LOWLIP = ('<path d="M -7.6,24.4 C -4,28.8 4,28.8 7.6,24.4 Z" fill="#d39088"/>'
+          '<path d="M -4,26 C -2,27 1,27 3,26" fill="none" stroke="#e6aaa0" stroke-width="1" stroke-linecap="round"/>'
+          '<path d="M -8.4,24.2 C -4.6,22.2 -1.4,22.6 0,23.4 C 1.4,22.6 4.6,22.2 8.4,24.2 C 4,25 -4,25 -8.4,24.2 Z" fill="#b9726c"/>')
 M_FLAT  = f'<path d="M -6.5,24.2 L 6.5,24.2" stroke="{MOUTH}" stroke-width="1.8" stroke-linecap="round"/>'
 M_SMIRK = (f'<path d="M -6.5,24.6 C -2,25.6 3,25.2 7,22.6" fill="none" stroke="{MOUTH}" stroke-width="1.8" stroke-linecap="round"/>'
            f'<path d="M 7.6,21.2 C 8.6,22 8.8,23.4 8.2,24.4" fill="none" stroke="{SKS}" stroke-width="1" stroke-linecap="round"/>')
@@ -53,61 +54,61 @@ def head(hid, brows, eye_svg, mouth, extra=""):
     <ellipse cx="-18" cy="12" rx="6" ry="3.2" fill="#d9846c" opacity=".3"/>
     <ellipse cx="18" cy="12" rx="6" ry="3.2" fill="#c97660" opacity=".3"/>
     {MUST}
-    {mouth}
     {LOWLIP}
+    {mouth}
     {extra}
     <use href="#sfronthair"/>
-    <path d="M 30.6,6 C 33,5.4 35.4,6.6 35,9 C 34.6,11 32,11.2 30.8,10 Z" fill="{SKS}"/>
-    <circle cx="33" cy="12.4" r="2.3" fill="none" stroke="#d7dbe4" stroke-width="1.1"/>
   </g>'''
 
 BASE = f'''<g id="sbase">
-    <!-- back hair, behind ears and face -->
-    <path d="M -41,18 C -48,-24 -43,-54 -20,-64 C -6,-70 10,-70 22,-64 C 45,-54 48,-24 41,18 L 37,10 L 34,24 L 29,4 L -29,4 L -34,24 L -37,10 Z" fill="{HAIR}"/>
-    <path d="M -20,22 L -28,31 L -14,27 Z M 20,22 L 29,30 L 14,27 Z" fill="{HAIR}"/>
+    <!-- back hair: stops above the ears, short nape -->
+    <path d="M -37,-6 C -44,-34 -36,-60 -16,-68 C -2,-74 16,-73 28,-64 C 42,-54 44,-30 38,-6 L 34,-12 L 31,-4 L -31,-4 L -34,-12 Z" fill="{HAIR}"/>
+    <path d="M -30,-6 L -34,14 L -28,8 Z M 30,-6 L 35,14 L 28,8 Z" fill="{HAIR}"/>
     <!-- neck + under-chin shadow -->
-    <rect x="-9.5" y="20" width="19" height="38" fill="#d9a67e"/>
-    <path d="M -9.5,26 L 9.5,26 L 9.5,46 Q 0,41 -9.5,49 Z" fill="#c08b64"/>
+    <rect x="-9.5" y="20" width="19" height="38" fill="#e6bb9c"/>
+    <path d="M -9.5,26 L 9.5,26 L 9.5,46 Q 0,41 -9.5,49 Z" fill="#cf9d80"/>
     <!-- ears -->
     <ellipse cx="-32" cy="1" rx="5.5" ry="8.5" fill="{SKH}"/>
     <ellipse cx="32" cy="1" rx="5.5" ry="8.5" fill="{SKS}"/>
     <path d="M 31,-3 C 34,-1 34,4 31,6" fill="none" stroke="{SKD}" stroke-width="1.2"/>
     <!-- face: a touch squarer jaw than James -->
-    <path d="M -31,-14 C -31,-47 31,-47 31,-14 L 30,5 C 28,21 16,34 0,41 C -16,34 -28,21 -30,5 Z" fill="{SK}"/>
+    <path d="M -32,-14 C -32,-47 32,-47 32,-14 L 31.5,7 C 30.5,24 17,37.5 0,40.5 C -17,37.5 -30.5,24 -31.5,7 Z" fill="{SK}"/>
     <g clip-path="url(#face)">
       <path d="M 16,-34 C 30,-28 34,-14 32,4 C 30,22 14,37 0,40 C 11,32 19,20 20,4 C 21,-10 19,-22 16,-34 Z" fill="{SKS}"/>
       <path d="M 26,-24 L 34,-24 L 34,10 C 32,6 30,0 28,-8 Z" fill="{SKD}"/>
       <path d="M -34,-24 L -24,-24 L -27,-8 L -34,-6 Z" fill="#dcaa80"/>
       <path d="M 34,-26 L 22,-26 L 25,-6 L 34,-4 Z" fill="{SKD}"/>
       <path d="M -33,-12 C -33,-30 -28,-38 -22,-41 C -28,-32 -29,-20 -29,-10 L -28,6 C -27,18 -21,28 -15,34 C -23,30 -29,20 -31,6 Z" fill="{SKH}"/>
-      <path d="M 1.4,-6 L 3.6,-6 L 7.4,13.6 L 2,16.6 Z" fill="{SKS}"/><path d="M -1.6,-5 L 0.2,-5 L -0.6,11 Z" fill="{SKH}"/><path d="M -4.6,15.4 C -3,13.6 -1,15.6 0,16.6 C 2,15.6 4,13.6 6,15.4" fill="none" stroke="{SKD}" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 1.6,-4 L 3.6,-4 L 7,10 C 8.6,12 8.4,15.6 5,16.6 L 2,16.8 Z" fill="{SKS}"/><circle cx="-0.8" cy="11.4" r="2" fill="{SKH}" opacity=".45"/><path d="M -7.2,15.6 C -8.4,12.4 -5.4,10.6 -3.4,12.4 M 7.4,15.6 C 8.6,12.4 5.6,10.6 3.6,12.4" fill="none" stroke="{SKD}" stroke-width="1.2" stroke-linecap="round"/><path d="M -3.6,16.4 C -1.6,17.6 1.6,17.6 3.8,16.4" fill="none" stroke="{SKD}" stroke-width="1.1" stroke-linecap="round"/>
     </g>
   </g>
   <g id="sfronthair">
-    <!-- crown with a centre part -->
-    <path d="M -33,-36 C -30,-68 30,-68 33,-36 C 22,-48 10,-52 0,-47 C -10,-52 -22,-48 -33,-36 Z" fill="{HAIR}"/>
-    <path d="M -28,-54 C -30,-66 -20,-72 -12,-70 C -8,-76 4,-77 8,-71 C 16,-74 26,-68 26,-56 Z" fill="{HAIR}"/>
-    <path d="M -4,-70 C 0,-76 8,-78 12,-75 C 7,-74 3,-72 0,-68 Z" fill="{HAIR}"/>
-    <path d="M -22,-60 C -16,-68 -6,-70 2,-68 C -6,-64 -14,-60 -18,-54 Z" fill="{HAIRH}"/>
-    <!-- curtain bangs, chunky shaggy ends -->
-    <path d="M 0,-50 C -14,-53 -30,-47 -36,-31 C -39,-20 -38,-6 -35,7 L -31,-5 L -28,3 L -26,-14 L -21,-11 L -20,-24 L -13,-21 C -10,-32 -5,-40 0,-45 Z" fill="{HAIR}"/>
-    <path d="M 0,-50 C 14,-53 30,-47 36,-31 C 39,-20 38,-6 36,9 L 32,-3 L 29,5 L 27,-13 L 22,-9 L 20,-23 L 14,-19 C 10,-31 5,-40 0,-45 Z" fill="{HAIR}"/>
-    <!-- light from the left: a lit band on the left curtain, shade on the right -->
-    <path d="M -4,-49 C -16,-50 -27,-44 -32,-32 C -26,-38 -16,-43 -6,-44 Z" fill="{HAIRH}"/>
-    <path d="M -33,-26 C -35,-16 -34,-6 -33,2 L -31,-5 C -32,-12 -32,-20 -30,-27 Z" fill="{HAIRM}"/>
-    <path d="M 20,-23 L 24,-38 L 22,-9 Z M 29,5 L 33,-20 L 32,-3 Z" fill="#0e0c11"/>
-    <!-- messy flyaways on top -->
-    <path d="M -8,-36 C -12,-30 -14,-24 -13,-17 L -9,-25 C -8,-30 -6,-34 -3,-38 Z" fill="{HAIR}"/>
-    <path d="M -16,-46 C -22,-42 -27,-36 -29,-28 C -24,-34 -19,-39 -13,-42 Z" fill="{HAIRH}"/>
-    <path d="M 26,-50 C 32,-54 37,-54 40,-51 C 35,-50 32,-47 30,-44 Z" fill="{HAIR}"/>
-    <path d="M -2,-45 L -6,-36 L 1,-44 Z" fill="{HAIR}"/>
+    <!-- volume on top -->
+    <path d="M -38,-24 C -44,-46 -32,-66 -12,-70 C 6,-74 26,-68 36,-54 C 42,-44 42,-30 38,-18 L 30,-30 C 10,-40 -16,-40 -32,-28 Z" fill="{HAIR}"/>
+    <!-- heavy fringe: soft curved locks down to the brow line, tips swept toward his left -->
+    <path d="M -36,-30 C -26,-42 -6,-46 12,-42 C 26,-39 36,-30 38,-20 L 36,-26 C 20,-34 -16,-36 -34,-26 Z" fill="{HAIR}"/>
+    <path d="M -37,-38 C -36,-21.5 -35,-15 -31,-12 C -32,-19 -28,-19.5 -27,-38 Z M -30,-38 C -29,-23.0 -26,-18 -22,-15 C -23,-22 -20,-21.0 -19,-38 Z M -22,-38 C -21,-20.5 -17,-13 -13,-10 C -14,-17 -12,-18.5 -11,-38 Z M -14,-38 C -13,-22.0 -8,-16 -4,-13 C -5,-20 -4,-20.0 -3,-38 Z M -6,-38 C -5,-20.0 1,-12 5,-9 C 4,-16 4,-18.0 5,-38 Z M 2,-38 C 3,-21.5 10,-15 14,-12 C 13,-19 12,-19.5 13,-38 Z M 10,-38 C 11,-19.0 19,-10 23,-7 C 22,-14 20,-17.0 21,-38 Z M 18,-38 C 19,-21.0 27,-14 31,-11 C 30,-18 28,-19.0 29,-38 Z M 26,-38 C 27,-17.5 34,-7 38,-4 C 37,-11 36,-15.5 37,-38 Z" fill="{HAIR}"/>
+    <!-- side pieces sit above the ears -->
+    <path d="M -38,-24 C -40,-18 -39,-12 -37,-7 L -33,-14 L -32,-22 Z M 38,-20 C 40,-14 40,-9 38,-4 L 34,-10 L 33,-18 Z" fill="{HAIR}"/>
+    <!-- flyaways: wispy tufts up and out, mostly on the left -->
+    <path d="M -34,-42 C -42,-46 -48,-50 -52,-56 C -46,-52 -40,-50 -33,-50 Z" fill="{HAIR}"/>
+    <path d="M -28,-56 C -34,-64 -36,-70 -36,-76 C -32,-70 -27,-66 -20,-63 Z" fill="{HAIR}"/>
+    <path d="M -10,-68 C -12,-74 -10,-80 -6,-84 C -6,-78 -4,-74 0,-70 Z" fill="{HAIR}"/>
+    <path d="M 8,-70 C 12,-76 18,-79 24,-80 C 19,-76 16,-72 16,-68 Z" fill="{HAIR}"/>
+    <path d="M 30,-60 C 36,-62 42,-62 46,-60 C 41,-58 37,-56 35,-52 Z" fill="{HAIR}"/>
+    <path d="M -40,-30 C -46,-30 -50,-28 -53,-25 C -48,-26 -44,-25 -39,-22 Z" fill="{HAIR}"/>
+    <!-- lit chunks (light from the left), separations, shade on the right -->
+    <path d="M -30,-56 C -20,-64 -6,-66 6,-64 C -6,-60 -18,-54 -26,-46 Z" fill="{HAIRH}"/>
+    <path d="M -30,-32 C -22,-38 -12,-40 -2,-40 C -12,-36 -20,-32 -25,-27 Z" fill="{HAIRH}"/>
+    <path d="M -13,-10 C -12,-20 -10,-30 -8,-38 C -9,-28 -10,-20 -11,-13 Z M 5,-9 C 6,-20 8,-30 10,-36 C 9,-27 8,-18 7,-11 Z" fill="{HAIRM}"/>
+    <path d="M 23,-7 C 25,-18 27,-28 30,-34 C 29,-24 27,-15 25,-9 Z M 33,-8 C 34,-16 36,-24 37,-30 C 37,-21 36,-13 35,-6 Z" fill="#0e0c11"/>
   </g>'''
 
 HEADS = "\n  ".join([
-    head("s_dead", BROW_FLAT_L+BROW_FLAT_R, eyes(0, -4.8), M_FLAT),
-    head("s_side", BROW_LOW_L+BROW_FLAT_R, eyes(4.4, -4.4), M_SIDE),
-    head("s_smirk", BROW_FLAT_L+BROW_UP_R, eyes(0, -6.0, -7.4), M_SMIRK),
-    head("s_dry", BROW_WORRY_L+BROW_WORRY_R, eyes(0, -4.6), M_DRY),
+    head("s_dead", BROW_FLAT_L+BROW_FLAT_R, eyes(0, -4.2), M_FLAT),
+    head("s_side", BROW_LOW_L+BROW_FLAT_R, eyes(4.2, -3.6), M_SIDE),
+    head("s_smirk", BROW_FLAT_L+BROW_UP_R, eyes(0, -4.6, -6.2), M_SMIRK),
+    head("s_dry", BROW_WORRY_L+BROW_WORRY_R, eyes(0, -3.8), M_DRY),
     head("s_cool", BROW_FLAT_L+BROW_UP_R, "", M_SMIRK, SHADES),
 ])
 
@@ -119,8 +120,8 @@ BODY = f'''
           <path d="M -3,298 L 3,298 L 7,350 L -7,350 Z" fill="#1e2027"/>
           <path d="M -12,300 L -10,454 M 14,300 L 18,454" stroke="#24262e" stroke-width="1.4"/>
           <!-- ankles -->
-          <rect x="-36" y="452" width="15" height="12" fill="#d9a67e"/>
-          <rect x="21" y="452" width="15" height="12" fill="#c08b64"/>
+          <rect x="-36" y="452" width="15" height="12" fill="#e6bb9c"/>
+          <rect x="21" y="452" width="15" height="12" fill="#cf9d80"/>
           <!-- off-white canvas sneakers, gum sole -->
           <path d="M -46,462 L -16,462 C -11,468 -8,476 -8,483 L -50,483 C -52,476 -50,466 -46,462 Z" fill="#ece6da"/>
           <path d="M -46,462 L -36,462 L -40,483 L -50,483 C -52,476 -50,466 -46,462 Z" fill="#f8f4ec"/>
@@ -188,9 +189,9 @@ def chest(fill_l="#2f5a5e"):
         <path d="M 30,52 L 34,72" stroke="#bfb397" stroke-width="3.2"/>
         <path d="M -9,58 L -13,72 M 9,58 L 8,72" stroke="#2a2024" stroke-width="1.8"/>'''
 
-EXPR = [("s_dead","หน้าตาย","มุกเงียบ ไม่แสดงอารมณ์"),
+EXPR = [("s_dead","หน้าตาย","หน้าหลัก นิ่ง ๆ กวน ๆ"),
         ("s_side","เหลือบมอง","มุกรีแอ็กชัน ตามองไปข้าง"),
-        ("s_smirk","ยักคิ้ว ยิ้มมุมปาก","หน้าหลัก มั่นใจ มีออร่า"),
+        ("s_smirk","ยักคิ้ว ยิ้มมุมปาก","ตอนมั่นใจก่อนพลาด"),
         ("s_dry","ยิ้มแห้ง","หลังพลาด รักษาฟอร์ม"),
         ("s_cool","ใส่แว่นกันแดด","ท่าเท่ประจำตัว")]
 expr_figs = "\n".join(f'''    <figure>
@@ -242,7 +243,7 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
   <pattern id="print" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M 3,4 l 2.4,-2 l 2.4,2 l -2.4,2 Z" fill="#e9e1d0" opacity=".55"/><path d="M 11,12 q 2,-2.4 4,0" fill="none" stroke="#e9e1d0" stroke-width="1" opacity=".45"/></pattern>
-  <clipPath id="face"><path d="M -31,-14 C -31,-47 31,-47 31,-14 L 30,5 C 28,21 16,34 0,41 C -16,34 -28,21 -30,5 Z"/></clipPath>
+  <clipPath id="face"><path d="M -32,-14 C -32,-47 32,-47 32,-14 L 31.5,7 C 30.5,24 17,37.5 0,40.5 C -17,37.5 -30.5,24 -31.5,7 Z"/></clipPath>
   <clipPath id="eyeL"><path d="M -21,-3 C -17,-7.5 -9,-7.5 -5,-2 C -9,1 -17,1 -21,-3 Z"/></clipPath>
   <clipPath id="eyeR"><path d="M 21,-3 C 17,-7.5 9,-7.5 5,-2 C 9,1 17,1 21,-3 Z"/></clipPath>
   {BASE}
@@ -261,14 +262,14 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
         <ellipse cx="200" cy="818" rx="84" ry="10" fill="#10131b"/>
         <g transform="translate(200,132) scale(1.4)">
           {BODY}
-          <use href="#s_smirk"/>
+          <use href="#s_dead"/>
           <path d="M -9.5,56 L 9.5,56 L 9.5,58 L -9.5,58 Z" fill="#f2eee6"/>
           <path d="M -9,47 C -5,55 5,55 9,47" fill="none" stroke="#cfd3dc" stroke-width="0.9"/>
           <path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/>
           <path d="M -9,58 L -11,66 M 9,58 L 9.6,66" stroke="#2a2024" stroke-width="1.8"/>
         </g>
       </svg>
-      <figcaption>เต็มตัว · สูงราว 5.5 หัว · เชิ้ตฮาวายโอเวอร์ไซซ์สีเขียวหัวเป็ดลายเล็ก เปิดหน้า พับแขน ทับเสื้อยืดขาว · กางเกงขากว้างสีดำถ่าน · สร้อยเงินเส้นบาง ต่างหูห่วงเงิน · ผ้าใบขาวพื้นยาง · กระเป๋าผ้า · กล้องฟิล์มคล้องคอ · แว่นกันแดดเกี่ยวกระเป๋าเสื้อ</figcaption>
+      <figcaption>เต็มตัว · สูงราว 5.5 หัว · เชิ้ตฮาวายโอเวอร์ไซซ์สีเขียวหัวเป็ดลายเล็ก เปิดหน้า พับแขน ทับเสื้อยืดขาว · กางเกงขากว้างสีดำถ่าน · สร้อยเงินเส้นบาง · ผ้าใบขาวพื้นยาง · กระเป๋าผ้า · กล้องฟิล์มคล้องคอ · แว่นกันแดดเกี่ยวกระเป๋าเสื้อ</figcaption>
     </figure>
 
     <figure>
@@ -280,11 +281,11 @@ figcaption b {{ color: var(--ink); font-weight: 500; }}
         <path d="M -12,50 L -24,54 L -18,72 L -9,64 Z" fill="#4b8286"/>
         <path d="M 12,50 L 24,54 L 18,72 L 9,64 Z" fill="#1f3f43"/>
         <path d="M 30,52 L 34,72 M 38,54 L 43,72" stroke="#bfb397" stroke-width="3.2"/>
-        <use href="#s_smirk"/>
+        <use href="#s_dead"/>
         <path d="M -10,50 C -6,58 6,58 10,50" fill="none" stroke="#c9c1b2" stroke-width="2.4"/>
         <path d="M -9,58 L -13,72 M 9,58 L 8,72" stroke="#2a2024" stroke-width="1.8"/>
       </svg>
-      <figcaption>ใบหน้าระยะใกล้ · ผมทรงเซอร์แสกกลาง ยอดฟู ปลายผมท้ายทอยดีดออก · คิ้วหนาหางเชิด · ตาคมหางตาเชิด ชั้นตาบาง · หนวดบาง · กรามเรียว · เงาบล็อกที่ขมับ ข้างจมูก แก้มฝั่งไกลแสง ใต้คาง</figcaption>
+      <figcaption>ใบหน้าระยะใกล้ · ผมยุ่งทรงเซอร์ หน้าม้าหนาเป็นปอยหยักปรกคิ้ว ปัดไปทางซ้ายของเขา ผมชี้ฟูด้านบน เห็นหู · ตาชั้นเดียวปรือ ๆ · จมูกปลายมน · ปากอิ่ม · หนวดบางหางตก · เงาบล็อกที่ขมับ ข้างจมูก แก้มฝั่งไกลแสง ใต้คาง</figcaption>
       <div class="chips">
         <span><i style="background:{SK}"></i>ผิว</span>
         <span><i style="background:{SKS}"></i>ผิวเงา</span>
