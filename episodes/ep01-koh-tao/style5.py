@@ -135,15 +135,15 @@ def street():
     back = f'<g filter="url(#s4dof2)">{sky}{sea}{hill}</g><g filter="url(#s4dof)">{shopfront}{bouga}</g>' + wires + pole
     road = '<rect y="640" width="540" height="320" fill="#c9c2b6"/><path d="M 0,640 L 540,640" stroke="#a69e94" stroke-width="5"/><rect y="640" width="540" height="40" fill="#d8d2c6"/>'
     # scooter ~1.8 m long, parked a step behind Sun (depth factor .78), so it is cropped by the frame
-    sc_scale = PPM * .78 / 55
-    scoot = f'<g transform="translate(470,{1006 - 70:.0f}) scale({-sc_scale:.2f},{sc_scale:.2f})">{K.scooter(0, -15, 1, "#2fb3b8")}</g>'
+    sc_scale = PPM * .48 / 55
+    scoot = f'<g transform="translate(450,{860:.0f}) scale({-sc_scale:.2f},{sc_scale:.2f})">{K.scooter(0, -15, 1, "#2fb3b8")}</g>'
     dog_tr = 'translate(96,742) scale(.66)'
     s_tr = 'translate(232,330) scale(1.38)'
     leaves = ''.join(f'<ellipse cx="{x}" cy="{y}" rx="{rx}" ry="{rx * .45:.0f}" fill="#fff6e4" opacity=".28" filter="url(#s4soft)" style="mix-blend-mode:screen"/>' for x, y, rx in ((90, 700, 50), (230, 760, 60), (420, 720, 44), (330, 880, 56), (60, 900, 40)))
     bd, bs, bc = beam_set(fid, [[(380 + k * 36, 0), (404 + k * 36, 0), (120 + k * 36, 960), (96 + k * 36, 960)] for k in range(5)], '#fff6e4', .14)
     light = bs + leaves + CL.glow(560, -40, 380, '#fff6e4', .22, core=False) + fine_dust((60, 0, 540, 960), 220, 12, '#fffaf0', clip=bc)
     chars = [char(fid, ISL['DOG'], dog_tr, (560, -40), (96, 840), 'warm', None), char(fid, sun_island('smirk'), s_tr, (560, -40), (232, 500), 'warm', 'sun')]
-    sh = CL.contact_shadow(232, 1006, 80) + CL.contact_shadow(96, 860, 62, 10) + CL.contact_shadow(470, 940, 150, 14, .7)
+    sh = CL.contact_shadow(232, 1006, 80) + CL.contact_shadow(96, 860, 62, 10) + CL.contact_shadow(450, 862, 96, 10, .7)
     ui = tag('ปัจจุบัน · เกาะเต่า') + subs('ผู้ชายคนนี้ชื่อซัน/ครูสอนดำน้ำบนเกาะเต่า', 'This is Sun,/a dive instructor on Koh Tao.')
     return compose(fid, 'warm', back + road, sh, [chars[0]] + [(chars[1][0], scoot + chars[1][1])], '', light, '', ui, bd + S5DEFS)
 
