@@ -246,7 +246,7 @@ def retime(svg, t0, k):
     return re.sub(r'data-(at|out-at|dur|out-dur|stagger)="([-\d.]+)"', f, svg)
 
 
-tq0, tq1 = tj1, at('N08', .5)
+tq0, tq1 = tj1, at('N08', .6)
 pc_svg, _ = MP.parcel()
 pc_svg = retime(pc_svg, tq0 - .4, (tq1 - tq0 + .4) / 7.4)
 pc_svg = pc_svg.replace('data-cam="1.02,1.06,0,6"', f'data-cam="1.02,1.06,0,6,{tq0},{tq1}"')
