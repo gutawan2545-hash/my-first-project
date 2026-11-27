@@ -80,7 +80,7 @@ mus *= (1 - .3 * np.clip(talking, 0, 1))                   # -26 dB in gaps, ~ -
 
 # ---------------------------------------------------------------- sound effects (real recordings, looped beds where needed)
 S = {k: load(os.path.join(HERE, 'sfx', k + '.wav')) for k in
-     ('birds_beach', 'waves_rough', 'scooter_pass', 'thunder', 'rain_roof', 'gecko', 'wok_sizzle', 'bkk_traffic', 'harbor', 'night_insects', 'whoosh', 'gecko_real', 'power_down')}
+     ('birds_beach', 'waves_rough', 'scooter_pass', 'thunder', 'rain_roof', 'gecko', 'wok_sizzle', 'bkk_traffic', 'harbor', 'night_insects', 'whoosh', 'gecko_real', 'power_down', 'power_snap2', 'ferry_horn', 'seagulls')}
 sfx = np.zeros(N, np.float32)
 
 
@@ -104,6 +104,9 @@ def hit(name, t, level):
     place(sfx, S[name] / (np.max(np.abs(S[name])) + 1e-9) * db(level), t)
 
 
+GECKO = os.environ.get('GECKO', 'gecko_t4')
+if GECKO not in S:
+    S[GECKO] = load(os.path.join(HERE, 'sfx', GECKO + '.wav'))
 shots = {s['file'][3:-5]: (s['t0'], s['t1']) for s in __import__('json').load(open(os.path.join(HERE, 'clip_pages', 'shots.json')))['shots']}
 g = lambda n: shots[n]
 bed('birds_beach', 0, g('shop_thanks')[1], -33)                        # sunny street + shop
@@ -112,18 +115,21 @@ bed('wok_sizzle', *g('kitchen'), -31); bed('wok_sizzle', *g('kitchen_close'), -3
 bed('bkk_traffic', *g('taxi'), -30)
 bed('wok_sizzle', *g('quit'), -36)
 hit('whoosh', g('quit')[1] - .45, -11)                                 # kitchen -> the move (zoom-blur bridge)
-bed('harbor', g('map')[0] - .1, g('pier_uncle')[1], -32)          # ferry horn + gulls carry us to the island
+bed('harbor', g('map')[0] - .1, g('pier_uncle')[1], -32)
+hit('ferry_horn', g('quit')[1] - .25, -9)                             # ferry horn + gulls carry us to the island
+hit('seagulls', g('map')[0] + .4, -14)
+hit('seagulls', g('pier')[0] + .2, -17)
 bed('birds_beach', g('stairs_agent')[0], g('stairs_climb')[1], -33)
 bed('harbor', *g('island'), -34)
 bed('night_insects', *g('gecko'), -32)
-hit('gecko_real', at('N06', .45), -13)                                # real Tokay call: ตุ๊ก-แก
+hit(GECKO, at('N06', .45), -11)                                # real Tokay call: ตุ๊ก-แก
 bed('birds_beach', g('scooter_wide')[0], g('aunt_pass')[1], -34)
 hit('scooter_pass', at('J04') - 1.2, -10)
 bed('rain_roof', g('calendar')[0], g('outage')[1], -31)
 hit('thunder', g('calendar')[0] + .3, -10)
 hit('thunder', g('outage')[0] + .2, -8)
-hit('power_down', at('N09', .36) - .05, -9)                           # lights die on "ไฟก็ดับ" (comic wind-down)
-hit('gecko_real', at('N09', .36) + 2.2, -20)                          # the roommate comments from the dark
+hit('power_snap2', at('N09', .36) - .03, -4)                          # "พรึบ!" the power cuts on "ไฟก็ดับ" (owner pick)
+hit(GECKO, at('N09', .36) + 2.2, -19)                          # the roommate comments from the dark
 bed('birds_beach', g('prices')[0], g('instructor')[1], -35)
 hit('whoosh', at('N13') - .75, -12)                                    # back to now
 bed('waves_rough', g('vista')[0], g('rough')[0], -36)

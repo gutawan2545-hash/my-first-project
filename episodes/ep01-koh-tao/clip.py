@@ -322,7 +322,20 @@ tf1 = at('F01', 1) + .2
 shot('reply', tn_1, tf1, breath(st_nb), [face('nbA', 'F01', glance=[[tn_0, 2.4, 0]], seed=24), face('jP13', glance=[[tn_0, -2.6, 0]], seed=23)],
      frame=(1.6, 160, 500), cam=f'1,1.03,0,0,{tn_1},{tf1}', past=True)
 tr1 = at('N12') - .08
-shot('blink', tf1, tr1, breath(st_nb), [face('jP13', glance=[[tn_0, -2.6, 0]], seed=23, blinkAt=[tf1 + .25, tf1 + .58])],
+# reaction: stunned (brows up, little "o" mouth, a sweat drop) in the silence, then he cracks up when the narrator lands the joke
+BL_UP = '<path d="M -22,-16.5 L -7,-17.5 L -7,-14.7 L -21,-13.7 Z" fill="#17151d"/>'
+BR_UP = '<path d="M 22,-16.5 L 7,-17.5 L 7,-14.7 L 21,-13.7 Z" fill="#17151d"/>'
+M_O = '<ellipse cx="0" cy="25" rx="3.6" ry="4.2" fill="#6a2f2c"/>'
+DROP = '<path d="M 31,-30 C 34.5,-23 35.5,-19 32,-17 C 28.5,-19 28.5,-23 31,-30 Z" fill="#d6ecff" opacity=".95"/>'
+R.HEAD_DEFS += R.variant('sh_stun', (BL_UP, BR_UP), M_O, DROP)
+A('sh_stun', 'jStun'); A('sh_grin', 'jLaugh')
+tB = at('N11b') + .3
+react = (f'<defs><g id="jReact">'
+         f'<g data-in="fade" data-at="{tf1 + .12:.2f}" data-dur=".06" data-out="fade" data-out-at="{tB:.2f}" data-out-dur=".06"><use href="#jStun"/></g>'
+         f'<g data-in="fade" data-at="0" data-dur=".01" data-out="fade" data-out-at="{tf1 + .12:.2f}" data-out-dur=".06"><use href="#jP13"/></g>'
+         f'<g data-in="fade" data-at="{tB:.2f}" data-dur=".06"><g data-float="1.4,.24"><use href="#jLaugh"/></g></g></g></defs>')
+st_react = st_nb.replace('href="#jP13"', 'href="#jReact"', 1).replace('<g id="L-light">', react + '<g id="L-light">', 1)
+shot('blink', tf1, tr1, breath(st_react), [face('jStun', seed=23, blinkAt=[tf1 + .45, tf1 + .78]), face('jLaugh', seed=29)],
      frame=(2.9, 236, 380), cam=f'1,1.06,0,0,{tf1},{tr1}', past=True)
 
 # ================================================================ 17. montage: dive shop with Lae, instructor card
