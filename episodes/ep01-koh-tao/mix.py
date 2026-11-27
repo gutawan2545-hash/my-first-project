@@ -104,7 +104,7 @@ def hit(name, t, level):
     place(sfx, S[name] / (np.max(np.abs(S[name])) + 1e-9) * db(level), t)
 
 
-GECKO = os.environ.get('GECKO', 'gecko_t4')
+GECKO = os.environ.get('GECKO', 'gecko_synth')   # owner pick
 if GECKO not in S:
     S[GECKO] = load(os.path.join(HERE, 'sfx', GECKO + '.wav'))
 shots = {s['file'][3:-5]: (s['t0'], s['t1']) for s in __import__('json').load(open(os.path.join(HERE, 'clip_pages', 'shots.json')))['shots']}
