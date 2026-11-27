@@ -159,7 +159,7 @@ def island_view(t0, t1):
             + ''.join(f'<rect x="{x}" y="740" width="8" height="64" fill="#d6d0c4"/>' for x in range(10, 560, 60))
             + '<path d="M -10,744 L 550,744" stroke="#f4f1ec" stroke-width="7"/><path d="M -10,772 L 550,772" stroke="#d6d0c4" stroke-width="4"/>'
             + lifebuoy(450, 860, 40) + '<path d="M 60,900 C 120,880 200,930 260,900" stroke="#c9b08a" stroke-width="7" fill="none"/>')
-    back = sky + f'<g filter="url(#s4dof)">{sea}{isl}</g>'
+    back = sky + sea + isl                                 # island kept sharp (owner: the hills must read clearly)
     light = CL.glow(500, 60, 300, '#fff6e4', .2, core=False) + fine_dust((0, 300, 540, 960), 220, 101, '#ffffff', density_far=.7)
     ui = (M.reveal(f'<g transform="translate(150,236)"><rect x="-96" y="-34" width="192" height="68" rx="12" fill="#f8f3ea"/><rect x="-96" y="-34" width="8" height="68" rx="4" fill="#9a86ff"/>'
                    f'<text x="6" y="-8" {TH} font-size="12" font-weight="700" fill="#8a7fa0" text-anchor="middle">พื้นที่ทั้งเกาะ</text></g>', t0 + .3, t1 - .3, 'mask-right', .6)
