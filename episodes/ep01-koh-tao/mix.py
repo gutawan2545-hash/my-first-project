@@ -80,7 +80,7 @@ mus *= (1 - .3 * np.clip(talking, 0, 1))                   # -26 dB in gaps, ~ -
 
 # ---------------------------------------------------------------- sound effects (real recordings, looped beds where needed)
 S = {k: load(os.path.join(HERE, 'sfx', k + '.wav')) for k in
-     ('birds_beach', 'waves_rough', 'scooter_pass', 'thunder', 'rain_roof', 'gecko', 'wok_sizzle', 'bkk_traffic', 'harbor', 'night_insects', 'whoosh')}
+     ('birds_beach', 'waves_rough', 'scooter_pass', 'thunder', 'rain_roof', 'gecko', 'wok_sizzle', 'bkk_traffic', 'harbor', 'night_insects', 'whoosh', 'gecko_real', 'power_down')}
 sfx = np.zeros(N, np.float32)
 
 
@@ -111,16 +111,19 @@ hit('whoosh', past0 - .1, -12)                                         # into th
 bed('wok_sizzle', *g('kitchen'), -31); bed('wok_sizzle', *g('kitchen_close'), -33)
 bed('bkk_traffic', *g('taxi'), -30)
 bed('wok_sizzle', *g('quit'), -36)
-bed('harbor', g('map')[1], g('pier_uncle')[1], -32)
+hit('whoosh', g('quit')[1] - .45, -11)                                 # kitchen -> the move (zoom-blur bridge)
+bed('harbor', g('map')[0] - .1, g('pier_uncle')[1], -32)          # ferry horn + gulls carry us to the island
 bed('birds_beach', g('stairs_agent')[0], g('stairs_climb')[1], -33)
 bed('harbor', *g('island'), -34)
 bed('night_insects', *g('gecko'), -32)
-hit('gecko', at('N06', 1) + .1, -14)
+hit('gecko_real', at('N06', .45), -13)                                # real Tokay call: ตุ๊ก-แก
 bed('birds_beach', g('scooter_wide')[0], g('aunt_pass')[1], -34)
 hit('scooter_pass', at('J04') - 1.2, -10)
 bed('rain_roof', g('calendar')[0], g('outage')[1], -31)
 hit('thunder', g('calendar')[0] + .3, -10)
 hit('thunder', g('outage')[0] + .2, -8)
+hit('power_down', at('N09', .36) - .05, -9)                           # lights die on "ไฟก็ดับ" (comic wind-down)
+hit('gecko_real', at('N09', .36) + 2.2, -20)                          # the roommate comments from the dark
 bed('birds_beach', g('prices')[0], g('instructor')[1], -35)
 hit('whoosh', at('N13') - .75, -12)                                    # back to now
 bed('waves_rough', g('vista')[0], g('rough')[0], -36)

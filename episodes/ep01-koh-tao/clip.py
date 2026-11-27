@@ -143,14 +143,14 @@ title = (f'<g data-in="mask-right" data-at="{at("J02", 1) + .1:.2f}" data-dur=".
          f'<text x="270" y="250" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">เมื่อ<tspan fill="#c9a8ff">กรุงเทพเนทีฟ</tspan></text>'
          f'<text x="270" y="294" font-size="30" font-weight="800" fill="#fff" text-anchor="middle">ย้ายไปอยู่เกาะเต่า</text></g>')
 shot('quit', tq0, tq1, breath(kq), [face('jC2', 'J02', glance=[[tq0, 0, 1.0], [at('J02') + .1, 0, 0]], seed=9)], title,
-     frame=(1.35, 220, 470), cam=f'1,1.06,0,0,{tq0},{tq1}', past=True)
+     frame=(1.35, 220, 470), cam=f'1,1.06,0,0,{tq0},{tq1}', past=True, zb=(tq1 - .42, .42, 'out'))
 
 # ================================================================ 6. no airport: the map on the table
 tm0, tm1 = at('N04') - .08, at('N04', .5)
 gm = S5.g_map()
 ui = (M.step(1, 'เกาะเต่าไม่มีสนามบิน', 'NO AIRPORT · BY BOAT ONLY', tm0 + .2, tm1 - .3)
       + M.arrow('M 168,452 C 228,404 300,388 344,404', tm0 + .9, tm1 - .2, '#c4463d', 5))
-shot('map', tm0, tm1, gm, [], ui, cam=f'1.02,1.08,0,-20,{tm0},{tm1}', past=True)
+shot('map', tm0, tm1, gm, [], ui, cam=f'1.02,1.08,0,-20,{tm0},{tm1}', past=True, zb=(tm0, .45, 'in'))
 
 # ================================================================ 7. the pier: boxes + uncle
 A('sh_dead', 'jP3'); A('h_uncle', 'unA')
@@ -250,7 +250,7 @@ tq0, tq1 = tj1, at('N08', .6)
 pc_svg, _ = MP.parcel()
 pc_svg = retime(pc_svg, tq0 - .4, (tq1 - tq0 + .4) / 7.4)
 pc_svg = pc_svg.replace('data-cam="1.02,1.06,0,6"', f'data-cam="1.02,1.06,0,6,{tq0},{tq1}"')
-pc_svg = S6.renamed(pc_svg)
+pc_svg = S6.renamed(pc_svg).replace('x="270" y="246"', 'x="270" y="249"').replace('<rect x="-96" y="-30" width="192" height="46" rx="23"', '<rect x="-110" y="-46" width="220" height="46" rx="23"')
 shot('parcel', tq0, tq1, pc_svg, [], M.step(3, 'พัสดุก็ต้องนั่งเรือ', 'PARCELS RIDE THE BOAT TOO', tq0 + .1, tq1 - .2, 852), cam=None, past=True)
 tk0, tk1 = tq1, at('J05') - .1
 cal = S5.g_calendar()
@@ -276,18 +276,22 @@ shot('deadpan', tdd0, tdd1, breath(call2), [face('jP10', 'J06', seed=19)], frame
 
 # ================================================================ 14. power cut: torch, gecko, the electrician
 A('sh_dead', 'jP11'); A('h_elec', 'elA')
-TORCH = ('<g><rect x="-56" y="236" width="16" height="34" rx="4" fill="#2c3040"/><rect x="-58" y="266" width="20" height="10" rx="2" fill="#3a3d48"/>'
-         '<path d="M -58,276 L -38,276 L 40,520 L -150,520 Z" fill="#fff4d6" opacity=".18" style="mix-blend-mode:screen"/><circle cx="-48" cy="276" r="7" fill="#fff6dc"/></g>')
+t_off = at('N09', .36)                                   # "ไฟก็ดับ": lights go out on the word, with a flicker
+TORCH = (f'<g data-in="pop" data-at="{t_off + .9:.2f}" data-dur=".35"><rect x="-56" y="236" width="16" height="34" rx="4" fill="#2c3040"/><rect x="-58" y="266" width="20" height="10" rx="2" fill="#3a3d48"/>'
+         f'<g data-in="fade" data-at="{t_off + 1.35:.2f}" data-dur=".12"><path d="M -58,276 L -38,276 L 40,520 L -150,520 Z" fill="#fff4d6" opacity=".22" style="mix-blend-mode:screen"/><circle cx="-48" cy="276" r="7" fill="#fff6dc"/></g></g>')
 to0, to1 = tdd1, at('N10') - .08
 el_in0, el_in1 = at('N09', .78), at('E01') - .05
 elec = C.electrician('el1', [(0, 'relax')], [(0, 'relax'), (at('E01'), 'relax'), (at('E01') + .1, 'wave'), (at('E01', 1) + .1, 'wave2'), (to1, 'relax')], head='elA')
 elec_g = (f'<g data-mv="{el_in0:.2f},260,0;{el_in1:.2f},0,0" data-bob="2">'
           f'<g transform="translate(440,420) scale(.86)">{elec}<g transform="translate(0,0)">{ISL["LAMP_GLOW"]}</g></g></g>')
-out1 = put(bung, J_BUNG, C.james_then('jo1', 'jP11', [(0, 'chest')], [(0, 'relax')], holdL=TORCH, tote=False))
-dark = '<rect width="540" height="960" fill="#0b0f1e" opacity=".42" style="mix-blend-mode:multiply"/>'
-out1 = out1.replace('<g id="L-light">', f'<g id="L-dark">{dark}</g><g id="L-elec">{elec_g}</g><g id="L-light">', 1)
-out1 = out1.replace(f'<g id="L-dark">', '<g id="L-dark">' + CS.CL.glow(440, 380, 160, '#fff4d6', .25, core=False), 1)
-shot('outage', to0, to1, breath(out1), [face('jP11', glance=[[to0, 0, 0], [at('N09', .4), -2.2, -2.2], [el_in1, 2.4, 0]], seed=20), face('elA', 'E01', seed=21)],
+out1 = put(bung, J_BUNG, C.james_then('jo1', 'jP11', [(0, 'rest'), (t_off + .6, 'rest'), (t_off + .95, 'chest')], [(0, 'relax'), (t_off, 'relax'), (t_off + .15, 'shrug'), (t_off + .9, 'relax')], holdL=TORCH, tote=False))
+DARK = '<rect width="540" height="960" fill="#0a0d1a" opacity=".62" style="mix-blend-mode:multiply"/>'
+flick = ''.join(f'<g data-in="fade" data-at="{a:.2f}" data-dur=".03" data-out="fade" data-out-at="{b:.2f}" data-out-dur=".03">{DARK}</g>'
+                for a, b in ((t_off, t_off + .09), (t_off + .2, t_off + .27)))
+dark = flick + f'<g data-in="fade" data-at="{t_off + .38:.2f}" data-dur=".05">{DARK}</g>'
+# darkness sits above the lamp glow (L-light) so the lamp really goes out; the torch and headlamp stay bright above it
+out1 = out1.replace('<g id="L-atmos">', f'<g id="L-dark">{dark}</g><g id="L-elec">{elec_g}</g><g id="L-glow2">' + CS.CL.glow(440, 380, 160, '#fff4d6', .25, core=False) + '</g><g id="L-atmos">', 1)
+shot('outage', to0, to1, breath(out1), [face('jP11', glance=[[to0, 0, 0], [t_off + .05, 0, -2.6], [t_off + 1.5, -2.2, -2.2], [el_in1, 2.4, 0]], seed=20), face('elA', 'E01', seed=21)],
      M.tag('พายุเข้า · ไฟดับ', to0 + .2, to1 - .1), cam=f'1.05,1.12,30,0,{to0},{to1}', past=True)
 
 # ================================================================ 15. prices at the wooden shop
