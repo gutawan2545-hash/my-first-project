@@ -9,7 +9,7 @@ CEILING = 300
 VOICE = {'narrator': 'yq05eeRaHPMGuWTVpqeP',      # Tonce (owner's pick)
          'james': 'S2oNPNuiP27Jy2lVX5uZ',         # เจมจิ (channel voice)
          'agent': 'bTU3YcWRdgcxQzaPPSNs',         # ชายแท้
-         'uncle': 'gImkfeJS2sJvoWcxNPos',         # คุณพ่อ
+         'uncle': 'uI1epevl1X6hqrxEciKt',   # Kirin (owner pick for the uncle, stability .5)         # คุณพ่อ
          'staff': 'qJqi8XxeBcos4asE2nOV',         # ตำรวจ (flat, on the phone)
          'electrician': 'bTU3YcWRdgcxQzaPPSNs',
          'neighbor': 'iP95p4xoKVk53GoZ742B'}      # Chris (English voice speaking Thai = the foreign neighbour)
