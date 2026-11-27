@@ -5,7 +5,7 @@ import json, os, subprocess, urllib.request
 
 H = os.path.dirname(os.path.abspath(__file__))
 API = 'https://api.elevenlabs.io/v1'
-CEILING = 1700
+CEILING = 300
 VOICE = {'narrator': 'yq05eeRaHPMGuWTVpqeP',      # Tonce (owner's pick)
          'james': 'S2oNPNuiP27Jy2lVX5uZ',         # เจมจิ (channel voice)
          'agent': 'bTU3YcWRdgcxQzaPPSNs',         # ชายแท้
