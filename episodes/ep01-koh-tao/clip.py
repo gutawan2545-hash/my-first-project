@@ -319,7 +319,7 @@ shot('reply', tn_1, tf1, breath(st_nb), [face('nbA', 'F01', glance=[[tn_0, 2.4, 
      frame=(1.6, 160, 500), cam=f'1,1.03,0,0,{tn_1},{tf1}', past=True)
 tr1 = at('N12') - .08
 shot('blink', tf1, tr1, breath(st_nb), [face('jP13', glance=[[tn_0, -2.6, 0]], seed=23, blinkAt=[tf1 + .25, tf1 + .58])],
-     frame=(2.1, 236, 440), cam=f'1,1.08,0,0,{tf1},{tr1}', past=True)
+     frame=(2.9, 236, 380), cam=f'1,1.06,0,0,{tf1},{tr1}', past=True)
 
 # ================================================================ 17. montage: dive shop with Lae, instructor card
 A('shead_t', 'jT2'); A('sh_grin_t', 'jT3')
@@ -359,7 +359,8 @@ shot('ab_card', tab0, TOTAL, CS.ab_card(tab0, TOTAL, toggles), [], cam=None, eye
 
 # ================================================================ pages
 def wrap_graded(svg, s):
-    g = M.group(svg, 'L-graded')
+    # everything from L-graded up to L-post (some approved scenes carry an unbalanced </g>, so don't count tags)
+    g = svg[svg.index('<g id="L-graded"'):svg.index('<g id="L-post"')]
     inner = g
     if s['cam']:
         inner = inner.replace('<g id="L-graded"', f'<g id="L-graded" data-cam="{s["cam"]}"', 1)
